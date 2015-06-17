@@ -475,6 +475,8 @@ void massFit::savePlots(bool doPullPlots){
    cc->Clear();
    if(doPullPlots){
      PlottingTools::makeResidualPlotsLiang(frame,*mass,*data, model,"./SavedFits/RS_fit_pulls",2000,2025);
+     TString nameforshow = "./SavedFits/"+modelName+"pulls_other_method";
+     PlottingTools::showPlot(*mass,*data,model,nameforshow.Data(),"m(D^{0}#pi_{S}");
    }
    return;
 }
