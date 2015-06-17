@@ -73,7 +73,7 @@ massFit::massFit(TString Channel,TString model,RooWorkspace* w) {
   const double pion_mass_pdg = 139.57018;
   const double d0_mass_pdg =1864.86;
   const Double_t xmin = pion_mass_pdg+d0_mass_pdg;//try adding an offset.
-  const Double_t xmax = 2025;
+  //const Double_t xmax = 2025;
   use_existing_fit = false;
   if(w!=0){
     existing_fit = w;
@@ -126,30 +126,45 @@ massFit::massFit(TString Channel,TString model,RooWorkspace* w) {
     rsigma= new RooRealVar("rsigma","rsigma",0,-50,50);//allowed variation for dstar width val
     //johnson parameters
     //m0= new RooRealVar("m0","m0",2010.,2009.,2011.);
-    m0= new RooRealVar("m0","m0",2.00935381450188277);//constant from liang's fit
+    double m0_liang = 2.00935381450188277*1e3;
+    m0= new RooRealVar("m0","m0",m0_liang,m0_liang*(0.95),m0_liang*(1.05));//constant from liang's fit
     fm0= new RooFormulaVar("fm0", "@0+@1", RooArgList(*m0, *dmean));
     //delta= new RooRealVar("delta","delta",9.57168e-01,0.2,2);
-    delta= new RooRealVar("delta","delta",1.92116578346114197);
+    double delta_liang = 1.92116578346114197;
+    delta= new RooRealVar("delta","delta",delta_liang,0.95*delta_liang,1.05*delta_liang);
     //sigma= new RooRealVar("sigma","sigma",1,2e-1,10);
-    sigma= new RooRealVar("sigma","sigma",2.49952200109722269e-03);
+    double sigma_liang = 2.49952200109722269e-03*1e3;
+    sigma= new RooRealVar("sigma","sigma",sigma_liang,0.95*sigma_liang,1.05*sigma_liang);
     fsigma= new RooFormulaVar("fsigma", "@0*(1+@1)", RooArgList(*sigma, *rsigma));
     //gamma= new RooRealVar("gamma","gamma",-1.20272e-01, -2,2);
-    gamma= new RooRealVar("gamma","gamma",-8.64089594146807194e-01);
+    double gamma_liang = -8.64089594146807194e-01;
+    gamma= new RooRealVar("gamma","gamma",gamma_liang, 1.05*gamma_liang,0.95*gamma_liang);//flopped since negative.
     sig_john= new RooJohnsonSU("sig_john","sig_john",*mass,*fm0,*fsigma,*gamma,*delta);
-    mean1= new RooRealVar("mean1","mean1",2010.,2009,2011);
-    //mean1= new RooRealVar("mean1","mean1",2);
+    //mean1= new RooRealVar("mean1","mean1",2010.,2009,2011);
+    double mean1_liang = 2.01032477109741325*1e3;
+    mean1= new RooRealVar("mean1","mean1",mean1_liang,0.95*mean1_liang,1.05*mean1_liang);
     //for offsets
     fgau1mean= new RooFormulaVar("fgau1mean", "@0+@1", RooArgList(*mean1, *dmean));
-    mean2= new RooRealVar("mean2","mean2",2010.,2008,2011);
+    //mean2= new RooRealVar("mean2","mean2",2010.,2008,2011);
+    double mean2_liang = 2.01028445885560236*1e3;
+    mean2= new RooRealVar("mean2","mean2",mean2_liang,0.95*mean2_liang,1.05*mean2_liang);
     fgau2mean= new RooFormulaVar("fgau2mean", "@0+@1", RooArgList(*mean2, *dmean));
-    mean3= new RooRealVar("mean3","mean3",2010.,2007,2013);
+    //mean3= new RooRealVar("mean3","mean3",2010.,2007,2013);
+    double mean3_liang = 2.01027349064504390*1e3;
+    mean3= new RooRealVar("mean3","mean3",mean3_liang,0.95*mean3_liang,1.05*mean3_liang);
     fgau3mean= new RooFormulaVar("fgau3mean", "@0+@1", RooArgList(*mean3, *dmean));
   
-    width1= new RooRealVar("width1","width1",1,0.01,10);
+    //width1= new RooRealVar("width1","width1",1,0.01,10);
+    double width1_liang = 5.81409441017281033e-01;
+    width1= new RooRealVar("width1","width1",width1_liang,0.95*width1_liang,1.95*width1_liang);
     fgau1sigma= new RooFormulaVar("fgau1sigma", "@0*(1+@1)", RooArgList(*width1, *rsigma));
-    width2= new RooRealVar("width2","width2",1,0.01,10);
+    //width2= new RooRealVar("width2","width2",1,0.01,10);
+    double width2_liang =3.11715962949287427e-01;
+    width2= new RooRealVar("width2","width2",width2_liang,0.95*width2_liang,1.05*width2_liang);
     fgau2sigma= new RooFormulaVar("fgau2sigma", "@0*(1+@1)", RooArgList(*width2, *rsigma));
-    width3= new RooRealVar("width3","width3",1,0.01,10);
+    //width3= new RooRealVar("width3","width3",1,0.01,10);
+    double width3_liang = 1.95072497687380828e-01;
+    width3= new RooRealVar("width3","width3",width3_liang,0.95*width3_liang,1.05*width3_liang);
     fgau3sigma= new RooFormulaVar("fgau3sigma", "@0*(1+@1)", RooArgList(*width3, *rsigma));
   
   
@@ -176,7 +191,7 @@ massFit::massFit(TString Channel,TString model,RooWorkspace* w) {
     rbw_width = new RooRealVar("rbw_width","",83.3e-3);//MeV
     rbw= new RooRBW("rbw","",*mass,*rbw_m0,*rbw_width);
     eps_width=new RooRealVar ("eps_width","",0,-0.3,0.3);
-    eps_mean=new RooRealVar ("eps_mean","",0,-0.3,0.3);
+    eps_mean=new RooRealVar ("eps_mean","",0,-3,3);
     res_mean1 = new RooRealVar("res_mean1","gaus resolution mean1",-0.00414);
     res_mean2 = new RooRealVar("res_mean2","gaus resolution mean2",-0.054);
     res_mean3 = new RooRealVar("res_mean3","gaus resolution mean3",-0.01306);
@@ -225,7 +240,7 @@ massFit::massFit(TString Channel,TString model,RooWorkspace* w) {
   n= new RooRealVar("n", "", 0.5, 0.4, 0.9);
   bkg_arg= new RooArgusBG("bkg", "argus_bkg",* minusDM, *endpt, *kappa, *n);
   nsig= new RooRealVar("nsig", "nsig", 9e6, 0, 1e10);
-  frac1= new RooRealVar("frac1", "frac1", .6,0.4,1);
+  frac1= new RooRealVar("frac1", "frac1", .6,0.,1);
   frac2= new RooRealVar("frac2", "frac2", .1,0,1);
   frac3= new RooRealVar("frac3", "frac3", .1,0,1);
   nbkg= new RooRealVar("nbkg", "", 1e3,0, 1e8);
@@ -284,9 +299,9 @@ void massFit::initModelValues(){
       //sigpdf=Rcp3;
       //triple gaussian convolved with RBW= sum of gaus(x)rbw
       //with decay in flight component.
-      RooAbsPdf* sig_convolution = new RooAddPdf("sig_convolution","",RooArgList(*Rcp1,*Rcp2,*Rcp3),RooArgList(*res_frac1,*res_frac2),kTRUE);
-      sigpdf = new RooAddPdf("sigpdf","",RooArgList(*decay_in_flight_shape,*sig_convolution),RooArgList(*frac_dif));
-      //sigpdf = new RooAddPdf("sigpdf","",RooArgList(*Rcp1,*Rcp2,*Rcp3),RooArgList(*res_frac1,*res_frac2),kTRUE);
+      //RooAbsPdf* sig_convolution = new RooAddPdf("sig_convolution","",RooArgList(*Rcp1,*Rcp2,*Rcp3),RooArgList(*res_frac1,*res_frac2),kTRUE);
+      //sigpdf = new RooAddPdf("sigpdf","",RooArgList(*decay_in_flight_shape,*sig_convolution),RooArgList(*frac_dif));
+      sigpdf = new RooAddPdf("sigpdf","",RooArgList(*Rcp1,*Rcp2,*Rcp3),RooArgList(*res_frac1,*res_frac2),kTRUE);
 
     }
    
@@ -345,7 +360,7 @@ void massFit::initModelValues(){
       RooPlot *temp = mass->frame();
       
       model->plotOn(temp);
-      model->plotOn(temp,Components(*decay_in_flight_shape),LineColor(kMagenta+2),LineStyle(kDotted));
+      //model->plotOn(temp,Components(*decay_in_flight_shape),LineColor(kMagenta+2),LineStyle(kDotted));
       model->plotOn(temp,Components(*Rcp1),LineColor(kGreen+2),LineStyle(kDashed));
       model->plotOn(temp,Components(*Rcp2),LineColor(kRed),LineStyle(kDashed));
       model->plotOn(temp,Components(*Rcp3),LineColor(kOrange+1),LineStyle(kDashed));
