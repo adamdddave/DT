@@ -1483,9 +1483,16 @@ public :
   TBranch        *b_Hlt2Global;   //!
   
   TH1D* dstar_mass_plot;
-
-  TH1D* b_mass_plot;
+  TH1D* dstar_mass_plot_zoom;
+  TH1D* dstar_mass_plot_pos;
+  TH1D* dstar_mass_plot_neg;
+  TH1D* dstar_mass_pt_bin1;
+  TH1D* dstar_mass_pt_bin2;
+  TH1D* dstar_mass_pt_bin3;
   
+  TH1D* b_mass_plot;
+  TH2D* dstar_mass_vs_muIPchi2;
+  TH2D* bmass_vs_muIPchi2;
   
   
   DT_D0_mix_CPV(TTree *tree=0);
@@ -1497,6 +1504,7 @@ public :
   virtual void     Loop();
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
+
 private:
   TLorentzVector k_daughter;
   TLorentzVector pi_daughter;
@@ -1547,12 +1555,34 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   Init(tree);
   TString name = tree->GetName();
   name.ReplaceAll("/DecayTree","");
-  dstar_mass_plot = new TH1D(name+"dt_hist_dstar_m","", 250, 2000,2025);
+  dstar_mass_plot = new TH1D(name+"_dt_hist_dstar_m","", 250, 2000,2025);
   dstar_mass_plot->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot->GetBinWidth(1)));
 
-  b_mass_plot = new TH1D(name+"dt_hist_b_m","", 400, 2500,6500);
+  dstar_mass_plot_zoom = new TH1D(name+"_dt_hist_dstar_m","", 350, 2008,2015);
+  dstar_mass_plot_zoom->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot->GetBinWidth(1)));
+
+  dstar_mass_plot_pos = new TH1D(name+"_dt_hist_dstar_m_pos","", 250, 2000,2025);
+  dstar_mass_plot_pos->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot_pos->GetBinWidth(1)));
+
+  dstar_mass_plot_neg = new TH1D(name+"_dt_hist_dstar_m_neg","", 250, 2000,2025);
+  dstar_mass_plot_neg->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot_neg->GetBinWidth(1)));
+
+  dstar_mass_pt_bin1 = new TH1D(name+"_dt_hist_dstar_m_pt_bin1","", 250, 2000,2025);
+  dstar_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin1->GetBinWidth(1)));
+
+  dstar_mass_pt_bin2 = new TH1D(name+"_dt_hist_dstar_m_pt_bin2","", 250, 2000,2025);
+  dstar_mass_pt_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin2->GetBinWidth(1)));
+
+  dstar_mass_pt_bin3 = new TH1D(name+"_dt_hist_dstar_m_pt_bin3","", 250, 2000,2025);
+  dstar_mass_pt_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin3->GetBinWidth(1)));
+
+  //here
+  b_mass_plot = new TH1D(name+"_dt_hist_b_m","", 400, 2500,6500);
   b_mass_plot->SetTitle(Form("m(D^{*+}#mu^{-}); m(D^{*+}#mu^{-})[MeV]; Entries / %.2f",b_mass_plot->GetBinWidth(1)));
   bs_plot = new betastar_plot(tree->GetName());
+  dstar_mass_vs_muIPchi2 = new TH2D(name+"_dstar_mass_vs_muIPchi2","m(D^{0}#pi_{S}) vs #mu log(#chi^{2}_{IP}), Own PV; #mu log(#chi^{2}_{IP}); m(D^{0}#pi_{S})[MeV]",
+					 100,1,14,250,2000,2025);
+  
 }
 
 DT_D0_mix_CPV::~DT_D0_mix_CPV()

@@ -45,52 +45,52 @@ betastar_plot::betastar_plot(TString name  ) {
   m_name =name.ReplaceAll("/DecayTree","");
   std::cout<<"constructin betastar_plot with name "<<m_name<<std::endl;
   
-   h2sig = new TH2D(name+"h2sig","",200,-1.,1.,200,1.2,2.0);
-   h2kpisb = (TH2*)h2sig->Clone(name+"h2kpisb");
+   h2sig = new TH2D(name+"_h2sig","",200,-1.,1.,200,1.2,2.0);
+   h2kpisb = (TH2*)h2sig->Clone(name+"_h2kpisb");
   
-   h2kpisb_hi = (TH2*)h2sig->Clone(name+"h2kpisb_hi");
-   h2kpisb_lo = (TH2*)h2sig->Clone(name+"h2kpisb_lo");
+   h2kpisb_hi = (TH2*)h2sig->Clone(name+"_h2kpisb_hi");
+   h2kpisb_lo = (TH2*)h2sig->Clone(name+"_h2kpisb_lo");
   
-   h2kksb = (TH2*)h2sig->Clone(name+"h2kksb");
-   h2pipisb = (TH2*)h2sig->Clone(name+"h2pipisb");
-   h2piksb = (TH2*)h2sig->Clone(name+"h2piksb");
-   h2rob = (TH2*)h2sig->Clone(name+"h2rob");
-   h2kpisb_cut_range = (TH2*)h2sig->Clone(name+"h2kpisb_cut_range");
+   h2kksb = (TH2*)h2sig->Clone(name+"_h2kksb");
+   h2pipisb = (TH2*)h2sig->Clone(name+"_h2pipisb");
+   h2piksb = (TH2*)h2sig->Clone(name+"_h2piksb");
+   h2rob = (TH2*)h2sig->Clone(name+"_h2rob");
+   h2kpisb_cut_range = (TH2*)h2sig->Clone(name+"_h2kpisb_cut_range");
   
-   h2pi_probnnmu_dstar_sideband_high = new TH2D(name+"h2pi_probnnmu_dstar_sideband_high","",100,0,1,250,2000,2025);
-   h2pi_probnnmu_dstar_sideband_low=new TH2D(name+"h2pi_probnnmu_dstar_sideband_low","",100,0,1,250,2000,2025);
+   h2pi_probnnmu_dstar_sideband_high = new TH2D(name+"_h2pi_probnnmu_dstar_sideband_high","",100,0,1,250,2000,2025);
+   h2pi_probnnmu_dstar_sideband_low=new TH2D(name+"_h2pi_probnnmu_dstar_sideband_low","",100,0,1,250,2000,2025);
     
-   h2k_probnnmu_dstar_sideband_high=new TH2D(name+"h2k_probnnmu_dstar_sideband_high","",100,0,1,250,2000,2025);
-   h2k_probnnmu_dstar_sideband_low=new TH2D(name+"h2k_probnnmu_dstar_sideband_low","",100,0,1,250,2000,2025);    
+   h2k_probnnmu_dstar_sideband_high=new TH2D(name+"_h2k_probnnmu_dstar_sideband_high","",100,0,1,250,2000,2025);
+   h2k_probnnmu_dstar_sideband_low=new TH2D(name+"_h2k_probnnmu_dstar_sideband_low","",100,0,1,250,2000,2025);    
   
-   h2pi_probnne_dstar_sideband_high=new TH2D(name+"h2pi_probnne_dstar_sideband_high","",100,0,1,250,2000,2025);
-   h2pi_probnne_dstar_sideband_low=new TH2D(name+"h2pi_probnne_dstar_sideband_low","",100,0,1,250,2000,2025);
+   h2pi_probnne_dstar_sideband_high=new TH2D(name+"_h2pi_probnne_dstar_sideband_high","",100,0,1,250,2000,2025);
+   h2pi_probnne_dstar_sideband_low=new TH2D(name+"_h2pi_probnne_dstar_sideband_low","",100,0,1,250,2000,2025);
   
-   h2k_probnne_dstar_sideband_high=new TH2D(name+"h2k_probnne_dstar_sideband_high","",100,0,1,250,2000,2025);
-   h2k_probnne_dstar_sideband_low=new TH2D(name+"h2k_probnne_dstar_sideband_low","",100,0,1,250,2000,2025);    
+   h2k_probnne_dstar_sideband_high=new TH2D(name+"_h2k_probnne_dstar_sideband_high","",100,0,1,250,2000,2025);
+   h2k_probnne_dstar_sideband_low=new TH2D(name+"_h2k_probnne_dstar_sideband_low","",100,0,1,250,2000,2025);    
   
-   hmsig = new TH1D(name+"hmsig","", 250, 2000, 2025);
-   hmkpisb = (TH1*)hmsig->Clone(name+"hmkpisb");
-   hmkksb = (TH1*)hmsig->Clone(name+"hmkksb");
-   hmpipisb =(TH1*) hmsig->Clone(name+"hmpipisb");
-   hmpiksb = (TH1*)hmsig->Clone(name+"hmpiksb");
-   hmrob = (TH1*)hmsig->Clone(name+"hmrob");
+   hmsig = new TH1D(name+"_hmsig","", 250, 2000, 2025);
+   hmkpisb = (TH1*)hmsig->Clone(name+"_hmkpisb");
+   hmkksb = (TH1*)hmsig->Clone(name+"_hmkksb");
+   hmpipisb =(TH1*) hmsig->Clone(name+"_hmpipisb");
+   hmpiksb = (TH1*)hmsig->Clone(name+"_hmpiksb");
+   hmrob = (TH1*)hmsig->Clone(name+"_hmrob");
 
-   hmkpisb_cut_range = (TH1*)hmsig->Clone(name+"hmkpisb_cut_range");
-   hmkpisb_cut_range_hi = (TH1*)hmsig->Clone(name+"hmkpisb_cut_range_hi");
-   hmkpisb_cut_range_lo = (TH1*)hmsig->Clone(name+"hmkpisb_cut_range_lo");
+   hmkpisb_cut_range = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range");
+   hmkpisb_cut_range_hi = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi");
+   hmkpisb_cut_range_lo = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo");
 
-   hmkpisb_cut_range_hi_1 = (TH1*)hmsig->Clone(name+"hmkpisb_cut_range_hi_1");//40-52
-   hmkpisb_cut_range_lo_1 = (TH1*)hmsig->Clone(name+"hmkpisb_cut_range_lo_1");//40-52
+   hmkpisb_cut_range_hi_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1");//40-52
+   hmkpisb_cut_range_lo_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1");//40-52
 
-   hmkpisb_cut_range_hi_2 = (TH1*)hmsig->Clone(name+"hmkpisb_cut_range_hi_2");//52-64
-   hmkpisb_cut_range_lo_2 = (TH1*)hmsig->Clone(name+"hmkpisb_cut_range_lo_2");//52-64
+   hmkpisb_cut_range_hi_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2");//52-64
+   hmkpisb_cut_range_lo_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2");//52-64
 
     
     
-   hmD0_pik_sig = new TH1D(name+"hmD0_pik_sig","D^{0}->#pi K mass, #Delta M signal range; m(#pi K)[MeV];",200, 1700,2100);
-   hmD0_pik_sb = new TH1D(name+"hmD0_pik_sb","D^{0}->#pi K mass, #Delta M sideband; m(#pi K)[MeV];",200, 1700,2100);
-   hmD0_pik_tot = new TH1D(name+"hmD0_pik","D^{0}->#pi K mass, #Delta M unaltered; m(#pi K)[MeV];",200, 1700,2100);
+   hmD0_pik_sig = new TH1D(name+"_hmD0_pik_sig","D^{0}->#pi K mass, #Delta M signal range; m(#pi K)[MeV];",200, 1700,2100);
+   hmD0_pik_sb = new TH1D(name+"_hmD0_pik_sb","D^{0}->#pi K mass, #Delta M sideband; m(#pi K)[MeV];",200, 1700,2100);
+   hmD0_pik_tot = new TH1D(name+"_hmD0_pik","D^{0}->#pi K mass, #Delta M unaltered; m(#pi K)[MeV];",200, 1700,2100);
 
 }
 //=============================================================================

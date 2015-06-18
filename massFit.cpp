@@ -66,59 +66,156 @@ using namespace std;
 //=============================================================================
 // Standard constructor, initializes variables
 //=============================================================================
-massFit::massFit(TString Channel,TString model,RooWorkspace* w) {
+massFit::massFit(TString Channel,TString modelname,RooWorkspace* w) {
   channel = Channel;
-  setFitModel(model);
+  setFitModel(modelname);
   //stuff we'll need
-  const double pion_mass_pdg = 139.57018;
-  const double d0_mass_pdg =1864.86;
-  const Double_t xmin = pion_mass_pdg+d0_mass_pdg;//try adding an offset.
-  //const Double_t xmax = 2025;
+  //pion_mass_pdg = 139.57018;
+  //  d0_mass_pdg =1864.86;
+  //  xmin = pion_mass_pdg+d0_mass_pdg;//try adding an offset.
+  //  xmax = 2025;
   use_existing_fit = false;
   if(w!=0){
     existing_fit = w;
     use_existing_fit=true;
     
     cout<<"Using existing fit models from workspace"<<endl;
-    mass = (existing_fit->var("mass"));
+    mass = (existing_fit->var("dstarM"));
+    mass->setRange(xmin+0.1,xmax);
+    //mass->Print("v");
     dmean = (existing_fit->var("dmean"));
     rsigma= (existing_fit->var("rsigma"));
     nsig = (existing_fit->var("nsig"));
-    //only init the variables we really need.
+    //import and fix the signal shape.
+    //sigpdf = (existing_fit->pdf("sigpdf"));
+    model = (existing_fit->pdf("model"));
+    bkg_arg = (RooArgusBG*)(existing_fit->pdf("bkg"));
     sigpdf = (existing_fit->pdf("sigpdf"));
-    /*if(modelName== "j2g"){
-      existing_model->var("fm0")->setConstant(1);
-      existing_model->var("m0")->setConstant(1);
-      existing_model->var("delta")->setConstant(1);
-      existing_model->var("sigma")->setConstant(1);
-      
+    model->Print("v");
+    
+    if(modelName== "j2g"){
+      //fm0=existing_fit->var("fm0")->setConstant(1);
+      existing_fit->var("m0")->setConstant(1);
+      existing_fit->var("delta")->setConstant(1);
+      existing_fit->var("sigma")->setConstant(1);
+      existing_fit->var("mean1")->setConstant(1);
+      existing_fit->var("mean2")->setConstant(1);      
+      existing_fit->var("width1")->setConstant(1);
+      existing_fit->var("width2")->setConstant(1);
+      existing_fit->var("frac1")->setConstant(1);
+      existing_fit->var("frac2")->setConstant(1);
+      sig_john = (RooJohnsonSU*)existing_fit->pdf("sig_john");
+      g1 = (RooGaussian*)existing_fit->pdf("g1");
+      g2 = (RooGaussian*)existing_fit->pdf("g2");
+      //g3 = (RooGaussian*)existing_fit->pdf("g3");
+ 
     }    
     else if(modelName== "cb2g"){
+      existing_fit->var("mean1")->setConstant(1);
+      existing_fit->var("mean2")->setConstant(1);
+      existing_fit->var("width1")->setConstant(1);
+      existing_fit->var("width2")->setConstant(1);
+      existing_fit->var("cb1_m0")->setConstant(1);
+      existing_fit->var("cb1_sigma")->setConstant(1);
+      existing_fit->var("cb1_alpha")->setConstant(1);
+      existing_fit->var("cb1_n")->setConstant(1);
+      existing_fit->var("frac1")->setConstant(1);
+      existing_fit->var("frac2")->setConstant(1);
+      
     }
     
     else if(modelName== "2cb"){
+      existing_fit->var("cb1_m0")->setConstant(1);
+      existing_fit->var("cb1_sigma")->setConstant(1);
+      existing_fit->var("cb1_alpha")->setConstant(1);
+      existing_fit->var("cb1_n")->setConstant(1);
+      existing_fit->var("cb2_m0")->setConstant(1);
+      existing_fit->var("cb2_sigma")->setConstant(1);
+      existing_fit->var("cb2_alpha")->setConstant(1);
+      existing_fit->var("cb2_n")->setConstant(1);
+      existing_fit->var("frac1")->setConstant(1);
     }
     
     else if(modelName=="3g"){
+      existing_fit->var("mean1")->setConstant(1);
+      existing_fit->var("mean2")->setConstant(1);
+      existing_fit->var("mean3")->setConstant(1);
+      
+      existing_fit->var("width1")->setConstant(1);
+      existing_fit->var("width2")->setConstant(1);
+      existing_fit->var("width3")->setConstant(1);
+      existing_fit->var("frac1")->setConstant(1);
+      existing_fit->var("frac2")->setConstant(1);
       
     }
     else if(modelName=="rbw"){
+      existing_fit->var("rbw_m0")->setConstant(1);
+      existing_fit->var("rbw_sigma")->setConstant(1);
+      existing_fit->var("rbw_width")->setConstant(1);
+      existing_fit->var("eps_mean")->setConstant(1);
+      existing_fit->var("eps_width")->setConstant(1);
+      existing_fit->var("res_mean1")->setConstant(1);
+      existing_fit->var("res_mean2")->setConstant(1);
+      existing_fit->var("res_mean3")->setConstant(1);
+      existing_fit->var("res_width1")->setConstant(1);
+      existing_fit->var("res_width2")->setConstant(1);
+      existing_fit->var("res_width3")->setConstant(1);
+      existing_fit->var("res_frac1")->setConstant(1);
+      existing_fit->var("res_frac2")->setConstant(1);
+      existing_fit->var("frac1")->setConstant(1);
+      existing_fit->var("frac2")->setConstant(1);
+      
     }
     
     else if (modelName=="rcp3"){
+      existing_fit->var("rbw_m0")->setConstant(1);
+      existing_fit->var("rbw_sigma")->setConstant(1);
+      existing_fit->var("rbw_width")->setConstant(1);
+      existing_fit->var("eps_mean")->setConstant(1);
+      existing_fit->var("eps_width")->setConstant(1);
+      existing_fit->var("res_mean1")->setConstant(1);
+      existing_fit->var("res_mean2")->setConstant(1);
+      existing_fit->var("res_mean3")->setConstant(1);
+      existing_fit->var("res_width1")->setConstant(1);
+      existing_fit->var("res_width2")->setConstant(1);
+      existing_fit->var("res_width3")->setConstant(1);
+      existing_fit->var("res_frac1")->setConstant(1);
+      existing_fit->var("res_frac2")->setConstant(1);
+      existing_fit->var("frac1")->setConstant(1);
+      existing_fit->var("frac2")->setConstant(1);
+      existing_fit->var("frac3")->setConstant(1);
+
     }
     
     else
     {
+      //existing_fit->var("fm0")->setConstant(1);
+      existing_fit->var("m0")->setConstant(1);
+      existing_fit->var("delta")->setConstant(1);
+      existing_fit->var("sigma")->setConstant(1);
+      existing_fit->var("gamma")->setConstant(1);
+      existing_fit->var("mean1")->setConstant(1);
+      existing_fit->var("mean2")->setConstant(1);
+      existing_fit->var("mean3")->setConstant(1);
+      existing_fit->var("width1")->setConstant(1);
+      existing_fit->var("width2")->setConstant(1);
+      existing_fit->var("width3")->setConstant(1);
+      existing_fit->var("frac1")->setConstant(1);
+      existing_fit->var("frac2")->setConstant(1);
+      existing_fit->var("frac3")->setConstant(1);
+      sig_john = (RooJohnsonSU*)existing_fit->pdf("sig_john");
+      g1 = (RooGaussian*)existing_fit->pdf("g1");
+      g2 = (RooGaussian*)existing_fit->pdf("g2");
+      g3 = (RooGaussian*)existing_fit->pdf("g3");
       
     }
-    */ 
+
     
   }
   else{
     //initialize all the variables
     
-    mass = new  RooRealVar("dstarM","M(D^{0}#pi_{s})",1990.,2050.,"MeV");//mass to fit
+    mass = new  RooRealVar("dstarM","M(D^{0}#pi_{s})",2000,xmax,"MeV");//mass to fit
     //mass = new  RooRealVar("dstarM","M(D^{0}#pi_{s})",-100.,2050.,"MeV");//mass to fit
     
     //mass->setRange(xmin,xmax);
@@ -127,44 +224,49 @@ massFit::massFit(TString Channel,TString model,RooWorkspace* w) {
     //johnson parameters
     //m0= new RooRealVar("m0","m0",2010.,2009.,2011.);
     double m0_liang = 2.00935381450188277*1e3;
-    m0= new RooRealVar("m0","m0",m0_liang,m0_liang*(0.95),m0_liang*(1.05));//constant from liang's fit
+    m0= new RooRealVar("m0","m0",m0_liang,m0_liang*(0.10),m0_liang*(3.00));//constant from liang's fit
     fm0= new RooFormulaVar("fm0", "@0+@1", RooArgList(*m0, *dmean));
+
     //delta= new RooRealVar("delta","delta",9.57168e-01,0.2,2);
     double delta_liang = 1.92116578346114197;
-    delta= new RooRealVar("delta","delta",delta_liang,0.95*delta_liang,1.05*delta_liang);
+    delta= new RooRealVar("delta","delta",delta_liang,0.10*delta_liang,3.00*delta_liang);
     //sigma= new RooRealVar("sigma","sigma",1,2e-1,10);
     double sigma_liang = 2.49952200109722269e-03*1e3;
-    sigma= new RooRealVar("sigma","sigma",sigma_liang,0.95*sigma_liang,1.05*sigma_liang);
+    sigma= new RooRealVar("sigma","sigma",sigma_liang,0.10*sigma_liang,3.00*sigma_liang);
     fsigma= new RooFormulaVar("fsigma", "@0*(1+@1)", RooArgList(*sigma, *rsigma));
     //gamma= new RooRealVar("gamma","gamma",-1.20272e-01, -2,2);
     double gamma_liang = -8.64089594146807194e-01;
-    gamma= new RooRealVar("gamma","gamma",gamma_liang, 1.05*gamma_liang,0.95*gamma_liang);//flopped since negative.
+    gamma= new RooRealVar("gamma","gamma",gamma_liang, 3.00*gamma_liang,0.10*gamma_liang);//flopped since negative.
+    //m0->setConstant(1);
+    //delta->setConstant(1);
+    //gamma->setConstant(1);
+    //    sigma->setConstant(1);
     sig_john= new RooJohnsonSU("sig_john","sig_john",*mass,*fm0,*fsigma,*gamma,*delta);
     //mean1= new RooRealVar("mean1","mean1",2010.,2009,2011);
     double mean1_liang = 2.01032477109741325*1e3;
-    mean1= new RooRealVar("mean1","mean1",mean1_liang,0.95*mean1_liang,1.05*mean1_liang);
+    mean1= new RooRealVar("mean1","mean1",mean1_liang,0.10*mean1_liang,3.00*mean1_liang);
     //for offsets
     fgau1mean= new RooFormulaVar("fgau1mean", "@0+@1", RooArgList(*mean1, *dmean));
     //mean2= new RooRealVar("mean2","mean2",2010.,2008,2011);
     double mean2_liang = 2.01028445885560236*1e3;
-    mean2= new RooRealVar("mean2","mean2",mean2_liang,0.95*mean2_liang,1.05*mean2_liang);
+    mean2= new RooRealVar("mean2","mean2",mean2_liang,0.10*mean2_liang,3.00*mean2_liang);
     fgau2mean= new RooFormulaVar("fgau2mean", "@0+@1", RooArgList(*mean2, *dmean));
     //mean3= new RooRealVar("mean3","mean3",2010.,2007,2013);
     double mean3_liang = 2.01027349064504390*1e3;
-    mean3= new RooRealVar("mean3","mean3",mean3_liang,0.95*mean3_liang,1.05*mean3_liang);
+    mean3= new RooRealVar("mean3","mean3",mean3_liang,0.10*mean3_liang,3.00*mean3_liang);
     fgau3mean= new RooFormulaVar("fgau3mean", "@0+@1", RooArgList(*mean3, *dmean));
   
     //width1= new RooRealVar("width1","width1",1,0.01,10);
     double width1_liang = 5.81409441017281033e-01;
-    width1= new RooRealVar("width1","width1",width1_liang,0.95*width1_liang,1.95*width1_liang);
+    width1= new RooRealVar("width1","width1",width1_liang,0.10*width1_liang,1.95*width1_liang);
     fgau1sigma= new RooFormulaVar("fgau1sigma", "@0*(1+@1)", RooArgList(*width1, *rsigma));
     //width2= new RooRealVar("width2","width2",1,0.01,10);
     double width2_liang =3.11715962949287427e-01;
-    width2= new RooRealVar("width2","width2",width2_liang,0.95*width2_liang,1.05*width2_liang);
+    width2= new RooRealVar("width2","width2",width2_liang,0.10*width2_liang,3.00*width2_liang);
     fgau2sigma= new RooFormulaVar("fgau2sigma", "@0*(1+@1)", RooArgList(*width2, *rsigma));
     //width3= new RooRealVar("width3","width3",1,0.01,10);
     double width3_liang = 1.95072497687380828e-01;
-    width3= new RooRealVar("width3","width3",width3_liang,0.95*width3_liang,1.05*width3_liang);
+    width3= new RooRealVar("width3","width3",width3_liang,0.10*width3_liang,3.00*width3_liang);
     fgau3sigma= new RooFormulaVar("fgau3sigma", "@0*(1+@1)", RooArgList(*width3, *rsigma));
   
   
@@ -228,28 +330,27 @@ massFit::massFit(TString Channel,TString model,RooWorkspace* w) {
     decay_in_flight_n = new RooRealVar("decay_in_flight_n","decay in flight n",1.3477);
     decay_in_flight_endpt = new RooRealVar("decay_in_flight_endpt","endpoint for decay in flight",(d0_mass_pdg+pion_mass_pdg));
     frac_dif = new RooRealVar("frac_dif","fraction of decay in flight candidates",0.00256345, 0.00256345-0.0005,0.00256345+0.0005);//taken from mc.
-  }
-  
-  // ---Make Background variables ---
-  
-  //Empirical \delta m function
-  xscale= new RooRealVar("xscale","xscale",1);
-  endpt= new RooRealVar("endpt","argpar2",(d0_mass_pdg+pion_mass_pdg),xmin-0.1,xmin+0.1);
-  minusDM= new RooFormulaVar("minusDM", "@2-@1*(@0-@2)", RooArgList(*mass, *xscale, *endpt));
-  kappa= new RooRealVar("kappa", "argpar1", -3.8935e+01, -100, 20);
-  n= new RooRealVar("n", "", 0.5, 0.4, 0.9);
-  bkg_arg= new RooArgusBG("bkg", "argus_bkg",* minusDM, *endpt, *kappa, *n);
-  nsig= new RooRealVar("nsig", "nsig", 9e6, 0, 1e10);
-  frac1= new RooRealVar("frac1", "frac1", .6,0.,1);
-  frac2= new RooRealVar("frac2", "frac2", .1,0,1);
-  frac3= new RooRealVar("frac3", "frac3", .1,0,1);
-  nbkg= new RooRealVar("nbkg", "", 1e3,0, 1e8);
+    cout<<"constructing new workspace for fits"<<endl;
+    new_fit = new RooWorkspace(channel+"w",channel+"workspace");
+ 
+    // ---Make Background variables ---
+    //Empirical \delta m function
+    xscale= new RooRealVar("xscale","xscale",1);
+    endpt= new RooRealVar("endpt","argpar2",(d0_mass_pdg+pion_mass_pdg),xmin-0.1,xmin+0.1);
+    minusDM= new RooFormulaVar("minusDM", "@2-@1*(@0-@2)", RooArgList(*mass, *xscale, *endpt));
+    kappa= new RooRealVar("kappa", "argpar1", -3.8935e+01, -100, 20);
+    n= new RooRealVar("n", "", 0.5, 0.4, 0.9);
+    bkg_arg= new RooArgusBG("bkg", "argus_bkg",* minusDM, *endpt, *kappa, *n);
+    nsig= new RooRealVar("nsig", "nsig", 9e6, 0, 1e10);
+    frac1= new RooRealVar("frac1", "frac1", .6,0.,1);
+    frac2= new RooRealVar("frac2", "frac2", .1,0,1);
+    frac3= new RooRealVar("frac3", "frac3", .1,0,1);
+    nbkg= new RooRealVar("nbkg", "", 1e3,0, 1e8);
+    //minus dm is now defined. We can do the other argus for decay in flight 
+    decay_in_flight_shape = new RooArgusBG("decay_in_flight_shape","decay in flight shape",*minusDM,*decay_in_flight_endpt,*decay_in_flight_kappa,*decay_in_flight_n);
+   
+  } 
 
-  //minus dm is now defined. We can do the other argus for decay in flight
-  decay_in_flight_shape = new RooArgusBG("decay_in_flight_shape","decay in flight shape",*minusDM,*decay_in_flight_endpt,*decay_in_flight_kappa,*decay_in_flight_n);
-  cout<<"constructing new workspace for fits"<<endl;
-  new_fit = new RooWorkspace(channel+"w",channel+"workspace");
-  
 }
 //=============================================================================
 // Destructor
@@ -339,9 +440,6 @@ void massFit::initModelValues(){
       ctemp->SetLogy(true);
       ctemp->SaveAs("./SavedFits/resolution_function_logy.pdf");
       ctemp->SetLogy(false);
-      const double pion_mass_pdg = 139.57018;
-      const double d0_mass_pdg =1864.86;
-      const Double_t xmin = pion_mass_pdg+d0_mass_pdg;
       mass->setRange(xmin,2050);
       temp = mass->frame();
       rbw->plotOn(temp);
@@ -396,6 +494,7 @@ void massFit::FloatMeanWidth(){
 }
 
 void massFit::fit(){
+  
   RooFitResult* res = model->fitTo(*data,Save(),Minos(1),Extended(1),NumCPU(20));
   res->Print("v");
   
@@ -411,13 +510,14 @@ void massFit::saveFinalFit(){
   new_fit->writeToFile("./SavedFits/"+channel+"_"+modelName+"fitModel.root");
 }
 
-void massFit::savePlots(bool doPullPlots){
+void massFit::savePlots(bool doPullPlots, TString extraName){
   TCanvas *cc = new TCanvas();
   RooPlot* frame = mass->frame();
   data->plotOn(frame);
   frame->Draw();
   model->plotOn(frame);
   model->plotOn(frame,Components(*bkg_arg),LineStyle(kDashed));
+  //model->plotOn(frame,Components("bkg"),LineStyle(kDashed));
    
    if(modelName=="j2g")
      {
@@ -466,16 +566,18 @@ void massFit::savePlots(bool doPullPlots){
    frame->Draw();
    frame->GetYaxis()->SetTitleOffset(1.4);
    
-   cc->SaveAs("./SavedFits/"+modelName+"_fit.pdf");
+   cc->SaveAs("./SavedFits/"+extraName+modelName+"_fit.pdf");
    cc->SetLogy(true);
    frame->GetYaxis()->SetRangeUser(1, frame->GetMaximum()*1.5);
    frame->Draw();
-   cc->SaveAs("./SavedFits/"+modelName+"_fit_logy.pdf");
+   cc->SaveAs("./SavedFits/"+extraName+modelName+"_fit_logy.pdf");
    cc->SetLogy(false);
    cc->Clear();
    if(doPullPlots){
-     PlottingTools::makeResidualPlotsLiang(frame,*mass,*data, model,"./SavedFits/RS_fit_pulls",2000,2025);
-     TString nameforshow = "./SavedFits/"+modelName+"pulls_other_method";
+     
+     TString liang_save_name = "./SavedFits/RS_fit_pulls"+extraName;
+     PlottingTools::makeResidualPlotsLiang(frame,*mass,*data, model,liang_save_name.Data(),2000./*pion_mass_pdg+d0_mass_pdg*/,2025);
+     TString nameforshow = "./SavedFits/"+extraName+modelName+"pulls_other_method";
      PlottingTools::showPlot(*mass,*data,model,nameforshow.Data(),"m(D^{0}#pi_{S}");
    }
    return;

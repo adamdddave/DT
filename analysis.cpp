@@ -58,6 +58,7 @@
 
 #include "DT_D0_mix_CPV.h"
 #include "massFit.h"
+#include "WrongB.h"
 //#include "PlottingTools.h"
 using namespace std;
 
@@ -102,38 +103,25 @@ int main(int argc, char* const argv[]){
   cout<<"rs tree"<<endl;
   DT_D0_mix_CPV rs_looper(rs_tree);
   rs_looper.Loop();
+
   cout<<"rs ss tree"<<endl;
   
   DT_D0_mix_CPV rs_ss_looper(rs_ss_tree);
   rs_ss_looper.Loop();
+  
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");
   fout->cd();
   rs_looper.dstar_mass_plot->Write();
   rs_looper.b_mass_plot->Write();
   rs_ss_looper.dstar_mass_plot->Write();
   rs_ss_looper.b_mass_plot->Write();
+  rs_looper.dstar_mass_vs_muIPchi2->Write();
+  rs_ss_looper.dstar_mass_vs_muIPchi2->Write();
   fout->Close();
+  WrongB wrongb("wrongb",rs_looper,rs_ss_looper);
+  wrongb.MakeMassComparisons();
+  wrongb.CompareIPchi2();
   
-  //scale the rs_ss and rs histograms to the same integral at the high side
-  TH1D* rs_bmass =(TH1D*) rs_looper.b_mass_plot->Clone("rs_bmass");
-  TH1D* rs_ss_bmass = (TH1D*)rs_ss_looper.b_mass_plot->Clone("rs_ss_bmass");
-  
-  rs_ss_bmass->SetLineColor(kRed);
-  rs_ss_bmass->Scale(rs_bmass->Integral(310,400)/rs_ss_bmass->Integral(310,400));//bin goes from 5600 to 
-  TCanvas* cc = new TCanvas();
-  rs_bmass->Draw();
-  rs_ss_bmass->Draw("same");
-  cc->SaveAs("./SavedFits/bmass_regions_ss_os_scaled_to_high_sideband.pdf");
-  cc->SetLogy(true);
-  cc->SaveAs("./SavedFits/bmass_regions_ss_os_scaled_to_high_sideband_logy.pdf");
-  cc->SetLogy(false);
-  //now integrate in signal region.
-  //the bin width is (6500-2500)/4000=10
-  //the min bin that we want is 3100, so (3100-2500)/10 = 60
-  //the max bin is 5100, so (5100-2500)/10=260.
-  cout<<"integral of SS in signal region of bmass = "<<rs_ss_bmass->Integral(60,260)<<endl;
-  cout<<"integral of OS in signal region of bmass = "<<rs_bmass->Integral(60,260)<<endl;
-  cout<<"ratio of the two = "<<rs_ss_bmass->Integral(60,260)/rs_bmass->Integral(60,260)<<endl;
   
   /*
     

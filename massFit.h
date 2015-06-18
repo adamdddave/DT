@@ -62,11 +62,11 @@ class massFit {
 public: 
   /// Standard constructor
   
-  massFit(TString Channel,TString model,RooWorkspace* w=0); 
+  massFit(TString Channel,TString modelname,RooWorkspace* w=0); 
   void fit();
   void saveWorkspace();
   //setters
-  void setFitModel(TString model){modelName = model;}
+  void setFitModel(TString modelname){modelName = modelname;}
   void setData(TH1* data_hist);
   void initModelValues();//set things like the argus parameters which are constant.
   void FloatMeanWidth();
@@ -75,7 +75,7 @@ public:
   //RooWorkspace* getFinalFit();///so we can fit the RS model once, then reuse the fit.
   void saveFinalFit();
   TString getFitModel(){return modelName;}
-  void savePlots(bool doPullPlots = false);
+  void savePlots(bool doPullPlots = false,TString extraName = "");
   inline double getNsig(){return nsig->getVal();}
   inline double getNbkg(){return nbkg->getVal();}
   inline double getNsigErr(){return nsig->getError();}
@@ -85,6 +85,10 @@ public:
 protected:
 
 private:
+  const double pion_mass_pdg = 139.57018;
+  const double d0_mass_pdg =1864.86;
+  const Double_t xmin = pion_mass_pdg+d0_mass_pdg;
+  const Double_t xmax = 2025;
   TString channel;//rs,ws,rs_ss,ws_ss
   TString modelName;
   

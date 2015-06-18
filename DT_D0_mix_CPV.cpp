@@ -216,6 +216,9 @@ void DT_D0_mix_CPV::Loop()
     //cout<<"filling with dstm = "<<dstm<<endl;
     
     dstar_mass_plot->Fill(dstm);
+    if(Ps_ID/TMath::Abs(Ps_ID)>0)dstar_mass_plot_pos->Fill(dstm);
+    else dstar_mass_plot_neg->Fill(dstm);
+    dstar_mass_vs_muIPchi2->Fill(TMath::Log(Mu_IPCHI2_OWNPV),dstm);
   }//loop on events
   
 }
