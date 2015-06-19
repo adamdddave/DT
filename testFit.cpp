@@ -67,21 +67,46 @@ int main(int argc, char* const argv[]){
     hasWorkspace = true;
     //return 0;
   }
+  bool isWS = false;
+  TString fitName = argv[1];
+  TString histName = "_dt_hist_dstar_m";
+  TString histSSName = "_ss_dt_hist_dstar_m";
+  TString nameForFit = "rs";
+  //make it lower case just to make our lives easier
+  fitName.ToLower();
+  if(fitName.Contains("ws")){
+    isWS = true;
+    histName="WS"+histName;
+    histSSName = "WS"+histSSName;
+    cout<<"using WS sample"<<endl;
+    if(!hasWorkspace){
+      cout<<"fitting ws model without a workspace! break!"<<endl;
+      return 0;
+    }
+    nameForFit = "ws";
+    cout<<"nameForFit = "<<nameForFit<<endl;
+    
+  }
+  else{
+    histName="RS"+histName;
+    histSSName = "RS"+histSSName;
+  }
   
   TFile *f1 = TFile::Open(argv[1]);
   f1->ls();
-  TH1D* rs_mass = (TH1D*)f1->Get("RS_dt_hist_dstar_m");
-  TH1D* rs_ss_mass = (TH1D*)f1->Get("RS_ss_dt_hist_dstar_m");
-  TH1D* hist = (TH1D*)rs_mass->Clone("rs_mass");
-  hist->Add(rs_ss_mass,-1);//try to subtract the peaking bkg from the wrong b.
+  TH1D* mass = (TH1D*)f1->Get(histName);
+  TH1D* ss_mass = (TH1D*)f1->Get(histSSName);
+  TH1D* hist = (TH1D*)mass->Clone("mass");
+  hist->Add(ss_mass,-1);//try to subtract the peaking bkg from the wrong b.
   //f1->Close();
+  
   if(!hist){
     cout<<"can't get histogram, try again."<<endl;
     return 0;
   }
-  if(!hasWorkspace){
+  if(!hasWorkspace && !isWS){
     //  massFit fit("rs","rcp3");
-    massFit fit("rs","j3g");
+    massFit fit(nameForFit,"j3g");
     fit.initModelValues();
     fit.setData(hist);
     fit.fit();
@@ -102,12 +127,14 @@ int main(int argc, char* const argv[]){
     
     RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
     //assert0);
-    massFit fit("rs","j3g", w);
+    massFit fit(nameForFit,"j3g", w);
     //return 0;
     //fit.initModelValues();
     fit.setData(hist);
     fit.fit();
-    fit.savePlots(true,"_rs_validation");
+    
+    fit.savePlots(true,channelFromFile+"workspaceFit");
+    fit.saveSignalRegionZoom();
   }
   return 0;
 }

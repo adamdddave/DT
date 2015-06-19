@@ -91,12 +91,16 @@ int main(int argc, char* const argv[]){
   cout<<"Starting analysis for file "<<argv[1]<<endl;
   TChain* rs_tree = new TChain("RS/DecayTree");
   TChain* rs_ss_tree = new TChain("RS_ss/DecayTree");
+  TChain* ws_tree = new TChain("WS/DecayTree");
+  TChain* ws_ss_tree = new TChain("WS_ss/DecayTree");
   TChain* lumi_tree = new TChain("GetIntegratedLuminosity/LumiTuple");
   TString  rootfname[argc];
   for(int i=0; i< argc-1; ++i){
     rootfname[i]=argv[i+1];
     rs_tree->Add(rootfname[i]);
     rs_ss_tree->Add(rootfname[i]);
+    ws_tree->Add(rootfname[i]);
+    ws_ss_tree->Add(rootfname[i]);
     lumi_tree->Add(rootfname[i]);
   }
   getLuminosity(lumi_tree);
@@ -108,20 +112,47 @@ int main(int argc, char* const argv[]){
   
   DT_D0_mix_CPV rs_ss_looper(rs_ss_tree);
   rs_ss_looper.Loop();
+  cout<<"ws tree"<<endl;
+  DT_D0_mix_CPV ws_looper(ws_tree);
+  ws_looper.Loop();
+
+  cout<<"ws ss tree"<<endl;
+  
+  DT_D0_mix_CPV ws_ss_looper(ws_ss_tree);
+  ws_ss_looper.Loop();
+  
   
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");
   fout->cd();
   rs_looper.dstar_mass_plot->Write();
   rs_looper.b_mass_plot->Write();
+  rs_looper.dstar_pt->Write();
   rs_ss_looper.dstar_mass_plot->Write();
   rs_ss_looper.b_mass_plot->Write();
   rs_looper.dstar_mass_vs_muIPchi2->Write();
   rs_ss_looper.dstar_mass_vs_muIPchi2->Write();
+  rs_ss_looper.dstar_pt->Write();
   fout->Close();
   WrongB wrongb("wrongb",rs_looper,rs_ss_looper);
   wrongb.MakeMassComparisons();
   wrongb.CompareIPchi2();
-  
+
+  //ws
+  TFile *fout2 = new TFile("./SavedFits/ws_mass.root","RECREATE");
+  fout2->cd();
+  ws_looper.dstar_mass_plot->Write();
+  ws_looper.b_mass_plot->Write();
+  ws_looper.dstar_pt->Write();
+  ws_ss_looper.dstar_mass_plot->Write();
+  ws_ss_looper.b_mass_plot->Write();
+  ws_looper.dstar_mass_vs_muIPchi2->Write();
+  ws_ss_looper.dstar_mass_vs_muIPchi2->Write();
+  ws_ss_looper.dstar_pt->Write();
+  fout2->Close();
+  WrongB wrongbws("wrongbws",ws_looper,ws_ss_looper);
+  wrongbws.MakeMassComparisons();
+  wrongbws.CompareIPchi2();
+
   
   /*
     

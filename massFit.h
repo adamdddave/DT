@@ -76,6 +76,7 @@ public:
   void saveFinalFit();
   TString getFitModel(){return modelName;}
   void savePlots(bool doPullPlots = false,TString extraName = "");
+  void saveSignalRegionZoom();
   inline double getNsig(){return nsig->getVal();}
   inline double getNbkg(){return nbkg->getVal();}
   inline double getNsigErr(){return nsig->getError();}

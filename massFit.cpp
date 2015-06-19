@@ -81,13 +81,14 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w) {
     
     cout<<"Using existing fit models from workspace"<<endl;
     mass = (existing_fit->var("dstarM"));
-    mass->setRange(xmin+0.1,xmax);
+    //mass->setRange(xmin+0.1,xmax);
     //mass->Print("v");
     dmean = (existing_fit->var("dmean"));
     rsigma= (existing_fit->var("rsigma"));
     nsig = (existing_fit->var("nsig"));
     //import and fix the signal shape.
     //sigpdf = (existing_fit->pdf("sigpdf"));
+    //existing_fit->var("endpt")->setConstant(0);
     model = (existing_fit->pdf("model"));
     bkg_arg = (RooArgusBG*)(existing_fit->pdf("bkg"));
     sigpdf = (existing_fit->pdf("sigpdf"));
@@ -336,7 +337,7 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w) {
     // ---Make Background variables ---
     //Empirical \delta m function
     xscale= new RooRealVar("xscale","xscale",1);
-    endpt= new RooRealVar("endpt","argpar2",(d0_mass_pdg+pion_mass_pdg),xmin-0.1,xmin+0.1);
+    endpt= new RooRealVar("endpt","argpar2",(d0_mass_pdg+pion_mass_pdg),xmin-0.2,xmin+0.2);
     minusDM= new RooFormulaVar("minusDM", "@2-@1*(@0-@2)", RooArgList(*mass, *xscale, *endpt));
     kappa= new RooRealVar("kappa", "argpar1", -3.8935e+01, -100, 20);
     n= new RooRealVar("n", "", 0.5, 0.4, 0.9);
@@ -513,72 +514,88 @@ void massFit::saveFinalFit(){
 void massFit::savePlots(bool doPullPlots, TString extraName){
   TCanvas *cc = new TCanvas();
   RooPlot* frame = mass->frame();
+  mass->setRange("r1",xmin,xmax);
   data->plotOn(frame);
   frame->Draw();
-  model->plotOn(frame);
-  model->plotOn(frame,Components(*bkg_arg),LineStyle(kDashed));
+  model->plotOn(frame,Range("r1"));
+  model->plotOn(frame,Components(*bkg_arg),LineStyle(kDashed),Range("r1"));
   //model->plotOn(frame,Components("bkg"),LineStyle(kDashed));
    
    if(modelName=="j2g")
      {
-       model->plotOn(frame,Components(*sig_john),LineColor(kGreen+2),LineStyle(kDashed));
-       model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed));
-       model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed));
+       model->plotOn(frame,Components(*sig_john),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+       model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
+       model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
      }
    else if(modelName=="cb2g"){
-     model->plotOn(frame,Components(*CBall1),LineColor(kGreen+2),LineStyle(kDashed));
-     model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed));
-     model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed));
+     model->plotOn(frame,Components(*CBall1),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
    }
    
    else if(modelName=="2cb"){
-     model->plotOn(frame,Components(*CBall1),LineColor(kGreen+2),LineStyle(kDashed));
-     model->plotOn(frame,Components(*CBall2),LineColor(kRed),LineStyle(kDashed));
+     model->plotOn(frame,Components(*CBall1),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*CBall2),LineColor(kRed),LineStyle(kDashed),Range("r1"));
      
    }
    else if(modelName=="3g"){
-       model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed));
-       model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed));
-       model->plotOn(frame,Components(*g3),LineColor(kGreen+2),LineStyle(kDashed));
+       model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
+       model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
+       model->plotOn(frame,Components(*g3),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
    }
    else if(modelName=="rbw"){
-     model->plotOn(frame,Components(*rbw),LineColor(kGreen+2),LineStyle(kDashed));
-     model->plotOn(frame,Components(*res_gau_1),LineColor(kRed),LineStyle(kDashed));
-     model->plotOn(frame,Components(*res_gau_2),LineColor(kOrange+1),LineStyle(kDashed));
-     model->plotOn(frame,Components(*res_gau_3),LineColor(kGreen+2),LineStyle(kDashed));
-     //model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed));
+     model->plotOn(frame,Components(*rbw),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*res_gau_1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*res_gau_2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*res_gau_3),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+     //model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
    }   
    else if(modelName=="rcp3"){
-     model->plotOn(frame,Components(*Rcp1),LineColor(kGreen+2),LineStyle(kDashed));
-     model->plotOn(frame,Components(*Rcp2),LineColor(kRed),LineStyle(kDashed));
-     model->plotOn(frame,Components(*Rcp3),LineColor(kOrange+1),LineStyle(kDashed));
+     model->plotOn(frame,Components(*Rcp1),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*Rcp2),LineColor(kRed),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*Rcp3),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
      
-     //model->plotOn(frame,Components(*Rcp3),LineColor(kGreen+2),LineStyle(kDashed));
-     //     model->plotOn(frame,Components(g1),LineColor(kRed),LineStyle(kDashed));
+     //model->plotOn(frame,Components(*Rcp3),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+     //     model->plotOn(frame,Components(g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
    }
    else{
-     model->plotOn(frame,Components(*sig_john),LineColor(kGreen+2),LineStyle(kDashed));
-     model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed));
-     model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed));
-     model->plotOn(frame,Components(*g3),LineColor(kMagenta+1),LineStyle(kDashed));
+     model->plotOn(frame,Components(*sig_john),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,Components(*g3),LineColor(kMagenta+1),LineStyle(kDashed),Range("r1"));
    }
    
    frame->Draw();
    frame->GetYaxis()->SetTitleOffset(1.4);
    
-   cc->SaveAs("./SavedFits/"+extraName+modelName+"_fit.pdf");
+   cc->SaveAs("./SavedFits/"+channel+extraName+modelName+"_fit.pdf");
    cc->SetLogy(true);
    frame->GetYaxis()->SetRangeUser(1, frame->GetMaximum()*1.5);
    frame->Draw();
-   cc->SaveAs("./SavedFits/"+extraName+modelName+"_fit_logy.pdf");
+   cc->SaveAs("./SavedFits/"+channel+extraName+modelName+"_fit_logy.pdf");
    cc->SetLogy(false);
    cc->Clear();
    if(doPullPlots){
      
-     TString liang_save_name = "./SavedFits/RS_fit_pulls"+extraName;
+     TString liang_save_name = "./SavedFits/RS_fit_pulls"+extraName+channel;
      PlottingTools::makeResidualPlotsLiang(frame,*mass,*data, model,liang_save_name.Data(),2000./*pion_mass_pdg+d0_mass_pdg*/,2025);
-     TString nameforshow = "./SavedFits/"+extraName+modelName+"pulls_other_method";
+     TString nameforshow = "./SavedFits/"+extraName+channel+modelName+"pulls_other_method";
      PlottingTools::showPlot(*mass,*data,model,nameforshow.Data(),"m(D^{0}#pi_{S}");
    }
    return;
+}
+
+void massFit::saveSignalRegionZoom(){
+  mass->setRange("sig",2009.5,2010.9);
+  RooPlot *framesig = mass->frame();
+  data->plotOn(framesig,Range("sig"));
+  model->plotOn(framesig,Range("sig"));
+  framesig->GetXaxis()->SetRangeUser(2009.5,2010.9);
+  TCanvas* cc2 = new TCanvas();
+  framesig->Draw();
+  cc2->SaveAs("SavedFits/Augusto_SigCheck.pdf");
+  cc2->SetLogy(true);
+  cc2->SaveAs("SavedFits/Augusto_SigCheck_logy.pdf");
+  cc2->SetLogy(false);
+  
 }

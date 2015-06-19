@@ -74,19 +74,19 @@ WrongB::WrongB(TString name,DT_D0_mix_CPV loop_rs, DT_D0_mix_CPV loop_rs_ss){
 void WrongB::MakeMassComparisons(){
   
   //scale the rs_ss and rs histograms to the same integral at the high side
-  TFile f("WrongBrates.root","recreate");
+  TFile f("WrongBrates"+m_name+".root","recreate");
   f.cd();
   rs_bmass->Write();
   rs_ss_bmass->Write();
   f.Close();
   rs_ss_bmass->SetLineColor(kRed);
-  rs_ss_bmass->Scale(rs_bmass->Integral(310,400)/rs_ss_bmass->Integral(310,400));//bin goes from 5600 to 
+  //rs_ss_bmass->Scale(rs_bmass->Integral(310,400)/rs_ss_bmass->Integral(310,400));//bin goes from 5600 to 
   TCanvas* cc = new TCanvas();
   rs_bmass->Draw();
   rs_ss_bmass->Draw("same");
-  cc->SaveAs("./SavedFits/bmass_regions_ss_os_scaled_to_high_sideband.pdf");
+  cc->SaveAs("./SavedFits/"+m_name+"bmass_regions_ss_os_scaled_to_high_sideband.pdf");
   cc->SetLogy(true);
-  cc->SaveAs("./SavedFits/bmass_regions_ss_os_scaled_to_high_sideband_logy.pdf");
+  cc->SaveAs("./SavedFits/"+m_name+"bmass_regions_ss_os_scaled_to_high_sideband_logy.pdf");
   cc->SetLogy(false);
   //now integrate in signal region.
   //the bin width is (6500-2500)/4000=10

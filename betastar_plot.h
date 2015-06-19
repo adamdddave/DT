@@ -65,7 +65,9 @@ public:
   TH1* hmD0_pik_sig ;
   TH1* hmD0_pik_sb ;
   TH1* hmD0_pik_tot ;
-    
+
+  TH1* double_misid_dmass_dst_sig_region;
+  TH1* double_misid_dmass_dst_sideband_region;
   
 protected:
 

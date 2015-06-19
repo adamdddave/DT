@@ -194,13 +194,13 @@ void DT_D0_mix_CPV::Loop()
     //cout<<"(k_daughter + pi_daughter).M() = "<<(k_daughter + pi_daughter).M()<<endl;
     
     if(!(fabs((k_daughter+pi_daughter).M()*1e3-1864.84)<dmass_cut)){ //continue;
-    bs_plot->hmD0_pik_tot->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
-    if(fabs(dstm - 2010.26)<0.9){
-      bs_plot->hmD0_pik_sig->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
-    }
-    else if((fabs(dstm - 2010.26)>3)){
-      bs_plot->hmD0_pik_sb->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
-    }
+      bs_plot->hmD0_pik_tot->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
+      if(fabs(dstm - 2010.26)<0.9){
+	bs_plot->hmD0_pik_sig->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
+      }
+      else if((fabs(dstm - 2010.26)>3)){
+	bs_plot->hmD0_pik_sb->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
+      }
     }
     
     //now that the beta star plots are filled, we can make the rest of the plots
@@ -219,6 +219,11 @@ void DT_D0_mix_CPV::Loop()
     if(Ps_ID/TMath::Abs(Ps_ID)>0)dstar_mass_plot_pos->Fill(dstm);
     else dstar_mass_plot_neg->Fill(dstm);
     dstar_mass_vs_muIPchi2->Fill(TMath::Log(Mu_IPCHI2_OWNPV),dstm);
+    double dstpt=(d0_vector+slow_pion_vec).Pt()*1e3;
+    dstar_pt->Fill(dstpt);
+    if(dstpt<dst_bin_boundary1){dstar_mass_pt_bin1->Fill(dstpt);}
+    else if(dstpt>=dst_bin_boundary1 && dstpt < dst_bin_boundary2){dstar_mass_pt_bin2->Fill(dstpt);}
+    else{dstar_mass_pt_bin3->Fill(dstpt);}
   }//loop on events
   
 }
