@@ -1495,7 +1495,7 @@ public :
   TH2D* dstar_mass_vs_muIPchi2;
   TH2D* bmass_vs_muIPchi2;
   
-  
+  betastar_plot *bs_plot;
   DT_D0_mix_CPV(TTree *tree=0);
   virtual ~DT_D0_mix_CPV();
   virtual Int_t    Cut(Long64_t entry);
@@ -1533,7 +1533,7 @@ private:
   const double bmass_cut_low =3100.;//MeV
   const double dst_bin_boundary1=2.690000e+03;//MeV
   const double dst_bin_boundary2=4.330000e+03;//MeV, pt bin boundaries.
-  betastar_plot *bs_plot;
+  
   
 };
 

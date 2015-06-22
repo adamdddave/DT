@@ -21,14 +21,16 @@ using namespace RooFit ;
 class betastar_plot {
 public: 
   /// Standard constructor
-  betastar_plot(TString name = "" ); 
+  betastar_plot(TString name = "" );
+  //secondary constructor
+  betastar_plot(TFile *f1, TString name); 
 
   virtual ~betastar_plot( ); ///< Destructor
   void DrawPlots();
   void makefitplot(RooWorkspace*w, TH1* h1, TH1* h2);//template for total peaking fit and signal
   void makefitplot(RooWorkspace*w, TH1* h1, int addpol = 0);//template for individual peaking
   inline void set_local_workspace(RooWorkspace*w){w_local=w;}
-  
+  void SavePlots();
     
   TH2* h2sig ;
   TH2* h2kpisb ;

@@ -107,7 +107,7 @@ int main(int argc, char* const argv[]){
   cout<<"rs tree"<<endl;
   DT_D0_mix_CPV rs_looper(rs_tree);
   rs_looper.Loop();
-
+  rs_looper.bs_plot->SavePlots();
   cout<<"rs ss tree"<<endl;
   
   DT_D0_mix_CPV rs_ss_looper(rs_ss_tree);
@@ -115,7 +115,7 @@ int main(int argc, char* const argv[]){
   cout<<"ws tree"<<endl;
   DT_D0_mix_CPV ws_looper(ws_tree);
   ws_looper.Loop();
-
+  ws_looper.bs_plot->SavePlots();
   cout<<"ws ss tree"<<endl;
   
   DT_D0_mix_CPV ws_ss_looper(ws_ss_tree);

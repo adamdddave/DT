@@ -29,14 +29,17 @@ OUTLIB	      = ./lib/
 
 #----------------------------------------------------#
 
-all:  mass_fits_compiled test_mass_fits
+all:  mass_fits_compiled test_mass_fits bs_fits
 
 mass_fits_compiled: analysis.cpp 
-	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp massFit.cpp betastar_plot.cpp -o DTAnalysis  $(GLIBS) $<
+	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp massFit.cpp betastar_plot.cpp WrongB.cpp -o DTAnalysis  $(GLIBS) $<
 
 test_mass_fits: testFit.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o testMassFit  $(GLIBS) $<
+bs_fits: betastarFits.cpp
+	$(CXX) $(CXXFLAGS) betastar_plot.cpp -o doBetastarFits $(GLIBS) $<
 clean:
 	rm -f DTAnalysis
 	rm -f testMassFit
+	rm -f doBetastarFits
 #	rm -rf *dSYM
