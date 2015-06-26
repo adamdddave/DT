@@ -29,6 +29,7 @@ public:
   void DrawPlots();
   void makefitplot(RooWorkspace*w, TH1* h1, TH1* h2);//template for total peaking fit and signal
   void makefitplot(RooWorkspace*w, TH1* h1, int addpol = 0);//template for individual peaking
+  void PiKsidebands();//sideband subtract the d0 mass from the d* sidebands, then extract the number of events
   inline void set_local_workspace(RooWorkspace*w){w_local=w;}
   void SavePlots();
     
@@ -66,7 +67,7 @@ public:
   TH1* hmkpisb_cut_range_lo_2 ;
   TH1* hmD0_pik_sig ;
   TH1* hmD0_pik_sb ;
-  TH1* hmD0_pik_tot ;
+  //TH1* hmD0_pik_tot ;
 
   TH1* double_misid_dmass_dst_sig_region;
   TH1* double_misid_dmass_dst_sideband_region;

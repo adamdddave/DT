@@ -90,7 +90,7 @@ betastar_plot::betastar_plot(TString name  ) {
     
    hmD0_pik_sig = new TH1D(name+"_hmD0_pik_sig","D^{0}->#pi K mass, #Delta M signal range; m(#pi K)[MeV];",200, 1700,2100);
    hmD0_pik_sb = new TH1D(name+"_hmD0_pik_sb","D^{0}->#pi K mass, #Delta M sideband; m(#pi K)[MeV];",200, 1700,2100);
-   hmD0_pik_tot = new TH1D(name+"_hmD0_pik","D^{0}->#pi K mass, #Delta M unaltered; m(#pi K)[MeV];",200, 1700,2100);
+   //hmD0_pik_tot = new TH1D(name+"_hmD0_pik","D^{0}->#pi K mass, #Delta M unaltered; m(#pi K)[MeV];",200, 1700,2100);
 
 
 }
@@ -135,7 +135,7 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
   hmkpisb_cut_range_lo_2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2");
   hmD0_pik_sig=(TH1*)file->Get(m_name+"_hmD0_pik_sig");
   hmD0_pik_sb=(TH1*)file->Get(m_name+"_hmD0_pik_sb");
-  hmD0_pik_tot=(TH1*)file->Get(m_name+"_hmD0_pik");
+  //hmD0_pik_tot=(TH1*)file->Get(m_name+"_hmD0_pik");
 
 }
 //=============================================================================
@@ -202,27 +202,27 @@ void betastar_plot::DrawPlots(){
     cc->Clear();
     
     //if(doD0plots){
-      hmD0_pik_tot->Draw();
-      cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_total.pdf");
-      cc->SetLogy(true);
-      cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_total_logy.pdf");
-      cc->SetLogy(false);
-      cc->Clear();
+    // hmD0_pik_tot->Draw();
+    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_total.pdf");
+    //       cc->SetLogy(true);
+    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_total_logy.pdf");
+    //       cc->SetLogy(false);
+    //       cc->Clear();
       
-      hmD0_pik_sig->Draw();
-      cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_signal_dstar.pdf");
-      cc->SetLogy(true);
-      cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_signal_dstar_logy.pdf");
-      cc->SetLogy(false);
-      cc->Clear();
+    //       hmD0_pik_sig->Draw();
+    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_signal_dstar.pdf");
+    //       cc->SetLogy(true);
+    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_signal_dstar_logy.pdf");
+    //       cc->SetLogy(false);
+    //       cc->Clear();
       
       
-      hmD0_pik_sb->Draw();
-      cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_sideband_dstar.pdf");
-      cc->SetLogy(true);
-      cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_sideband_dstar_logy.pdf");
-      cc->SetLogy(false);
-      cc->Clear();
+    //       hmD0_pik_sb->Draw();
+    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_sideband_dstar.pdf");
+    //       cc->SetLogy(true);
+    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_sideband_dstar_logy.pdf");
+    //       cc->SetLogy(false);
+    //       cc->Clear();
       //}
     
     hmkpisb_cut_range_hi->Draw();
@@ -525,9 +525,45 @@ void betastar_plot::SavePlots(){
   hmkpisb_cut_range_lo_2->Write();
   hmD0_pik_sig->Write();
   hmD0_pik_sb->Write();
-  hmD0_pik_tot->Write();
+  //hmD0_pik_tot->Write();
 
   fout.Close();
 
 
+}
+void betastar_plot::PiKsidebands(){
+  //check that the local workspace is set
+  if(w_local==NULL){
+    std::cout<<"no worksapce, can't fit! Moving on"<<std::endl;
+    return;
+  }
+  //take the pi K histogram, divide into signal and sideband region.
+  RooRealVar *mass = w_local->var("dstarM"); 
+  RooAbsPdf* arg = w_local->pdf("bkg");
+  RooRealVar *nsig = w_local->var("nsig");
+  RooRealVar *nbkg = w_local->var("nbkg");
+  RooRealVar *kappa = w_local->var("kappa");
+  kappa->setConstant(0);
+  RooRealVar *dmean = w_local->var("dmean");
+  RooRealVar *rsigma = w_local->var("rsigma");
+  RooAbsPdf* allpdf = w_local->pdf("model");
+  //fit first to make the integrals come out correct.
+  TString rhname = "r_"; rhname += hmpiksb->GetName();
+  RooDataHist *rhist = new RooDataHist(rhname.Data(),"",*mass,hmpiksb);
+  RooFitResult * res = allpdf->fitTo(*rhist,Extended(1),Save());
+  //now set the signal and sideband regions.
+  //from liang
+  const Float_t DstarMassCutlo = (2.01026-3*0.0003)*1e3;//MeV, not the 24 MeV cut for the D0 mass.
+  const Float_t DstarMassCuthi = (2.01026+3*0.0003)*1e3;//MeV
+  mass->setRange("signal",DstarMassCutlo,DstarMassCuthi);
+  mass->setRange("sideband",2015+2,2020.+2);//minimize the signal tail in the sideband region
+  //create integrals of background in two regions
+  RooAbsReal* intsig = arg->createIntegral(*mass,RooFit::NormSet(*mass),RooFit::Range("signal"));
+  RooAbsReal* intsideband = arg->createIntegral(*mass,RooFit::NormSet(*mass),RooFit::Range("sideband"));
+  Double_t ratio = intsig->getVal()/intsideband->getVal();
+  //now we have the ratio of the signal to the sideband. We will subtract the subsequent D0 mass distributions
+  TH1D* htemp =(TH1D*) hmD0_pik_sig->Clone("subtr");
+  htemp->Sumw2();
+  htemp->Add(hmD0_pik_sb,-ratio);//HERE
+  //now we need to fit.
 }

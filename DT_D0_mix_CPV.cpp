@@ -139,6 +139,13 @@ void DT_D0_mix_CPV::Loop()
     {
       bs_plot->h2piksb->Fill(beta,(k_daughter_as_pi+pi_daughter).M());
       bs_plot->hmpiksb->Fill(dstm);
+      //now that we're in the pi k sideband, fill the d0 mass distributions
+      if(fabs(dstm-pdg_dstar_m)<0.3){
+	bs_plot->hmD0_pik_sig->Fill((pi_daughter_as_k + k_daughter_as_pi).M()*1e3);
+      }
+      else if(dstm >2017 && dstm<2022){
+	bs_plot->hmD0_pik_sb->Fill((pi_daughter_as_k + k_daughter_as_pi).M()*1e3);
+      }
     }
     if(!(fabs((k_daughter + pi_daughter).M()*1e3-1864.84)<24 
          && fabs((pi_daughter_as_k+k_daughter).M()-(1864.84/1e3))>5*8./1e3 
@@ -187,21 +194,6 @@ void DT_D0_mix_CPV::Loop()
       bs_plot->hmkpisb_cut_range_lo_2->Fill(dstm);
     }
       
-      
-    //if(!doD0plots)continue;
-    //fill the d0 mass histograms too
-    //if WS, blind the signal region
-    //cout<<"(k_daughter + pi_daughter).M() = "<<(k_daughter + pi_daughter).M()<<endl;
-    
-    if(!(fabs((k_daughter+pi_daughter).M()*1e3-1864.84)<dmass_cut)){ //continue;
-      bs_plot->hmD0_pik_tot->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
-      if(fabs(dstm - 2010.26)<0.9){
-	bs_plot->hmD0_pik_sig->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
-      }
-      else if((fabs(dstm - 2010.26)>3)){
-	bs_plot->hmD0_pik_sb->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
-      }
-    }
     
     //now that the beta star plots are filled, we can make the rest of the plots
     //rest of analysis cuts.
