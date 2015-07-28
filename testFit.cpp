@@ -59,6 +59,7 @@ int main(int argc, char* const argv[]){
   if(argc<2){
     cout<<"*************************************"<<endl;
     cout<<"Expecting an external file to process"<<endl;
+    cout<<" and possibly a workspace"<<endl;
     cout<<"*************************************"<<endl;
     return 0;
   }
@@ -97,7 +98,6 @@ int main(int argc, char* const argv[]){
   TH1D* mass = (TH1D*)f1->Get(histName);
   TH1D* ss_mass = (TH1D*)f1->Get(histSSName);
   TH1D* hist = (TH1D*)mass->Clone("mass");
-  mass->Sumw2();ss_mass->Sumw2();hist->Sumw2();//for adding, etc, get the errors right.
   hist->Add(ss_mass,-1);//try to subtract the peaking bkg from the wrong b.
   //f1->Close();
   

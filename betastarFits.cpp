@@ -103,5 +103,8 @@ int main(int argc, char* const argv[]){
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
   b.set_local_workspace(w);
   b.DrawPlots();
+  //if(isWS){
+  b.FitWSDoubleMisID();
+      //}
   return 0;
 }

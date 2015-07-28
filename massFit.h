@@ -81,6 +81,10 @@ public:
   inline double getNbkg(){return nbkg->getVal();}
   inline double getNsigErr(){return nsig->getError();}
   inline double getNbkgErr(){return nbkg->getError();}
+  inline double getrSigma(){return rsigma->getVal();}
+  inline double getrSigmaErr(){return rsigma->getError();}
+  inline double getDMean(){return dmean->getVal();}
+  inline double getDMeanErr(){return dmean->getError();}
   virtual ~massFit( ); ///< Destructor
 
 protected:

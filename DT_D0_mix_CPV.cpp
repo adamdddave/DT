@@ -95,6 +95,10 @@ void DT_D0_mix_CPV::Loop()
 		      (k_daughter+pi_daughter).Py(),
 		      (k_daughter+pi_daughter).Pz(),
 		      1864.84/1e3);//GeV
+    mu_from_b.SetXYZM(B_VFit_muminus_PX[0]/1e3,
+		       B_VFit_muminus_PY[0]/1e3,
+		       B_VFit_muminus_PZ[0]/1e3,
+		       105.6583715/1e3);
     //cout<<"pi_daugter.E ="<<pi_daughter.E()<<endl;
     
     Double_t dstm = (d0_vector+slow_pion_vec).M()*1e3;
@@ -139,12 +143,14 @@ void DT_D0_mix_CPV::Loop()
     {
       bs_plot->h2piksb->Fill(beta,(k_daughter_as_pi+pi_daughter).M());
       bs_plot->hmpiksb->Fill(dstm);
-      //now that we're in the pi k sideband, fill the d0 mass distributions
-      if(fabs(dstm-pdg_dstar_m)<0.3){
-	bs_plot->hmD0_pik_sig->Fill((pi_daughter_as_k + k_daughter_as_pi).M()*1e3);
+      //consistent with being in the signal region of the swapped kpi mass, fill the d0 plots
+      
+      
+      if(dstm>2015 && dstm <2025){//background region
+	bs_plot->double_misid_dmass_dst_sideband_region->Fill((k_daughter+pi_daughter).M()*1e3);
       }
-      else if(dstm >2017 && dstm<2022){
-	bs_plot->hmD0_pik_sb->Fill((pi_daughter_as_k + k_daughter_as_pi).M()*1e3);
+      else if(fabs(dstm - pdg_dstar_m)<dstar_mass_cut){
+	bs_plot->double_misid_dmass_dst_sig_region->Fill((k_daughter+pi_daughter).M()*1e3);
       }
     }
     if(!(fabs((k_daughter + pi_daughter).M()*1e3-1864.84)<24 
@@ -194,6 +200,21 @@ void DT_D0_mix_CPV::Loop()
       bs_plot->hmkpisb_cut_range_lo_2->Fill(dstm);
     }
       
+      
+    //if(!doD0plots)continue;
+    //fill the d0 mass histograms too
+    //if WS, blind the signal region
+    //cout<<"(k_daughter + pi_daughter).M() = "<<(k_daughter + pi_daughter).M()<<endl;
+    
+    if(!(fabs((k_daughter+pi_daughter).M()*1e3-1864.84)<dmass_cut)){ //continue;
+      bs_plot->hmD0_pik_tot->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
+      if(fabs(dstm - 2010.26)<0.9){
+	bs_plot->hmD0_pik_sig->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
+      }
+      else if((fabs(dstm - 2010.26)>3)){
+	bs_plot->hmD0_pik_sb->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
+      }
+    }
     
     //now that the beta star plots are filled, we can make the rest of the plots
     //rest of analysis cuts.
@@ -206,16 +227,48 @@ void DT_D0_mix_CPV::Loop()
          ))continue;
     //fill the mass histogram
     //cout<<"filling with dstm = "<<dstm<<endl;
-    
+    decay_time_distr->Fill(B_VFit_D0_ctau[0]/ d0_pdg_ct);
     dstar_mass_plot->Fill(dstm);
     if(Ps_ID/TMath::Abs(Ps_ID)>0)dstar_mass_plot_pos->Fill(dstm);
     else dstar_mass_plot_neg->Fill(dstm);
     dstar_mass_vs_muIPchi2->Fill(TMath::Log(Mu_IPCHI2_OWNPV),dstm);
     double dstpt=(d0_vector+slow_pion_vec).Pt()*1e3;
+    double dstp = (d0_vector+slow_pion_vec).P()*1e3;
+    
     dstar_pt->Fill(dstpt);
-    if(dstpt<dst_bin_boundary1){dstar_mass_pt_bin1->Fill(dstpt);}
-    else if(dstpt>=dst_bin_boundary1 && dstpt < dst_bin_boundary2){dstar_mass_pt_bin2->Fill(dstpt);}
-    else{dstar_mass_pt_bin3->Fill(dstpt);}
+    dstar_p->Fill(dstp);
+    double mup = mu_from_b.P()*1e3;
+    double mupt = mu_from_b.Pt()*1e3;
+    mu_pt->Fill(mupt);
+    mu_p->Fill(mup);
+
+    //dstar pt
+    if(dstpt<dst_pt_bin_boundary1){dstar_mass_pt_bin1->Fill(dstm);}
+    else if(dstpt>=dst_pt_bin_boundary1 && dstpt < dst_pt_bin_boundary2){dstar_mass_pt_bin2->Fill(dstm);}
+    else if(dstpt>=dst_pt_bin_boundary2 && dstpt < dst_pt_bin_boundary3){dstar_mass_pt_bin3->Fill(dstm);}
+    else if(dstpt>=dst_pt_bin_boundary3 && dstpt < dst_pt_bin_boundary4){dstar_mass_pt_bin4->Fill(dstm);}
+    else{dstar_mass_pt_bin5->Fill(dstm);}
+    //p
+    if(dstp<dst_p_bin_boundary1){dstar_mass_p_bin1->Fill(dstm);}
+    else if(dstp>=dst_p_bin_boundary1 && dstp < dst_p_bin_boundary2){dstar_mass_p_bin2->Fill(dstm);}
+    else if(dstp>=dst_p_bin_boundary2 && dstp < dst_p_bin_boundary3){dstar_mass_p_bin3->Fill(dstm);}
+    else if(dstp>=dst_p_bin_boundary3 && dstp < dst_p_bin_boundary4){dstar_mass_p_bin4->Fill(dstm);}
+    else{dstar_mass_p_bin5->Fill(dstm);}
+
+    
+    //mu pt
+    if(mupt<mu_pt_bin_boundary1){mu_mass_pt_bin1->Fill(dstm);}
+    else if(mupt>=mu_pt_bin_boundary1 && mupt < mu_pt_bin_boundary2){mu_mass_pt_bin2->Fill(dstm);}
+    else if(mupt>=mu_pt_bin_boundary2 && mupt < mu_pt_bin_boundary3){mu_mass_pt_bin3->Fill(dstm);}
+    else if(mupt>=mu_pt_bin_boundary3 && mupt < mu_pt_bin_boundary4){mu_mass_pt_bin4->Fill(dstm);}
+    else{mu_mass_pt_bin5->Fill(dstm);}
+    //p
+    if(mup<mu_p_bin_boundary1){mu_mass_p_bin1->Fill(dstm);}
+    else if(mup>=mu_p_bin_boundary1 && mup < mu_p_bin_boundary2){mu_mass_p_bin2->Fill(dstm);}
+    else if(mup>=mu_p_bin_boundary2 && mup < mu_p_bin_boundary3){mu_mass_p_bin3->Fill(dstm);}
+    else if(mup>=mu_p_bin_boundary3 && mup < mu_p_bin_boundary4){mu_mass_p_bin4->Fill(dstm);}
+    else{mu_mass_p_bin5->Fill(dstm);}
+
   }//loop on events
   
 }

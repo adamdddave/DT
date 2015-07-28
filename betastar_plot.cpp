@@ -29,7 +29,12 @@
 #include <RooBinning.h>
 #include <RooDstD0BG.h>
 #include <RooNLLVar.h>
+#include <RooChebychev.h>
+#include <RooPolynomial.h>
+#include <RooExtendPdf.h>
 #include <RooWorkspace.h>
+
+#include <PlottingTools.h>
 using namespace RooFit ;
 
 //-----------------------------------------------------------------------------
@@ -90,9 +95,10 @@ betastar_plot::betastar_plot(TString name  ) {
     
    hmD0_pik_sig = new TH1D(name+"_hmD0_pik_sig","D^{0}->#pi K mass, #Delta M signal range; m(#pi K)[MeV];",200, 1700,2100);
    hmD0_pik_sb = new TH1D(name+"_hmD0_pik_sb","D^{0}->#pi K mass, #Delta M sideband; m(#pi K)[MeV];",200, 1700,2100);
-   //hmD0_pik_tot = new TH1D(name+"_hmD0_pik","D^{0}->#pi K mass, #Delta M unaltered; m(#pi K)[MeV];",200, 1700,2100);
+   hmD0_pik_tot = new TH1D(name+"_hmD0_pik","D^{0}->#pi K mass, #Delta M unaltered; m(#pi K)[MeV];",200, 1700,2100);
 
-
+   double_misid_dmass_dst_sig_region = new TH1D(name+"_double_misid_dmass_dst_sig_region","",200,1700,2100);
+   double_misid_dmass_dst_sideband_region = new TH1D(name+"_double_misid_dmass_dst_sideband_region","",200,1700,2100);
 }
 //=============================================================================
 // Secondary constructor from root file
@@ -135,8 +141,10 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
   hmkpisb_cut_range_lo_2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2");
   hmD0_pik_sig=(TH1*)file->Get(m_name+"_hmD0_pik_sig");
   hmD0_pik_sb=(TH1*)file->Get(m_name+"_hmD0_pik_sb");
-  //hmD0_pik_tot=(TH1*)file->Get(m_name+"_hmD0_pik");
+  hmD0_pik_tot=(TH1*)file->Get(m_name+"_hmD0_pik");
 
+   double_misid_dmass_dst_sig_region = (TH1*)file->Get(name+"_double_misid_dmass_dst_sig_region");
+   double_misid_dmass_dst_sideband_region = (TH1*)file->Get(name+"_double_misid_dmass_dst_sideband_region");
 }
 //=============================================================================
 // Destructor
@@ -148,127 +156,127 @@ betastar_plot::~betastar_plot() {}
 //=============================================================================
 void betastar_plot::DrawPlots(){
   
-    TCanvas * cc = new TCanvas();
-    hmsig->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_signal_region.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_signal_region_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+  //    TCanvas * cc = new TCanvas();
+    // hmsig->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_signal_region.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_signal_region_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
 
-    hmkpisb->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmkpisb->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
 
-    hmkpisb_cut_range->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_cut_range.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_cut_range_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
-
-
-    hmkksb->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kk_signal_kpi_sideband_region.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kk_signal_kpi_sideband_region_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmkpisb_cut_range->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_cut_range.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_cut_range_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
 
 
-    hmpipisb->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"pipi_signal_kpi_sideband_region.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"pipi_signal_kpi_sideband_region_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmkksb->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kk_signal_kpi_sideband_region.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kk_signal_kpi_sideband_region_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
+
+
+    // hmpipisb->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"pipi_signal_kpi_sideband_region.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"pipi_signal_kpi_sideband_region_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
             
 
-    hmpiksb->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"pik_signal_kpi_sideband_region.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"pik_signal_kpi_sideband_region_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmpiksb->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"pik_signal_kpi_sideband_region.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"pik_signal_kpi_sideband_region_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
 
-    hmrob->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_not_signal_region.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_not_signal_region_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmrob->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_not_signal_region.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_not_signal_region_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
     
-    //if(doD0plots){
-    // hmD0_pik_tot->Draw();
-    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_total.pdf");
-    //       cc->SetLogy(true);
-    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_total_logy.pdf");
-    //       cc->SetLogy(false);
-    //       cc->Clear();
+    // //if(doD0plots){
+    //   hmD0_pik_tot->Draw();
+    //   cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_total.pdf");
+    //   cc->SetLogy(true);
+    //   cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_total_logy.pdf");
+    //   cc->SetLogy(false);
+    //   cc->Clear();
       
-    //       hmD0_pik_sig->Draw();
-    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_signal_dstar.pdf");
-    //       cc->SetLogy(true);
-    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_signal_dstar_logy.pdf");
-    //       cc->SetLogy(false);
-    //       cc->Clear();
+    //   hmD0_pik_sig->Draw();
+    //   cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_signal_dstar.pdf");
+    //   cc->SetLogy(true);
+    //   cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_signal_dstar_logy.pdf");
+    //   cc->SetLogy(false);
+    //   cc->Clear();
       
       
-    //       hmD0_pik_sb->Draw();
-    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_sideband_dstar.pdf");
-    //       cc->SetLogy(true);
-    //       cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_sideband_dstar_logy.pdf");
-    //       cc->SetLogy(false);
-    //       cc->Clear();
-      //}
+    //   hmD0_pik_sb->Draw();
+    //   cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_sideband_dstar.pdf");
+    //   cc->SetLogy(true);
+    //   cc->SaveAs("./SavedFits/betastar/"+m_name+"pi_k_d0mass_sideband_dstar_logy.pdf");
+    //   cc->SetLogy(false);
+    //   cc->Clear();
+    //   //}
     
-    hmkpisb_cut_range_hi->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmkpisb_cut_range_hi->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
 
-    hmkpisb_cut_range_lo->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmkpisb_cut_range_lo->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
 
-    hmkpisb_cut_range_hi_1->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_1.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_1_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmkpisb_cut_range_hi_1->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_1.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_1_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
 
-    hmkpisb_cut_range_hi_2->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_2.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_2_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmkpisb_cut_range_hi_2->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_2.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_hi_2_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
     
 
-    hmkpisb_cut_range_lo_1->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_1.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_1_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();
+    // hmkpisb_cut_range_lo_1->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_1.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_1_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();
 
-    hmkpisb_cut_range_lo_2->Draw();
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_2.pdf");
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_2_logy.pdf");
-    cc->SetLogy(false);
-    cc->Clear();    
+    // hmkpisb_cut_range_lo_2->Draw();
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_2.pdf");
+    // cc->SetLogy(true);
+    // cc->SaveAs("./SavedFits/betastar/"+m_name+"kpi_sideband_region_lo_2_logy.pdf");
+    // cc->SetLogy(false);
+    // cc->Clear();    
 
-    delete cc;
+    //delete cc;
 
     // TFile *the_outfile = new TFile("./betastar_sidebands.root","RECREATE");
     // the_outfile->cd();
@@ -364,7 +372,8 @@ void betastar_plot::DrawPlots(){
     
     //
 
-    cv->SaveAs("./SavedFits/betastar/"+m_name+"rs_betastar_figure.pdf");
+    cv->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_figure.pdf");
+    cv->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_figure.C");
     
     return;
 
@@ -390,8 +399,8 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, TH1* h2){
   w->var("frac3")->setConstant(1);
   
   kappa->setConstant(0);
-  RooRealVar *pn = w->var("n");
-  pn->setConstant(1);
+  //RooRealVar *pn = w->var("n");
+  //pn->setConstant(1);
   RooRealVar *endpt = w->var("endpt");
   RooRealVar *dmean = w->var("dmean");
   RooRealVar *rsigma = w->var("rsigma");
@@ -400,13 +409,23 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, TH1* h2){
  
   TString rhname("r_"); rhname += h1->GetName();
   RooDataHist *rhist = new RooDataHist(rhname.Data(), "", *mass, h1);
-  RooFitResult *res = allpdf->fitTo(*rhist, RooFit::Save());
+  RooFitResult *res = allpdf->fitTo(*rhist, RooFit::Save(),Extended(1));
   res->Print("v");
   RooAbsPdf* allpdf2 = NULL;
   RooDataHist* rhist2 = NULL;
   RooRealVar gmean("fmean", "", 2.01*1e3, 2.009*1e3,2.011*1e3);
   RooRealVar gsigma("gsigma", "", 0.001*1e3, 1e-5*1e3,1e-2*1e3);
   RooGaussian gau("gau", "", *mass, gmean, gsigma);
+  RooRealVar gmean2("gmean2","",2010,2009,2011);
+  RooRealVar gsigma2("gsigma2","",0.5,1e-3,1);
+  RooGaussian gau2("gau2", "", *mass, gmean2, gsigma2);
+  //make a crystal ball to try
+  /*RooRealVar cbm0("cbm0","cbm0",2010,2009,2011);
+  RooRealVar cbsigma("cbsigma","cbsigma",0.5,0.1,10);
+  RooRealVar cbalpha("cbalpha","cbalpha",-0.2,-3,0.);//tail on the right
+  RooRealVar cbn("cbn","cbn",1,0,3);
+  RooCBShape cball("cball","cball",*mass,cbm0,cbsigma,cbalpha,cbn);*/
+  RooRealVar fracGauPeak("fracGauPeak","",0.5,0.3,1.);
   RooRealVar xscale("xscale", "", 1, 1e-2, 10);
   xscale.setConstant(1);
   RooFormulaVar minusDM("minusDM", "@2-@1*(@0-@2)", RooArgList(*mass, xscale, *endpt));
@@ -414,14 +433,23 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, TH1* h2){
   RooRealVar n("n", "", 0.5);
   RooArgusBG arg("bkg", "argus", minusDM, *endpt, kappa2, n);
   arg.forceNumInt(kTRUE);
-  RooRealVar nsig2("nsig2", "", 3e4, 0, 1e6);
+  RooAbsPdf *gauAdd = new RooAddPdf("gauAdd","",RooArgList(gau,gau2),RooArgList(fracGauPeak));
+  ///RooAbsPdf *gauAdd = new RooAddPdf("gauAdd","",RooArgList(gau,cball),RooArgList(fracGauPeak));
+  RooRealVar nsig2("nsig2", "", 3e4, 0, 1e8);
   RooRealVar nbkg2("nbkg2", "", 1e3,0, 1e8);
-  allpdf2 = new RooAddPdf("allpdf2", "", RooArgList(gau,arg), RooArgList(nsig2,nbkg2));
+  //allpdf2 = new RooAddPdf("allpdf2", "", RooArgList(gau,arg), RooArgList(nsig2,nbkg2));
+  allpdf2 = new RooAddPdf("allpdf2", "", RooArgList(*gauAdd,arg), RooArgList(nsig2,nbkg2));
   
   rhname = "r_"; rhname += h2->GetName();
   rhist2 = new RooDataHist(rhname.Data(), "", *mass, h2);
-  res = allpdf2->fitTo(*rhist2, RooFit::Save());
+  res = allpdf2->fitTo(*rhist2, RooFit::Save(),Extended(1));
   res->Print("v");
+  //make pull plots just for good riddance
+  // RooPlot* frame2 = mass->frame();
+  // rhist2->plotOn(frame2);
+  // allpdf2->plotOn(frame2);
+  // PlottingTools::makeResidualPlotsLiang(frame2,*mass,*rhist2,allpdf2,"./SavedFits/betastar/peakingBkgFit",2000,2025);
+
   RooPlot *frame = mass->frame(RooFit::Range(h1->GetBinLowEdge(1), h1->GetBinLowEdge(h1->GetNbinsX()+1)));
   frame->SetTitle("");
   frame->SetXTitle(h1->GetXaxis()->GetTitle());
@@ -434,13 +462,19 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, TH1* h2){
   allpdf2->plotOn(frame, RooFit::LineWidth(2), RooFit::LineColor(h2->GetLineColor()));
   allpdf2->plotOn(frame, RooFit::Components("bkg"),RooFit::LineWidth(2), RooFit::LineStyle(kDashed), 
                   RooFit::LineColor(h2->GetLineColor()));
+  allpdf2->plotOn(frame, RooFit::Components("gau"),RooFit::LineWidth(2), RooFit::LineStyle(kDotted), 
+                  RooFit::LineColor(h2->GetLineColor()));
+  allpdf2->plotOn(frame,RooFit::Components("gau2"),RooFit::LineColor(h2->GetLineColor()), RooFit::LineStyle(4));
+  //allpdf2->plotOn(frame,RooFit::Components("cball"),RooFit::LineColor(kGreen+2));
   frame->Draw();
   //frame->GetYaxis()->SetRangeUser(frame->GetYaxis()->GetXmin()/10, frame->GetYaxis()->GetXmax());
   TPaveText *txt = new TPaveText(0.7, 0.7, 0.98, 0.98, "ndc");
   txt->SetTextAlign(12);
   txt->AddText(TString::Format("N_{sig}: %d #pm %d", (int)nsig->getVal(), (int)nsig->getError()));
   txt->AddText(TString::Format("N_{peak}: %d #pm %d", (int)nsig2.getVal(), (int)nsig2.getError()));
-  txt->Draw(); 
+  txt->Draw();
+
+
 }
 
 void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, int addpol){
@@ -462,13 +496,18 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, int addpol){
   RooRealVar nbkg2("nbkg2", "", 1e3,0, 1e8);
   if (!addpol){
     //allpdf = new RooAddPdf("allpdf", "", RooArgList(gau,*arg), RooArgList(*nsig,*nbkg)); nbkg2.setVal(0);}
-    allpdf = w->pdf("model"); nbkg2.setVal(0);}
+    allpdf = w->pdf("model");
+    nbkg2.setVal(0);
+    w->var("rsigma")->setConstant(0);
+    w->var("dmean")->setConstant(0);
+  }
   else allpdf = new RooAddPdf("allpdf", "", RooArgList(gau,*arg, gau2), RooArgList(*nsig,*nbkg, nbkg2));
+  
   
   TString rhname = "r_"; rhname += h1->GetName();
   rhist = new RooDataHist(rhname.Data(), "", *mass, h1);
   allpdf->fitTo(*rhist, RooFit::Save(), RooFit::Minos());
-  RooFitResult* res = allpdf->fitTo(*rhist, RooFit::Save());
+  RooFitResult* res = allpdf->fitTo(*rhist, RooFit::Save(),Extended(1));
   res->Print("v");
   RooPlot *frame = mass->frame(RooFit::Range(h1->GetBinLowEdge(1), h1->GetBinLowEdge(h1->GetNbinsX()+1)));
   frame->SetTitle("");
@@ -486,6 +525,31 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, int addpol){
   txt->AddText(TString::Format("N_{peak}: %d #pm %d", (int)(nsig->getVal()+nbkg2.getVal()), 
                                (int)sqrt(nsig->getError()*nsig->getError()+nbkg2.getError()*nbkg2.getError())));
   txt->Draw();
+  if(!addpol){
+    //integrate the two regions for the background, and print them out. Save the ratio in the class.
+    //first,normalize
+    RooArgSet nset(*mass) ;
+    std::cout << "normalized integral = " << mass->getVal(&nset) << std::endl ;
+    RooAbsReal* tot_int_bkg = arg->createIntegral(*mass,NormSet(*mass));
+    mass->setRange("peak",2010.26-0.9,2010.26+0.9);
+    RooAbsReal* peak_int_bkg = arg->createIntegral(*mass,NormSet(*mass),Range("peak"));
+    RooAbsReal* tot_int_bkg2 = arg->createIntegral(*mass,NormSet(*mass));
+    mass->setRange("sideband",2015,2025);
+    RooAbsReal* sideband_int_bkg = arg->createIntegral(*mass,NormSet(*mass),Range("sideband"));
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"For h1 = "<<h1->GetName()<<std::endl;
+    std::cout<<"Total integral of background = "<<tot_int_bkg->getVal()<<std::endl;
+    std::cout<<"integral of background in signal region = "<<peak_int_bkg->getVal()<<std::endl;
+    std::cout<<"integral of background in sideband region = "<<sideband_int_bkg->getVal()<<std::endl;
+    pik_background_subtraction_ratio_result = peak_int_bkg->getVal()/sideband_int_bkg->getVal();
+    std::cout<<"int(sig)/int(bkg) = "<<pik_background_subtraction_ratio_result<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    //PlottingTools::makeResidualPlotsLiang(frame,*mass,*rhist,allpdf,"./SavedFits/betastar/RSpeakingBkgFit_pik_fit",2000,2025);
+  }
 }
 
 void betastar_plot::SavePlots(){
@@ -525,45 +589,54 @@ void betastar_plot::SavePlots(){
   hmkpisb_cut_range_lo_2->Write();
   hmD0_pik_sig->Write();
   hmD0_pik_sb->Write();
-  //hmD0_pik_tot->Write();
+  hmD0_pik_tot->Write();
 
+  double_misid_dmass_dst_sig_region->Write();
+  double_misid_dmass_dst_sideband_region->Write();
+
+  
   fout.Close();
 
 
 }
-void betastar_plot::PiKsidebands(){
-  //check that the local workspace is set
-  if(w_local==NULL){
-    std::cout<<"no worksapce, can't fit! Moving on"<<std::endl;
-    return;
-  }
-  //take the pi K histogram, divide into signal and sideband region.
-  RooRealVar *mass = w_local->var("dstarM"); 
-  RooAbsPdf* arg = w_local->pdf("bkg");
-  RooRealVar *nsig = w_local->var("nsig");
-  RooRealVar *nbkg = w_local->var("nbkg");
-  RooRealVar *kappa = w_local->var("kappa");
-  kappa->setConstant(0);
-  RooRealVar *dmean = w_local->var("dmean");
-  RooRealVar *rsigma = w_local->var("rsigma");
-  RooAbsPdf* allpdf = w_local->pdf("model");
-  //fit first to make the integrals come out correct.
-  TString rhname = "r_"; rhname += hmpiksb->GetName();
-  RooDataHist *rhist = new RooDataHist(rhname.Data(),"",*mass,hmpiksb);
-  RooFitResult * res = allpdf->fitTo(*rhist,Extended(1),Save());
-  //now set the signal and sideband regions.
-  //from liang
-  const Float_t DstarMassCutlo = (2.01026-3*0.0003)*1e3;//MeV, not the 24 MeV cut for the D0 mass.
-  const Float_t DstarMassCuthi = (2.01026+3*0.0003)*1e3;//MeV
-  mass->setRange("signal",DstarMassCutlo,DstarMassCuthi);
-  mass->setRange("sideband",2015+2,2020.+2);//minimize the signal tail in the sideband region
-  //create integrals of background in two regions
-  RooAbsReal* intsig = arg->createIntegral(*mass,RooFit::NormSet(*mass),RooFit::Range("signal"));
-  RooAbsReal* intsideband = arg->createIntegral(*mass,RooFit::NormSet(*mass),RooFit::Range("sideband"));
-  Double_t ratio = intsig->getVal()/intsideband->getVal();
-  //now we have the ratio of the signal to the sideband. We will subtract the subsequent D0 mass distributions
-  TH1D* htemp =(TH1D*) hmD0_pik_sig->Clone("subtr");
-  htemp->Sumw2();
-  htemp->Add(hmD0_pik_sb,-ratio);//HERE
-  //now we need to fit.
+
+void betastar_plot::FitWSDoubleMisID(){
+  //do the background subtraction.
+  //first, sumw2 on the histograms.
+  double_misid_subtr = (TH1*)double_misid_dmass_dst_sig_region->Clone("double_misid_subtr");
+  double_misid_subtr->Sumw2();
+  TH1* double_misid_sideband_scaled = (TH1*)double_misid_dmass_dst_sideband_region->Clone("double_misid_sideband_scaled");
+  double_misid_sideband_scaled->Sumw2();
+  double_misid_sideband_scaled->Scale(pik_background_subtraction_ratio_result);
+  double_misid_subtr->Add(double_misid_sideband_scaled,-1);
+  //now we have the histogram, fit it with a second order polynomial.
+  RooRealVar* x = new RooRealVar("x","m(K #pi)",1700,2100,"MeV");
+  x->setRange("lo",1780,(1.86484 - 5*0.008)*1e3);
+  x->setRange("hi",(1.86484 + 5*0.008)*1e3,1950);
+  RooRealVar a0("a0","a0",-0.1,-50,50);
+  RooRealVar a1("a1","a1",0.004,-100,100);
+  RooChebychev pol("pol","pol",*x,RooArgSet(a0,a1));
+  /*  RooRealVar a0("a0","a0",1) ;
+  RooRealVar a1("a1","a1",0,-20,20) ;
+  RooRealVar a2("a2","a2",-1,-100,100) ;
+  RooPolynomial pol("pol","pol",*x,RooArgList(a0,a1,a2),0) ;*/
+  RooRealVar nsig("nsig","nsig",200,5,10000);
+  RooDataHist* data = new RooDataHist((m_name+"double_misid_subtracted_data").Data(),"",*x,double_misid_subtr);
+  RooExtendPdf model("model","model",pol,nsig);
+  RooFitResult* res_pol = model.fitTo(*data,Range("lo,hi"),RooFit::Save(),Extended(1));
+  res_pol->Print("v");
+  TCanvas* cpol = new TCanvas();
+  RooPlot* frame = x->frame();
+  frame->SetTitle("");
+  data->plotOn(frame);
+  
+  model.plotOn(frame,LineColor(kMagenta),Range(1780,2100));
+  frame->Draw();
+  cpol->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_double_misid_d0_sideband_subtracted_fit.pdf");
+
+  // TFile obs("./SavedFits/betastar/"+m_name+"double_misid_sideband_subtr_info.root","RECREATE");
+  // obs.cd();
+  // double_misid_subtr->Write();
+  // obs.Close();
+  return;
 }

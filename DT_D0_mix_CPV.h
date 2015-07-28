@@ -1486,15 +1486,45 @@ public :
   TH1D* dstar_mass_plot_zoom;
   TH1D* dstar_mass_plot_pos;
   TH1D* dstar_mass_plot_neg;
+  //for time integrated systematic studies.
+
   TH1D* dstar_mass_pt_bin1;
   TH1D* dstar_mass_pt_bin2;
   TH1D* dstar_mass_pt_bin3;
-  TH1D* dstar_pt;
+  TH1D* dstar_mass_pt_bin4;
+  TH1D* dstar_mass_pt_bin5;
+
+  TH1D* dstar_mass_p_bin1;
+  TH1D* dstar_mass_p_bin2;
+  TH1D* dstar_mass_p_bin3;
+  TH1D* dstar_mass_p_bin4;
+  TH1D* dstar_mass_p_bin5;
   
+  TH1D* mu_mass_pt_bin1;
+  TH1D* mu_mass_pt_bin2;
+  TH1D* mu_mass_pt_bin3;
+  TH1D* mu_mass_pt_bin4;
+  TH1D* mu_mass_pt_bin5;
+
+  TH1D* mu_mass_p_bin1;
+  TH1D* mu_mass_p_bin2;
+  TH1D* mu_mass_p_bin3;
+  TH1D* mu_mass_p_bin4;
+  TH1D* mu_mass_p_bin5;
+  //distributions to find out where the bin edges will be
+  TH1D* dstar_pt;
+  TH1D* dstar_p;
+  TH1D* mu_pt;
+  TH1D* mu_p;
+  TH1D* mu_IP;
+  //TH1D* kaon_pidk_plot;
+  //TH1D* daughter_pi_pid_k_plot;
+  //no need for these two, as we only want the ranges of PID from the original cpv analysis and the new.
+    
   TH1D* b_mass_plot;
   TH2D* dstar_mass_vs_muIPchi2;
   TH2D* bmass_vs_muIPchi2;
-  
+  TH1D* decay_time_distr;
   betastar_plot *bs_plot;
   DT_D0_mix_CPV(TTree *tree=0);
   virtual ~DT_D0_mix_CPV();
@@ -1531,9 +1561,30 @@ private:
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
-  const double dst_bin_boundary1=2.690000e+03;//MeV
-  const double dst_bin_boundary2=4.330000e+03;//MeV, pt bin boundaries.
+  //  const double dst_bin_boundary1=2.690000e+03;//MeV
+  //const double dst_bin_boundary2=4.330000e+03;//MeV, pt bin boundaries.
+  const double dst_pt_bin_boundary1 = 2.130000e+03;//MeV
+  const double dst_pt_bin_boundary2 = 2.950000e+03;//MeV
+  const double dst_pt_bin_boundary3 = 3.910000e+03;//MeV
+  const double dst_pt_bin_boundary4 = 5.470000e+03;//MeV
+
+  const double dst_p_bin_boundary1 = 3.570000e+04;//MeV
+  const double dst_p_bin_boundary2 = 4.590000e+04;//MeV
+  const double dst_p_bin_boundary3 = 5.870000e+04;//MeV
+  const double dst_p_bin_boundary4 = 7.990000e+04;//MeV
+
+  const double mu_pt_bin_boundary1 = 2.070000e+03;//MeV
+  const double mu_pt_bin_boundary2 = 2.630000e+03;//MeV
+  const double mu_pt_bin_boundary3 = 3.310000e+03;//MeV
+  const double mu_pt_bin_boundary4 = 4.450000e+03;//MeV
+
+  const double mu_p_bin_boundary1 = 1.970000e+04;//MeV
+  const double mu_p_bin_boundary2 = 2.990000e+04;//MeV
+  const double mu_p_bin_boundary3 = 4.310000e+04;//MeV
+  const double mu_p_bin_boundary4 = 6.510000e+04;//MeV
+
   
+  const double d0_pdg_ct = 0.1229;//mm
   
 };
 
@@ -1569,7 +1620,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
 
   dstar_mass_plot_neg = new TH1D(name+"_dt_hist_dstar_m_neg","", 500, 2000,2025);
   dstar_mass_plot_neg->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot_neg->GetBinWidth(1)));
-
+  //dstar p and pt bins
   dstar_mass_pt_bin1 = new TH1D(name+"_dt_hist_dstar_m_pt_bin1","", 500, 2000,2025);
   dstar_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin1->GetBinWidth(1)));
 
@@ -1579,6 +1630,59 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dstar_mass_pt_bin3 = new TH1D(name+"_dt_hist_dstar_m_pt_bin3","", 500, 2000,2025);
   dstar_mass_pt_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin3->GetBinWidth(1)));
 
+  dstar_mass_pt_bin4 = new TH1D(name+"_dt_hist_dstar_m_pt_bin4","", 500, 2000,2025);
+  dstar_mass_pt_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin4->GetBinWidth(1)));
+  
+  dstar_mass_pt_bin5 = new TH1D(name+"_dt_hist_dstar_m_pt_bin5","", 500, 2000,2025);
+  dstar_mass_pt_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin5->GetBinWidth(1)));
+
+  //p
+  dstar_mass_p_bin1 = new TH1D(name+"_dt_hist_dstar_m_p_bin1","", 500, 2000,2025);
+  dstar_mass_p_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_p_bin1->GetBinWidth(1)));
+
+  dstar_mass_p_bin2 = new TH1D(name+"_dt_hist_dstar_m_p_bin2","", 500, 2000,2025);
+  dstar_mass_p_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_p_bin2->GetBinWidth(1)));
+
+  dstar_mass_p_bin3 = new TH1D(name+"_dt_hist_dstar_m_p_bin3","", 500, 2000,2025);
+  dstar_mass_p_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_p_bin3->GetBinWidth(1)));
+
+  dstar_mass_p_bin4 = new TH1D(name+"_dt_hist_dstar_m_p_bin4","", 500, 2000,2025);
+  dstar_mass_p_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_p_bin4->GetBinWidth(1)));
+  
+  dstar_mass_p_bin5 = new TH1D(name+"_dt_hist_dstar_m_p_bin5","", 500, 2000,2025);
+  dstar_mass_p_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_p_bin5->GetBinWidth(1)));
+  //muon
+    mu_mass_pt_bin1 = new TH1D(name+"_dt_hist_mu_m_pt_bin1","", 500, 2000,2025);
+  mu_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_pt_bin1->GetBinWidth(1)));
+
+  mu_mass_pt_bin2 = new TH1D(name+"_dt_hist_mu_m_pt_bin2","", 500, 2000,2025);
+  mu_mass_pt_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_pt_bin2->GetBinWidth(1)));
+
+  mu_mass_pt_bin3 = new TH1D(name+"_dt_hist_mu_m_pt_bin3","", 500, 2000,2025);
+  mu_mass_pt_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_pt_bin3->GetBinWidth(1)));
+
+  mu_mass_pt_bin4 = new TH1D(name+"_dt_hist_mu_m_pt_bin4","", 500, 2000,2025);
+  mu_mass_pt_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_pt_bin4->GetBinWidth(1)));
+  
+  mu_mass_pt_bin5 = new TH1D(name+"_dt_hist_mu_m_pt_bin5","", 500, 2000,2025);
+  mu_mass_pt_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_pt_bin5->GetBinWidth(1)));
+
+  //p
+  mu_mass_p_bin1 = new TH1D(name+"_dt_hist_mu_m_p_bin1","", 500, 2000,2025);
+  mu_mass_p_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_p_bin1->GetBinWidth(1)));
+
+  mu_mass_p_bin2 = new TH1D(name+"_dt_hist_mu_m_p_bin2","", 500, 2000,2025);
+  mu_mass_p_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_p_bin2->GetBinWidth(1)));
+
+  mu_mass_p_bin3 = new TH1D(name+"_dt_hist_mu_m_p_bin3","", 500, 2000,2025);
+  mu_mass_p_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_p_bin3->GetBinWidth(1)));
+
+  mu_mass_p_bin4 = new TH1D(name+"_dt_hist_mu_m_p_bin4","", 500, 2000,2025);
+  mu_mass_p_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_p_bin4->GetBinWidth(1)));
+  
+  mu_mass_p_bin5 = new TH1D(name+"_dt_hist_mu_m_p_bin5","", 500, 2000,2025);
+  mu_mass_p_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_p_bin5->GetBinWidth(1)));
+
   //here
   b_mass_plot = new TH1D(name+"_dt_hist_b_m","", 400, 2500,6500);
   b_mass_plot->SetTitle(Form("m(D^{*+}#mu^{-}); m(D^{*+}#mu^{-})[MeV]; Entries / %.2f",b_mass_plot->GetBinWidth(1)));
@@ -1586,7 +1690,20 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dstar_mass_vs_muIPchi2 = new TH2D(name+"_dstar_mass_vs_muIPchi2","m(D^{0}#pi_{S}) vs #mu log(#chi^{2}_{IP}), Own PV; #mu log(#chi^{2}_{IP}); m(D^{0}#pi_{S})[MeV]",
 					 100,1,14,500,2000,2025);
   dstar_pt = new TH1D(name+"_dstar_pt","",1000,0., 20000);
-  dstar_pt->SetTitle(Form("P_{T}(D*);P_{T}(D*)[MeV];Entries / %.2f",dstar_pt->GetBinWidth(1)));
+  dstar_pt->SetTitle(Form("p_{T}(D*);p_{T}(D*)[MeV];Entries / %.2f MeV",dstar_pt->GetBinWidth(1)));
+
+  dstar_p = new TH1D(name+"_dstar_p","",1000,0., 200000);
+  dstar_p->SetTitle(Form("p(D*);p(D*)[MeV];Entries / %.2f MeV",dstar_p->GetBinWidth(1)));
+
+  decay_time_distr = new TH1D(name+"_dt_d0_decay_time_distr","",150,-5.,10.);
+  decay_time_distr->SetTitle(Form("; D^{0} t/#tau; Entries / %.2f",decay_time_distr->GetBinWidth(1)));
+
+  mu_pt = new TH1D(name+"_mu_pt","",1000,0,20000);
+  mu_pt->SetTitle(Form("p_{T}(#mu);p_{T}(#mu)[MeV];Entries / %.2f MeV",mu_pt->GetBinWidth(1)));
+  mu_p = new TH1D(name+"_mu_p","",1000,0,200000);
+  mu_p->SetTitle(Form("p(#mu);p(#mu)[MeV];Entries / %.2f MeV",mu_pt->GetBinWidth(1)));
+  
+  
 }
 
 DT_D0_mix_CPV::~DT_D0_mix_CPV()
