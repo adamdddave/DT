@@ -256,7 +256,7 @@ int main(int argc, char* const argv[]){
   channelFromFile+="w";
   cout<<"channel from file = "<<channelFromFile<<endl;  
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
-
+  //everything from this point on must be in one loop
   massFit* fits_dst_pt[5];
   massFit* fits_dst_p[5];
   massFit* fits_mu_pt[5];
@@ -297,7 +297,9 @@ int main(int argc, char* const argv[]){
     errXhi_mean_dst_pt[i]=dst_pt_tot->GetBinCenter(dst_pt_bin_range[i+1])-dst_pt_mean_dstar_mass_pos[i] ;//  hi bin edge - mean
 
     dst_pt_yield[i] = fits_dst_pt[i]->getNsig();
-    dst_pt_yield_err[i] = fits_dst_pt[i]->getNsigErr(); 
+    dst_pt_yield_err[i] = fits_dst_pt[i]->getNsigErr();
+  }
+  for(int i=0; i<5;++i){
     //dst p
     cout<<"==========================="<<endl;
     cout<<"dst p bin "<<i+1<<endl;
@@ -317,7 +319,9 @@ int main(int argc, char* const argv[]){
     errXhi_mean_dst_p[i]=dst_p_tot->GetBinCenter(dst_p_bin_range[i+1])-dst_p_mean_dstar_mass_pos[i] ;//  hi bin edge - mean
 
     dst_p_yield[i] = fits_dst_p[i]->getNsig();
-    dst_p_yield_err[i] = fits_dst_p[i]->getNsigErr(); 
+    dst_p_yield_err[i] = fits_dst_p[i]->getNsigErr();
+  }
+  for(int i=0; i<5;++i){
     //mu pt
     cout<<"==========================="<<endl;
     cout<<"mu pt bin "<<i+1<<endl;
@@ -337,8 +341,10 @@ int main(int argc, char* const argv[]){
     errXlow_mean_mu_pt[i]=dst_pt_mean_dstar_mass_pos[i] - mu_pt_tot->GetBinCenter(mu_pt_bin_range[i]);// mean- low bin edge
     errXhi_mean_mu_pt[i]=mu_pt_tot->GetBinCenter(mu_pt_bin_range[i+1])-mu_pt_mean_dstar_mass_pos[i] ;//  hi bin edge - mean
     mu_pt_yield[i] = fits_mu_pt[i]->getNsig();
-    mu_pt_yield_err[i] = fits_mu_pt[i]->getNsigErr(); 
-    //mu p
+    mu_pt_yield_err[i] = fits_mu_pt[i]->getNsigErr();
+  }
+  for(int i=0; i<5;++i){
+     //mu p
     cout<<"==========================="<<endl;
     cout<<"mu p bin "<<i+1<<endl;
     cout<<"==========================="<<endl;
@@ -550,7 +556,7 @@ int main(int argc, char* const argv[]){
   cout<<"------------------------------------------"<<endl;
   cout<<"------------------------------------------"<<endl;
   cout<<"------------------------------------------"<<endl;
-  TH1D* the_final_comp = new TH1D("the_final_comp","; ;m(D^*)[MeV] ",4,0.5,4.5);
+  TH1D* the_final_comp = new TH1D("the_final_comp","; ;N Signal (D^*)",4,0.5,4.5);
   for(int i=0; i<4;++i){
     cout<<"points["<<i<<"] = "<<points[i]<< endl;
     points_err[i] = TMath::Sqrt(points_err[i]);
@@ -590,9 +596,9 @@ int main(int argc, char* const argv[]){
   cc->SetLogy(false);
   //  the_final_comp->SetMarkerSize(3);
   //the_final_comp->SetMarkerStyle(20);
-  the_final_comp->GetYaxis()->SetRangeUser(2.4e6,2.6e6);
+  //the_final_comp->GetYaxis()->SetRangeUser(2.4e6,2.6e6);
   the_final_comp->Draw("e");
-  shade->Draw("fsame");
+  //shade->Draw("fsame");
   centr_val->Draw();
   centr_val_hi->Draw();
   centr_val_lo->Draw();
