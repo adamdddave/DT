@@ -29,7 +29,7 @@ OUTLIB	      = ./lib/
 
 #----------------------------------------------------#
 
-all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs
+all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin
 
 mass_fits_compiled: analysis.cpp 
 	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp massFit.cpp betastar_plot.cpp WrongB.cpp -o DTAnalysis  $(GLIBS) $<
@@ -40,9 +40,12 @@ bs_fits: betastarFits.cpp
 	$(CXX) $(CXXFLAGS) betastar_plot.cpp -o doBetastarFits $(GLIBS) $<
 time_int_systs: TimeIntegratedSystematics.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o doTimeIntegratedSystematics $(GLIBS) $<
+test_single_bin: TestSingleBinFit.cpp
+	$(CXX) $(CXXFLAGS) massFit.cpp -o SingleBinFit $(GLIBS) $<
 clean:
 	rm -f DTAnalysis
 	rm -f testMassFit
 	rm -f doBetastarFits
 	rm -f doTimeIntegratedSystematics
+	rm -f SingleBinFit
 #	rm -rf *dSYM
