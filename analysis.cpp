@@ -130,6 +130,10 @@ int main(int argc, char* const argv[]){
   rs_looper.dstar_p->Write();
   rs_looper.mu_pt->Write();
   rs_looper.mu_p->Write();
+  rs_looper.mu_log_ip->Write();
+  rs_looper.dst_mass_vs_kpidk->Write();
+  rs_looper.dst_mass_vs_pipidk->Write();
+  
   rs_looper.decay_time_distr->Write();
   rs_looper.dstar_mass_pt_bin1->Write();
   rs_looper.dstar_mass_pt_bin2->Write();
@@ -152,7 +156,57 @@ int main(int argc, char* const argv[]){
   rs_looper.mu_mass_p_bin3->Write();
   rs_looper.mu_mass_p_bin4->Write();
   rs_looper.mu_mass_p_bin5->Write();
+
+  rs_looper.mu_log_ip_bin1->Write();
+  rs_looper.mu_log_ip_bin2->Write();
+  rs_looper.mu_log_ip_bin3->Write();
+  rs_looper.mu_log_ip_bin4->Write();
+  rs_looper.mu_log_ip_bin5->Write();
+  //pid
+  rs_looper.k_pid_k_bin1->Write();
+  rs_looper.k_pid_k_bin2->Write();
+  rs_looper.k_pid_k_bin3->Write();
+  rs_looper.k_pid_k_bin4->Write();
+  rs_looper.k_pid_k_bin5->Write();
+
+  rs_looper.pi_pid_k_bin1->Write();
+  rs_looper.pi_pid_k_bin2->Write();
+  rs_looper.pi_pid_k_bin3->Write();
+  rs_looper.pi_pid_k_bin4->Write();
+  rs_looper.pi_pid_k_bin5->Write();
   
+  //5x5 matrix
+  rs_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
+  rs_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
+  rs_looper.pi_pid_k_bin1_k_pid_k_bin3->Write();
+  rs_looper.pi_pid_k_bin1_k_pid_k_bin4->Write();
+  rs_looper.pi_pid_k_bin1_k_pid_k_bin5->Write();
+
+  rs_looper.pi_pid_k_bin2_k_pid_k_bin1->Write();
+  rs_looper.pi_pid_k_bin2_k_pid_k_bin2->Write();
+  rs_looper.pi_pid_k_bin2_k_pid_k_bin3->Write();
+  rs_looper.pi_pid_k_bin2_k_pid_k_bin4->Write();
+  rs_looper.pi_pid_k_bin2_k_pid_k_bin5->Write();
+
+  rs_looper.pi_pid_k_bin3_k_pid_k_bin1->Write();
+  rs_looper.pi_pid_k_bin3_k_pid_k_bin2->Write();
+  rs_looper.pi_pid_k_bin3_k_pid_k_bin3->Write();
+  rs_looper.pi_pid_k_bin3_k_pid_k_bin4->Write();
+  rs_looper.pi_pid_k_bin3_k_pid_k_bin5->Write();
+
+  rs_looper.pi_pid_k_bin4_k_pid_k_bin1->Write();
+  rs_looper.pi_pid_k_bin4_k_pid_k_bin2->Write();
+  rs_looper.pi_pid_k_bin4_k_pid_k_bin3->Write();
+  rs_looper.pi_pid_k_bin4_k_pid_k_bin4->Write();
+  rs_looper.pi_pid_k_bin4_k_pid_k_bin5->Write();
+
+  rs_looper.pi_pid_k_bin5_k_pid_k_bin1->Write();
+  rs_looper.pi_pid_k_bin5_k_pid_k_bin2->Write();
+  rs_looper.pi_pid_k_bin5_k_pid_k_bin3->Write();
+  rs_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
+  rs_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
+
+  //ss
   
   rs_ss_looper.dstar_mass_plot->Write();
   rs_ss_looper.b_mass_plot->Write();
@@ -163,7 +217,10 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.dstar_p->Write();
   rs_ss_looper.mu_pt->Write();
   rs_ss_looper.mu_p->Write();
-
+  rs_ss_looper.mu_log_ip->Write();
+  rs_ss_looper.dst_mass_vs_kpidk->Write();
+  rs_ss_looper.dst_mass_vs_pipidk->Write();
+  
   rs_ss_looper.dstar_mass_pt_bin1->Write();
   rs_ss_looper.dstar_mass_pt_bin2->Write();
   rs_ss_looper.dstar_mass_pt_bin3->Write();
@@ -185,6 +242,58 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.mu_mass_p_bin3->Write();
   rs_ss_looper.mu_mass_p_bin4->Write();
   rs_ss_looper.mu_mass_p_bin5->Write();
+
+  
+  rs_ss_looper.mu_log_ip_bin1->Write();
+  rs_ss_looper.mu_log_ip_bin2->Write();
+  rs_ss_looper.mu_log_ip_bin3->Write();
+  rs_ss_looper.mu_log_ip_bin4->Write();
+  rs_ss_looper.mu_log_ip_bin5->Write();
+
+    //pid
+  rs_ss_looper.k_pid_k_bin1->Write();
+  rs_ss_looper.k_pid_k_bin2->Write();
+  rs_ss_looper.k_pid_k_bin3->Write();
+  rs_ss_looper.k_pid_k_bin4->Write();
+  rs_ss_looper.k_pid_k_bin5->Write();
+
+  rs_ss_looper.pi_pid_k_bin1->Write();
+  rs_ss_looper.pi_pid_k_bin2->Write();
+  rs_ss_looper.pi_pid_k_bin3->Write();
+  rs_ss_looper.pi_pid_k_bin4->Write();
+  rs_ss_looper.pi_pid_k_bin5->Write();
+  
+  //5x5 matrix
+  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
+  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
+  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin3->Write();
+  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin4->Write();
+  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin5->Write();
+
+  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin1->Write();
+  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin2->Write();
+  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin3->Write();
+  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin4->Write();
+  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin5->Write();
+
+  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin1->Write();
+  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin2->Write();
+  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin3->Write();
+  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin4->Write();
+  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin5->Write();
+
+  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin1->Write();
+  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin2->Write();
+  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin3->Write();
+  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin4->Write();
+  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin5->Write();
+
+  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin1->Write();
+  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin2->Write();
+  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin3->Write();
+  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
+  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
+
   
   fout->Close();
   WrongB wrongb("wrongb",rs_looper,rs_ss_looper);
@@ -200,7 +309,12 @@ int main(int argc, char* const argv[]){
   ws_looper.dstar_p->Write();
   ws_looper.mu_pt->Write();
   ws_looper.mu_p->Write();
+  ws_looper.mu_log_ip->Write();
+
+  ws_looper.dst_mass_vs_kpidk->Write();
+  ws_looper.dst_mass_vs_pipidk->Write();
   ws_looper.decay_time_distr->Write();
+ 
   ws_looper.dstar_mass_pt_bin1->Write();
   ws_looper.dstar_mass_pt_bin2->Write();
   ws_looper.dstar_mass_pt_bin3->Write();
@@ -223,6 +337,57 @@ int main(int argc, char* const argv[]){
   ws_looper.mu_mass_p_bin4->Write();
   ws_looper.mu_mass_p_bin5->Write();
   
+  ws_looper.mu_log_ip_bin1->Write();
+  ws_looper.mu_log_ip_bin2->Write();
+  ws_looper.mu_log_ip_bin3->Write();
+  ws_looper.mu_log_ip_bin4->Write();
+  ws_looper.mu_log_ip_bin5->Write();
+
+  //pid
+  ws_looper.k_pid_k_bin1->Write();
+  ws_looper.k_pid_k_bin2->Write();
+  ws_looper.k_pid_k_bin3->Write();
+  ws_looper.k_pid_k_bin4->Write();
+  ws_looper.k_pid_k_bin5->Write();
+
+  ws_looper.pi_pid_k_bin1->Write();
+  ws_looper.pi_pid_k_bin2->Write();
+  ws_looper.pi_pid_k_bin3->Write();
+  ws_looper.pi_pid_k_bin4->Write();
+  ws_looper.pi_pid_k_bin5->Write();
+  
+  //5x5 matrix
+  ws_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
+  ws_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
+  ws_looper.pi_pid_k_bin1_k_pid_k_bin3->Write();
+  ws_looper.pi_pid_k_bin1_k_pid_k_bin4->Write();
+  ws_looper.pi_pid_k_bin1_k_pid_k_bin5->Write();
+
+  ws_looper.pi_pid_k_bin2_k_pid_k_bin1->Write();
+  ws_looper.pi_pid_k_bin2_k_pid_k_bin2->Write();
+  ws_looper.pi_pid_k_bin2_k_pid_k_bin3->Write();
+  ws_looper.pi_pid_k_bin2_k_pid_k_bin4->Write();
+  ws_looper.pi_pid_k_bin2_k_pid_k_bin5->Write();
+
+  ws_looper.pi_pid_k_bin3_k_pid_k_bin1->Write();
+  ws_looper.pi_pid_k_bin3_k_pid_k_bin2->Write();
+  ws_looper.pi_pid_k_bin3_k_pid_k_bin3->Write();
+  ws_looper.pi_pid_k_bin3_k_pid_k_bin4->Write();
+  ws_looper.pi_pid_k_bin3_k_pid_k_bin5->Write();
+
+  ws_looper.pi_pid_k_bin4_k_pid_k_bin1->Write();
+  ws_looper.pi_pid_k_bin4_k_pid_k_bin2->Write();
+  ws_looper.pi_pid_k_bin4_k_pid_k_bin3->Write();
+  ws_looper.pi_pid_k_bin4_k_pid_k_bin4->Write();
+  ws_looper.pi_pid_k_bin4_k_pid_k_bin5->Write();
+
+  ws_looper.pi_pid_k_bin5_k_pid_k_bin1->Write();
+  ws_looper.pi_pid_k_bin5_k_pid_k_bin2->Write();
+  ws_looper.pi_pid_k_bin5_k_pid_k_bin3->Write();
+  ws_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
+  ws_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
+
+  //ss
   ws_ss_looper.dstar_mass_plot->Write();
   ws_ss_looper.b_mass_plot->Write();
   ws_ss_looper.decay_time_distr->Write();
@@ -232,6 +397,10 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.dstar_p->Write();
   ws_ss_looper.mu_pt->Write();
   ws_ss_looper.mu_p->Write();
+  ws_ss_looper.mu_log_ip->Write();
+  ws_ss_looper.dst_mass_vs_kpidk->Write();
+  ws_ss_looper.dst_mass_vs_pipidk->Write();
+
   ws_ss_looper.dstar_mass_pt_bin1->Write();
   ws_ss_looper.dstar_mass_pt_bin2->Write();
   ws_ss_looper.dstar_mass_pt_bin3->Write();
@@ -253,6 +422,57 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.mu_mass_p_bin3->Write();
   ws_ss_looper.mu_mass_p_bin4->Write();
   ws_ss_looper.mu_mass_p_bin5->Write();
+
+  ws_ss_looper.mu_log_ip_bin1->Write();
+  ws_ss_looper.mu_log_ip_bin2->Write();
+  ws_ss_looper.mu_log_ip_bin3->Write();
+  ws_ss_looper.mu_log_ip_bin4->Write();
+  ws_ss_looper.mu_log_ip_bin5->Write();
+
+    //pid
+  ws_ss_looper.k_pid_k_bin1->Write();
+  ws_ss_looper.k_pid_k_bin2->Write();
+  ws_ss_looper.k_pid_k_bin3->Write();
+  ws_ss_looper.k_pid_k_bin4->Write();
+  ws_ss_looper.k_pid_k_bin5->Write();
+
+  ws_ss_looper.pi_pid_k_bin1->Write();
+  ws_ss_looper.pi_pid_k_bin2->Write();
+  ws_ss_looper.pi_pid_k_bin3->Write();
+  ws_ss_looper.pi_pid_k_bin4->Write();
+  ws_ss_looper.pi_pid_k_bin5->Write();
+  
+  //5x5 matrix
+  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
+  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
+  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin3->Write();
+  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin4->Write();
+  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin5->Write();
+
+  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin1->Write();
+  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin2->Write();
+  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin3->Write();
+  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin4->Write();
+  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin5->Write();
+
+  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin1->Write();
+  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin2->Write();
+  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin3->Write();
+  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin4->Write();
+  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin5->Write();
+
+  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin1->Write();
+  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin2->Write();
+  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin3->Write();
+  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin4->Write();
+  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin5->Write();
+
+  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin1->Write();
+  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin2->Write();
+  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin3->Write();
+  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
+  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
+
   
   fout2->Close();
   WrongB wrongbws("wrongbws",ws_looper,ws_ss_looper);

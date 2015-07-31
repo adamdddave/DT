@@ -1,3 +1,4 @@
+
 ////////////////////////////////////////////////////////
 // This class has been automatically generated on
 // Thu Jan 22 21:25:43 2015 by ROOT version 5.34/25
@@ -1511,12 +1512,65 @@ public :
   TH1D* mu_mass_p_bin3;
   TH1D* mu_mass_p_bin4;
   TH1D* mu_mass_p_bin5;
+
+  TH1D* mu_log_ip_bin1;
+  TH1D* mu_log_ip_bin2;
+  TH1D* mu_log_ip_bin3;
+  TH1D* mu_log_ip_bin4;
+  TH1D* mu_log_ip_bin5;
+
+  TH1D* k_pid_k_bin1;
+  TH1D* k_pid_k_bin2;
+  TH1D* k_pid_k_bin3;
+  TH1D* k_pid_k_bin4;
+  TH1D* k_pid_k_bin5;
+
+  TH1D* pi_pid_k_bin1;
+  TH1D* pi_pid_k_bin2;
+  TH1D* pi_pid_k_bin3;
+  TH1D* pi_pid_k_bin4;
+  TH1D* pi_pid_k_bin5;
+
+  //now the 5x5 pid matrix
+  TH1D* pi_pid_k_bin1_k_pid_k_bin1;
+  TH1D* pi_pid_k_bin1_k_pid_k_bin2;
+  TH1D* pi_pid_k_bin1_k_pid_k_bin3;
+  TH1D* pi_pid_k_bin1_k_pid_k_bin4;
+  TH1D* pi_pid_k_bin1_k_pid_k_bin5;
+  
+  TH1D* pi_pid_k_bin2_k_pid_k_bin1;
+  TH1D* pi_pid_k_bin2_k_pid_k_bin2;
+  TH1D* pi_pid_k_bin2_k_pid_k_bin3;
+  TH1D* pi_pid_k_bin2_k_pid_k_bin4;
+  TH1D* pi_pid_k_bin2_k_pid_k_bin5;
+  
+  TH1D* pi_pid_k_bin3_k_pid_k_bin1;
+  TH1D* pi_pid_k_bin3_k_pid_k_bin2;
+  TH1D* pi_pid_k_bin3_k_pid_k_bin3;
+  TH1D* pi_pid_k_bin3_k_pid_k_bin4;
+  TH1D* pi_pid_k_bin3_k_pid_k_bin5;
+  
+  TH1D* pi_pid_k_bin4_k_pid_k_bin1;
+  TH1D* pi_pid_k_bin4_k_pid_k_bin2;
+  TH1D* pi_pid_k_bin4_k_pid_k_bin3;
+  TH1D* pi_pid_k_bin4_k_pid_k_bin4;
+  TH1D* pi_pid_k_bin4_k_pid_k_bin5;
+
+  TH1D* pi_pid_k_bin5_k_pid_k_bin1;
+  TH1D* pi_pid_k_bin5_k_pid_k_bin2;
+  TH1D* pi_pid_k_bin5_k_pid_k_bin3;
+  TH1D* pi_pid_k_bin5_k_pid_k_bin4;
+  TH1D* pi_pid_k_bin5_k_pid_k_bin5;
+
   //distributions to find out where the bin edges will be
   TH1D* dstar_pt;
   TH1D* dstar_p;
   TH1D* mu_pt;
   TH1D* mu_p;
-  TH1D* mu_IP;
+  TH1D* mu_log_ip;
+
+  TH2D* dst_mass_vs_kpidk;
+  TH2D* dst_mass_vs_pipidk;
   //TH1D* kaon_pidk_plot;
   //TH1D* daughter_pi_pid_k_plot;
   //no need for these two, as we only want the ranges of PID from the original cpv analysis and the new.
@@ -1583,7 +1637,24 @@ private:
   const double mu_p_bin_boundary3 = 4.310000e+04;//MeV
   const double mu_p_bin_boundary4 = 6.510000e+04;//MeV
 
-  
+  const double mu_log_ip_bin_boundary1 = -1.585000e+00;//nominally mm, but log...
+  const double mu_log_ip_bin_boundary2 =-1.115000e+00;
+  const double mu_log_ip_bin_boundary3 =-6.850000e-01;
+  const double mu_log_ip_bin_boundary4 =-1.850000e-01;
+
+  const double k_pid_k_bin_boundary1 = 1.250000e+01;
+  const double k_pid_k_bin_boundary2 = 2.050000e+01;
+  const double k_pid_k_bin_boundary3 = 2.750000e+01;
+  const double k_pid_k_bin_boundary4 = 3.850000e+01;
+
+  const double pi_pid_k_bin_boundary1 = -4.050000e+01;
+  const double pi_pid_k_bin_boundary2 = -2.550000e+01;
+  const double pi_pid_k_bin_boundary3 = -1.450000e+01;
+  const double pi_pid_k_bin_boundary4 = -5.500000e+00;
+
+  //pid boundaries
+
+  //
   const double d0_pdg_ct = 0.1229;//mm
   
 };
@@ -1683,6 +1754,131 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   mu_mass_p_bin5 = new TH1D(name+"_dt_hist_mu_m_p_bin5","", 500, 2000,2025);
   mu_mass_p_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_p_bin5->GetBinWidth(1)));
 
+  //log ip
+  
+  mu_log_ip_bin1 = new TH1D(name+"_dt_hist_mu_log_ip_bin1","", 500, 2000,2025);
+  mu_log_ip_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_log_ip_bin1->GetBinWidth(1)));
+
+  mu_log_ip_bin2 = new TH1D(name+"_dt_hist_mu_log_ip_bin2","", 500, 2000,2025);
+  mu_log_ip_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_log_ip_bin2->GetBinWidth(1)));
+
+  mu_log_ip_bin3 = new TH1D(name+"_dt_hist_mu_log_ip_bin3","", 500, 2000,2025);
+  mu_log_ip_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_log_ip_bin3->GetBinWidth(1)));
+
+  mu_log_ip_bin4 = new TH1D(name+"_dt_hist_mu_log_ip_bin4","", 500, 2000,2025);
+  mu_log_ip_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_log_ip_bin4->GetBinWidth(1)));
+  
+  mu_log_ip_bin5 = new TH1D(name+"_dt_hist_mu_log_ip_bin5","", 500, 2000,2025);
+  mu_log_ip_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_log_ip_bin5->GetBinWidth(1)));
+
+  //k pid k  
+  k_pid_k_bin1 = new TH1D(name+"_dt_hist_k_pid_k_bin1","", 500, 2000,2025);
+  k_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",k_pid_k_bin1->GetBinWidth(1)));
+
+  k_pid_k_bin2 = new TH1D(name+"_dt_hist_k_pid_k_bin2","", 500, 2000,2025);
+  k_pid_k_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",k_pid_k_bin2->GetBinWidth(1)));
+
+  k_pid_k_bin3 = new TH1D(name+"_dt_hist_k_pid_k_bin3","", 500, 2000,2025);
+  k_pid_k_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",k_pid_k_bin3->GetBinWidth(1)));
+
+  k_pid_k_bin4 = new TH1D(name+"_dt_hist_k_pid_k_bin4","", 500, 2000,2025);
+  k_pid_k_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",k_pid_k_bin4->GetBinWidth(1)));
+  
+  k_pid_k_bin5 = new TH1D(name+"_dt_hist_k_pid_k_bin5","", 500, 2000,2025);
+  k_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",k_pid_k_bin5->GetBinWidth(1)));
+
+    //k pid k  
+  pi_pid_k_bin1 = new TH1D(name+"_dt_hist_pi_pid_k_bin1","", 500, 2000,2025);
+  pi_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin1->GetBinWidth(1)));
+
+  pi_pid_k_bin2 = new TH1D(name+"_dt_hist_pi_pid_k_bin2","", 500, 2000,2025);
+  pi_pid_k_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin2->GetBinWidth(1)));
+
+  pi_pid_k_bin3 = new TH1D(name+"_dt_hist_pi_pid_k_bin3","", 500, 2000,2025);
+  pi_pid_k_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin3->GetBinWidth(1)));
+
+  pi_pid_k_bin4 = new TH1D(name+"_dt_hist_pi_pid_k_bin4","", 500, 2000,2025);
+  pi_pid_k_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin4->GetBinWidth(1)));
+  
+  pi_pid_k_bin5 = new TH1D(name+"_dt_hist_pi_pid_k_bin5","", 500, 2000,2025);
+  pi_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin5->GetBinWidth(1)));
+
+  //5x5 pid matrix
+  //bin1, binx
+  pi_pid_k_bin1_k_pid_k_bin1 = new TH1D(name+"_dt_hist_pi_pid_k_bin1_k_pid_k_bin1","", 500, 2000,2025);
+  pi_pid_k_bin1_k_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin1_k_pid_k_bin1->GetBinWidth(1)));
+
+  pi_pid_k_bin1_k_pid_k_bin2 = new TH1D(name+"_dt_hist_pi_pid_k_bin1_k_pid_k_bin2","", 500, 2000,2025);
+  pi_pid_k_bin1_k_pid_k_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin1_k_pid_k_bin2->GetBinWidth(1)));
+  
+  pi_pid_k_bin1_k_pid_k_bin3 = new TH1D(name+"_dt_hist_pi_pid_k_bin1_k_pid_k_bin3","", 500, 2000,2025);
+  pi_pid_k_bin1_k_pid_k_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin1_k_pid_k_bin3->GetBinWidth(1)));
+  
+  pi_pid_k_bin1_k_pid_k_bin4 = new TH1D(name+"_dt_hist_pi_pid_k_bin1_k_pid_k_bin4","", 500, 2000,2025);
+  pi_pid_k_bin1_k_pid_k_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin1_k_pid_k_bin4->GetBinWidth(1)));
+  
+  pi_pid_k_bin1_k_pid_k_bin5 = new TH1D(name+"_dt_hist_pi_pid_k_bin1_k_pid_k_bin5","", 500, 2000,2025);
+  pi_pid_k_bin1_k_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin1_k_pid_k_bin5->GetBinWidth(1)));
+  //bin 2, binx
+  pi_pid_k_bin2_k_pid_k_bin1 = new TH1D(name+"_dt_hist_pi_pid_k_bin2_k_pid_k_bin1","", 500, 2000,2025);
+  pi_pid_k_bin2_k_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin2_k_pid_k_bin1->GetBinWidth(1)));
+
+  pi_pid_k_bin2_k_pid_k_bin2 = new TH1D(name+"_dt_hist_pi_pid_k_bin2_k_pid_k_bin2","", 500, 2000,2025);
+  pi_pid_k_bin2_k_pid_k_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin2_k_pid_k_bin2->GetBinWidth(1)));
+  
+  pi_pid_k_bin2_k_pid_k_bin3 = new TH1D(name+"_dt_hist_pi_pid_k_bin2_k_pid_k_bin3","", 500, 2000,2025);
+  pi_pid_k_bin2_k_pid_k_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin2_k_pid_k_bin3->GetBinWidth(1)));
+  
+  pi_pid_k_bin2_k_pid_k_bin4 = new TH1D(name+"_dt_hist_pi_pid_k_bin2_k_pid_k_bin4","", 500, 2000,2025);
+  pi_pid_k_bin2_k_pid_k_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin2_k_pid_k_bin4->GetBinWidth(1)));
+  
+  pi_pid_k_bin2_k_pid_k_bin5 = new TH1D(name+"_dt_hist_pi_pid_k_bin2_k_pid_k_bin5","", 500, 2000,2025);
+  pi_pid_k_bin2_k_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin2_k_pid_k_bin5->GetBinWidth(1)));
+  //bin3, binx
+  pi_pid_k_bin3_k_pid_k_bin1 = new TH1D(name+"_dt_hist_pi_pid_k_bin3_k_pid_k_bin1","", 500, 2000,2025);
+  pi_pid_k_bin3_k_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin3_k_pid_k_bin1->GetBinWidth(1)));
+
+  pi_pid_k_bin3_k_pid_k_bin2 = new TH1D(name+"_dt_hist_pi_pid_k_bin3_k_pid_k_bin2","", 500, 2000,2025);
+  pi_pid_k_bin3_k_pid_k_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin3_k_pid_k_bin2->GetBinWidth(1)));
+  
+  pi_pid_k_bin3_k_pid_k_bin3 = new TH1D(name+"_dt_hist_pi_pid_k_bin3_k_pid_k_bin3","", 500, 2000,2025);
+  pi_pid_k_bin3_k_pid_k_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin3_k_pid_k_bin3->GetBinWidth(1)));
+  
+  pi_pid_k_bin3_k_pid_k_bin4 = new TH1D(name+"_dt_hist_pi_pid_k_bin3_k_pid_k_bin4","", 500, 2000,2025);
+  pi_pid_k_bin3_k_pid_k_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin3_k_pid_k_bin4->GetBinWidth(1)));
+  
+  pi_pid_k_bin3_k_pid_k_bin5 = new TH1D(name+"_dt_hist_pi_pid_k_bin3_k_pid_k_bin5","", 500, 2000,2025);
+  pi_pid_k_bin3_k_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin3_k_pid_k_bin5->GetBinWidth(1)));
+  //bin 4, binx
+  pi_pid_k_bin4_k_pid_k_bin1 = new TH1D(name+"_dt_hist_pi_pid_k_bin4_k_pid_k_bin1","", 500, 2000,2025);
+  pi_pid_k_bin4_k_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin4_k_pid_k_bin1->GetBinWidth(1)));
+
+  pi_pid_k_bin4_k_pid_k_bin2 = new TH1D(name+"_dt_hist_pi_pid_k_bin4_k_pid_k_bin2","", 500, 2000,2025);
+  pi_pid_k_bin4_k_pid_k_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin4_k_pid_k_bin2->GetBinWidth(1)));
+  
+  pi_pid_k_bin4_k_pid_k_bin3 = new TH1D(name+"_dt_hist_pi_pid_k_bin4_k_pid_k_bin3","", 500, 2000,2025);
+  pi_pid_k_bin4_k_pid_k_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin4_k_pid_k_bin3->GetBinWidth(1)));
+  
+  pi_pid_k_bin4_k_pid_k_bin4 = new TH1D(name+"_dt_hist_pi_pid_k_bin4_k_pid_k_bin4","", 500, 2000,2025);
+  pi_pid_k_bin4_k_pid_k_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin4_k_pid_k_bin4->GetBinWidth(1)));
+  
+  pi_pid_k_bin4_k_pid_k_bin5 = new TH1D(name+"_dt_hist_pi_pid_k_bin4_k_pid_k_bin5","", 500, 2000,2025);
+  pi_pid_k_bin4_k_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin4_k_pid_k_bin5->GetBinWidth(1)));
+  //bin 5, binx
+  pi_pid_k_bin5_k_pid_k_bin1 = new TH1D(name+"_dt_hist_pi_pid_k_bin5_k_pid_k_bin1","", 500, 2000,2025);
+  pi_pid_k_bin5_k_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin5_k_pid_k_bin1->GetBinWidth(1)));
+
+  pi_pid_k_bin5_k_pid_k_bin2 = new TH1D(name+"_dt_hist_pi_pid_k_bin5_k_pid_k_bin2","", 500, 2000,2025);
+  pi_pid_k_bin5_k_pid_k_bin2->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin5_k_pid_k_bin2->GetBinWidth(1)));
+  
+  pi_pid_k_bin5_k_pid_k_bin3 = new TH1D(name+"_dt_hist_pi_pid_k_bin5_k_pid_k_bin3","", 500, 2000,2025);
+  pi_pid_k_bin5_k_pid_k_bin3->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin5_k_pid_k_bin3->GetBinWidth(1)));
+  
+  pi_pid_k_bin5_k_pid_k_bin4 = new TH1D(name+"_dt_hist_pi_pid_k_bin5_k_pid_k_bin4","", 500, 2000,2025);
+  pi_pid_k_bin5_k_pid_k_bin4->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin5_k_pid_k_bin4->GetBinWidth(1)));
+  
+  pi_pid_k_bin5_k_pid_k_bin5 = new TH1D(name+"_dt_hist_pi_pid_k_bin5_k_pid_k_bin5","", 500, 2000,2025);
+  pi_pid_k_bin5_k_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin5_k_pid_k_bin5->GetBinWidth(1)));
   //here
   b_mass_plot = new TH1D(name+"_dt_hist_b_m","", 400, 2500,6500);
   b_mass_plot->SetTitle(Form("m(D^{*+}#mu^{-}); m(D^{*+}#mu^{-})[MeV]; Entries / %.2f",b_mass_plot->GetBinWidth(1)));
@@ -1703,7 +1899,13 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   mu_p = new TH1D(name+"_mu_p","",1000,0,200000);
   mu_p->SetTitle(Form("p(#mu);p(#mu)[MeV];Entries / %.2f MeV",mu_pt->GetBinWidth(1)));
   
-  
+  mu_log_ip = new TH1D(name+"_mu_log_ip","",1000,-5,5);
+  mu_log_ip->SetTitle(Form("#mu log(IP);log(#mu(IP));Entries / %.2f",mu_log_ip->GetBinWidth(1)));
+
+  dst_mass_vs_kpidk = new TH2D(name+"_dst_mass_vs_k_pidk","",158,2,160,500,2000,2025);
+  dst_mass_vs_kpidk->SetTitle("m(D*) vs K pidK;K pid K; m(D*)[MeV]");
+  dst_mass_vs_pipidk = new TH2D(name+"_dst_mass_vs_pi_pidk","",192,-190,2,500,2000,2025);
+  dst_mass_vs_pipidk->SetTitle("m(D*) vs #pi pidK;#pi pid K; m(D*)[MeV]");
 }
 
 DT_D0_mix_CPV::~DT_D0_mix_CPV()

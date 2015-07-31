@@ -54,6 +54,7 @@ using namespace std;
 using namespace PlottingTools;
 
 int main(int argc, char* const argv[]){
+  int nSysts = 5;
   cout<<"**************"<<endl;
   cout<<"Code for processing mike's time integrated systematics"<<endl;
   cout<<"**************"<<endl;
@@ -74,29 +75,33 @@ int main(int argc, char* const argv[]){
 
   TH1D* mu_pt_tot = (TH1D*)f1->Get("RS_mu_pt");
   TH1D* mu_p_tot = (TH1D*)f1->Get("RS_mu_p");
-
+  TH1D* mu_log_ip_tot = (TH1D*)f1->Get("RS_mu_log_ip");
 
   dst_pt_tot->Sumw2();
   dst_p_tot->Sumw2();
 
   mu_pt_tot->Sumw2();
   mu_p_tot->Sumw2();
+  mu_log_ip_tot->Sumw2();
 
   TH1D* dst_ss_pt_tot = (TH1D*)f1->Get("RS_dstar_pt");
   TH1D* dst_ss_p_tot = (TH1D*)f1->Get("RS_dstar_p");
 
   TH1D* mu_ss_pt_tot = (TH1D*)f1->Get("RS_ss_mu_pt");
   TH1D* mu_ss_p_tot = (TH1D*)f1->Get("RS_ss_mu_p");
+  TH1D* mu_ss_log_ip_tot = (TH1D*)f1->Get("RS_ss_mu_log_ip");
 
   dst_pt_tot->Add(dst_ss_pt_tot,-1);
   dst_p_tot->Add(dst_ss_p_tot,-1);
   mu_pt_tot->Add(mu_ss_pt_tot,-1);
   mu_p_tot->Add(mu_ss_p_tot,-1);
+  mu_log_ip_tot->Add(mu_ss_log_ip_tot,-1);
   //now, get the means in the bin ranges.
   double dst_pt_mean_dstar_mass_pos[5];
   double dst_p_mean_dstar_mass_pos[5];
   double mu_pt_mean_dstar_mass_pos[5];
   double mu_p_mean_dstar_mass_pos[5];
+  double mu_log_ip_mean_dstar_mass_pos[5];
 
 
   
@@ -122,7 +127,7 @@ int main(int argc, char* const argv[]){
   dst_pt_mean_dstar_mass_pos[4]=dst_pt_tot->GetMean();
   dst_pt_tot->GetXaxis()->SetRange();
 
-    int dst_p_bin_range[6]={1,179,230,294,400,dst_p_tot->GetNbinsX()};
+  int dst_p_bin_range[6]={1,179,230,294,400,dst_p_tot->GetNbinsX()};
   dst_p_tot->GetXaxis()->SetRange(1,179);
   dst_p_mean_dstar_mass_pos[0]=dst_p_tot->GetMean();
   dst_p_tot->GetXaxis()->SetRange();
@@ -184,10 +189,33 @@ int main(int argc, char* const argv[]){
   mu_p_tot->GetXaxis()->SetRange(326,mu_p_tot->GetNbinsX());
   mu_p_mean_dstar_mass_pos[4]=mu_p_tot->GetMean();
   mu_p_tot->GetXaxis()->SetRange();
+  //muon ip
+    
+  int mu_log_ip_bin_range[6]={1,342,389,432,482,mu_log_ip_tot->GetNbinsX()};
+  mu_log_ip_tot->GetXaxis()->SetRange(1,342);
+  mu_log_ip_mean_dstar_mass_pos[0]=mu_log_ip_tot->GetMean();
+  mu_log_ip_tot->GetXaxis()->SetRange();
+  
+  mu_log_ip_tot->GetXaxis()->SetRange(342,389);
+  mu_log_ip_mean_dstar_mass_pos[1]=mu_log_ip_tot->GetMean();
+  mu_log_ip_tot->GetXaxis()->SetRange();
+
+  mu_log_ip_tot->GetXaxis()->SetRange(389,432);
+  mu_log_ip_mean_dstar_mass_pos[2]=mu_log_ip_tot->GetMean();
+  mu_log_ip_tot->GetXaxis()->SetRange();
+
+  mu_log_ip_tot->GetXaxis()->SetRange(432,482);
+  mu_log_ip_mean_dstar_mass_pos[3]=mu_log_ip_tot->GetMean();
+  mu_log_ip_tot->GetXaxis()->SetRange();
+
+  mu_log_ip_tot->GetXaxis()->SetRange(482,mu_log_ip_tot->GetNbinsX());
+  mu_log_ip_mean_dstar_mass_pos[4]=mu_log_ip_tot->GetMean();
+  mu_log_ip_tot->GetXaxis()->SetRange();
+
   //first, get the distributions
   //  return 0;
-  std::vector<TH1D*> rs_dst_pt_bins, rs_dst_p_bins,rs_mu_pt_bins,rs_mu_p_bins;
-  std::vector<TH1D*> rs_ss_dst_pt_bins, rs_ss_dst_p_bins,rs_ss_mu_pt_bins,rs_ss_mu_p_bins;
+  std::vector<TH1D*> rs_dst_pt_bins, rs_dst_p_bins,rs_mu_pt_bins,rs_mu_p_bins,rs_mu_log_ip_bins;
+  std::vector<TH1D*> rs_ss_dst_pt_bins, rs_ss_dst_p_bins,rs_ss_mu_pt_bins,rs_ss_mu_p_bins,rs_ss_mu_log_ip_bins;
   double dst_pt_dmeans[5];
   double dst_pt_dmeans_err[5];
   double dst_p_dmeans[5];
@@ -197,6 +225,8 @@ int main(int argc, char* const argv[]){
   double mu_pt_dmeans_err[5];
   double mu_p_dmeans[5];
   double mu_p_dmeans_err[5];
+  double mu_log_ip_dmeans[5];
+  double mu_log_ip_dmeans_err[5];
 
   double dst_pt_rwidths[5];
   double dst_pt_rwidths_err[5];
@@ -207,6 +237,8 @@ int main(int argc, char* const argv[]){
   double mu_pt_rwidths_err[5];
   double mu_p_rwidths[5];
   double mu_p_rwidths_err[5];
+  double mu_log_ip_rwidths[5];
+  double mu_log_ip_rwidths_err[5];
 
 
   
@@ -216,33 +248,39 @@ int main(int argc, char* const argv[]){
     rs_dst_p_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_dt_hist_dstar_m_p_bin%d",i)))->Clone(Form("rs_dst_p_bin%d",i)));
     rs_mu_pt_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_dt_hist_mu_m_pt_bin%d",i)))->Clone(Form("rs_mu_pt_bin%d",i)));
     rs_mu_p_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_dt_hist_mu_m_p_bin%d",i)))->Clone(Form("rs_mu_p_bin%d",i)));
+     rs_mu_log_ip_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_dt_hist_mu_log_ip_bin%d",i)))->Clone(Form("rs_mu_log_ip_bin%d",i)));
 
     rs_ss_dst_pt_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_ss_dt_hist_dstar_m_pt_bin%d",i)))->Clone(Form("rs_ss_dst_pt_bin%d",i)));
     rs_ss_dst_p_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_ss_dt_hist_dstar_m_p_bin%d",i)))->Clone(Form("rs_ss_dst_p_bin%d",i)));
     rs_ss_mu_pt_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_ss_dt_hist_mu_m_pt_bin%d",i)))->Clone(Form("rs_ss_mu_pt_bin%d",i)));
     rs_ss_mu_p_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_ss_dt_hist_mu_m_p_bin%d",i)))->Clone(Form("rs_ss_mu_p_bin%d",i)));
+    rs_ss_mu_log_ip_bins.push_back((TH1D*)((TH1D*)f1->Get(Form("RS_ss_dt_hist_mu_log_ip_bin%d",i)))->Clone(Form("rs_ss_mu_log_ip_bin%d",i)));
     
   }
   cout<<"double check, rs_dst_pt_bins[0]->Integral()="<<rs_dst_pt_bins[0]->Integral()<<endl;
   cout<<"double check, rs_dst_p_bins[0]->Integral()="<<rs_dst_p_bins[0]->Integral()<<endl;
   cout<<"double check, rs_mu_pt_bins[0]->Integral()="<<rs_mu_pt_bins[0]->Integral()<<endl;
   cout<<"double check, rs_mu_p_bins[0]->Integral()="<<rs_mu_p_bins[0]->Integral()<<endl;
+  cout<<"double check, rs_mu_log_ip_bins[0]->Integral()="<<rs_mu_log_ip_bins[0]->Integral()<<endl;
 
   cout<<"double check, rs_ss_dst_pt_bins[0]->Integral()="<<rs_ss_dst_pt_bins[0]->Integral()<<endl;
   cout<<"double check, rs_ss_dst_p_bins[0]->Integral()="<<rs_ss_dst_p_bins[0]->Integral()<<endl;
   cout<<"double check, rs_ss_mu_pt_bins[0]->Integral()="<<rs_ss_mu_pt_bins[0]->Integral()<<endl;
   cout<<"double check, rs_ss_mu_p_bins[0]->Integral()="<<rs_ss_mu_p_bins[0]->Integral()<<endl;
+  cout<<"double check, rs_ss_mu_log_ip_bins[0]->Integral()="<<rs_ss_mu_log_ip_bins[0]->Integral()<<endl;
   //now subtract the SS from the OS
   for(int i=0; i<5;++i){
     rs_dst_pt_bins[i]->Sumw2();
     rs_dst_p_bins[i]->Sumw2();
     rs_mu_pt_bins[i]->Sumw2();
     rs_mu_p_bins[i]->Sumw2();
+    rs_mu_log_ip_bins[i]->Sumw2();
     //
     rs_dst_pt_bins[i]->Add(rs_ss_dst_pt_bins[i],-1);
     rs_dst_p_bins[i]->Add(rs_ss_dst_p_bins[i],-1);
     rs_mu_pt_bins[i]->Add(rs_ss_mu_pt_bins[i],-1);
     rs_mu_p_bins[i]->Add(rs_ss_mu_p_bins[i],-1);
+    rs_mu_log_ip_bins[i]->Add(rs_ss_mu_log_ip_bins[i],-1);
   }
   //now do the fits.
   TFile *f2 = TFile::Open(argv[2]);
@@ -261,21 +299,24 @@ int main(int argc, char* const argv[]){
   massFit* fits_dst_p[5];
   massFit* fits_mu_pt[5];
   massFit* fits_mu_p[5];
-
+  massFit* fits_mu_log_ip[5];
+  
   double errXlow_mean_dst_pt[5],errXhi_mean_dst_pt[5];
   double errXlow_mean_dst_p[5],errXhi_mean_dst_p[5];
   double errXlow_mean_mu_pt[5],errXhi_mean_mu_pt[5];
   double errXlow_mean_mu_p[5],errXhi_mean_mu_p[5];
+  double errXlow_mean_mu_log_ip[5],errXhi_mean_mu_log_ip[5];
   double dst_p_yield[5];
   double dst_pt_yield[5];
   double mu_p_yield[5];
   double mu_pt_yield[5];
+  double mu_log_ip_yield[5];
   double dst_p_yield_err[5];
   double dst_pt_yield_err[5];
   double mu_p_yield_err[5];
   double mu_pt_yield_err[5];
-
-  
+  double mu_log_ip_yield_err[5];
+ 
   for(int i=0; i<5;++i){
     //dst pt
     cout<<"==========================="<<endl;
@@ -365,6 +406,28 @@ int main(int argc, char* const argv[]){
     mu_p_yield[i] = fits_mu_p[i]->getNsig();
     mu_p_yield_err[i] = fits_mu_p[i]->getNsigErr(); 
   }
+  for(int i=0; i<5;++i){
+     //mu log_ip
+    cout<<"==========================="<<endl;
+    cout<<"mu log_ip bin "<<i+1<<endl;
+    cout<<"==========================="<<endl;
+    fits_mu_log_ip[i] = new massFit(Form("rs_mu_log_ip_bin%d",i+1),"j3g",w);
+    fits_mu_log_ip[i]->setData(rs_mu_log_ip_bins[i]);
+    fits_mu_log_ip[i]->FloatMeanWidth();
+    fits_mu_log_ip[i]->fit();
+    fits_mu_log_ip[i]->savePlots(true,channelFromFile+Form("mu_log_ip_bin%d",i+1));
+    
+    mu_log_ip_dmeans[i]=fits_mu_log_ip[i]->getDMean();
+    mu_log_ip_dmeans_err[i]=fits_mu_log_ip[i]->getDMeanErr();
+    
+    mu_log_ip_rwidths[i]=fits_mu_log_ip[i]->getrSigma()*100.;
+    mu_log_ip_rwidths_err[i]=fits_mu_log_ip[i]->getrSigmaErr()*100.;
+
+    errXlow_mean_mu_log_ip[i]=mu_log_ip_mean_dstar_mass_pos[i] - mu_log_ip_tot->GetBinCenter(mu_log_ip_bin_range[i]);// mean- low bin edge
+    errXhi_mean_mu_log_ip[i]=mu_log_ip_tot->GetBinCenter(mu_log_ip_bin_range[i+1])-mu_log_ip_mean_dstar_mass_pos[i] ;//  hi bin edge - mean
+    mu_log_ip_yield[i] = fits_mu_log_ip[i]->getNsig();
+    mu_log_ip_yield_err[i] = fits_mu_log_ip[i]->getNsigErr(); 
+  }
   //now make a TGraphErrs out of the bins.
   TGraphAsymmErrors dst_dmean_vs_pt_graph(5,dst_pt_mean_dstar_mass_pos,dst_pt_dmeans,errXlow_mean_dst_pt,errXhi_mean_dst_pt,dst_pt_dmeans_err,dst_pt_dmeans_err);
   dst_dmean_vs_pt_graph.SetTitle(";p_{T}(D^{*})[MeV]; #delta #mu(D^{*}) fit [MeV]");
@@ -440,6 +503,25 @@ int main(int argc, char* const argv[]){
   mu_rsigma_vs_p_graph.Draw("ap");
   cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+channelFromFile+"_dstar_rsigma_vs_mu_p_graph.pdf");
 
+    //log_ip
+  TGraphAsymmErrors mu_dmean_vs_log_ip_graph(5,mu_log_ip_mean_dstar_mass_pos,mu_log_ip_dmeans,errXlow_mean_mu_log_ip,errXhi_mean_mu_log_ip,mu_log_ip_dmeans_err,mu_log_ip_dmeans_err);
+  mu_dmean_vs_log_ip_graph.SetTitle(";log ip(#mu); #delta #mu(#mu) fit [MeV]");
+  mu_dmean_vs_log_ip_graph.SetMarkerStyle(22);
+  mu_dmean_vs_log_ip_graph.SetMarkerColor(kGreen+2);
+  mu_dmean_vs_log_ip_graph.SetLineColor(kGreen+2);
+  cc->Clear();
+  mu_dmean_vs_log_ip_graph.Draw("ap");
+  cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+channelFromFile+"_dstar_dmean_vs_mu_log_ip_graph.pdf");
+  //rsigma
+    TGraphAsymmErrors mu_rsigma_vs_log_ip_graph(5,mu_log_ip_mean_dstar_mass_pos,mu_log_ip_rwidths,errXlow_mean_mu_log_ip,errXhi_mean_mu_log_ip,mu_log_ip_rwidths_err,mu_log_ip_rwidths_err);
+  mu_rsigma_vs_log_ip_graph.SetTitle(";log ip(#mu)[MeV]; #delta #sigma(#mu) fit [%%]");
+  mu_rsigma_vs_log_ip_graph.SetMarkerStyle(22);
+  mu_rsigma_vs_log_ip_graph.SetMarkerColor(kGreen+2);
+  mu_rsigma_vs_log_ip_graph.SetLineColor(kGreen+2);
+  cc->Clear();
+  mu_rsigma_vs_log_ip_graph.Draw("ap");
+  cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+channelFromFile+"_dstar_rsigma_vs_mu_log_ip_graph.pdf");
+
 
   //now draw the bins all on top of each other.
   rs_dst_pt_bins[0]->SetLineColor(kBlue);
@@ -466,11 +548,19 @@ int main(int argc, char* const argv[]){
   rs_mu_p_bins[3]->SetLineColor(kOrange);
   rs_mu_p_bins[4]->SetLineColor(kRed);
 
+  //log_ip
+  rs_mu_log_ip_bins[0]->SetLineColor(kBlue);
+  rs_mu_log_ip_bins[1]->SetLineColor(kGreen+2);
+  rs_mu_log_ip_bins[2]->SetLineColor(kMagenta);
+  rs_mu_log_ip_bins[3]->SetLineColor(kOrange);
+  rs_mu_log_ip_bins[4]->SetLineColor(kRed);
+
   //make the legend;
   TLegend * leg_dst_p = new TLegend(0.7,0.6,0.9,0.9);
   TLegend * leg_dst_pt = new TLegend(0.7,0.6,0.9,0.9);
   TLegend * leg_mu_p = new TLegend(0.7,0.6,0.9,0.9);
   TLegend * leg_mu_pt = new TLegend(0.7,0.6,0.9,0.9);
+  TLegend * leg_mu_log_ip = new TLegend(0.7,0.6,0.9,0.9);
   //
   leg_dst_pt->AddEntry(rs_dst_pt_bins[0],Form("p_{T}(D*)<%.1f",2.13e3));
   leg_dst_pt->AddEntry(rs_dst_pt_bins[1],Form("%.1f#leq p_{T}(D*)<%.1f",2.13e3,2.95e3));
@@ -533,15 +623,30 @@ int main(int argc, char* const argv[]){
   cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+channelFromFile+"_dstar_mass_mu_p_bins.pdf");
   cc->Clear();
 
+  leg_mu_log_ip->AddEntry(rs_mu_log_ip_bins[0],Form("log ip(#mu)<%.1f",3.57e4));
+  leg_mu_log_ip->AddEntry(rs_mu_log_ip_bins[1],Form("%.1f#leq log ip(#mu)<%.1f",3.57e4,4.59e4));
+  leg_mu_log_ip->AddEntry(rs_mu_log_ip_bins[2],Form("%.1f#leq log ip(#mu)<%.1f",4.59e4,5.87e4));
+  leg_mu_log_ip->AddEntry(rs_mu_log_ip_bins[3],Form("%.1f#leq log ip(#mu)<%.1f",5.87e4,7.99e4));
+  leg_mu_log_ip->AddEntry(rs_mu_log_ip_bins[4],Form("log ip(#mu)#geq %.1f",7.99e4));
+  cc->Clear();
+  rs_mu_log_ip_bins[0]->Draw();
+  for(int i=1;i<5;++i){
+    rs_mu_log_ip_bins[i]->Draw("same");
+  }
+  leg_mu_log_ip->Draw();
+  cc->SetLogy(true);
+  cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+channelFromFile+"_dstar_mass_mu_log_ip_bins.pdf");
+  cc->Clear();
+
 
   //now, take the results of the fits and combine them to see if the yields are insensitive to changes
 
-  double points[4] = {0,0,0,0};
-  double points_err[4] = {0,0,0,0};
+  double points[5] = {0,0,0,0,0};
+  double points_err[5] = {0,0,0,0,0};
   cout<<"------------------------------------------"<<endl;
   cout<<"------------------------------------------"<<endl;
   cout<<"------------------------------------------"<<endl;
-  cout<<"bin"<<setw(10)<<"D p"<<setw(10)<<"D pt"<<setw(10)<<"mu p"<<setw(10)<<"mu pt"<<endl;
+  cout<<"bin"<<setw(10)<<"D p"<<setw(10)<<"D pt"<<setw(10)<<"mu p"<<setw(10)<<"mu pt"<<setw(10)<<"mu log ip"<<endl;
   for(int i=0; i<5;++i){
     points[0] += dst_p_yield[i];
     points_err[0]+=dst_p_yield_err[i]*dst_p_yield_err[i];
@@ -551,13 +656,15 @@ int main(int argc, char* const argv[]){
     points_err[2]+=mu_p_yield_err[i]*mu_p_yield_err[i];
     points[3] += mu_pt_yield[i];
     points_err[3]+=mu_pt_yield_err[i]*mu_pt_yield_err[i];
-    cout<<i<<setw(10)<<dst_p_yield[i]<<setw(10)<<dst_pt_yield[i]<<setw(10)<<mu_p_yield[i]<<setw(10)<<mu_pt_yield[i]<<endl;
+    points[4] += mu_log_ip_yield[i];
+    points_err[4]+=mu_log_ip_yield_err[i]*mu_log_ip_yield_err[i];
+    cout<<i<<setw(10)<<dst_p_yield[i]<<setw(10)<<dst_pt_yield[i]<<setw(10)<<mu_p_yield[i]<<setw(10)<<mu_pt_yield[i]<<setw(10)<<mu_log_ip_yield[i]<<endl;
   }
   cout<<"------------------------------------------"<<endl;
   cout<<"------------------------------------------"<<endl;
   cout<<"------------------------------------------"<<endl;
-  TH1D* the_final_comp = new TH1D("the_final_comp","; ;N Signal (D^*)",4,0.5,4.5);
-  for(int i=0; i<4;++i){
+  TH1D* the_final_comp = new TH1D("the_final_comp","; ;N Signal (D^*)",5,0.5,5.5);
+  for(int i=0; i<5;++i){
     cout<<"points["<<i<<"] = "<<points[i]<< endl;
     points_err[i] = TMath::Sqrt(points_err[i]);
     cout<<"points_err["<<i<<"] = "<<points_err[i]<<endl;
@@ -567,8 +674,8 @@ int main(int argc, char* const argv[]){
   }
 
   
-  TString the_labels[4] ={"p(D*)","p_{T}(D*)","p(#mu)","p_{T}(#mu)"};
-  for(int i=0; i<4;++i){
+  TString the_labels[5] ={"p(D*)","p_{T}(D*)","p(#mu)","p_{T}(#mu)","log(IP(#mu))"};
+  for(int i=0; i<5;++i){
     the_final_comp->GetXaxis()->SetBinLabel(i+1,the_labels[i]);
    }
   //get the fit from the total sample.
@@ -600,8 +707,8 @@ int main(int argc, char* const argv[]){
   the_final_comp->Draw("e");
   //shade->Draw("fsame");
   centr_val->Draw();
-  centr_val_hi->Draw();
-  centr_val_lo->Draw();
+  //  centr_val_hi->Draw();
+  //  centr_val_lo->Draw();
   cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+channelFromFile+"_total_yield_systematic_check.pdf");
   f1->Close();
   f2->Close();

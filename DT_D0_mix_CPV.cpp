@@ -241,7 +241,11 @@ void DT_D0_mix_CPV::Loop()
     double mupt = mu_from_b.Pt()*1e3;
     mu_pt->Fill(mupt);
     mu_p->Fill(mup);
+    mu_log_ip->Fill(log(Mu_IP_OWNPV));
 
+    //pid stuff
+    dst_mass_vs_kpidk->Fill(K_PIDK,dstm);
+    dst_mass_vs_pipidk->Fill(Pd_PIDK,dstm);
     //dstar pt
     if(dstpt<dst_pt_bin_boundary1){dstar_mass_pt_bin1->Fill(dstm);}
     else if(dstpt>=dst_pt_bin_boundary1 && dstpt < dst_pt_bin_boundary2){dstar_mass_pt_bin2->Fill(dstm);}
@@ -268,7 +272,77 @@ void DT_D0_mix_CPV::Loop()
     else if(mup>=mu_p_bin_boundary2 && mup < mu_p_bin_boundary3){mu_mass_p_bin3->Fill(dstm);}
     else if(mup>=mu_p_bin_boundary3 && mup < mu_p_bin_boundary4){mu_mass_p_bin4->Fill(dstm);}
     else{mu_mass_p_bin5->Fill(dstm);}
+    //log ip
+    if(log(Mu_IP_OWNPV)<mu_log_ip_bin_boundary1){mu_log_ip_bin1->Fill(dstm);}
+    else if(log(Mu_IP_OWNPV)>=mu_log_ip_bin_boundary1 && log(Mu_IP_OWNPV) < mu_log_ip_bin_boundary2){mu_log_ip_bin2->Fill(dstm);}
+    else if(log(Mu_IP_OWNPV)>=mu_log_ip_bin_boundary2 && log(Mu_IP_OWNPV) < mu_log_ip_bin_boundary3){mu_log_ip_bin3->Fill(dstm);}
+    else if(log(Mu_IP_OWNPV)>=mu_log_ip_bin_boundary3 && log(Mu_IP_OWNPV) < mu_log_ip_bin_boundary4){mu_log_ip_bin4->Fill(dstm);}
+    else{mu_log_ip_bin5->Fill(dstm);}
 
+    //kpidk alone
+    
+    if(K_PIDK<k_pid_k_bin_boundary1){k_pid_k_bin1->Fill(dstm);}
+    else if(K_PIDK>=k_pid_k_bin_boundary1 && K_PIDK < k_pid_k_bin_boundary2){k_pid_k_bin2->Fill(dstm);}
+    else if(K_PIDK>=k_pid_k_bin_boundary2 && K_PIDK < k_pid_k_bin_boundary3){k_pid_k_bin3->Fill(dstm);}
+    else if(K_PIDK>=k_pid_k_bin_boundary3 && K_PIDK < k_pid_k_bin_boundary4){k_pid_k_bin4->Fill(dstm);}
+    else{k_pid_k_bin5->Fill(dstm);}
+
+    //pi pid k alone
+    
+    if(Pd_PIDK<pi_pid_k_bin_boundary1){pi_pid_k_bin1->Fill(dstm);}
+    else if(Pd_PIDK>=pi_pid_k_bin_boundary1 && Pd_PIDK < pi_pid_k_bin_boundary2){pi_pid_k_bin2->Fill(dstm);}
+    else if(Pd_PIDK>=pi_pid_k_bin_boundary2 && Pd_PIDK < pi_pid_k_bin_boundary3){pi_pid_k_bin3->Fill(dstm);}
+    else if(Pd_PIDK>=pi_pid_k_bin_boundary3 && Pd_PIDK < pi_pid_k_bin_boundary4){pi_pid_k_bin4->Fill(dstm);}
+    else{pi_pid_k_bin5->Fill(dstm);}
+
+    std::vector<bool>kpid_bins,pipid_bins;
+    kpid_bins.push_back(K_PIDK<k_pid_k_bin_boundary1);
+    kpid_bins.push_back(K_PIDK>=k_pid_k_bin_boundary1 && K_PIDK < k_pid_k_bin_boundary2);
+    kpid_bins.push_back(K_PIDK>=k_pid_k_bin_boundary2 && K_PIDK < k_pid_k_bin_boundary3);
+    kpid_bins.push_back(K_PIDK>=k_pid_k_bin_boundary3 && K_PIDK < k_pid_k_bin_boundary4);
+    kpid_bins.push_back(K_PIDK >=k_pid_k_bin_boundary4);
+    
+    pipid_bins.push_back(Pd_PIDK<pi_pid_k_bin_boundary1);
+    pipid_bins.push_back(Pd_PIDK>=pi_pid_k_bin_boundary1 && Pd_PIDK < pi_pid_k_bin_boundary2);
+    pipid_bins.push_back(Pd_PIDK>=pi_pid_k_bin_boundary2 && Pd_PIDK < pi_pid_k_bin_boundary3);
+    pipid_bins.push_back(Pd_PIDK>=pi_pid_k_bin_boundary3 && Pd_PIDK < pi_pid_k_bin_boundary4);
+    pipid_bins.push_back(Pd_PIDK >=pi_pid_k_bin_boundary4);
+    
+    TH1D* the_pid_bins[5][5]={{pi_pid_k_bin1_k_pid_k_bin1,
+			       pi_pid_k_bin1_k_pid_k_bin2,
+			       pi_pid_k_bin1_k_pid_k_bin3,
+			       pi_pid_k_bin1_k_pid_k_bin4,
+			       pi_pid_k_bin1_k_pid_k_bin5},
+			      {pi_pid_k_bin2_k_pid_k_bin1,
+			       pi_pid_k_bin2_k_pid_k_bin2,
+			       pi_pid_k_bin2_k_pid_k_bin3,
+			       pi_pid_k_bin2_k_pid_k_bin4,
+			       pi_pid_k_bin2_k_pid_k_bin5},
+			      {pi_pid_k_bin3_k_pid_k_bin1,
+			       pi_pid_k_bin3_k_pid_k_bin2,
+			       pi_pid_k_bin3_k_pid_k_bin3,
+			       pi_pid_k_bin3_k_pid_k_bin4,
+			       pi_pid_k_bin3_k_pid_k_bin5},
+			      {pi_pid_k_bin4_k_pid_k_bin1,
+			       pi_pid_k_bin4_k_pid_k_bin2,
+			       pi_pid_k_bin4_k_pid_k_bin3,
+			       pi_pid_k_bin4_k_pid_k_bin4,
+			       pi_pid_k_bin4_k_pid_k_bin5},
+			      {pi_pid_k_bin5_k_pid_k_bin1,
+			       pi_pid_k_bin5_k_pid_k_bin2,
+			       pi_pid_k_bin5_k_pid_k_bin3,
+			       pi_pid_k_bin5_k_pid_k_bin4,
+			       pi_pid_k_bin5_k_pid_k_bin5}};
+			       
+    //now the fun part. divide into the 5x5 matrix.
+    for(int i_kpid =0; i_kpid<kpid_bins.size();++i_kpid){
+      for(int j_pipid=0;j_pipid<pipid_bins.size();++j_pipid){
+	//fill the binned things.
+	if(kpid_bins[i_kpid] && pipid_bins[j_pipid]){
+	  the_pid_bins[j_pipid][i_kpid]->Fill(dstm);
+	}
+      }
+    }
   }//loop on events
   
 }
