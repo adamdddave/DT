@@ -39,7 +39,7 @@ test_mass_fits: testFit.cpp
 bs_fits: betastarFits.cpp
 	$(CXX) $(CXXFLAGS) betastar_plot.cpp -o doBetastarFits $(GLIBS) $<
 time_int_systs: TimeIntegratedSystematics.cpp
-	$(CXX) $(CXXFLAGS) massFit.cpp -o doTimeIntegratedSystematics $(GLIBS) $<
+	$(CXX) $(CXXFLAGS) massFit.cpp TimeIntegratedSystematicsClass.cpp -o doTimeIntegratedSystematics $(GLIBS) $<
 test_single_bin: TestSingleBinFit.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o SingleBinFit $(GLIBS) $<
 clean:

@@ -70,7 +70,7 @@ public:
   void setData(TH1* data_hist);
   void initModelValues();//set things like the argus parameters which are constant.
   void FloatMeanWidth();
-  
+  void Reset();
   //getters
   //RooWorkspace* getFinalFit();///so we can fit the RS model once, then reuse the fit.
   void saveFinalFit();

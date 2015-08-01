@@ -599,3 +599,12 @@ void massFit::saveSignalRegionZoom(){
   cc2->SetLogy(false);
   
 }
+void massFit::Reset(){
+  data = NULL;
+  model = NULL;
+  dmean = NULL;
+  rsigma= NULL;
+  nsig = NULL;
+  sigpdf = NULL;
+  bkg_arg=  NULL;
+}
