@@ -17,7 +17,7 @@
 #include <TLegend.h>
 #include <TGraph.h>
 #include <TGraphErrors.h>
-
+#include <THStack.h>
 
 //roofit
 #ifndef __CINT__
@@ -124,6 +124,15 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
   else if(var2Test.Contains("pi_pidk")){
     theAxisLabel = "#pi PID K";
   }
+  //finally, if we're doing the 5x5
+  else if(var2Test.Contains("pi_pidk") && histoForBins.Contains("pi_pid_k_bin")&&histoForBins.Contains("_k_pid_k_bin")){
+    //working with bins in both k pid k and pi pidk
+    //an example is RS_dt_hist_pi_pid_k_bin1_k_pid_k_bin2, here, we want the 1
+    TString theBin2use = histoForBins;
+    theBin2use.ReplaceAll("_k_pid_k_bin","");
+    theBin2use.ReplaceAll("RS_dt_hist_pi_pid_k_bin","");
+    theAxisLabel = "#pi PID K, bin "+theBin2use;
+  }
   dmeanGraph = new TGraphAsymmErrors(nBins,
 				     mean_positions_of_variable,dMeans,
 				     xError_low,xError_hi,
@@ -152,4 +161,30 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
   }
   SigAndErr.push_back(tot_sig);
   SigAndErr.push_back(TMath::Sqrt(tot_sig_err));
+  //finally, draw the D* peaks on top of each other and save them.
+  TLegend* leg = new TLegend(0.7,0.6,0.9,0.9);
+  int the_colors[5]={kBlue,kGreen+2,kMagenta, kOrange,kRed};
+  //sigHistBins[0]->SetLineColor(the_colors[0]);
+  //sigHistBins[0]->Draw("l");
+  double currMax = sigHistBins[0]->GetMaximum();
+  TString the_leg_text;
+  THStack *hs = new THStack("hs","");
+  for(int i=0; i<5;++i){
+    if(i==0){the_leg_text = theAxisLabel+Form("<%.1f",varSigHist->GetBinCenter(bin_ranges[i+1]));}
+    else if(i<4){the_leg_text = Form("%.1f#leq",varSigHist->GetBinCenter(bin_ranges[i]))+theAxisLabel+Form("<%.1f",varSigHist->GetBinCenter(bin_ranges[i+1]));}
+    else{the_leg_text = theAxisLabel+Form("#geq %.1f",varSigHist->GetBinCenter(bin_ranges[i]));}
+    sigHistBins[i]->SetLineColor(the_colors[i]);
+    //sigHistBins[i]->Draw("lsame");
+    if(sigHistBins[i]->GetMaximum()>currMax){currMax = sigHistBins[i]->GetMaximum();}
+    leg->AddEntry(sigHistBins[i],the_leg_text);
+    hs->Add(sigHistBins[i],"hist");
+  }
+  hs->SetTitle(Form(";m(D*)[MeV];Entries/%.2f",sigHistBins[0]->GetBinWidth(1)));
+  hs->Draw("nostack");
+  leg->Draw();
+  cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+var2Test+"dst_mass_comparison.pdf");
+  cc->SetLogy(true);
+  cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+var2Test+"dst_mass_comparison_logy.pdf");
+  cc->SetLogy(false);
+  delete leg;
 }

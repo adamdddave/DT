@@ -133,6 +133,8 @@ int main(int argc, char* const argv[]){
   rs_looper.mu_log_ip->Write();
   rs_looper.dst_mass_vs_kpidk->Write();
   rs_looper.dst_mass_vs_pipidk->Write();
+  rs_looper.dstar_mass_plot_pos->Write();
+  rs_looper.dstar_mass_plot_neg->Write();
   
   rs_looper.decay_time_distr->Write();
   rs_looper.dstar_mass_pt_bin1->Write();
@@ -174,6 +176,8 @@ int main(int argc, char* const argv[]){
   rs_looper.pi_pid_k_bin3->Write();
   rs_looper.pi_pid_k_bin4->Write();
   rs_looper.pi_pid_k_bin5->Write();
+
+  
   
   //5x5 matrix
   rs_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
@@ -220,6 +224,8 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.mu_log_ip->Write();
   rs_ss_looper.dst_mass_vs_kpidk->Write();
   rs_ss_looper.dst_mass_vs_pipidk->Write();
+  rs_ss_looper.dstar_mass_plot_pos->Write();
+  rs_ss_looper.dstar_mass_plot_neg->Write();
   
   rs_ss_looper.dstar_mass_pt_bin1->Write();
   rs_ss_looper.dstar_mass_pt_bin2->Write();
@@ -310,7 +316,9 @@ int main(int argc, char* const argv[]){
   ws_looper.mu_pt->Write();
   ws_looper.mu_p->Write();
   ws_looper.mu_log_ip->Write();
-
+  ws_looper.dstar_mass_plot_pos->Write();
+  ws_looper.dstar_mass_plot_neg->Write();
+  
   ws_looper.dst_mass_vs_kpidk->Write();
   ws_looper.dst_mass_vs_pipidk->Write();
   ws_looper.decay_time_distr->Write();
@@ -400,7 +408,9 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.mu_log_ip->Write();
   ws_ss_looper.dst_mass_vs_kpidk->Write();
   ws_ss_looper.dst_mass_vs_pipidk->Write();
-
+  ws_ss_looper.dstar_mass_plot_pos->Write();
+  ws_ss_looper.dstar_mass_plot_neg->Write();
+  
   ws_ss_looper.dstar_mass_pt_bin1->Write();
   ws_ss_looper.dstar_mass_pt_bin2->Write();
   ws_ss_looper.dstar_mass_pt_bin3->Write();
@@ -441,7 +451,7 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.pi_pid_k_bin3->Write();
   ws_ss_looper.pi_pid_k_bin4->Write();
   ws_ss_looper.pi_pid_k_bin5->Write();
-  
+
   //5x5 matrix
   ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
   ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
