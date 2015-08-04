@@ -294,7 +294,7 @@ void DT_D0_mix_CPV::Loop()
     else if(Pd_PIDK>=pi_pid_k_bin_boundary2 && Pd_PIDK < pi_pid_k_bin_boundary3){pi_pid_k_bin3->Fill(dstm);}
     else if(Pd_PIDK>=pi_pid_k_bin_boundary3 && Pd_PIDK < pi_pid_k_bin_boundary4){pi_pid_k_bin4->Fill(dstm);}
     else{pi_pid_k_bin5->Fill(dstm);}
-
+    
     std::vector<bool>kpid_bins,pipid_bins;
     kpid_bins.push_back(K_PIDK<k_pid_k_bin_boundary1);
     kpid_bins.push_back(K_PIDK>=k_pid_k_bin_boundary1 && K_PIDK < k_pid_k_bin_boundary2);
@@ -342,6 +342,33 @@ void DT_D0_mix_CPV::Loop()
 	  the_pid_bins[j_pipid][i_kpid]->Fill(dstm);
 	}
       }
+    }
+    //decay time distr
+    if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.75){ td0_bin_neg10_to_neg075->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_bin1->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_bin2->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_bin3->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_bin4->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_bin5->Fill(dstm);}
+    
+    //split by charge
+    //pos
+    if(Ps_ID/TMath::Abs(Ps_ID)>0){
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_pos_bin1->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_pos_bin2->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_pos_bin3->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_pos_bin4->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_pos_bin5->Fill(dstm);}
+   
+ 
+    }else{
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_neg_bin1->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_neg_bin2->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_neg_bin3->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_neg_bin4->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_neg_bin5->Fill(dstm);}
+   
     }
   }//loop on events
   

@@ -1562,6 +1562,26 @@ public :
   TH1D* pi_pid_k_bin5_k_pid_k_bin4;
   TH1D* pi_pid_k_bin5_k_pid_k_bin5;
 
+  //DecayTime Bins
+  TH1D* td0_bin_neg10_to_neg075;
+  TH1D* td0_bin_neg075_to_neg05;
+  TH1D* td0_bin1;
+  TH1D* td0_bin2;
+  TH1D* td0_bin3;
+  TH1D* td0_bin4;
+  TH1D* td0_bin5;
+  //pos
+  TH1D* td0_pos_bin1;
+  TH1D* td0_pos_bin2;
+  TH1D* td0_pos_bin3;
+  TH1D* td0_pos_bin4;
+  TH1D* td0_pos_bin5;
+  //neg
+  TH1D* td0_neg_bin1;
+  TH1D* td0_neg_bin2;
+  TH1D* td0_neg_bin3;
+  TH1D* td0_neg_bin4;
+  TH1D* td0_neg_bin5;
   //distributions to find out where the bin edges will be
   TH1D* dstar_pt;
   TH1D* dstar_p;
@@ -1653,7 +1673,12 @@ private:
   const double pi_pid_k_bin_boundary4 = -5.500000e+00;
 
   //pid boundaries
-
+  //decay time bin boundaries.
+  const double d0_td0_bin_boundary1 = -0.5;
+  const double d0_td0_bin_boundary2 = 0.25;
+  const double d0_td0_bin_boundary3 = 0.55;
+  const double d0_td0_bin_boundary4 = 0.95;
+  const double d0_td0_bin_boundary5 = 1.55;//all for t/tau.
   //
   const double d0_pdg_ct = 0.1229;//mm
   
@@ -1906,6 +1931,61 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dst_mass_vs_kpidk->SetTitle("m(D*) vs K pidK;K pid K; m(D*)[MeV]");
   dst_mass_vs_pipidk = new TH2D(name+"_dst_mass_vs_pi_pidk","",192,-190,2,500,2000,2025);
   dst_mass_vs_pipidk->SetTitle("m(D*) vs #pi pidK;#pi pid K; m(D*)[MeV]");
+
+  //decay time bins.
+  td0_bin_neg10_to_neg075 = new TH1D(name+"_dst_mass_td0_bin_neg10_to_neg075","",500,2000,2025);
+  td0_bin_neg10_to_neg075->SetTitle(Form("m(D^{0}#pi_{S}), t(D^{0})/#tau<-0.75;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV",td0_bin_neg10_to_neg075->GetBinWidth(1)));
+
+  td0_bin_neg075_to_neg05 = new TH1D(name+"_dst_mass_td0_bin_neg075_to_neg05","",500,2000,2025);
+  td0_bin_neg075_to_neg05->SetTitle(Form("m(D^{0}#pi_{S}), -0.75#leq t(D^{0})/#tau<-0.5;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV",td0_bin_neg075_to_neg05->GetBinWidth(1)));
+  
+   td0_bin1 = new TH1D(name+"_dst_mass_td0_bin1","",500,2000,2025);
+   td0_bin1->SetTitle(Form("m(D^{0}#pi_{S}), -0.5#leq t(D^{0})/#tau<0.25;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin1->GetBinWidth(1)));
+
+   td0_bin2 = new TH1D(name+"_dst_mass_td0_bin2","",500,2000,2025);
+   td0_bin2->SetTitle(Form("m(D^{0}#pi_{S}), 0.25#leq t(D^{0})/#tau<0.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin2->GetBinWidth(1)));
+
+   td0_bin3 = new TH1D(name+"_dst_mass_td0_bin3","",500,2000,2025);
+   td0_bin3->SetTitle(Form("m(D^{0}#pi_{S}), 0.55#leq t(D^{0})/#tau<0.95;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin3->GetBinWidth(1)));
+   
+   td0_bin4 = new TH1D(name+"_dst_mass_td0_bin4","",500,2000,2025);
+   td0_bin4->SetTitle(Form("m(D^{0}#pi_{S}), 0.95#leq t(D^{0})/#tau<1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin4->GetBinWidth(1)));
+   
+   td0_bin5 = new TH1D(name+"_dst_mass_td0_bin5","",500,2000,2025);
+   td0_bin5->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin5->GetBinWidth(1)));
+   //pos
+   
+   td0_pos_bin1 = new TH1D(name+"_dst_mass_td0_pos_bin1","",500,2000,2025);
+   td0_pos_bin1->SetTitle(Form("m(D^{0}#pi_{S}), -0.5#leq t(D^{0})/#tau<0.25;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin1->GetBinWidth(1)));
+
+   td0_pos_bin2 = new TH1D(name+"_dst_mass_td0_pos_bin2","",500,2000,2025);
+   td0_pos_bin2->SetTitle(Form("m(D^{0}#pi_{S}), 0.25#leq t(D^{0})/#tau<0.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin2->GetBinWidth(1)));
+
+   td0_pos_bin3 = new TH1D(name+"_dst_mass_td0_pos_bin3","",500,2000,2025);
+   td0_pos_bin3->SetTitle(Form("m(D^{0}#pi_{S}), 0.55#leq t(D^{0})/#tau<0.95;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin3->GetBinWidth(1)));
+   
+   td0_pos_bin4 = new TH1D(name+"_dst_mass_td0_pos_bin4","",500,2000,2025);
+   td0_pos_bin4->SetTitle(Form("m(D^{0}#pi_{S}), 0.95#leq t(D^{0})/#tau<1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin4->GetBinWidth(1)));
+   
+   td0_pos_bin5 = new TH1D(name+"_dst_mass_td0_pos_bin5","",500,2000,2025);
+   td0_pos_bin5->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin5->GetBinWidth(1)));
+   //neg
+   
+   td0_neg_bin1 = new TH1D(name+"_dst_mass_td0_neg_bin1","",500,2000,2025);
+   td0_neg_bin1->SetTitle(Form("m(D^{0}#pi_{S}), -0.5#leq t(D^{0})/#tau<0.25;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin1->GetBinWidth(1)));
+
+   td0_neg_bin2 = new TH1D(name+"_dst_mass_td0_neg_bin2","",500,2000,2025);
+   td0_neg_bin2->SetTitle(Form("m(D^{0}#pi_{S}), 0.25#leq t(D^{0})/#tau<0.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin2->GetBinWidth(1)));
+
+   td0_neg_bin3 = new TH1D(name+"_dst_mass_td0_neg_bin3","",500,2000,2025);
+   td0_neg_bin3->SetTitle(Form("m(D^{0}#pi_{S}), 0.55#leq t(D^{0})/#tau<0.95;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin3->GetBinWidth(1)));
+   
+   td0_neg_bin4 = new TH1D(name+"_dst_mass_td0_neg_bin4","",500,2000,2025);
+   td0_neg_bin4->SetTitle(Form("m(D^{0}#pi_{S}), 0.95#leq t(D^{0})/#tau<1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin4->GetBinWidth(1)));
+   
+   td0_neg_bin5 = new TH1D(name+"_dst_mass_td0_neg_bin5","",500,2000,2025);
+   td0_neg_bin5->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin5->GetBinWidth(1)));
+  
 }
 
 DT_D0_mix_CPV::~DT_D0_mix_CPV()

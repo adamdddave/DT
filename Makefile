@@ -42,10 +42,13 @@ time_int_systs: TimeIntegratedSystematics.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp TimeIntegratedSystematicsClass.cpp -o doTimeIntegratedSystematics $(GLIBS) $<
 test_single_bin: TestSingleBinFit.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o SingleBinFit $(GLIBS) $<
+time_dep_systs: TimeDependentSystematics.cpp
+	$(CXX) $(CXXFLAGS) massFit.cpp -o doTimeDepSysts $(GLIBS) $<
 clean:
 	rm -f DTAnalysis
 	rm -f testMassFit
 	rm -f doBetastarFits
 	rm -f doTimeIntegratedSystematics
 	rm -f SingleBinFit
+	rm -f doTimeDepSysts
 #	rm -rf *dSYM

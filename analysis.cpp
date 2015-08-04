@@ -210,6 +210,28 @@ int main(int argc, char* const argv[]){
   rs_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
   rs_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
 
+  rs_looper.td0_bin_neg10_to_neg075->Write();
+  rs_looper.td0_bin_neg075_to_neg05->Write();
+  rs_looper.td0_bin1->Write();
+  rs_looper.td0_bin2->Write();
+  rs_looper.td0_bin3->Write();
+  rs_looper.td0_bin4->Write();
+  rs_looper.td0_bin5->Write();
+
+  //pos
+  rs_looper.td0_pos_bin1->Write();
+  rs_looper.td0_pos_bin2->Write();
+  rs_looper.td0_pos_bin3->Write();
+  rs_looper.td0_pos_bin4->Write();
+  rs_looper.td0_pos_bin5->Write();
+  //neg
+    rs_looper.td0_neg_bin1->Write();
+  rs_looper.td0_neg_bin2->Write();
+  rs_looper.td0_neg_bin3->Write();
+  rs_looper.td0_neg_bin4->Write();
+  rs_looper.td0_neg_bin5->Write();
+
+  
   //ss
   
   rs_ss_looper.dstar_mass_plot->Write();
@@ -300,7 +322,26 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
   rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
 
-  
+  rs_ss_looper.td0_bin_neg10_to_neg075->Write();
+  rs_ss_looper.td0_bin_neg075_to_neg05->Write();
+  rs_ss_looper.td0_bin1->Write();
+  rs_ss_looper.td0_bin2->Write();
+  rs_ss_looper.td0_bin3->Write();
+  rs_ss_looper.td0_bin4->Write();
+  rs_ss_looper.td0_bin5->Write();
+  //pos
+  rs_ss_looper.td0_pos_bin1->Write();
+  rs_ss_looper.td0_pos_bin2->Write();
+  rs_ss_looper.td0_pos_bin3->Write();
+  rs_ss_looper.td0_pos_bin4->Write();
+  rs_ss_looper.td0_pos_bin5->Write();
+  //neg
+  rs_ss_looper.td0_neg_bin1->Write();
+  rs_ss_looper.td0_neg_bin2->Write();
+  rs_ss_looper.td0_neg_bin3->Write();
+  rs_ss_looper.td0_neg_bin4->Write();
+  rs_ss_looper.td0_neg_bin5->Write();
+
   fout->Close();
   WrongB wrongb("wrongb",rs_looper,rs_ss_looper);
   wrongb.MakeMassComparisons();
@@ -395,6 +436,16 @@ int main(int argc, char* const argv[]){
   ws_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
   ws_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
 
+  ws_looper.td0_bin_neg10_to_neg075->Write();
+  ws_looper.td0_bin_neg075_to_neg05->Write();
+  ws_looper.td0_bin1->Write();
+  ws_looper.td0_bin2->Write();
+  ws_looper.td0_bin3->Write();
+  ws_looper.td0_bin4->Write();
+  ws_looper.td0_bin5->Write();
+
+  
+
   //ss
   ws_ss_looper.dstar_mass_plot->Write();
   ws_ss_looper.b_mass_plot->Write();
@@ -483,6 +534,14 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
   ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
 
+  ws_ss_looper.td0_bin_neg10_to_neg075->Write();
+  ws_ss_looper.td0_bin_neg075_to_neg05->Write();
+  ws_ss_looper.td0_bin1->Write();
+  ws_ss_looper.td0_bin2->Write();
+  ws_ss_looper.td0_bin3->Write();
+  ws_ss_looper.td0_bin4->Write();
+  ws_ss_looper.td0_bin5->Write();
+  
   
   fout2->Close();
   WrongB wrongbws("wrongbws",ws_looper,ws_ss_looper);
