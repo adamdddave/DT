@@ -1600,6 +1600,7 @@ public :
   TH2D* bmass_vs_muIPchi2;
   TH1D* decay_time_distr;
   betastar_plot *bs_plot;
+  virtual Int_t passCuts();
   DT_D0_mix_CPV(TTree *tree=0);
   virtual ~DT_D0_mix_CPV();
   virtual Int_t    Cut(Long64_t entry);
@@ -2792,5 +2793,48 @@ Int_t DT_D0_mix_CPV::Cut(Long64_t entry)
   // returns -1 otherwise.
   
   return 1;
+}
+Int_t DT_D0_mix_CPV::passCuts(){
+  Int_t theval = 0;
+  TLorentzVector k_ask, k_aspi,pi_ask,pi_aspi;
+  k_ask.SetXYZM(B_VFit_Kplus_PX[0]/1e3,
+		B_VFit_Kplus_PY[0]/1e3,
+		B_VFit_Kplus_PZ[0]/1e3,
+		pdg_kplus_m/1e3);//GeV
+  pi_aspi.SetXYZM(B_VFit_piplus_0_PX[0]/1e3,
+		  B_VFit_piplus_0_PY[0]/1e3,
+		  B_VFit_piplus_0_PZ[0]/1e3,
+		  pdg_piplus_m/1e3);//GeV
+  k_aspi.SetXYZM(B_VFit_Kplus_PX[0]/1e3,
+		 B_VFit_Kplus_PY[0]/1e3,
+		 B_VFit_Kplus_PZ[0]/1e3,
+		 pdg_piplus_m/1e3);//GeV
+  pi_ask.SetXYZM(B_VFit_piplus_0_PX[0]/1e3,
+		 B_VFit_piplus_0_PY[0]/1e3,
+		 B_VFit_piplus_0_PZ[0]/1e3,
+		 pdg_kplus_m/1e3);//GeV
+  /*pisv.SetXYZM(B_VFit_piplus_PX[0]/1e3,
+	       B_VFit_piplus_PY[0]/1e3,
+	       B_VFit_piplus_PZ[0]/1e3,
+	       139.57018/1e3);*/
+
+  if(B_VFit_status[0]==0 &&
+     K_PIDK>kpidk_cut&&
+     Pd_PIDK<pi_dau_pidk_cut &&
+     Ps_PIDe<pi_slow_pide_cut &&
+     Ps_ProbNNghost<pi_slow_probnnghost_cut &&
+     //         TMath::Abs(B_VFit_D0_M-pdg_d0_m)<dmass_cut &&//this also comes after Beta* plots
+     Mu_L0MuonDecision_TOS==1&&
+     Mu_Hlt1TrackMuonDecision_TOS==1&&
+     (B_Hlt2TopoMu2BodyBBDTDecision_TOS==1||
+      B_Hlt2TopoMu3BodyBBDTDecision_TOS==1||
+      B_Hlt2TopoMu4BodyBBDTDecision_TOS==1)&&
+     Mu_isMuon &&
+     Mu_MC12TuneV2_ProbNNmu > mu_probnnmu_cut&&
+     B_VFit_M[0] < bmass_cut_hi &&B_VFit_M[0] > bmass_cut_low&&
+     !Ps_isMuon && TMath::Abs((k_ask + pi_aspi).M()*1e3 - pdg_d0_m)<24 &&
+     TMath::Abs((pi_ask+k_ask).M()*1e3-pdg_d0_m)>40 &&
+     TMath::Abs((k_aspi+pi_aspi).M()*1e3-pdg_d0_m)>40)theval = 1;
+  return theval;
 }
 #endif // #ifdef DT_D0_mix_CPV_cxx

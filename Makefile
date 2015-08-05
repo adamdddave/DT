@@ -29,7 +29,7 @@ OUTLIB	      = ./lib/
 
 #----------------------------------------------------#
 
-all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin
+all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin time_dep_systs matchRS_WS
 
 mass_fits_compiled: analysis.cpp 
 	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp massFit.cpp betastar_plot.cpp WrongB.cpp -o DTAnalysis  $(GLIBS) $<
@@ -44,6 +44,8 @@ test_single_bin: TestSingleBinFit.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o SingleBinFit $(GLIBS) $<
 time_dep_systs: TimeDependentSystematics.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o doTimeDepSysts $(GLIBS) $<
+matchRS_WS: MatchWSandRSoverlap.cpp
+	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp betastar_plot.cpp WrongB.cpp -o doWSRSmatch $(GLIBS) $<
 clean:
 	rm -f DTAnalysis
 	rm -f testMassFit
@@ -51,4 +53,5 @@ clean:
 	rm -f doTimeIntegratedSystematics
 	rm -f SingleBinFit
 	rm -f doTimeDepSysts
+	rm -f doWSRSmatch
 #	rm -rf *dSYM

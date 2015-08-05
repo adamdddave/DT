@@ -108,8 +108,8 @@ void DT_D0_mix_CPV::Loop()
 
     //add the d mass cuts too for the b mass plots.
     if(TMath::Abs((k_daughter + pi_daughter).M()*1e3 - pdg_d0_m)<24 &&
-       TMath::Abs((pi_daughter_as_k+k_daughter).M()-pdg_d0_m)>40 &&
-       TMath::Abs((k_daughter_as_pi+pi_daughter).M()-pdg_d0_m)>40)
+       TMath::Abs((pi_daughter_as_k+k_daughter).M()*1e3-pdg_d0_m)>40 &&
+       TMath::Abs((k_daughter_as_pi+pi_daughter).M()*1e3-pdg_d0_m)>40)
     {
       
       b_mass_plot->Fill(B_VFit_M[0]);
@@ -222,8 +222,8 @@ void DT_D0_mix_CPV::Loop()
     
     if(!(
          TMath::Abs((k_daughter + pi_daughter).M()*1e3 - pdg_d0_m)<24 &&
-         TMath::Abs((pi_daughter_as_k+k_daughter).M()-pdg_d0_m)>40 &&
-         TMath::Abs((k_daughter_as_pi+pi_daughter).M()-pdg_d0_m)>40
+         TMath::Abs((pi_daughter_as_k+k_daughter).M()*1e3-pdg_d0_m)>40 &&
+         TMath::Abs((k_daughter_as_pi+pi_daughter).M()*1e3-pdg_d0_m)>40
          ))continue;
     //fill the mass histogram
     //cout<<"filling with dstm = "<<dstm<<endl;
