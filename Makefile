@@ -43,7 +43,7 @@ time_int_systs: TimeIntegratedSystematics.cpp
 test_single_bin: TestSingleBinFit.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o SingleBinFit $(GLIBS) $<
 time_dep_systs: TimeDependentSystematics.cpp
-	$(CXX) $(CXXFLAGS) massFit.cpp -o doTimeDepSysts $(GLIBS) $<
+	$(CXX) $(CXXFLAGS) massFit.cpp TimeDependent2D.cpp -o doTimeDepSysts $(GLIBS) $<
 matchRS_WS: MatchWSandRSoverlap.cpp
 	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp betastar_plot.cpp WrongB.cpp -o doWSRSmatch $(GLIBS) $<
 clean:

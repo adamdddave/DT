@@ -7,6 +7,8 @@
 #include <TPaveText.h>
 // local
 #include "betastar_plot.h"
+//root
+#include <TBox.h>
 //roofit
 #ifndef __CINT__
 #include "RooGlobalFunc.h"
@@ -613,6 +615,7 @@ void betastar_plot::FitWSDoubleMisID(){
   RooRealVar* x = new RooRealVar("x","m(K #pi)",1700,2100,"MeV");
   x->setRange("lo",1780,(1.86484 - 5*0.008)*1e3);
   x->setRange("hi",(1.86484 + 5*0.008)*1e3,1950);
+  x->setRange("sig",1864.84-24,1864.84+24);
   RooRealVar a0("a0","a0",-0.1,-50,50);
   RooRealVar a1("a1","a1",0.004,-100,100);
   RooChebychev pol("pol","pol",*x,RooArgSet(a0,a1));
@@ -632,8 +635,18 @@ void betastar_plot::FitWSDoubleMisID(){
   
   model.plotOn(frame,LineColor(kMagenta),Range(1780,2100));
   frame->Draw();
+  TBox sigreg(1864.84-24,0,1864.84+24,frame->GetMaximum());
+  sigreg.SetFillColor(kGreen+2);
+  sigreg.SetFillColorAlpha(kGreen+2,0.5);
+  sigreg.Draw();
   cpol->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_double_misid_d0_sideband_subtracted_fit.pdf");
-
+  //create the integral.
+  RooAbsReal* tot_int_double_misid = model.createIntegral(*x,NormSet(*x));
+  std::cout<<"nsig before = "<<nsig.getVal()*tot_int_double_misid->getVal()<<std::endl;
+  RooAbsReal* sig_int = model.createIntegral(*x,NormSet(*x),Range("sig"));
+  
+  std::cout<<"nsig after = "<<nsig.getVal()*sig_int->getVal()<<std::endl;
+  std::cout<<"tot number of doubly misID in signal region for polynomial fit = "<<sig_int->getVal()<<std::endl;
   // TFile obs("./SavedFits/betastar/"+m_name+"double_misid_sideband_subtr_info.root","RECREATE");
   // obs.cd();
   // double_misid_subtr->Write();

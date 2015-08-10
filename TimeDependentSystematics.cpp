@@ -51,6 +51,7 @@
 #include "massFit.h"
 #include "TimeIntegratedSystematicsClass.h"
 #include "PlottingTools.h"
+#include "TimeDependent2D.h"
 using namespace std;
 using namespace PlottingTools;
 
@@ -67,6 +68,8 @@ int main(int argc, char* const argv[]){
   TFile *f2 = TFile::Open(argv[2]);
   f2->ls();
   TString channelFromFile = argv[2];
+  channelFromFile.ReplaceAll("../","");
+  channelFromFile.ReplaceAll("complete_analysis","");
   channelFromFile.ReplaceAll("SavedFits","");
   channelFromFile.ReplaceAll("fitModel.root","");
   channelFromFile.ReplaceAll("/","");
@@ -76,6 +79,11 @@ int main(int argc, char* const argv[]){
   cout<<"channel from file = "<<channelFromFile<<endl;  
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
 
+  //do 2d checks first
+  std::vector<int>sl;
+  TimeDependent2D v_muipchi2("mu_ipchi2_vs_td0_pos",f1,"_positive_muon_ipchi2",sl);
+  return 0;
+  
   //get the bins.
   std::vector<TH1D*>pos_bins,neg_bins;
   for(int i=0;i<5;++i){
@@ -143,6 +151,7 @@ int main(int argc, char* const argv[]){
   thePlot->SetMarkerColor(kBlack);
   thePlot->SetLineColor(kBlack);
   thePlot->SetTitle(";D^{0}t/#tau;N(D*^{-})/N(D*^{+})");
+  thePlot->SetName("rs_over_rs_ratio");
   TFile *fout = new TFile("SavedFits/TimeDependentSystematics/rs_over_rs_ratio.root","RECREATE");
   fout->cd();
   thePlot->Write();
@@ -153,5 +162,11 @@ int main(int argc, char* const argv[]){
   TCanvas* cc=new TCanvas();
   thePlot->Draw("ap");
   cc->SaveAs("SavedFits/TimeDependentSystematics/rs_d0_over_d0bar_graph.pdf");
+  TFile fout_timedep("rs_d0_over_d0_bar_graph.root","RECREATE");
+  fout_timedep.cd();
+  thePlot->Write();
+  fout_timedep.Close();
+  //now do the 2d studies for mike.
+  
   return 0;
 }

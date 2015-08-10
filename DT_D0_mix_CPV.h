@@ -1487,6 +1487,7 @@ public :
   TH1D* dstar_mass_plot_zoom;
   TH1D* dstar_mass_plot_pos;
   TH1D* dstar_mass_plot_neg;
+  TH1D* pis_ghost_prob;
   //for time integrated systematic studies.
 
   TH1D* dstar_mass_pt_bin1;
@@ -1561,7 +1562,28 @@ public :
   TH1D* pi_pid_k_bin5_k_pid_k_bin3;
   TH1D* pi_pid_k_bin5_k_pid_k_bin4;
   TH1D* pi_pid_k_bin5_k_pid_k_bin5;
-
+  //pis ghost prob bins;
+  TH1D* dst_mass_pis_ghostprob_bin1;
+  TH1D* dst_mass_pis_ghostprob_bin2;
+  TH1D* dst_mass_pis_ghostprob_bin3;
+  TH1D* dst_mass_pis_ghostprob_bin4;
+  TH1D* dst_mass_pis_ghostprob_bin5;
+  TH1D* dst_mass_pis_ghostprob_bin6;
+  TH1D* dst_mass_pis_ghostprob_bin7;
+  TH1D* dst_mass_pis_ghostprob_bin8;
+  TH1D* dst_mass_pis_ghostprob_bin9;
+  TH1D* dst_mass_pis_ghostprob_bin10;
+  TH1D* dst_mass_pis_ghostprob_bin11;
+  TH1D* dst_mass_pis_ghostprob_bin12;
+  TH1D* dst_mass_pis_ghostprob_bin13;
+  TH1D* dst_mass_pis_ghostprob_bin14;
+  TH1D* dst_mass_pis_ghostprob_bin15;
+  TH1D* dst_mass_pis_ghostprob_bin16;
+  TH1D* dst_mass_pis_ghostprob_bin17;
+  TH1D* dst_mass_pis_ghostprob_bin18;
+  TH1D* dst_mass_pis_ghostprob_bin19;
+  TH1D* dst_mass_pis_ghostprob_bin20;
+  std::vector<TH1D*> the_ghost_prob_bins;
   //DecayTime Bins
   TH1D* td0_bin_neg10_to_neg075;
   TH1D* td0_bin_neg075_to_neg05;
@@ -1588,9 +1610,59 @@ public :
   TH1D* mu_pt;
   TH1D* mu_p;
   TH1D* mu_log_ip;
-
+  TH1D* b_flight_dist;
   TH2D* dst_mass_vs_kpidk;
   TH2D* dst_mass_vs_pipidk;
+  //stuff for possible b misid. 2d histos.
+  
+  TH2D* b_flight_dist_vs_dstm;
+  TH2D* b_corr_mass_vs_dstm;
+  TH2D* dtf_chi2_vs_dstm;
+  //TH2D* muIPchi2_vs_dstm;//already done
+  TH2D* b_endvertex_chi2_vs_dstm;
+  TH2D* b_fd_chi2_vs_dstm;
+
+
+  TH2D* b_flight_dist_vs_td0;
+  TH2D* b_corr_mass_vs_td0;
+  TH2D* dtf_chi2_vs_td0;
+  TH2D* muIPchi2_vs_td0;
+  TH2D* b_endvertex_chi2_vs_td0;
+  TH2D* b_fd_chi2_vs_td0;
+
+  //pos
+  TH2D* b_flight_dist_vs_dstm_pos;
+  TH2D* b_corr_mass_vs_dstm_pos;
+  TH2D* dtf_chi2_vs_dstm_pos;
+  TH2D* muIPchi2_vs_dstm_pos;//already done
+  TH2D* b_endvertex_chi2_vs_dstm_pos;
+  TH2D* b_fd_chi2_vs_dstm_pos;
+
+  TH2D* b_flight_dist_vs_td0_pos;
+  TH2D* b_corr_mass_vs_td0_pos;
+  TH2D* dtf_chi2_vs_td0_pos;
+  TH2D* muIPchi2_vs_td0_pos;
+  TH2D* b_endvertex_chi2_vs_td0_pos;
+  TH2D* b_fd_chi2_vs_td0_pos;
+
+  //neg
+    TH2D* b_flight_dist_vs_dstm_neg;
+  TH2D* b_corr_mass_vs_dstm_neg;
+  TH2D* dtf_chi2_vs_dstm_neg;
+  TH2D* muIPchi2_vs_dstm_neg;//already done
+  TH2D* b_endvertex_chi2_vs_dstm_neg;
+  TH2D* b_fd_chi2_vs_dstm_neg;
+
+
+  TH2D* b_flight_dist_vs_td0_neg;
+  TH2D* b_corr_mass_vs_td0_neg;
+  TH2D* dtf_chi2_vs_td0_neg;
+  TH2D* muIPchi2_vs_td0_neg;
+  TH2D* b_endvertex_chi2_vs_td0_neg;
+  TH2D* b_fd_chi2_vs_td0_neg;
+
+
+  
   //TH1D* kaon_pidk_plot;
   //TH1D* daughter_pi_pid_k_plot;
   //no need for these two, as we only want the ranges of PID from the original cpv analysis and the new.
@@ -1636,6 +1708,7 @@ private:
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
+  const double pis_ghost_prob_cut = 0.5;//no units
   //  const double dst_bin_boundary1=2.690000e+03;//MeV
   //const double dst_bin_boundary2=4.330000e+03;//MeV, pt bin boundaries.
   const double dst_pt_bin_boundary1 = 2.130000e+03;//MeV
@@ -1681,6 +1754,29 @@ private:
   const double d0_td0_bin_boundary4 = 0.95;
   const double d0_td0_bin_boundary5 = 1.55;//all for t/tau.
   //
+  //slow pion ghost bin boundaries
+  const double pis_ghost_bin_boundary1 =0.0005;
+  const double pis_ghost_bin_boundary2 =0.0025;
+  const double pis_ghost_bin_boundary3 =0.0045;
+  const double pis_ghost_bin_boundary4 =0.0065;
+  const double pis_ghost_bin_boundary5 =0.0095;
+  const double pis_ghost_bin_boundary6 =0.0125;
+  const double pis_ghost_bin_boundary7 =0.0165;
+  const double pis_ghost_bin_boundary8 =0.0205;
+  const double pis_ghost_bin_boundary9 =0.0265;
+  const double pis_ghost_bin_boundary10=0.0325;
+  const double pis_ghost_bin_boundary11=0.0405;
+  const double pis_ghost_bin_boundary12=0.0505;
+  const double pis_ghost_bin_boundary13=0.0635;
+  const double pis_ghost_bin_boundary14=0.0785;
+  const double pis_ghost_bin_boundary15=0.0995;
+  const double pis_ghost_bin_boundary16=0.1265;
+  const double pis_ghost_bin_boundary17=0.1625;
+  const double pis_ghost_bin_boundary18=0.2115;
+  const double pis_ghost_bin_boundary19=0.2795;
+  const double pis_ghost_bin_boundary20=0.3735;
+  std::vector<double> the_pis_ghost_prob_bin_boundaries;
+    
   const double d0_pdg_ct = 0.1229;//mm
   
 };
@@ -1717,6 +1813,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
 
   dstar_mass_plot_neg = new TH1D(name+"_dt_hist_dstar_m_neg","", 500, 2000,2025);
   dstar_mass_plot_neg->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot_neg->GetBinWidth(1)));
+  pis_ghost_prob = new TH1D(name+"_slow_pion_ghost_prob",";#pi_{s} Ghost Prob; Entries / 0.001",1000,0,1);
   //dstar p and pt bins
   dstar_mass_pt_bin1 = new TH1D(name+"_dt_hist_dstar_m_pt_bin1","", 500, 2000,2025);
   dstar_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin1->GetBinWidth(1)));
@@ -1910,7 +2007,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   b_mass_plot->SetTitle(Form("m(D^{*+}#mu^{-}); m(D^{*+}#mu^{-})[MeV]; Entries / %.2f",b_mass_plot->GetBinWidth(1)));
   bs_plot = new betastar_plot(tree->GetName());
   dstar_mass_vs_muIPchi2 = new TH2D(name+"_dstar_mass_vs_muIPchi2","m(D^{0}#pi_{S}) vs #mu log(#chi^{2}_{IP}), Own PV; #mu log(#chi^{2}_{IP}); m(D^{0}#pi_{S})[MeV]",
-					 100,1,14,500,2000,2025);
+				    2000,0,20000,500,2000,2025);
   dstar_pt = new TH1D(name+"_dstar_pt","",1000,0., 20000);
   dstar_pt->SetTitle(Form("p_{T}(D*);p_{T}(D*)[MeV];Entries / %.2f MeV",dstar_pt->GetBinWidth(1)));
 
@@ -1986,7 +2083,105 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    
    td0_neg_bin5 = new TH1D(name+"_dst_mass_td0_neg_bin5","",500,2000,2025);
    td0_neg_bin5->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin5->GetBinWidth(1)));
-  
+
+
+   //slow pion ghost prob bins
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin1);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin2);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin3);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin4);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin5);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin6);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin7);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin8);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin9);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin10);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin11);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin12);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin13);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin14);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin15);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin16);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin17);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin18);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin19);
+   the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin20);
+   
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary1);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary2);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary3);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary4);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary5);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary6);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary7);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary8);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary9);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary10);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary11);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary12);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary13);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary14);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary15);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary16);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary17);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary18);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary19);
+   the_pis_ghost_prob_bin_boundaries.push_back(pis_ghost_bin_boundary20);
+   for(int i=0; i<20;++i){
+     the_ghost_prob_bins[i] = new TH1D(name+Form("_dst_mass_pis_ghostprob_bin%d",i+1),"",500,2000,2025);
+     the_ghost_prob_bins[i]->SetTitle(Form("m(D^{0}#pi_{s}); m(D^{0}#pi_{s})[MeV]; Entries/%.2f MeV",the_ghost_prob_bins[i]->GetBinWidth(1)));
+   }
+   b_flight_dist = new TH1D(name+"_b_flight_distance",";B Flight Distance [mm]",1000,0,1000);
+   b_flight_dist_vs_dstm = new TH2D(name+"_b_flight_distance_vs_dstm",";m(D^{0}#pi_{S})[MeV];B Flight Distance[mm]",500,2000,2025,1000,0,1000);
+   b_corr_mass_vs_dstm = new TH2D(name+"_b_corr_mass_vs_dstm",";m(D^{0}#pi_{S})[MeV];B Corrected Mass [MeV]",500,2000,2025,650,2000,8500);
+   dtf_chi2_vs_dstm= new TH2D(name+"_dtf_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];DTF #chi^{2}",500,2000,2025,50,0,25);
+  // muIPchi2_vs_dstm;//already done
+   b_endvertex_chi2_vs_dstm = new TH2D(name+"_b_endvertex_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];B endvertex #chi_{2}",500,2000,2025,100,0,50);
+   b_fd_chi2_vs_dstm = new TH2D(name+"_b_fd_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
+
+
+   b_flight_dist_vs_td0=new TH2D(name+"_b_flight_distance_vs_td0",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
+   b_corr_mass_vs_td0= new TH2D(name+"_b_corr_mass_vs_td0",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
+   dtf_chi2_vs_td0=new TH2D(name+"_dtf_chi2_vs_td0",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
+   muIPchi2_vs_td0=new TH2D(name+"_mu_ipchi2_vs_td0",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,2000,0,20000);
+   b_endvertex_chi2_vs_td0=new TH2D(name+"_b_endvertex_chi2_vs_td0",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
+   b_fd_chi2_vs_td0=new TH2D(name+"_b_fd_chi2_vs_td0",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);;
+
+   //pos
+   //b_flight_dist_pos= new TH1D(name+"_b_flight_distance_pos",";B Flight Distance [mm]",1000,0,1000);
+   b_flight_dist_vs_dstm_pos= new TH2D(name+"_b_flight_distance_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B Flight Distance[mm]",500,2000,2025,1000,0,1000);
+   b_corr_mass_vs_dstm_pos= new TH2D(name+"_b_corr_mass_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B Corrected Mass [MeV]",500,2000,2025,650,2000,8500);
+   dtf_chi2_vs_dstm_pos= new TH2D(name+"_dtf_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];DTF #chi^{2}",500,2000,2025,50,0,25);
+   muIPchi2_vs_dstm_pos = new TH2D(name+"_mu_ipchi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];#mu IP #chi^{2}",500,2000,2025,2000,0,20000);//already done
+   b_endvertex_chi2_vs_dstm_pos= new TH2D(name+"_b_endvertex_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B endvertex #chi_{2}",500,2000,2025,100,0,50);
+   b_fd_chi2_vs_dstm_pos= new TH2D(name+"_b_fd_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
+
+
+   b_flight_dist_vs_td0_pos=new TH2D(name+"_b_flight_distance_vs_td0_pos",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
+   b_corr_mass_vs_td0_pos= new TH2D(name+"_b_corr_mass_vs_td0_pos",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
+   dtf_chi2_vs_td0_pos=new TH2D(name+"_dtf_chi2_vs_td0_pos",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
+   muIPchi2_vs_td0_pos=new TH2D(name+"_mu_ipchi2_vs_td0_pos",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,2000,0,20000);
+   b_endvertex_chi2_vs_td0_pos=new TH2D(name+"_b_endvertex_chi2_vs_td0_pos",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
+   b_fd_chi2_vs_td0_pos=new TH2D(name+"_b_fd_chi2_vs_td0_pos",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);
+
+   //neg
+   //b_flight_dist_neg= new TH1D(name+"_b_flight_distance_neg",";B Flight Distance [mm]",1000,0,1000);
+   b_flight_dist_vs_dstm_neg= new TH2D(name+"_b_flight_distance_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B Flight Distance[mm]",500,2000,2025,1000,0,1000);
+   b_corr_mass_vs_dstm_neg= new TH2D(name+"_b_corr_mass_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B Corrected Mass [MeV]",500,2000,2025,650,2000,8500);
+   dtf_chi2_vs_dstm_neg= new TH2D(name+"_dtf_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];DTF #chi^{2}",500,2000,2025,50,0,25);
+   muIPchi2_vs_dstm_neg = new TH2D(name+"_mu_ipchi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];#mu IP #chi^{2}",500,2000,2025,2000,0,20000);//already done
+
+   b_endvertex_chi2_vs_dstm_neg= new TH2D(name+"_b_endvertex_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B endvertex #chi_{2}",500,2000,2025,100,0,50);
+   b_fd_chi2_vs_dstm_neg= new TH2D(name+"_b_fd_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
+
+
+   b_flight_dist_vs_td0_neg=new TH2D(name+"_b_flight_distance_vs_td0_neg",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
+   b_corr_mass_vs_td0_neg= new TH2D(name+"_b_corr_mass_vs_td0_neg",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
+   dtf_chi2_vs_td0_neg=new TH2D(name+"_dtf_chi2_vs_td0_neg",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
+   muIPchi2_vs_td0_neg=new TH2D(name+"_mu_ipchi2_vs_td0_neg",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,1000,0,2000);
+   b_endvertex_chi2_vs_td0_neg=new TH2D(name+"_b_endvertex_chi2_vs_td0_neg",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
+   b_fd_chi2_vs_td0_neg=new TH2D(name+"_b_fd_chi2_vs_td0_neg",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);
+
 }
 
 DT_D0_mix_CPV::~DT_D0_mix_CPV()

@@ -225,19 +225,19 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w) {
     //johnson parameters
     //m0= new RooRealVar("m0","m0",2010.,2009.,2011.);
     double m0_liang = 2.00935381450188277*1e3;
-    m0= new RooRealVar("m0","m0",m0_liang,m0_liang*(0.10),m0_liang*(3.00));//constant from liang's fit
+    m0= new RooRealVar("m0","m0",m0_liang,m0_liang*(0.80),m0_liang*(1.20));//constant from liang's fit
     fm0= new RooFormulaVar("fm0", "@0+@1", RooArgList(*m0, *dmean));
 
     //delta= new RooRealVar("delta","delta",9.57168e-01,0.2,2);
     double delta_liang = 1.92116578346114197;
-    delta= new RooRealVar("delta","delta",delta_liang,0.10*delta_liang,3.00*delta_liang);
+    delta= new RooRealVar("delta","delta",delta_liang,0.80*delta_liang,1.20*delta_liang);
     //sigma= new RooRealVar("sigma","sigma",1,2e-1,10);
     double sigma_liang = 2.49952200109722269e-03*1e3;
-    sigma= new RooRealVar("sigma","sigma",sigma_liang,0.10*sigma_liang,3.00*sigma_liang);
+    sigma= new RooRealVar("sigma","sigma",sigma_liang,0.80*sigma_liang,1.20*sigma_liang);
     fsigma= new RooFormulaVar("fsigma", "@0*(1+@1)", RooArgList(*sigma, *rsigma));
     //gamma= new RooRealVar("gamma","gamma",-1.20272e-01, -2,2);
     double gamma_liang = -8.64089594146807194e-01;
-    gamma= new RooRealVar("gamma","gamma",gamma_liang, 3.00*gamma_liang,0.10*gamma_liang);//flopped since negative.
+    gamma= new RooRealVar("gamma","gamma",gamma_liang, 1.20*gamma_liang,0.80*gamma_liang);//flopped since negative.
     //m0->setConstant(1);
     //delta->setConstant(1);
     //gamma->setConstant(1);
@@ -245,29 +245,29 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w) {
     sig_john= new RooJohnsonSU("sig_john","sig_john",*mass,*fm0,*fsigma,*gamma,*delta);
     //mean1= new RooRealVar("mean1","mean1",2010.,2009,2011);
     double mean1_liang = 2.01032477109741325*1e3;
-    mean1= new RooRealVar("mean1","mean1",mean1_liang,0.10*mean1_liang,3.00*mean1_liang);
+    mean1= new RooRealVar("mean1","mean1",mean1_liang,0.80*mean1_liang,1.20*mean1_liang);
     //for offsets
     fgau1mean= new RooFormulaVar("fgau1mean", "@0+@1", RooArgList(*mean1, *dmean));
     //mean2= new RooRealVar("mean2","mean2",2010.,2008,2011);
     double mean2_liang = 2.01028445885560236*1e3;
-    mean2= new RooRealVar("mean2","mean2",mean2_liang,0.10*mean2_liang,3.00*mean2_liang);
+    mean2= new RooRealVar("mean2","mean2",mean2_liang,0.80*mean2_liang,1.20*mean2_liang);
     fgau2mean= new RooFormulaVar("fgau2mean", "@0+@1", RooArgList(*mean2, *dmean));
     //mean3= new RooRealVar("mean3","mean3",2010.,2007,2013);
     double mean3_liang = 2.01027349064504390*1e3;
-    mean3= new RooRealVar("mean3","mean3",mean3_liang,0.10*mean3_liang,3.00*mean3_liang);
+    mean3= new RooRealVar("mean3","mean3",mean3_liang,0.80*mean3_liang,1.20*mean3_liang);
     fgau3mean= new RooFormulaVar("fgau3mean", "@0+@1", RooArgList(*mean3, *dmean));
   
     //width1= new RooRealVar("width1","width1",1,0.01,10);
     double width1_liang = 5.81409441017281033e-01;
-    width1= new RooRealVar("width1","width1",width1_liang,0.10*width1_liang,1.95*width1_liang);
+    width1= new RooRealVar("width1","width1",width1_liang,0.80*width1_liang,1.95*width1_liang);
     fgau1sigma= new RooFormulaVar("fgau1sigma", "@0*(1+@1)", RooArgList(*width1, *rsigma));
     //width2= new RooRealVar("width2","width2",1,0.01,10);
     double width2_liang =3.11715962949287427e-01;
-    width2= new RooRealVar("width2","width2",width2_liang,0.10*width2_liang,3.00*width2_liang);
+    width2= new RooRealVar("width2","width2",width2_liang,0.80*width2_liang,1.20*width2_liang);
     fgau2sigma= new RooFormulaVar("fgau2sigma", "@0*(1+@1)", RooArgList(*width2, *rsigma));
     //width3= new RooRealVar("width3","width3",1,0.01,10);
     double width3_liang = 1.95072497687380828e-01;
-    width3= new RooRealVar("width3","width3",width3_liang,0.10*width3_liang,3.00*width3_liang);
+    width3= new RooRealVar("width3","width3",width3_liang,0.80*width3_liang,1.20*width3_liang);
     fgau3sigma= new RooFormulaVar("fgau3sigma", "@0*(1+@1)", RooArgList(*width3, *rsigma));
   
   
