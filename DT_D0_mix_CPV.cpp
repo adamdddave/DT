@@ -62,6 +62,7 @@ void DT_D0_mix_CPV::Loop()
          Mu_MC12TuneV2_ProbNNmu > mu_probnnmu_cut&&
          !Ps_isMuon &&
 	 Ps_MC12TuneV2_ProbNNghost< pis_ghost_prob_cut
+	 //&& Mu_IPCHI2_OWNPV > mu_ip_chi2_cut
          //&&Mu_MC12TuneV3_ProbNNmu > mu_probnnmu_cut
          
          )) continue;
@@ -243,6 +244,9 @@ void DT_D0_mix_CPV::Loop()
     mu_p->Fill(mup);
     mu_log_ip->Fill(log(Mu_IP_OWNPV));
     pis_ghost_prob->Fill(Ps_MC12TuneV2_ProbNNghost);
+    pis_match_chi2->Fill(Ps_TRACK_MatchCHI2);
+    pis_match_chi2_vs_dstm->Fill(dstm,Ps_TRACK_MatchCHI2);
+    pis_match_chi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Ps_TRACK_MatchCHI2);
     //pid stuff
     dst_mass_vs_kpidk->Fill(K_PIDK,dstm);
     dst_mass_vs_pipidk->Fill(Pd_PIDK,dstm);
@@ -383,50 +387,61 @@ void DT_D0_mix_CPV::Loop()
     b_flight_dist_vs_dstm->Fill(dstm,B_FD_OWNPV);
     b_corr_mass_vs_dstm->Fill(dstm,B_CORR_M);
     dtf_chi2_vs_dstm->Fill(dstm,B_VFit_chi2[0]);
-    //muIPchi2_vs_dstm;//already done
+    //muIPchi2_vs_dstm;
     b_endvertex_chi2_vs_dstm->Fill(dstm,B_ENDVERTEX_CHI2);
     b_fd_chi2_vs_dstm->Fill(dstm,B_FDCHI2_OWNPV);
-
+    d_logIPchi2_vs_dstm->Fill(dstm,log(D_IPCHI2_OWNPV));
     
     b_flight_dist_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FD_OWNPV);
     b_corr_mass_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_CORR_M);
     dtf_chi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_VFit_chi2[0]);
-    muIPchi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);//already done
+    muIPchi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);
+    muIPchi2_vs_td0_zoom->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);
+    logmuIPchi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(Mu_IPCHI2_OWNPV));
     b_endvertex_chi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_ENDVERTEX_CHI2);
     b_fd_chi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FDCHI2_OWNPV);
+    d_logIPchi2_vs_td0->Fill((B_VFit_D0_ctau[0]/d0_pdg_ct),log(D_IPCHI2_OWNPV));
     //pos
     if(Ps_ID/TMath::Abs(Ps_ID)>0){
       b_flight_dist_vs_dstm_pos->Fill(dstm,B_FD_OWNPV);
       b_corr_mass_vs_dstm_pos->Fill(dstm,B_CORR_M);
       dtf_chi2_vs_dstm_pos->Fill(dstm,B_VFit_chi2[0]);
-      muIPchi2_vs_dstm_pos->Fill(dstm,Mu_IPCHI2_OWNPV);//already done
+      muIPchi2_vs_dstm_pos->Fill(dstm,Mu_IPCHI2_OWNPV);
+      muIPchi2_vs_dstm_zoom_pos->Fill(dstm,Mu_IPCHI2_OWNPV);
+      logmuIPchi2_vs_dstm_pos->Fill(dstm,log(Mu_IPCHI2_OWNPV));
       b_endvertex_chi2_vs_dstm_pos->Fill(dstm,B_ENDVERTEX_CHI2);
       b_fd_chi2_vs_dstm_pos->Fill(dstm,B_FDCHI2_OWNPV);
-    
+      d_logIPchi2_vs_dstm_pos->Fill(dstm,log(D_IPCHI2_OWNPV));    
     
       b_flight_dist_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FD_OWNPV);
       b_corr_mass_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_CORR_M);
       dtf_chi2_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_VFit_chi2[0]);
-      muIPchi2_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);//already done
+      muIPchi2_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);
+      muIPchi2_vs_td0_zoom_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);
+      logmuIPchi2_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(Mu_IPCHI2_OWNPV));
       b_endvertex_chi2_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_ENDVERTEX_CHI2);
       b_fd_chi2_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FDCHI2_OWNPV);
-
+      d_logIPchi2_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(D_IPCHI2_OWNPV));    
     }else if(Ps_ID/TMath::Abs(Ps_ID)<0){
       b_flight_dist_vs_dstm_neg->Fill(dstm,B_FD_OWNPV);
       b_corr_mass_vs_dstm_neg->Fill(dstm,B_CORR_M);
       dtf_chi2_vs_dstm_neg->Fill(dstm,B_VFit_chi2[0]);
-      muIPchi2_vs_dstm_neg->Fill(dstm,Mu_IPCHI2_OWNPV);//already done
+      muIPchi2_vs_dstm_neg->Fill(dstm,Mu_IPCHI2_OWNPV);
+      muIPchi2_vs_dstm_zoom_neg->Fill(dstm,Mu_IPCHI2_OWNPV);
+      logmuIPchi2_vs_dstm_neg->Fill(dstm,log(Mu_IPCHI2_OWNPV));
       b_endvertex_chi2_vs_dstm_neg->Fill(dstm,B_ENDVERTEX_CHI2);
       b_fd_chi2_vs_dstm_neg->Fill(dstm,B_FDCHI2_OWNPV);
-    
+      d_logIPchi2_vs_dstm_neg->Fill(dstm,log(D_IPCHI2_OWNPV));    
     
       b_flight_dist_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FD_OWNPV);
       b_corr_mass_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_CORR_M);
       dtf_chi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_VFit_chi2[0]);
-      muIPchi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);//already done
+      muIPchi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);
+      muIPchi2_vs_td0_zoom_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Mu_IPCHI2_OWNPV);
+      logmuIPchi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(Mu_IPCHI2_OWNPV));
       b_endvertex_chi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_ENDVERTEX_CHI2);
       b_fd_chi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FDCHI2_OWNPV);
-
+      d_logIPchi2_vs_dstm_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(D_IPCHI2_OWNPV));
     }
       
       

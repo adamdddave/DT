@@ -132,15 +132,21 @@ int main(int argc, char* const argv[]){
   rs_looper.mu_p->Write();
   rs_looper.mu_log_ip->Write();
   rs_looper.pis_ghost_prob->Write();
+  rs_looper.pis_match_chi2->Write();
+  rs_looper.pis_match_chi2_vs_dstm->Write();
+  rs_looper.pis_match_chi2_vs_td0->Write();
   rs_looper.dst_mass_vs_kpidk->Write();
   rs_looper.dst_mass_vs_pipidk->Write();
   rs_looper.dstar_mass_plot_pos->Write();
   rs_looper.dstar_mass_plot_neg->Write();
 
+  
   rs_looper.b_flight_dist_vs_dstm_pos->Write();
   rs_looper.b_corr_mass_vs_dstm_pos->Write();
   rs_looper.dtf_chi2_vs_dstm_pos->Write();
-  rs_looper.muIPchi2_vs_dstm_pos->Write();//already done
+  rs_looper.muIPchi2_vs_dstm_pos->Write();
+  rs_looper.muIPchi2_vs_dstm_zoom_pos->Write();
+  rs_looper.logmuIPchi2_vs_dstm_pos->Write();
   rs_looper.b_endvertex_chi2_vs_dstm_pos->Write();
   rs_looper.b_fd_chi2_vs_dstm_pos->Write();
 
@@ -148,6 +154,8 @@ int main(int argc, char* const argv[]){
   rs_looper.b_corr_mass_vs_td0_pos->Write();
   rs_looper.dtf_chi2_vs_td0_pos->Write();
   rs_looper.muIPchi2_vs_td0_pos->Write();
+  rs_looper.muIPchi2_vs_td0_zoom_pos->Write();
+  rs_looper.logmuIPchi2_vs_td0_pos->Write();
   rs_looper.b_endvertex_chi2_vs_td0_pos->Write();
   rs_looper.b_fd_chi2_vs_td0_pos->Write();
 
@@ -155,7 +163,9 @@ int main(int argc, char* const argv[]){
   rs_looper.b_flight_dist_vs_dstm_neg->Write();
   rs_looper.b_corr_mass_vs_dstm_neg->Write();
   rs_looper.dtf_chi2_vs_dstm_neg->Write();
-  rs_looper.muIPchi2_vs_dstm_neg->Write();//already done
+  rs_looper.muIPchi2_vs_dstm_neg->Write();
+  rs_looper.muIPchi2_vs_dstm_zoom_neg->Write();
+  rs_looper.logmuIPchi2_vs_dstm_neg->Write();
   rs_looper.b_endvertex_chi2_vs_dstm_neg->Write();
   rs_looper.b_fd_chi2_vs_dstm_neg->Write();
 
@@ -164,6 +174,8 @@ int main(int argc, char* const argv[]){
   rs_looper.b_corr_mass_vs_td0_neg->Write();
   rs_looper.dtf_chi2_vs_td0_neg->Write();
   rs_looper.muIPchi2_vs_td0_neg->Write();
+  rs_looper.muIPchi2_vs_td0_zoom_neg->Write();
+  rs_looper.logmuIPchi2_vs_td0_neg->Write();
   rs_looper.b_endvertex_chi2_vs_td0_neg->Write();
   rs_looper.b_fd_chi2_vs_td0_neg->Write();
 
@@ -180,6 +192,8 @@ int main(int argc, char* const argv[]){
   rs_looper.b_corr_mass_vs_td0->Write();
   rs_looper.dtf_chi2_vs_td0->Write();
   rs_looper.muIPchi2_vs_td0->Write();
+  rs_looper.muIPchi2_vs_td0_zoom->Write();
+  rs_looper.logmuIPchi2_vs_td0->Write();
   rs_looper.b_endvertex_chi2_vs_td0->Write();
   rs_looper.b_fd_chi2_vs_td0->Write();
 
@@ -281,8 +295,14 @@ int main(int argc, char* const argv[]){
   rs_looper.td0_neg_bin3->Write();
   rs_looper.td0_neg_bin4->Write();
   rs_looper.td0_neg_bin5->Write();
+  //extra
+  rs_looper.d_logIPchi2_vs_dstm->Write();
+  rs_looper.d_logIPchi2_vs_td0->Write();
+  rs_looper.d_logIPchi2_vs_dstm_pos->Write();
+  rs_looper.d_logIPchi2_vs_td0_pos->Write();
+  rs_looper.d_logIPchi2_vs_dstm_neg->Write();
+  rs_looper.d_logIPchi2_vs_td0_neg->Write();
 
-  
   //ss
   
   rs_ss_looper.dstar_mass_plot->Write();
@@ -296,6 +316,9 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.mu_p->Write();
   rs_ss_looper.mu_log_ip->Write();
   rs_ss_looper.pis_ghost_prob->Write();
+  rs_ss_looper.pis_match_chi2->Write();
+  rs_ss_looper.pis_match_chi2_vs_dstm->Write();
+  rs_ss_looper.pis_match_chi2_vs_td0->Write();
   rs_ss_looper.dst_mass_vs_kpidk->Write();
   rs_ss_looper.dst_mass_vs_pipidk->Write();
   rs_ss_looper.dstar_mass_plot_pos->Write();
@@ -309,7 +332,9 @@ int main(int argc, char* const argv[]){
 rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   rs_ss_looper.b_corr_mass_vs_dstm_pos->Write();
   rs_ss_looper.dtf_chi2_vs_dstm_pos->Write();
-  rs_ss_looper.muIPchi2_vs_dstm_pos->Write();//already done
+  rs_ss_looper.muIPchi2_vs_dstm_pos->Write();
+  rs_ss_looper.muIPchi2_vs_dstm_zoom_pos->Write();
+  rs_ss_looper.logmuIPchi2_vs_dstm_pos->Write();
   rs_ss_looper.b_endvertex_chi2_vs_dstm_pos->Write();
   rs_ss_looper.b_fd_chi2_vs_dstm_pos->Write();
 
@@ -317,6 +342,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   rs_ss_looper.b_corr_mass_vs_td0_pos->Write();
   rs_ss_looper.dtf_chi2_vs_td0_pos->Write();
   rs_ss_looper.muIPchi2_vs_td0_pos->Write();
+  rs_ss_looper.muIPchi2_vs_td0_zoom_pos->Write();
+  rs_ss_looper.logmuIPchi2_vs_td0_pos->Write();
   rs_ss_looper.b_endvertex_chi2_vs_td0_pos->Write();
   rs_ss_looper.b_fd_chi2_vs_td0_pos->Write();
 
@@ -324,7 +351,9 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   rs_ss_looper.b_flight_dist_vs_dstm_neg->Write();
   rs_ss_looper.b_corr_mass_vs_dstm_neg->Write();
   rs_ss_looper.dtf_chi2_vs_dstm_neg->Write();
-  rs_ss_looper.muIPchi2_vs_dstm_neg->Write();//already done
+  rs_ss_looper.muIPchi2_vs_dstm_neg->Write();
+  rs_ss_looper.muIPchi2_vs_dstm_zoom_neg->Write();
+  rs_ss_looper.logmuIPchi2_vs_dstm_neg->Write();
   rs_ss_looper.b_endvertex_chi2_vs_dstm_neg->Write();
   rs_ss_looper.b_fd_chi2_vs_dstm_neg->Write();
 
@@ -333,6 +362,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   rs_ss_looper.b_corr_mass_vs_td0_neg->Write();
   rs_ss_looper.dtf_chi2_vs_td0_neg->Write();
   rs_ss_looper.muIPchi2_vs_td0_neg->Write();
+  rs_ss_looper.muIPchi2_vs_td0_zoom_neg->Write();
+  rs_ss_looper.logmuIPchi2_vs_td0_neg->Write();
   rs_ss_looper.b_endvertex_chi2_vs_td0_neg->Write();
   rs_ss_looper.b_fd_chi2_vs_td0_neg->Write();
 
@@ -342,6 +373,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   rs_ss_looper.b_corr_mass_vs_td0->Write();
   rs_ss_looper.dtf_chi2_vs_td0->Write();
   rs_ss_looper.muIPchi2_vs_td0->Write();
+  rs_ss_looper.muIPchi2_vs_td0_zoom->Write();
+  rs_ss_looper.logmuIPchi2_vs_td0->Write();
   rs_ss_looper.b_endvertex_chi2_vs_td0->Write();
   rs_ss_looper.b_fd_chi2_vs_td0->Write();
 
@@ -442,6 +475,12 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   for(int i=0; i<20;++i){
     rs_ss_looper.the_ghost_prob_bins[i]->Write();
   }
+  rs_ss_looper.d_logIPchi2_vs_dstm->Write();
+  rs_ss_looper.d_logIPchi2_vs_td0->Write();
+  rs_ss_looper.d_logIPchi2_vs_dstm_pos->Write();
+  rs_ss_looper.d_logIPchi2_vs_td0_pos->Write();
+  rs_ss_looper.d_logIPchi2_vs_dstm_neg->Write();
+  rs_ss_looper.d_logIPchi2_vs_td0_neg->Write();
 
   
   fout->Close();
@@ -460,6 +499,9 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_looper.mu_p->Write();
   ws_looper.mu_log_ip->Write();
   ws_looper.pis_ghost_prob->Write();
+  ws_looper.pis_match_chi2->Write();
+  ws_looper.pis_match_chi2_vs_dstm->Write();
+  ws_looper.pis_match_chi2_vs_td0->Write();
   ws_looper.dstar_mass_plot_pos->Write();
   ws_looper.dstar_mass_plot_neg->Write();
   ws_looper.b_flight_dist->Write();
@@ -472,7 +514,9 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_looper.b_corr_mass_vs_dstm_pos->Write();
   ws_looper.dtf_chi2_vs_dstm_pos->Write();
-  ws_looper.muIPchi2_vs_dstm_pos->Write();//already done
+  ws_looper.muIPchi2_vs_dstm_pos->Write();
+  ws_looper.muIPchi2_vs_dstm_zoom_pos->Write();
+  ws_looper.logmuIPchi2_vs_dstm_pos->Write();
   ws_looper.b_endvertex_chi2_vs_dstm_pos->Write();
   ws_looper.b_fd_chi2_vs_dstm_pos->Write();
 
@@ -480,6 +524,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_looper.b_corr_mass_vs_td0_pos->Write();
   ws_looper.dtf_chi2_vs_td0_pos->Write();
   ws_looper.muIPchi2_vs_td0_pos->Write();
+  ws_looper.muIPchi2_vs_td0_zoom_pos->Write();
+  ws_looper.logmuIPchi2_vs_td0_pos->Write();
   ws_looper.b_endvertex_chi2_vs_td0_pos->Write();
   ws_looper.b_fd_chi2_vs_td0_pos->Write();
 
@@ -487,7 +533,9 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_looper.b_flight_dist_vs_dstm_neg->Write();
   ws_looper.b_corr_mass_vs_dstm_neg->Write();
   ws_looper.dtf_chi2_vs_dstm_neg->Write();
-  ws_looper.muIPchi2_vs_dstm_neg->Write();//already done
+  ws_looper.muIPchi2_vs_dstm_neg->Write();
+  ws_looper.muIPchi2_vs_dstm_zoom_neg->Write();
+  ws_looper.logmuIPchi2_vs_dstm_neg->Write();
   ws_looper.b_endvertex_chi2_vs_dstm_neg->Write();
   ws_looper.b_fd_chi2_vs_dstm_neg->Write();
 
@@ -496,6 +544,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_looper.b_corr_mass_vs_td0_neg->Write();
   ws_looper.dtf_chi2_vs_td0_neg->Write();
   ws_looper.muIPchi2_vs_td0_neg->Write();
+  ws_looper.muIPchi2_vs_td0_zoom_neg->Write();
+  ws_looper.logmuIPchi2_vs_td0_neg->Write();
   ws_looper.b_endvertex_chi2_vs_td0_neg->Write();
   ws_looper.b_fd_chi2_vs_td0_neg->Write();
 
@@ -505,6 +555,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_looper.b_corr_mass_vs_td0->Write();
   ws_looper.dtf_chi2_vs_td0->Write();
   ws_looper.muIPchi2_vs_td0->Write();
+  ws_looper.muIPchi2_vs_td0_zoom->Write();
+  ws_looper.logmuIPchi2_vs_td0->Write();
   ws_looper.b_endvertex_chi2_vs_td0->Write();
   ws_looper.b_fd_chi2_vs_td0->Write();
 
@@ -595,7 +647,13 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   for(int i=0; i<20;++i){
     ws_looper.the_ghost_prob_bins[i]->Write();
   }
-  
+  ws_looper.d_logIPchi2_vs_dstm->Write();
+  ws_looper.d_logIPchi2_vs_td0->Write();
+  ws_looper.d_logIPchi2_vs_dstm_pos->Write();
+  ws_looper.d_logIPchi2_vs_td0_pos->Write();
+  ws_looper.d_logIPchi2_vs_dstm_neg->Write();
+  ws_looper.d_logIPchi2_vs_td0_neg->Write();
+
 
   //ss
   ws_ss_looper.dstar_mass_plot->Write();
@@ -609,6 +667,9 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.mu_p->Write();
   ws_ss_looper.mu_log_ip->Write();
   ws_ss_looper.pis_ghost_prob->Write();
+  ws_ss_looper.pis_match_chi2->Write();
+  ws_ss_looper.pis_match_chi2_vs_dstm->Write();
+  ws_ss_looper.pis_match_chi2_vs_td0->Write();
   ws_ss_looper.dst_mass_vs_kpidk->Write();
   ws_ss_looper.dst_mass_vs_pipidk->Write();
   ws_ss_looper.dstar_mass_plot_pos->Write();
@@ -623,7 +684,9 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.b_corr_mass_vs_dstm_pos->Write();
   ws_ss_looper.dtf_chi2_vs_dstm_pos->Write();
-  ws_ss_looper.muIPchi2_vs_dstm_pos->Write();//already done
+  ws_ss_looper.muIPchi2_vs_dstm_pos->Write();
+  ws_ss_looper.muIPchi2_vs_dstm_zoom_pos->Write();
+  ws_ss_looper.logmuIPchi2_vs_dstm_pos->Write();
   ws_ss_looper.b_endvertex_chi2_vs_dstm_pos->Write();
   ws_ss_looper.b_fd_chi2_vs_dstm_pos->Write();
 
@@ -631,6 +694,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.b_corr_mass_vs_td0_pos->Write();
   ws_ss_looper.dtf_chi2_vs_td0_pos->Write();
   ws_ss_looper.muIPchi2_vs_td0_pos->Write();
+  ws_ss_looper.muIPchi2_vs_td0_zoom_pos->Write();
+  ws_ss_looper.logmuIPchi2_vs_td0_pos->Write();
   ws_ss_looper.b_endvertex_chi2_vs_td0_pos->Write();
   ws_ss_looper.b_fd_chi2_vs_td0_pos->Write();
 
@@ -638,7 +703,9 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.b_flight_dist_vs_dstm_neg->Write();
   ws_ss_looper.b_corr_mass_vs_dstm_neg->Write();
   ws_ss_looper.dtf_chi2_vs_dstm_neg->Write();
-  ws_ss_looper.muIPchi2_vs_dstm_neg->Write();//already done
+  ws_ss_looper.muIPchi2_vs_dstm_neg->Write();
+  ws_ss_looper.muIPchi2_vs_dstm_zoom_neg->Write();
+  ws_ss_looper.logmuIPchi2_vs_dstm_neg->Write();
   ws_ss_looper.b_endvertex_chi2_vs_dstm_neg->Write();
   ws_ss_looper.b_fd_chi2_vs_dstm_neg->Write();
 
@@ -647,6 +714,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.b_corr_mass_vs_td0_neg->Write();
   ws_ss_looper.dtf_chi2_vs_td0_neg->Write();
   ws_ss_looper.muIPchi2_vs_td0_neg->Write();
+  ws_ss_looper.muIPchi2_vs_td0_zoom_neg->Write();
+  ws_ss_looper.logmuIPchi2_vs_td0_neg->Write();
   ws_ss_looper.b_endvertex_chi2_vs_td0_neg->Write();
   ws_ss_looper.b_fd_chi2_vs_td0_neg->Write();
 
@@ -656,6 +725,8 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.b_corr_mass_vs_td0->Write();
   ws_ss_looper.dtf_chi2_vs_td0->Write();
   ws_ss_looper.muIPchi2_vs_td0->Write();
+  ws_ss_looper.muIPchi2_vs_td0_zoom->Write();
+  ws_ss_looper.logmuIPchi2_vs_td0->Write();
   ws_ss_looper.b_endvertex_chi2_vs_td0->Write();
   ws_ss_looper.b_fd_chi2_vs_td0->Write();
 
@@ -742,7 +813,13 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
     ws_ss_looper.the_ghost_prob_bins[i]->Write();
   }
   
-  
+  ws_ss_looper.d_logIPchi2_vs_dstm->Write();
+  ws_ss_looper.d_logIPchi2_vs_td0->Write();
+  ws_ss_looper.d_logIPchi2_vs_dstm_pos->Write();
+  ws_ss_looper.d_logIPchi2_vs_td0_pos->Write();
+  ws_ss_looper.d_logIPchi2_vs_dstm_neg->Write();
+  ws_ss_looper.d_logIPchi2_vs_td0_neg->Write();
+
   fout2->Close();
   WrongB wrongbws("wrongbws",ws_looper,ws_ss_looper);
   wrongbws.MakeMassComparisons();

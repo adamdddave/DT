@@ -5,6 +5,7 @@
 #include <TFile.h>
 #include <TStyle.h>
 #include <TPaveText.h>
+#include <TF1.h>
 // local
 #include "betastar_plot.h"
 //root
@@ -14,6 +15,7 @@
 #include "RooGlobalFunc.h"
 #endif
 #include <RooFitResult.h>
+#include <RooProduct.h>
 #include <RooRealVar.h>
 #include <RooDataSet.h>
 #include <RooGaussian.h>
@@ -644,12 +646,34 @@ void betastar_plot::FitWSDoubleMisID(){
   RooAbsReal* tot_int_double_misid = model.createIntegral(*x,NormSet(*x));
   std::cout<<"nsig before = "<<nsig.getVal()*tot_int_double_misid->getVal()<<std::endl;
   RooAbsReal* sig_int = model.createIntegral(*x,NormSet(*x),Range("sig"));
+  cout<<"nsig after = "<<nsig.getVal()<<endl;
+  std::cout<<"nsig*I after = "<<nsig.getVal()*sig_int->getVal()<<std::endl;
+  std::vector<double>poly_fit;
+  poly_fit.push_back(nsig.getVal()*sig_int->getVal());//central value
+  poly_fit.push_back(sig_int->getPropagatedError(*res_pol)*nsig.getVal());//propagated error
   
-  std::cout<<"nsig after = "<<nsig.getVal()*sig_int->getVal()<<std::endl;
-  std::cout<<"tot number of doubly misID in signal region for polynomial fit = "<<sig_int->getVal()<<std::endl;
-  // TFile obs("./SavedFits/betastar/"+m_name+"double_misid_sideband_subtr_info.root","RECREATE");
-  // obs.cd();
-  // double_misid_subtr->Write();
-  // obs.Close();
+  std::cout<<"tot number of doubly misID in signal region for polynomial fit = "<<sig_int->getVal()*nsig.getVal()<<"+/-"<<sig_int->getPropagatedError(*res_pol)*nsig.getVal()<<std::endl;
+  std::cout<<"error propagated from the fit = "<<getErrorFromPropagation(x,&model,res_pol,data,1700,2100,1864.84-24,1864.84+24)<<std::endl;
+  //now construct secondary fit with linear shape.
   return;
+}
+
+double betastar_plot::getErrorFromPropagation(RooRealVar* x,RooAbsPdf* model, RooFitResult* fr,RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max){
+  // //taken from example at https://root.cern.ch/phpBB3/viewtopic.php?t=12949
+  // RooArgList pars(*(model->getParameters(RooArgSet(*x) ) ));
+  // Double_t nsig = ((RooRealVar*)pars.find("nsig"))->getVal();
+  // std::cout<<"Getting Nsignal, =  "<<nsig<<std::endl;
+  // RooArgSet prodSet(*model);
+  // RooProduct unNormPdf("fitted Function", "fitted Function", prodSet);
+  // //create at TF1 from the values given
+  // TF1 * f2 = unNormPdf.asTF(RooArgList(*x), pars);
+  // Double_t integ2_full = f2->Integral(xmin, xmax);
+  // Double_t integ2 = nsig*f2->Integral(sig_min, sig_max,0)/integ2_full;
+  // // LM: for drawing need to clone
+  // // new TCanvas(); f2->DrawClone();
+  // std::cout<<"from the propagation, the ratio of integrals = "<<integ2<<std::endl;
+  // Double_t dinteg2 = nsig*f2->IntegralError(sig_min, sig_max, 0, fr->covarianceMatrix().GetMatrixArray())/integ2_full;
+  // //the idea here is that we 
+  // return dinteg2;
+  return 0;  
 }

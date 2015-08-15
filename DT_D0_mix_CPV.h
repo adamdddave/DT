@@ -1488,6 +1488,7 @@ public :
   TH1D* dstar_mass_plot_pos;
   TH1D* dstar_mass_plot_neg;
   TH1D* pis_ghost_prob;
+  TH1D* pis_match_chi2;
   //for time integrated systematic studies.
 
   TH1D* dstar_mass_pt_bin1;
@@ -1614,52 +1615,68 @@ public :
   TH2D* dst_mass_vs_kpidk;
   TH2D* dst_mass_vs_pipidk;
   //stuff for possible b misid. 2d histos.
-  
+  TH2D* pis_match_chi2_vs_dstm;
   TH2D* b_flight_dist_vs_dstm;
   TH2D* b_corr_mass_vs_dstm;
   TH2D* dtf_chi2_vs_dstm;
-  //TH2D* muIPchi2_vs_dstm;//already done
+  TH2D* muIPchi2_vs_dstm;
+  TH2D* muIPchi2_vs_dstm_zoom;
+  TH2D* logmuIPchi2_vs_dstm;
   TH2D* b_endvertex_chi2_vs_dstm;
   TH2D* b_fd_chi2_vs_dstm;
+  TH2D* d_logIPchi2_vs_dstm;
 
-
+  TH2D* pis_match_chi2_vs_td0;
   TH2D* b_flight_dist_vs_td0;
   TH2D* b_corr_mass_vs_td0;
   TH2D* dtf_chi2_vs_td0;
   TH2D* muIPchi2_vs_td0;
+  TH2D* muIPchi2_vs_td0_zoom;
+  TH2D* logmuIPchi2_vs_td0;
   TH2D* b_endvertex_chi2_vs_td0;
   TH2D* b_fd_chi2_vs_td0;
+  TH2D* d_logIPchi2_vs_td0;
 
   //pos
   TH2D* b_flight_dist_vs_dstm_pos;
   TH2D* b_corr_mass_vs_dstm_pos;
   TH2D* dtf_chi2_vs_dstm_pos;
-  TH2D* muIPchi2_vs_dstm_pos;//already done
+  TH2D* muIPchi2_vs_dstm_pos;
+  TH2D* muIPchi2_vs_dstm_zoom_pos;
+  TH2D* logmuIPchi2_vs_dstm_pos;
   TH2D* b_endvertex_chi2_vs_dstm_pos;
   TH2D* b_fd_chi2_vs_dstm_pos;
-
+  TH2D* d_logIPchi2_vs_dstm_pos;
+  
   TH2D* b_flight_dist_vs_td0_pos;
   TH2D* b_corr_mass_vs_td0_pos;
   TH2D* dtf_chi2_vs_td0_pos;
   TH2D* muIPchi2_vs_td0_pos;
+  TH2D* muIPchi2_vs_td0_zoom_pos;
+  TH2D* logmuIPchi2_vs_td0_pos;
   TH2D* b_endvertex_chi2_vs_td0_pos;
   TH2D* b_fd_chi2_vs_td0_pos;
-
+  TH2D* d_logIPchi2_vs_td0_pos;
   //neg
-    TH2D* b_flight_dist_vs_dstm_neg;
+  TH2D* b_flight_dist_vs_dstm_neg;
   TH2D* b_corr_mass_vs_dstm_neg;
   TH2D* dtf_chi2_vs_dstm_neg;
-  TH2D* muIPchi2_vs_dstm_neg;//already done
+  TH2D* muIPchi2_vs_dstm_neg;
+  TH2D* muIPchi2_vs_dstm_zoom_neg;
+  TH2D* logmuIPchi2_vs_dstm_neg;
   TH2D* b_endvertex_chi2_vs_dstm_neg;
   TH2D* b_fd_chi2_vs_dstm_neg;
-
+  TH2D* d_logIPchi2_vs_dstm_neg;
 
   TH2D* b_flight_dist_vs_td0_neg;
   TH2D* b_corr_mass_vs_td0_neg;
   TH2D* dtf_chi2_vs_td0_neg;
   TH2D* muIPchi2_vs_td0_neg;
+  TH2D* muIPchi2_vs_td0_zoom_neg;
+  TH2D* logmuIPchi2_vs_td0_neg;
   TH2D* b_endvertex_chi2_vs_td0_neg;
   TH2D* b_fd_chi2_vs_td0_neg;
+  TH2D* d_logIPchi2_vs_td0_neg;
 
 
   
@@ -1699,7 +1716,7 @@ private:
   const double pdg_kplus_m = 493.677;// MeV
   const double pdg_piplus_m = 139.57018;//MeV
   const double kpidk_cut = 2;
-  const double pi_dau_pidk_cut = 2;
+  const double pi_dau_pidk_cut = 0;
   const double pi_slow_pide_cut=1;
   const double pi_slow_probnnghost_cut = 0.5;
   const double dmass_cut = 24;// MeV, for |m - m_pdg|<dmass_cut
@@ -1708,7 +1725,8 @@ private:
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
-  const double pis_ghost_prob_cut = 0.5;//no units
+  const double pis_ghost_prob_cut = 0.25;//no units
+  //  const double mu_ip_chi2_cut = 100;//no units
   //  const double dst_bin_boundary1=2.690000e+03;//MeV
   //const double dst_bin_boundary2=4.330000e+03;//MeV, pt bin boundaries.
   const double dst_pt_bin_boundary1 = 2.130000e+03;//MeV
@@ -1814,6 +1832,8 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dstar_mass_plot_neg = new TH1D(name+"_dt_hist_dstar_m_neg","", 500, 2000,2025);
   dstar_mass_plot_neg->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot_neg->GetBinWidth(1)));
   pis_ghost_prob = new TH1D(name+"_slow_pion_ghost_prob",";#pi_{s} Ghost Prob; Entries / 0.001",1000,0,1);
+
+  pis_match_chi2= new TH1D(name+"_slow_pion_match_chi2","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
   //dstar p and pt bins
   dstar_mass_pt_bin1 = new TH1D(name+"_dt_hist_dstar_m_pt_bin1","", 500, 2000,2025);
   dstar_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin1->GetBinWidth(1)));
@@ -2030,6 +2050,8 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dst_mass_vs_pipidk = new TH2D(name+"_dst_mass_vs_pi_pidk","",192,-190,2,500,2000,2025);
   dst_mass_vs_pipidk->SetTitle("m(D*) vs #pi pidK;#pi pid K; m(D*)[MeV]");
 
+  
+  
   //decay time bins.
   td0_bin_neg10_to_neg075 = new TH1D(name+"_dst_mass_td0_bin_neg10_to_neg075","",500,2000,2025);
   td0_bin_neg10_to_neg075->SetTitle(Form("m(D^{0}#pi_{S}), t(D^{0})/#tau<-0.75;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV",td0_bin_neg10_to_neg075->GetBinWidth(1)));
@@ -2132,27 +2154,41 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
      the_ghost_prob_bins[i]->SetTitle(Form("m(D^{0}#pi_{s}); m(D^{0}#pi_{s})[MeV]; Entries/%.2f MeV",the_ghost_prob_bins[i]->GetBinWidth(1)));
    }
    b_flight_dist = new TH1D(name+"_b_flight_distance",";B Flight Distance [mm]",1000,0,1000);
+   pis_match_chi2_vs_dstm = new TH2D(name+"_pis_match_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];#pi_{S} #chi^{2}_{Match}",500,2000,2025,1000,0,100);
    b_flight_dist_vs_dstm = new TH2D(name+"_b_flight_distance_vs_dstm",";m(D^{0}#pi_{S})[MeV];B Flight Distance[mm]",500,2000,2025,1000,0,1000);
    b_corr_mass_vs_dstm = new TH2D(name+"_b_corr_mass_vs_dstm",";m(D^{0}#pi_{S})[MeV];B Corrected Mass [MeV]",500,2000,2025,650,2000,8500);
    dtf_chi2_vs_dstm= new TH2D(name+"_dtf_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];DTF #chi^{2}",500,2000,2025,50,0,25);
-  // muIPchi2_vs_dstm;//already done
+  // muIPchi2_vs_dstm;
    b_endvertex_chi2_vs_dstm = new TH2D(name+"_b_endvertex_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];B endvertex #chi_{2}",500,2000,2025,100,0,50);
    b_fd_chi2_vs_dstm = new TH2D(name+"_b_fd_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
 
-
+   pis_match_chi2_vs_td0 = new TH2D(name+"_pis_match_chi2_vs_td0",";D^{0}t/#tau;#pi_{S} #chi^{2}_{Match}",150,-5,10,1000,0,100);
    b_flight_dist_vs_td0=new TH2D(name+"_b_flight_distance_vs_td0",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
    b_corr_mass_vs_td0= new TH2D(name+"_b_corr_mass_vs_td0",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
    dtf_chi2_vs_td0=new TH2D(name+"_dtf_chi2_vs_td0",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
-   muIPchi2_vs_td0=new TH2D(name+"_mu_ipchi2_vs_td0",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,2000,0,20000);
+   muIPchi2_vs_td0=new TH2D(name+"_mu_ipchi2_vs_td0",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,5000,0,50000);
+   muIPchi2_vs_td0_zoom=new TH2D(name+"_mu_ipchi2_vs_td0_zoom",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,500,0,150);
+   logmuIPchi2_vs_td0=new TH2D(name+"_log_mu_ipchi2_vs_td0",";D^{0}t/#tau;#mu log(IP #chi^{2})",150,-5,10,150,0,15);
    b_endvertex_chi2_vs_td0=new TH2D(name+"_b_endvertex_chi2_vs_td0",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
    b_fd_chi2_vs_td0=new TH2D(name+"_b_fd_chi2_vs_td0",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);;
+
+
+   d_logIPchi2_vs_dstm = new TH2D(name+"_d_log_ip_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",500,2000,2025,400,-20,20);
+   d_logIPchi2_vs_dstm_pos = new TH2D(name+"_d_log_ip_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",500,2000,2025,400,-20,20);
+   d_logIPchi2_vs_dstm_neg = new TH2D(name+"_d_log_ip_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",500,2000,2025,400,-20,20);
+
+   d_logIPchi2_vs_td0 = new TH2D(name+"_d_log_ip_chi2_vs_td0",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",150,-5,10,400,-20,20);
+   d_logIPchi2_vs_td0_pos = new TH2D(name+"_d_log_ip_chi2_vs_td0_pos",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",150,-5,10,400,-20,20);
+   d_logIPchi2_vs_td0_neg = new TH2D(name+"_d_log_ip_chi2_vs_td0_neg",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",150,-5,10,400,-20,20);
 
    //pos
    //b_flight_dist_pos= new TH1D(name+"_b_flight_distance_pos",";B Flight Distance [mm]",1000,0,1000);
    b_flight_dist_vs_dstm_pos= new TH2D(name+"_b_flight_distance_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B Flight Distance[mm]",500,2000,2025,1000,0,1000);
    b_corr_mass_vs_dstm_pos= new TH2D(name+"_b_corr_mass_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B Corrected Mass [MeV]",500,2000,2025,650,2000,8500);
    dtf_chi2_vs_dstm_pos= new TH2D(name+"_dtf_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];DTF #chi^{2}",500,2000,2025,50,0,25);
-   muIPchi2_vs_dstm_pos = new TH2D(name+"_mu_ipchi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];#mu IP #chi^{2}",500,2000,2025,2000,0,20000);//already done
+   muIPchi2_vs_dstm_pos = new TH2D(name+"_mu_ipchi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];#mu IP #chi^{2}",500,2000,2025,5000,0,50000);
+   muIPchi2_vs_dstm_zoom_pos = new TH2D(name+"_mu_ipchi2_vs_dstm_zoom_pos",";m(D^{0}#pi_{S})[MeV];#mu IP #chi^{2}",500,2000,2025,500,0,150);
+   logmuIPchi2_vs_dstm_pos = new TH2D(name+"_log_mu_ipchi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];#mu log(IP #chi^{2})",500,2000,2025,150,0,15);
    b_endvertex_chi2_vs_dstm_pos= new TH2D(name+"_b_endvertex_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B endvertex #chi_{2}",500,2000,2025,100,0,50);
    b_fd_chi2_vs_dstm_pos= new TH2D(name+"_b_fd_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
 
@@ -2160,7 +2196,9 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    b_flight_dist_vs_td0_pos=new TH2D(name+"_b_flight_distance_vs_td0_pos",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
    b_corr_mass_vs_td0_pos= new TH2D(name+"_b_corr_mass_vs_td0_pos",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
    dtf_chi2_vs_td0_pos=new TH2D(name+"_dtf_chi2_vs_td0_pos",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
-   muIPchi2_vs_td0_pos=new TH2D(name+"_mu_ipchi2_vs_td0_pos",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,2000,0,20000);
+   muIPchi2_vs_td0_pos=new TH2D(name+"_mu_ipchi2_vs_td0_pos",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,5000,0,50000);
+   muIPchi2_vs_td0_zoom_pos=new TH2D(name+"_mu_ipchi2_vs_td0_zoom_pos",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,500,0,150);
+   logmuIPchi2_vs_td0_pos=new TH2D(name+"_log_mu_ipchi2_vs_td0_pos",";D^{0}t/#tau;#mu log(IP #chi^{2})",150,-5,10,150,0,15);
    b_endvertex_chi2_vs_td0_pos=new TH2D(name+"_b_endvertex_chi2_vs_td0_pos",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
    b_fd_chi2_vs_td0_pos=new TH2D(name+"_b_fd_chi2_vs_td0_pos",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);
 
@@ -2169,7 +2207,9 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    b_flight_dist_vs_dstm_neg= new TH2D(name+"_b_flight_distance_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B Flight Distance[mm]",500,2000,2025,1000,0,1000);
    b_corr_mass_vs_dstm_neg= new TH2D(name+"_b_corr_mass_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B Corrected Mass [MeV]",500,2000,2025,650,2000,8500);
    dtf_chi2_vs_dstm_neg= new TH2D(name+"_dtf_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];DTF #chi^{2}",500,2000,2025,50,0,25);
-   muIPchi2_vs_dstm_neg = new TH2D(name+"_mu_ipchi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];#mu IP #chi^{2}",500,2000,2025,2000,0,20000);//already done
+   muIPchi2_vs_dstm_neg = new TH2D(name+"_mu_ipchi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];#mu IP #chi^{2}",500,2000,2025,5000,0,50000);
+   muIPchi2_vs_dstm_zoom_neg = new TH2D(name+"_mu_ipchi2_vs_dstm_zoom_neg",";m(D^{0}#pi_{S})[MeV];#mu IP #chi^{2}",500,2000,2025,500,0,150);
+   logmuIPchi2_vs_dstm_neg = new TH2D(name+"_log_mu_ipchi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];#mu log(IP #chi^{2})",500,2000,2025,150,0,15);
 
    b_endvertex_chi2_vs_dstm_neg= new TH2D(name+"_b_endvertex_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B endvertex #chi_{2}",500,2000,2025,100,0,50);
    b_fd_chi2_vs_dstm_neg= new TH2D(name+"_b_fd_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
@@ -2178,7 +2218,9 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    b_flight_dist_vs_td0_neg=new TH2D(name+"_b_flight_distance_vs_td0_neg",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
    b_corr_mass_vs_td0_neg= new TH2D(name+"_b_corr_mass_vs_td0_neg",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
    dtf_chi2_vs_td0_neg=new TH2D(name+"_dtf_chi2_vs_td0_neg",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
-   muIPchi2_vs_td0_neg=new TH2D(name+"_mu_ipchi2_vs_td0_neg",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,1000,0,2000);
+   muIPchi2_vs_td0_neg=new TH2D(name+"_mu_ipchi2_vs_td0_neg",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,5000,0,50000);
+   muIPchi2_vs_td0_zoom_neg=new TH2D(name+"_mu_ipchi2_vs_td0_zoom_neg",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,500,0,150);
+   logmuIPchi2_vs_td0_neg=new TH2D(name+"_log_mu_ipchi2_vs_td0_neg",";D^{0}t/#tau;#mu log(IP #chi^{2})",150,-5,10,150,0,15);
    b_endvertex_chi2_vs_td0_neg=new TH2D(name+"_b_endvertex_chi2_vs_td0_neg",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
    b_fd_chi2_vs_td0_neg=new TH2D(name+"_b_fd_chi2_vs_td0_neg",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);
 

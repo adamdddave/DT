@@ -33,7 +33,7 @@ public:
   inline void set_local_workspace(RooWorkspace*w){w_local=w;}
   void SavePlots();
   void FitWSDoubleMisID();
-  
+  double getErrorFromPropagation(RooRealVar* x, RooAbsPdf* model, RooFitResult* fr, RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max);
   TH2* h2sig ;
   TH2* h2kpisb ;
   TH2* h2kpisb_hi ;

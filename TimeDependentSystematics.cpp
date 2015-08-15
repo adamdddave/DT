@@ -66,7 +66,7 @@ int main(int argc, char* const argv[]){
   }
   TFile *f1 =TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
-  f2->ls();
+  //f2->ls();
   TString channelFromFile = argv[2];
   channelFromFile.ReplaceAll("../","");
   channelFromFile.ReplaceAll("complete_analysis","");
@@ -81,8 +81,23 @@ int main(int argc, char* const argv[]){
 
   //do 2d checks first
   std::vector<int>sl;
-  TimeDependent2D v_muipchi2("mu_ipchi2_vs_td0_pos",f1,"_positive_muon_ipchi2",sl);
-  return 0;
+  std::vector<int>zoomBins;zoomBins.push_back(1);zoomBins.push_back(136);zoomBins.push_back(198);zoomBins.push_back(260);zoomBins.push_back(327);zoomBins.push_back(410);
+  TimeDependent2D v_muipchi2_pos("mu_ipchi2_vs_td0_pos",f1,"_positive_muon_ipchi2",sl);
+  TimeDependent2D v_muipchi2_zoom_pos("mu_ipchi2_vs_td0_zoom_pos",f1,"_positive_muon_ipchi2_zoom",zoomBins);
+  TimeDependent2D v_log_muipchi2_pos("log_mu_ipchi2_vs_td0_pos",f1,"_positive_muon_log_ipchi2",sl);
+  //  return 0;
+  TimeDependent2D v_muipchi2_neg("mu_ipchi2_vs_td0_neg",f1,"_negative_muon_ipchi2",sl);
+  TimeDependent2D v_muipchi2_zoom_neg("mu_ipchi2_vs_td0_zoom_neg",f1,"_negative_muon_ipchi2_zoom",zoomBins);
+  TimeDependent2D v_log_muipchi2_neg("log_mu_ipchi2_vs_td0_neg",f1,"_negative_muon_log_ipchi2",sl);
+  TimeDependent2D v_b_corr_mass_pos("b_corr_mass_vs_td0_pos",f1,"_positive_b_corr_m",sl);
+  TimeDependent2D v_b_corr_mass_neg("b_corr_mass_vs_td0_neg",f1,"_negative_b_corr_m",sl);
+  TimeDependent2D v_dtf_chi2_pos("dtf_chi2_vs_td0_pos",f1,"_positive_dtf_chi2",sl);
+  TimeDependent2D v_dtf_chi2_neg("dtf_chi2_vs_td0_neg",f1,"_negative_dtf_chi2",sl);
+  TimeDependent2D v_d_logipchi2_pos("d_log_ip_chi2_vs_td0_pos",f1,"_positive_d0ipchi2",sl);
+  TimeDependent2D v_d_logipchi2_neg("d_log_ip_chi2_vs_td0_neg",f1,"_negative_d0ipchi2",sl);
+  TimeDependent2D v_pis_matchchi2("pis_match_chi2_vs_td0",f1,"_pis_match_chi2",sl);
+  //
+  //  return 0;
   
   //get the bins.
   std::vector<TH1D*>pos_bins,neg_bins;
