@@ -199,102 +199,56 @@ int main(int argc, char* const argv[]){
 
   
   rs_looper.decay_time_distr->Write();
-  rs_looper.dstar_mass_pt_bin1->Write();
-  rs_looper.dstar_mass_pt_bin2->Write();
-  rs_looper.dstar_mass_pt_bin3->Write();
-  rs_looper.dstar_mass_pt_bin4->Write();
-  rs_looper.dstar_mass_pt_bin5->Write();
-  rs_looper.dstar_mass_p_bin1->Write();
-  rs_looper.dstar_mass_p_bin2->Write();
-  rs_looper.dstar_mass_p_bin3->Write();
-  rs_looper.dstar_mass_p_bin4->Write();
-  rs_looper.dstar_mass_p_bin5->Write();
-
-  rs_looper.mu_mass_pt_bin1->Write();
-  rs_looper.mu_mass_pt_bin2->Write();
-  rs_looper.mu_mass_pt_bin3->Write();
-  rs_looper.mu_mass_pt_bin4->Write();
-  rs_looper.mu_mass_pt_bin5->Write();
-  rs_looper.mu_mass_p_bin1->Write();
-  rs_looper.mu_mass_p_bin2->Write();
-  rs_looper.mu_mass_p_bin3->Write();
-  rs_looper.mu_mass_p_bin4->Write();
-  rs_looper.mu_mass_p_bin5->Write();
-
-  rs_looper.mu_log_ip_bin1->Write();
-  rs_looper.mu_log_ip_bin2->Write();
-  rs_looper.mu_log_ip_bin3->Write();
-  rs_looper.mu_log_ip_bin4->Write();
-  rs_looper.mu_log_ip_bin5->Write();
+  //switch to a loop on bins.
+  for(auto hist: rs_looper.dstar_pt_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_looper.dstar_p_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_looper.mu_pt_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_looper.mu_p_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_looper.mu_log_ip_bins){
+    hist->Write();
+  }
+  
   //pid
-  rs_looper.k_pid_k_bin1->Write();
-  rs_looper.k_pid_k_bin2->Write();
-  rs_looper.k_pid_k_bin3->Write();
-  rs_looper.k_pid_k_bin4->Write();
-  rs_looper.k_pid_k_bin5->Write();
-
-  rs_looper.pi_pid_k_bin1->Write();
-  rs_looper.pi_pid_k_bin2->Write();
-  rs_looper.pi_pid_k_bin3->Write();
-  rs_looper.pi_pid_k_bin4->Write();
-  rs_looper.pi_pid_k_bin5->Write();
+  for(auto hist: rs_looper.kpidk_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_looper.pipidk_bins){
+    hist->Write();
+  }
 
   for(int i=0; i<20;++i){
     rs_looper.the_ghost_prob_bins[i]->Write();
   }
-  
-  
+    
   //5x5 matrix
-  rs_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
-  rs_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
-  rs_looper.pi_pid_k_bin1_k_pid_k_bin3->Write();
-  rs_looper.pi_pid_k_bin1_k_pid_k_bin4->Write();
-  rs_looper.pi_pid_k_bin1_k_pid_k_bin5->Write();
-
-  rs_looper.pi_pid_k_bin2_k_pid_k_bin1->Write();
-  rs_looper.pi_pid_k_bin2_k_pid_k_bin2->Write();
-  rs_looper.pi_pid_k_bin2_k_pid_k_bin3->Write();
-  rs_looper.pi_pid_k_bin2_k_pid_k_bin4->Write();
-  rs_looper.pi_pid_k_bin2_k_pid_k_bin5->Write();
-
-  rs_looper.pi_pid_k_bin3_k_pid_k_bin1->Write();
-  rs_looper.pi_pid_k_bin3_k_pid_k_bin2->Write();
-  rs_looper.pi_pid_k_bin3_k_pid_k_bin3->Write();
-  rs_looper.pi_pid_k_bin3_k_pid_k_bin4->Write();
-  rs_looper.pi_pid_k_bin3_k_pid_k_bin5->Write();
-
-  rs_looper.pi_pid_k_bin4_k_pid_k_bin1->Write();
-  rs_looper.pi_pid_k_bin4_k_pid_k_bin2->Write();
-  rs_looper.pi_pid_k_bin4_k_pid_k_bin3->Write();
-  rs_looper.pi_pid_k_bin4_k_pid_k_bin4->Write();
-  rs_looper.pi_pid_k_bin4_k_pid_k_bin5->Write();
-
-  rs_looper.pi_pid_k_bin5_k_pid_k_bin1->Write();
-  rs_looper.pi_pid_k_bin5_k_pid_k_bin2->Write();
-  rs_looper.pi_pid_k_bin5_k_pid_k_bin3->Write();
-  rs_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
-  rs_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
-
+  for(auto hist: rs_looper.thepidMatrix){
+    //guaranteed to be in the right order.
+    hist->Write();
+  }
+  //td0
   rs_looper.td0_bin_neg10_to_neg075->Write();
   rs_looper.td0_bin_neg075_to_neg05->Write();
-  rs_looper.td0_bin1->Write();
-  rs_looper.td0_bin2->Write();
-  rs_looper.td0_bin3->Write();
-  rs_looper.td0_bin4->Write();
-  rs_looper.td0_bin5->Write();
-
+  //those guys aren't in the vector. the next ones are
+  for(auto hist: rs_looper.td0_bins){
+    hist->Write();
+  }
+  
   //pos
-  rs_looper.td0_pos_bin1->Write();
-  rs_looper.td0_pos_bin2->Write();
-  rs_looper.td0_pos_bin3->Write();
-  rs_looper.td0_pos_bin4->Write();
-  rs_looper.td0_pos_bin5->Write();
+  for(auto hist: rs_looper.td0_pos_bins){
+    hist->Write();
+  }
   //neg
-  rs_looper.td0_neg_bin1->Write();
-  rs_looper.td0_neg_bin2->Write();
-  rs_looper.td0_neg_bin3->Write();
-  rs_looper.td0_neg_bin4->Write();
-  rs_looper.td0_neg_bin5->Write();
+  for(auto hist: rs_looper.td0_neg_bins){
+    hist->Write();
+  }
   //extra
   rs_looper.d_logIPchi2_vs_dstm->Write();
   rs_looper.d_logIPchi2_vs_td0->Write();
@@ -329,7 +283,7 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.dtf_chi2_vs_dstm->Write();
   rs_ss_looper.b_endvertex_chi2_vs_dstm->Write();
   rs_ss_looper.b_fd_chi2_vs_dstm->Write();
-rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
+  rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   rs_ss_looper.b_corr_mass_vs_dstm_pos->Write();
   rs_ss_looper.dtf_chi2_vs_dstm_pos->Write();
   rs_ss_looper.muIPchi2_vs_dstm_pos->Write();
@@ -378,99 +332,47 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   rs_ss_looper.b_endvertex_chi2_vs_td0->Write();
   rs_ss_looper.b_fd_chi2_vs_td0->Write();
 
-  
-  rs_ss_looper.dstar_mass_pt_bin1->Write();
-  rs_ss_looper.dstar_mass_pt_bin2->Write();
-  rs_ss_looper.dstar_mass_pt_bin3->Write();
-  rs_ss_looper.dstar_mass_pt_bin4->Write();
-  rs_ss_looper.dstar_mass_pt_bin5->Write();
-  rs_ss_looper.dstar_mass_p_bin1->Write();
-  rs_ss_looper.dstar_mass_p_bin2->Write();
-  rs_ss_looper.dstar_mass_p_bin3->Write();
-  rs_ss_looper.dstar_mass_p_bin4->Write();
-  rs_ss_looper.dstar_mass_p_bin5->Write();
-
-  rs_ss_looper.mu_mass_pt_bin1->Write();
-  rs_ss_looper.mu_mass_pt_bin2->Write();
-  rs_ss_looper.mu_mass_pt_bin3->Write();
-  rs_ss_looper.mu_mass_pt_bin4->Write();
-  rs_ss_looper.mu_mass_pt_bin5->Write();
-  rs_ss_looper.mu_mass_p_bin1->Write();
-  rs_ss_looper.mu_mass_p_bin2->Write();
-  rs_ss_looper.mu_mass_p_bin3->Write();
-  rs_ss_looper.mu_mass_p_bin4->Write();
-  rs_ss_looper.mu_mass_p_bin5->Write();
-
-  
-  rs_ss_looper.mu_log_ip_bin1->Write();
-  rs_ss_looper.mu_log_ip_bin2->Write();
-  rs_ss_looper.mu_log_ip_bin3->Write();
-  rs_ss_looper.mu_log_ip_bin4->Write();
-  rs_ss_looper.mu_log_ip_bin5->Write();
-
-    //pid
-  rs_ss_looper.k_pid_k_bin1->Write();
-  rs_ss_looper.k_pid_k_bin2->Write();
-  rs_ss_looper.k_pid_k_bin3->Write();
-  rs_ss_looper.k_pid_k_bin4->Write();
-  rs_ss_looper.k_pid_k_bin5->Write();
-
-  rs_ss_looper.pi_pid_k_bin1->Write();
-  rs_ss_looper.pi_pid_k_bin2->Write();
-  rs_ss_looper.pi_pid_k_bin3->Write();
-  rs_ss_looper.pi_pid_k_bin4->Write();
-  rs_ss_looper.pi_pid_k_bin5->Write();
+  for(auto hist: rs_ss_looper.dstar_pt_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_ss_looper.dstar_p_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_ss_looper.mu_pt_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_ss_looper.mu_p_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_ss_looper.mu_log_ip_bins){
+    hist->Write();
+  }
+  //pid
+  for(auto hist: rs_ss_looper.kpidk_bins){
+    hist->Write();
+  }
+  for(auto hist: rs_ss_looper.pipidk_bins){
+    hist->Write();
+  }
   
   //5x5 matrix
-  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
-  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
-  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin3->Write();
-  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin4->Write();
-  rs_ss_looper.pi_pid_k_bin1_k_pid_k_bin5->Write();
-
-  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin1->Write();
-  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin2->Write();
-  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin3->Write();
-  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin4->Write();
-  rs_ss_looper.pi_pid_k_bin2_k_pid_k_bin5->Write();
-
-  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin1->Write();
-  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin2->Write();
-  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin3->Write();
-  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin4->Write();
-  rs_ss_looper.pi_pid_k_bin3_k_pid_k_bin5->Write();
-
-  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin1->Write();
-  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin2->Write();
-  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin3->Write();
-  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin4->Write();
-  rs_ss_looper.pi_pid_k_bin4_k_pid_k_bin5->Write();
-
-  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin1->Write();
-  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin2->Write();
-  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin3->Write();
-  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
-  rs_ss_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
-
+  for(auto hist: rs_ss_looper.thepidMatrix){
+    hist->Write();
+  }
   rs_ss_looper.td0_bin_neg10_to_neg075->Write();
   rs_ss_looper.td0_bin_neg075_to_neg05->Write();
-  rs_ss_looper.td0_bin1->Write();
-  rs_ss_looper.td0_bin2->Write();
-  rs_ss_looper.td0_bin3->Write();
-  rs_ss_looper.td0_bin4->Write();
-  rs_ss_looper.td0_bin5->Write();
+  for(auto hist: rs_ss_looper.td0_bins){
+    hist->Write();
+  }
+  
   //pos
-  rs_ss_looper.td0_pos_bin1->Write();
-  rs_ss_looper.td0_pos_bin2->Write();
-  rs_ss_looper.td0_pos_bin3->Write();
-  rs_ss_looper.td0_pos_bin4->Write();
-  rs_ss_looper.td0_pos_bin5->Write();
+  for(auto hist: rs_ss_looper.td0_pos_bins){
+    hist->Write();
+  }
   //neg
-  rs_ss_looper.td0_neg_bin1->Write();
-  rs_ss_looper.td0_neg_bin2->Write();
-  rs_ss_looper.td0_neg_bin3->Write();
-  rs_ss_looper.td0_neg_bin4->Write();
-  rs_ss_looper.td0_neg_bin5->Write();
+  for(auto hist: rs_ss_looper.td0_neg_bins){
+    hist->Write();
+  }
 
   for(int i=0; i<20;++i){
     rs_ss_looper.the_ghost_prob_bins[i]->Write();
@@ -563,87 +465,46 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_looper.dst_mass_vs_kpidk->Write();
   ws_looper.dst_mass_vs_pipidk->Write();
   ws_looper.decay_time_distr->Write();
- 
-  ws_looper.dstar_mass_pt_bin1->Write();
-  ws_looper.dstar_mass_pt_bin2->Write();
-  ws_looper.dstar_mass_pt_bin3->Write();
-  ws_looper.dstar_mass_pt_bin4->Write();
-  ws_looper.dstar_mass_pt_bin5->Write();
-  ws_looper.dstar_mass_p_bin1->Write();
-  ws_looper.dstar_mass_p_bin2->Write();
-  ws_looper.dstar_mass_p_bin3->Write();
-  ws_looper.dstar_mass_p_bin4->Write();
-  ws_looper.dstar_mass_p_bin5->Write();
 
-  ws_looper.mu_mass_pt_bin1->Write();
-  ws_looper.mu_mass_pt_bin2->Write();
-  ws_looper.mu_mass_pt_bin3->Write();
-  ws_looper.mu_mass_pt_bin4->Write();
-  ws_looper.mu_mass_pt_bin5->Write();
-  ws_looper.mu_mass_p_bin1->Write();
-  ws_looper.mu_mass_p_bin2->Write();
-  ws_looper.mu_mass_p_bin3->Write();
-  ws_looper.mu_mass_p_bin4->Write();
-  ws_looper.mu_mass_p_bin5->Write();
-  
-  ws_looper.mu_log_ip_bin1->Write();
-  ws_looper.mu_log_ip_bin2->Write();
-  ws_looper.mu_log_ip_bin3->Write();
-  ws_looper.mu_log_ip_bin4->Write();
-  ws_looper.mu_log_ip_bin5->Write();
-
+  for(auto hist: ws_looper.dstar_pt_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_looper.dstar_p_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_looper.mu_pt_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_looper.mu_p_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_looper.mu_log_ip_bins){
+    hist->Write();
+  }
   //pid
-  ws_looper.k_pid_k_bin1->Write();
-  ws_looper.k_pid_k_bin2->Write();
-  ws_looper.k_pid_k_bin3->Write();
-  ws_looper.k_pid_k_bin4->Write();
-  ws_looper.k_pid_k_bin5->Write();
-
-  ws_looper.pi_pid_k_bin1->Write();
-  ws_looper.pi_pid_k_bin2->Write();
-  ws_looper.pi_pid_k_bin3->Write();
-  ws_looper.pi_pid_k_bin4->Write();
-  ws_looper.pi_pid_k_bin5->Write();
+  for(auto hist: ws_looper.kpidk_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_looper.pipidk_bins){
+    hist->Write();
+  }
   
   //5x5 matrix
-  ws_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
-  ws_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
-  ws_looper.pi_pid_k_bin1_k_pid_k_bin3->Write();
-  ws_looper.pi_pid_k_bin1_k_pid_k_bin4->Write();
-  ws_looper.pi_pid_k_bin1_k_pid_k_bin5->Write();
-
-  ws_looper.pi_pid_k_bin2_k_pid_k_bin1->Write();
-  ws_looper.pi_pid_k_bin2_k_pid_k_bin2->Write();
-  ws_looper.pi_pid_k_bin2_k_pid_k_bin3->Write();
-  ws_looper.pi_pid_k_bin2_k_pid_k_bin4->Write();
-  ws_looper.pi_pid_k_bin2_k_pid_k_bin5->Write();
-
-  ws_looper.pi_pid_k_bin3_k_pid_k_bin1->Write();
-  ws_looper.pi_pid_k_bin3_k_pid_k_bin2->Write();
-  ws_looper.pi_pid_k_bin3_k_pid_k_bin3->Write();
-  ws_looper.pi_pid_k_bin3_k_pid_k_bin4->Write();
-  ws_looper.pi_pid_k_bin3_k_pid_k_bin5->Write();
-
-  ws_looper.pi_pid_k_bin4_k_pid_k_bin1->Write();
-  ws_looper.pi_pid_k_bin4_k_pid_k_bin2->Write();
-  ws_looper.pi_pid_k_bin4_k_pid_k_bin3->Write();
-  ws_looper.pi_pid_k_bin4_k_pid_k_bin4->Write();
-  ws_looper.pi_pid_k_bin4_k_pid_k_bin5->Write();
-
-  ws_looper.pi_pid_k_bin5_k_pid_k_bin1->Write();
-  ws_looper.pi_pid_k_bin5_k_pid_k_bin2->Write();
-  ws_looper.pi_pid_k_bin5_k_pid_k_bin3->Write();
-  ws_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
-  ws_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
+  for(auto hist: ws_looper.thepidMatrix){
+    hist->Write();
+  }
 
   ws_looper.td0_bin_neg10_to_neg075->Write();
   ws_looper.td0_bin_neg075_to_neg05->Write();
-  ws_looper.td0_bin1->Write();
-  ws_looper.td0_bin2->Write();
-  ws_looper.td0_bin3->Write();
-  ws_looper.td0_bin4->Write();
-  ws_looper.td0_bin5->Write();
-
+  for(auto hist: ws_looper.td0_bins){
+    hist->Write();
+  }
+  for(auto hist:ws_looper.td0_pos_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_looper.td0_neg_bins){
+    hist->Write();
+  }
   for(int i=0; i<20;++i){
     ws_looper.the_ghost_prob_bins[i]->Write();
   }
@@ -717,9 +578,7 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.muIPchi2_vs_td0_zoom_neg->Write();
   ws_ss_looper.logmuIPchi2_vs_td0_neg->Write();
   ws_ss_looper.b_endvertex_chi2_vs_td0_neg->Write();
-  ws_ss_looper.b_fd_chi2_vs_td0_neg->Write();
-
-  
+  ws_ss_looper.b_fd_chi2_vs_td0_neg->Write();  
 
   ws_ss_looper.b_flight_dist_vs_td0->Write();
   ws_ss_looper.b_corr_mass_vs_td0->Write();
@@ -730,85 +589,46 @@ rs_ss_looper.b_flight_dist_vs_dstm_pos->Write();
   ws_ss_looper.b_endvertex_chi2_vs_td0->Write();
   ws_ss_looper.b_fd_chi2_vs_td0->Write();
 
-  ws_ss_looper.dstar_mass_pt_bin1->Write();
-  ws_ss_looper.dstar_mass_pt_bin2->Write();
-  ws_ss_looper.dstar_mass_pt_bin3->Write();
-  ws_ss_looper.dstar_mass_pt_bin4->Write();
-  ws_ss_looper.dstar_mass_pt_bin5->Write();
-  ws_ss_looper.dstar_mass_p_bin1->Write();
-  ws_ss_looper.dstar_mass_p_bin2->Write();
-  ws_ss_looper.dstar_mass_p_bin3->Write();
-  ws_ss_looper.dstar_mass_p_bin4->Write();
-  ws_ss_looper.dstar_mass_p_bin5->Write();
-
-  ws_ss_looper.mu_mass_pt_bin1->Write();
-  ws_ss_looper.mu_mass_pt_bin2->Write();
-  ws_ss_looper.mu_mass_pt_bin3->Write();
-  ws_ss_looper.mu_mass_pt_bin4->Write();
-  ws_ss_looper.mu_mass_pt_bin5->Write();
-  ws_ss_looper.mu_mass_p_bin1->Write();
-  ws_ss_looper.mu_mass_p_bin2->Write();
-  ws_ss_looper.mu_mass_p_bin3->Write();
-  ws_ss_looper.mu_mass_p_bin4->Write();
-  ws_ss_looper.mu_mass_p_bin5->Write();
-
-  ws_ss_looper.mu_log_ip_bin1->Write();
-  ws_ss_looper.mu_log_ip_bin2->Write();
-  ws_ss_looper.mu_log_ip_bin3->Write();
-  ws_ss_looper.mu_log_ip_bin4->Write();
-  ws_ss_looper.mu_log_ip_bin5->Write();
-
-    //pid
-  ws_ss_looper.k_pid_k_bin1->Write();
-  ws_ss_looper.k_pid_k_bin2->Write();
-  ws_ss_looper.k_pid_k_bin3->Write();
-  ws_ss_looper.k_pid_k_bin4->Write();
-  ws_ss_looper.k_pid_k_bin5->Write();
-
-  ws_ss_looper.pi_pid_k_bin1->Write();
-  ws_ss_looper.pi_pid_k_bin2->Write();
-  ws_ss_looper.pi_pid_k_bin3->Write();
-  ws_ss_looper.pi_pid_k_bin4->Write();
-  ws_ss_looper.pi_pid_k_bin5->Write();
-
+  for(auto hist: ws_ss_looper.dstar_pt_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_ss_looper.dstar_p_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_ss_looper.mu_pt_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_ss_looper.mu_p_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_ss_looper.mu_log_ip_bins){
+    hist->Write();
+  }
+  
+  //pid
+  for(auto hist: ws_ss_looper.kpidk_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_ss_looper.pipidk_bins){
+    hist->Write();
+  }
   //5x5 matrix
-  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin1->Write();
-  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin2->Write();
-  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin3->Write();
-  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin4->Write();
-  ws_ss_looper.pi_pid_k_bin1_k_pid_k_bin5->Write();
-
-  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin1->Write();
-  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin2->Write();
-  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin3->Write();
-  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin4->Write();
-  ws_ss_looper.pi_pid_k_bin2_k_pid_k_bin5->Write();
-
-  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin1->Write();
-  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin2->Write();
-  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin3->Write();
-  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin4->Write();
-  ws_ss_looper.pi_pid_k_bin3_k_pid_k_bin5->Write();
-
-  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin1->Write();
-  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin2->Write();
-  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin3->Write();
-  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin4->Write();
-  ws_ss_looper.pi_pid_k_bin4_k_pid_k_bin5->Write();
-
-  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin1->Write();
-  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin2->Write();
-  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin3->Write();
-  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin4->Write();
-  ws_ss_looper.pi_pid_k_bin5_k_pid_k_bin5->Write();
+  for(auto hist: ws_ss_looper.thepidMatrix){
+    hist->Write();
+  }
 
   ws_ss_looper.td0_bin_neg10_to_neg075->Write();
   ws_ss_looper.td0_bin_neg075_to_neg05->Write();
-  ws_ss_looper.td0_bin1->Write();
-  ws_ss_looper.td0_bin2->Write();
-  ws_ss_looper.td0_bin3->Write();
-  ws_ss_looper.td0_bin4->Write();
-  ws_ss_looper.td0_bin5->Write();
+  for(auto hist: ws_ss_looper.td0_bins){
+    hist->Write();
+  }
+  //pos
+  for(auto hist: ws_ss_looper.td0_pos_bins){
+    hist->Write();
+  }
+  for(auto hist: ws_ss_looper.td0_neg_bins){
+    hist->Write();
+  }
   for(int i=0; i<20;++i){
     ws_ss_looper.the_ghost_prob_bins[i]->Write();
   }

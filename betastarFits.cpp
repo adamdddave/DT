@@ -85,6 +85,7 @@ int main(int argc, char* const argv[]){
     nameForFit = "ws";
     cout<<"nameForFit = "<<nameForFit<<endl; 
   }
+  if(isWS){ cout<<"make the compiler shut up"<<endl;}
   //fitName.ToUpper();
   TFile *f1 = TFile::Open(argv[1]);
   f1->ls();

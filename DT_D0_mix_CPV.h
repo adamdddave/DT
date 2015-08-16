@@ -1490,50 +1490,51 @@ public :
   TH1D* pis_ghost_prob;
   TH1D* pis_match_chi2;
   //for time integrated systematic studies.
-
+  //there are so many binned things, make a vector out of them instead. makes it easier in analysis.cpp to write things
   TH1D* dstar_mass_pt_bin1;
   TH1D* dstar_mass_pt_bin2;
   TH1D* dstar_mass_pt_bin3;
   TH1D* dstar_mass_pt_bin4;
   TH1D* dstar_mass_pt_bin5;
-
+  std::vector<TH1D*>dstar_pt_bins;
   TH1D* dstar_mass_p_bin1;
   TH1D* dstar_mass_p_bin2;
   TH1D* dstar_mass_p_bin3;
   TH1D* dstar_mass_p_bin4;
   TH1D* dstar_mass_p_bin5;
-  
+  std::vector<TH1D*>dstar_p_bins;
   TH1D* mu_mass_pt_bin1;
   TH1D* mu_mass_pt_bin2;
   TH1D* mu_mass_pt_bin3;
   TH1D* mu_mass_pt_bin4;
   TH1D* mu_mass_pt_bin5;
-
+  std::vector<TH1D*>mu_pt_bins;
   TH1D* mu_mass_p_bin1;
   TH1D* mu_mass_p_bin2;
   TH1D* mu_mass_p_bin3;
   TH1D* mu_mass_p_bin4;
   TH1D* mu_mass_p_bin5;
-
+  std::vector<TH1D*> mu_p_bins;
   TH1D* mu_log_ip_bin1;
   TH1D* mu_log_ip_bin2;
   TH1D* mu_log_ip_bin3;
   TH1D* mu_log_ip_bin4;
   TH1D* mu_log_ip_bin5;
-
+  std::vector<TH1D*> mu_log_ip_bins;
   TH1D* k_pid_k_bin1;
   TH1D* k_pid_k_bin2;
   TH1D* k_pid_k_bin3;
   TH1D* k_pid_k_bin4;
   TH1D* k_pid_k_bin5;
-
+  std::vector<TH1D*> kpidk_bins;
   TH1D* pi_pid_k_bin1;
   TH1D* pi_pid_k_bin2;
   TH1D* pi_pid_k_bin3;
   TH1D* pi_pid_k_bin4;
   TH1D* pi_pid_k_bin5;
-
+  std::vector<TH1D*>pipidk_bins;
   //now the 5x5 pid matrix
+  
   TH1D* pi_pid_k_bin1_k_pid_k_bin1;
   TH1D* pi_pid_k_bin1_k_pid_k_bin2;
   TH1D* pi_pid_k_bin1_k_pid_k_bin3;
@@ -1563,6 +1564,7 @@ public :
   TH1D* pi_pid_k_bin5_k_pid_k_bin3;
   TH1D* pi_pid_k_bin5_k_pid_k_bin4;
   TH1D* pi_pid_k_bin5_k_pid_k_bin5;
+  std::vector<TH1D*>thepidMatrix;
   //pis ghost prob bins;
   TH1D* dst_mass_pis_ghostprob_bin1;
   TH1D* dst_mass_pis_ghostprob_bin2;
@@ -1593,18 +1595,38 @@ public :
   TH1D* td0_bin3;
   TH1D* td0_bin4;
   TH1D* td0_bin5;
+  //make more for the possibility of more bins
+  TH1D* td0_bin6;
+  TH1D* td0_bin7;
+  TH1D* td0_bin8;
+  TH1D* td0_bin9;
+  TH1D* td0_bin10;
+  std::vector<TH1D*>td0_bins;
   //pos
   TH1D* td0_pos_bin1;
   TH1D* td0_pos_bin2;
   TH1D* td0_pos_bin3;
   TH1D* td0_pos_bin4;
   TH1D* td0_pos_bin5;
+  std::vector<TH1D*>td0_pos_bins;
+  TH1D* td0_pos_bin6;
+  TH1D* td0_pos_bin7;
+  TH1D* td0_pos_bin8;
+  TH1D* td0_pos_bin9;
+  TH1D* td0_pos_bin10;
+
   //neg
   TH1D* td0_neg_bin1;
   TH1D* td0_neg_bin2;
   TH1D* td0_neg_bin3;
   TH1D* td0_neg_bin4;
   TH1D* td0_neg_bin5;
+  std::vector<TH1D*>td0_neg_bins;
+  TH1D* td0_neg_bin6;
+  TH1D* td0_neg_bin7;
+  TH1D* td0_neg_bin8;
+  TH1D* td0_neg_bin9;
+  TH1D* td0_neg_bin10;
   //distributions to find out where the bin edges will be
   TH1D* dstar_pt;
   TH1D* dstar_p;
@@ -1716,7 +1738,7 @@ private:
   const double pdg_kplus_m = 493.677;// MeV
   const double pdg_piplus_m = 139.57018;//MeV
   const double kpidk_cut = 2;
-  const double pi_dau_pidk_cut = 0;
+  const double pi_dau_pidk_cut = -2;
   const double pi_slow_pide_cut=1;
   const double pi_slow_probnnghost_cut = 0.5;
   const double dmass_cut = 24;// MeV, for |m - m_pdg|<dmass_cut
@@ -1726,6 +1748,7 @@ private:
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
   const double pis_ghost_prob_cut = 0.25;//no units
+  const double pis_probnnp_cut =  0.4;//less than this, no unitso
   //  const double mu_ip_chi2_cut = 100;//no units
   //  const double dst_bin_boundary1=2.690000e+03;//MeV
   //const double dst_bin_boundary2=4.330000e+03;//MeV, pt bin boundaries.
@@ -1766,11 +1789,26 @@ private:
 
   //pid boundaries
   //decay time bin boundaries.
-  const double d0_td0_bin_boundary1 = -0.5;
+  /*const double d0_td0_bin_boundary1 = -0.5;
   const double d0_td0_bin_boundary2 = 0.25;
   const double d0_td0_bin_boundary3 = 0.55;
   const double d0_td0_bin_boundary4 = 0.95;
   const double d0_td0_bin_boundary5 = 1.55;//all for t/tau.
+  */
+  //change if we want more bins
+  const double d0_td0_bin_boundary1 = -0.5;
+  const double d0_td0_bin_boundary1a = 0.10;
+  const double d0_td0_bin_boundary2 = 0.25;
+  const double d0_td0_bin_boundary2a = 0.40;
+  const double d0_td0_bin_boundary3 = 0.55;
+  const double d0_td0_bin_boundary3a = 0.70;
+  const double d0_td0_bin_boundary4 = 0.95;
+  const double d0_td0_bin_boundary4a = 1.25;
+  const double d0_td0_bin_boundary5 = 1.55;//all for t/tau.
+  const double d0_td0_bin_boundary5a = 5.75;
+  //just split all these in half, not necessarily the best way to do it, but whatever
+  //did this so that the first bin in still encompassing some positive decay time.
+  
   //
   //slow pion ghost bin boundaries
   const double pis_ghost_bin_boundary1 =0.0005;
@@ -1832,7 +1870,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dstar_mass_plot_neg = new TH1D(name+"_dt_hist_dstar_m_neg","", 500, 2000,2025);
   dstar_mass_plot_neg->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot_neg->GetBinWidth(1)));
   pis_ghost_prob = new TH1D(name+"_slow_pion_ghost_prob",";#pi_{s} Ghost Prob; Entries / 0.001",1000,0,1);
-
+  
   pis_match_chi2= new TH1D(name+"_slow_pion_match_chi2","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
   //dstar p and pt bins
   dstar_mass_pt_bin1 = new TH1D(name+"_dt_hist_dstar_m_pt_bin1","", 500, 2000,2025);
@@ -1849,7 +1887,12 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   
   dstar_mass_pt_bin5 = new TH1D(name+"_dt_hist_dstar_m_pt_bin5","", 500, 2000,2025);
   dstar_mass_pt_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin5->GetBinWidth(1)));
-
+  //put them in the std::vector to make loops more readable
+  dstar_pt_bins.push_back(dstar_mass_pt_bin1);
+  dstar_pt_bins.push_back(dstar_mass_pt_bin2);
+  dstar_pt_bins.push_back(dstar_mass_pt_bin3);
+  dstar_pt_bins.push_back(dstar_mass_pt_bin4);
+  dstar_pt_bins.push_back(dstar_mass_pt_bin5);
   //p
   dstar_mass_p_bin1 = new TH1D(name+"_dt_hist_dstar_m_p_bin1","", 500, 2000,2025);
   dstar_mass_p_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_p_bin1->GetBinWidth(1)));
@@ -1865,6 +1908,11 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   
   dstar_mass_p_bin5 = new TH1D(name+"_dt_hist_dstar_m_p_bin5","", 500, 2000,2025);
   dstar_mass_p_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_p_bin5->GetBinWidth(1)));
+  dstar_p_bins.push_back(dstar_mass_p_bin1);
+  dstar_p_bins.push_back(dstar_mass_p_bin2);
+  dstar_p_bins.push_back(dstar_mass_p_bin3);
+  dstar_p_bins.push_back(dstar_mass_p_bin4);
+  dstar_p_bins.push_back(dstar_mass_p_bin5);
   //muon
     mu_mass_pt_bin1 = new TH1D(name+"_dt_hist_mu_m_pt_bin1","", 500, 2000,2025);
   mu_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_pt_bin1->GetBinWidth(1)));
@@ -1880,7 +1928,11 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   
   mu_mass_pt_bin5 = new TH1D(name+"_dt_hist_mu_m_pt_bin5","", 500, 2000,2025);
   mu_mass_pt_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_pt_bin5->GetBinWidth(1)));
-
+  mu_pt_bins.push_back(mu_mass_pt_bin1);
+  mu_pt_bins.push_back(mu_mass_pt_bin2);
+  mu_pt_bins.push_back(mu_mass_pt_bin3);
+  mu_pt_bins.push_back(mu_mass_pt_bin4);
+  mu_pt_bins.push_back(mu_mass_pt_bin5);
   //p
   mu_mass_p_bin1 = new TH1D(name+"_dt_hist_mu_m_p_bin1","", 500, 2000,2025);
   mu_mass_p_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_p_bin1->GetBinWidth(1)));
@@ -1896,7 +1948,11 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   
   mu_mass_p_bin5 = new TH1D(name+"_dt_hist_mu_m_p_bin5","", 500, 2000,2025);
   mu_mass_p_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_mass_p_bin5->GetBinWidth(1)));
-
+  mu_p_bins.push_back(mu_mass_p_bin1);
+  mu_p_bins.push_back(mu_mass_p_bin2);
+  mu_p_bins.push_back(mu_mass_p_bin3);
+  mu_p_bins.push_back(mu_mass_p_bin4);
+  mu_p_bins.push_back(mu_mass_p_bin5);
   //log ip
   
   mu_log_ip_bin1 = new TH1D(name+"_dt_hist_mu_log_ip_bin1","", 500, 2000,2025);
@@ -1913,7 +1969,11 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   
   mu_log_ip_bin5 = new TH1D(name+"_dt_hist_mu_log_ip_bin5","", 500, 2000,2025);
   mu_log_ip_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",mu_log_ip_bin5->GetBinWidth(1)));
-
+  mu_log_ip_bins.push_back(mu_log_ip_bin1);
+  mu_log_ip_bins.push_back(mu_log_ip_bin2);
+  mu_log_ip_bins.push_back(mu_log_ip_bin3);
+  mu_log_ip_bins.push_back(mu_log_ip_bin4);
+  mu_log_ip_bins.push_back(mu_log_ip_bin5);
   //k pid k  
   k_pid_k_bin1 = new TH1D(name+"_dt_hist_k_pid_k_bin1","", 500, 2000,2025);
   k_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",k_pid_k_bin1->GetBinWidth(1)));
@@ -1929,8 +1989,12 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   
   k_pid_k_bin5 = new TH1D(name+"_dt_hist_k_pid_k_bin5","", 500, 2000,2025);
   k_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",k_pid_k_bin5->GetBinWidth(1)));
-
-    //k pid k  
+  kpidk_bins.push_back(k_pid_k_bin1);
+  kpidk_bins.push_back(k_pid_k_bin2);
+  kpidk_bins.push_back(k_pid_k_bin3);
+  kpidk_bins.push_back(k_pid_k_bin4);
+  kpidk_bins.push_back(k_pid_k_bin5);
+  //pi pid k
   pi_pid_k_bin1 = new TH1D(name+"_dt_hist_pi_pid_k_bin1","", 500, 2000,2025);
   pi_pid_k_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin1->GetBinWidth(1)));
 
@@ -1945,7 +2009,11 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   
   pi_pid_k_bin5 = new TH1D(name+"_dt_hist_pi_pid_k_bin5","", 500, 2000,2025);
   pi_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin5->GetBinWidth(1)));
-
+  pipidk_bins.push_back(pi_pid_k_bin1);
+  pipidk_bins.push_back(pi_pid_k_bin2);
+  pipidk_bins.push_back(pi_pid_k_bin3);
+  pipidk_bins.push_back(pi_pid_k_bin4);
+  pipidk_bins.push_back(pi_pid_k_bin5);
   //5x5 pid matrix
   //bin1, binx
   pi_pid_k_bin1_k_pid_k_bin1 = new TH1D(name+"_dt_hist_pi_pid_k_bin1_k_pid_k_bin1","", 500, 2000,2025);
@@ -2022,6 +2090,37 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   
   pi_pid_k_bin5_k_pid_k_bin5 = new TH1D(name+"_dt_hist_pi_pid_k_bin5_k_pid_k_bin5","", 500, 2000,2025);
   pi_pid_k_bin5_k_pid_k_bin5->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",pi_pid_k_bin5_k_pid_k_bin5->GetBinWidth(1)));
+  //put the whole matrix in one vector for easier writing.
+  
+  thepidMatrix.push_back(pi_pid_k_bin1_k_pid_k_bin1);
+  thepidMatrix.push_back(pi_pid_k_bin1_k_pid_k_bin2);
+  thepidMatrix.push_back(pi_pid_k_bin1_k_pid_k_bin3);
+  thepidMatrix.push_back(pi_pid_k_bin1_k_pid_k_bin4);
+  thepidMatrix.push_back(pi_pid_k_bin1_k_pid_k_bin5);
+  
+  thepidMatrix.push_back(pi_pid_k_bin2_k_pid_k_bin1);
+  thepidMatrix.push_back(pi_pid_k_bin2_k_pid_k_bin2);
+  thepidMatrix.push_back(pi_pid_k_bin2_k_pid_k_bin3);
+  thepidMatrix.push_back(pi_pid_k_bin2_k_pid_k_bin4);
+  thepidMatrix.push_back(pi_pid_k_bin2_k_pid_k_bin5);
+  
+  thepidMatrix.push_back(pi_pid_k_bin3_k_pid_k_bin1);
+  thepidMatrix.push_back(pi_pid_k_bin3_k_pid_k_bin2);
+  thepidMatrix.push_back(pi_pid_k_bin3_k_pid_k_bin3);
+  thepidMatrix.push_back(pi_pid_k_bin3_k_pid_k_bin4);
+  thepidMatrix.push_back(pi_pid_k_bin3_k_pid_k_bin5);
+  
+  thepidMatrix.push_back(pi_pid_k_bin4_k_pid_k_bin1);
+  thepidMatrix.push_back(pi_pid_k_bin4_k_pid_k_bin2);
+  thepidMatrix.push_back(pi_pid_k_bin4_k_pid_k_bin3);
+  thepidMatrix.push_back(pi_pid_k_bin4_k_pid_k_bin4);
+  thepidMatrix.push_back(pi_pid_k_bin4_k_pid_k_bin5);
+
+  thepidMatrix.push_back(pi_pid_k_bin5_k_pid_k_bin1);
+  thepidMatrix.push_back(pi_pid_k_bin5_k_pid_k_bin2);
+  thepidMatrix.push_back(pi_pid_k_bin5_k_pid_k_bin3);
+  thepidMatrix.push_back(pi_pid_k_bin5_k_pid_k_bin4);
+  thepidMatrix.push_back(pi_pid_k_bin5_k_pid_k_bin5);
   //here
   b_mass_plot = new TH1D(name+"_dt_hist_b_m","", 400, 2500,6500);
   b_mass_plot->SetTitle(Form("m(D^{*+}#mu^{-}); m(D^{*+}#mu^{-})[MeV]; Entries / %.2f",b_mass_plot->GetBinWidth(1)));
@@ -2073,8 +2172,35 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    
    td0_bin5 = new TH1D(name+"_dst_mass_td0_bin5","",500,2000,2025);
    td0_bin5->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin5->GetBinWidth(1)));
-   //pos
    
+   td0_bin6 = new TH1D(name+"_dst_mass_td0_bin6","",500,2000,2025);
+   td0_bin6->SetTitle(Form("m(D^{0}#pi_{S}), -0.5#leq t(D^{0})/#tau<0.25;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin6->GetBinWidth(1)));
+
+   td0_bin7 = new TH1D(name+"_dst_mass_td0_bin7","",500,2000,2025);
+   td0_bin7->SetTitle(Form("m(D^{0}#pi_{S}), 0.25#leq t(D^{0})/#tau<0.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin7->GetBinWidth(1)));
+
+   td0_bin8 = new TH1D(name+"_dst_mass_td0_bin8","",500,2000,2025);
+   td0_bin8->SetTitle(Form("m(D^{0}#pi_{S}), 0.55#leq t(D^{0})/#tau<0.95;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin8->GetBinWidth(1)));
+   
+   td0_bin9 = new TH1D(name+"_dst_mass_td0_bin9","",500,2000,2025);
+   td0_bin9->SetTitle(Form("m(D^{0}#pi_{S}), 0.95#leq t(D^{0})/#tau<1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin9->GetBinWidth(1)));
+   
+   td0_bin10 = new TH1D(name+"_dst_mass_td0_bin10","",500,2000,2025);
+   td0_bin10->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_bin10->GetBinWidth(1)));
+
+   
+   td0_bins.push_back(td0_bin1);
+   td0_bins.push_back(td0_bin2);
+   td0_bins.push_back(td0_bin3);
+   td0_bins.push_back(td0_bin4);
+   td0_bins.push_back(td0_bin5);//do not put the excluded regions in here.
+
+   td0_bins.push_back(td0_bin6);
+   td0_bins.push_back(td0_bin7);
+   td0_bins.push_back(td0_bin8);
+   td0_bins.push_back(td0_bin9);
+   td0_bins.push_back(td0_bin10);
+   //pos   
    td0_pos_bin1 = new TH1D(name+"_dst_mass_td0_pos_bin1","",500,2000,2025);
    td0_pos_bin1->SetTitle(Form("m(D^{0}#pi_{S}), -0.5#leq t(D^{0})/#tau<0.25;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin1->GetBinWidth(1)));
 
@@ -2089,6 +2215,32 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    
    td0_pos_bin5 = new TH1D(name+"_dst_mass_td0_pos_bin5","",500,2000,2025);
    td0_pos_bin5->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin5->GetBinWidth(1)));
+   //extra bins
+   td0_pos_bin6 = new TH1D(name+"_dst_mass_td0_pos_bin6","",500,2000,2025);
+   td0_pos_bin6->SetTitle(Form("m(D^{0}#pi_{S}), 0.25#leq t(D^{0})/#tau<0.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin6->GetBinWidth(1)));
+
+   td0_pos_bin7 = new TH1D(name+"_dst_mass_td0_pos_bin7","",500,2000,2025);
+   td0_pos_bin7->SetTitle(Form("m(D^{0}#pi_{S}), 0.55#leq t(D^{0})/#tau<0.95;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin7->GetBinWidth(1)));
+   
+   td0_pos_bin8 = new TH1D(name+"_dst_mass_td0_pos_bin8","",500,2000,2025);
+   td0_pos_bin8->SetTitle(Form("m(D^{0}#pi_{S}), 0.95#leq t(D^{0})/#tau<1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin8->GetBinWidth(1)));
+   
+   td0_pos_bin9 = new TH1D(name+"_dst_mass_td0_pos_bin9","",500,2000,2025);
+   td0_pos_bin9->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin9->GetBinWidth(1)));
+   td0_pos_bin10 = new TH1D(name+"_dst_mass_td0_pos_bin10","",500,2000,2025);
+   td0_pos_bin10->SetTitle(Form("m(D^{0}#pi_{S}), -0.5#leq t(D^{0})/#tau<0.25;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_pos_bin10->GetBinWidth(1)));
+
+
+   td0_pos_bins.push_back(td0_pos_bin1);
+   td0_pos_bins.push_back(td0_pos_bin2);
+   td0_pos_bins.push_back(td0_pos_bin3);
+   td0_pos_bins.push_back(td0_pos_bin4);
+   td0_pos_bins.push_back(td0_pos_bin5);
+   td0_pos_bins.push_back(td0_pos_bin6);
+   td0_pos_bins.push_back(td0_pos_bin7);
+   td0_pos_bins.push_back(td0_pos_bin8);
+   td0_pos_bins.push_back(td0_pos_bin9);
+   td0_pos_bins.push_back(td0_pos_bin10);
    //neg
    
    td0_neg_bin1 = new TH1D(name+"_dst_mass_td0_neg_bin1","",500,2000,2025);
@@ -2105,8 +2257,32 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    
    td0_neg_bin5 = new TH1D(name+"_dst_mass_td0_neg_bin5","",500,2000,2025);
    td0_neg_bin5->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin5->GetBinWidth(1)));
+   //extra
+   td0_neg_bin6 = new TH1D(name+"_dst_mass_td0_neg_bin6","",500,2000,2025);
+   td0_neg_bin6->SetTitle(Form("m(D^{0}#pi_{S}), -0.5#leq t(D^{0})/#tau<0.25;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin6->GetBinWidth(1)));
 
+   td0_neg_bin7 = new TH1D(name+"_dst_mass_td0_neg_bin7","",500,2000,2025);
+   td0_neg_bin7->SetTitle(Form("m(D^{0}#pi_{S}), 0.25#leq t(D^{0})/#tau<0.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin7->GetBinWidth(1)));
 
+   td0_neg_bin8 = new TH1D(name+"_dst_mass_td0_neg_bin8","",500,2000,2025);
+   td0_neg_bin8->SetTitle(Form("m(D^{0}#pi_{S}), 0.55#leq t(D^{0})/#tau<0.95;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin8->GetBinWidth(1)));
+   
+   td0_neg_bin9 = new TH1D(name+"_dst_mass_td0_neg_bin9","",500,2000,2025);
+   td0_neg_bin9->SetTitle(Form("m(D^{0}#pi_{S}), 0.95#leq t(D^{0})/#tau<1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin9->GetBinWidth(1)));
+   
+   td0_neg_bin10 = new TH1D(name+"_dst_mass_td0_neg_bin10","",500,2000,2025);
+   td0_neg_bin10->SetTitle(Form("m(D^{0}#pi_{S}),  t(D^{0})/#tau#geq 1.55;m(D^{0}#pi_{s}[MeV];Entries/%.2f MeV", td0_neg_bin10->GetBinWidth(1)));
+
+   td0_neg_bins.push_back(td0_neg_bin1);
+   td0_neg_bins.push_back(td0_neg_bin2);
+   td0_neg_bins.push_back(td0_neg_bin3);
+   td0_neg_bins.push_back(td0_neg_bin4);
+   td0_neg_bins.push_back(td0_neg_bin5);
+   td0_neg_bins.push_back(td0_neg_bin6);
+   td0_neg_bins.push_back(td0_neg_bin7);
+   td0_neg_bins.push_back(td0_neg_bin8);
+   td0_neg_bins.push_back(td0_neg_bin9);
+   td0_neg_bins.push_back(td0_neg_bin10);
    //slow pion ghost prob bins
    the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin1);
    the_ghost_prob_bins.push_back(dst_mass_pis_ghostprob_bin2);

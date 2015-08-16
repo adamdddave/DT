@@ -62,6 +62,7 @@ void DT_D0_mix_CPV::Loop()
          Mu_MC12TuneV2_ProbNNmu > mu_probnnmu_cut&&
          !Ps_isMuon &&
 	 Ps_MC12TuneV2_ProbNNghost< pis_ghost_prob_cut
+	 &&Ps_MC12TuneV2_ProbNNp<pis_probnnp_cut
 	 //&& Mu_IPCHI2_OWNPV > mu_ip_chi2_cut
          //&&Mu_MC12TuneV3_ProbNNmu > mu_probnnmu_cut
          
