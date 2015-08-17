@@ -39,7 +39,7 @@ int main(int argc, char* const argv[]){
     return 0;
   }
   const double pdg_d0_m = 1864.84;// MeV
-  const double pdg_dstar_m = 2010.26;// MeV
+  //const double pdg_dstar_m = 2010.26;// MeV
   const double pdg_kplus_m = 493.677;// MeV
   const double pdg_piplus_m = 139.57018;//MeV
 
@@ -92,7 +92,7 @@ int main(int argc, char* const argv[]){
       d0.SetXYZM((kdau+pidau).Px(),
 		 (kdau+pidau).Py(),
 		 (kdau+pidau).Pz(),
-		 1864.84);
+		 pdg_d0_m);
       
       cout<<"Found a matching hit candidate. DstM("<<(d0+pis).M()<<"),KPX("<<kdau.Px()<<"),KPY("<<kdau.Py()<<"),KPZ("<<kdau.Pz()<<"),PiPX("<<pidau.Px()<<"),PiPY("<<pidau.Py()<<"),PiPZ("<<pidau.Pz()<<"),EvtNum("<<wsLooper.eventNumber<<"),runNumber("<<wsLooper.runNumber<<")"<<endl;
     }//ws loop

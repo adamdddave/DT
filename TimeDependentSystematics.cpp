@@ -101,23 +101,25 @@ int main(int argc, char* const argv[]){
   
   //get the bins.
   std::vector<TH1D*>pos_bins,neg_bins;
-  for(int i=0;i<5;++i){
+  int nbins = 5;
+  for(int i=0;i<nbins;++i){
     pos_bins.push_back((TH1D*)f1->Get(Form("RS_dst_mass_td0_pos_bin%d",i+1)));
     pos_bins[i]->Sumw2();
     neg_bins.push_back((TH1D*)f1->Get(Form("RS_dst_mass_td0_neg_bin%d",i+1)));
     neg_bins[i]->Sumw2();
   }
-  for(int i=0; i<5;++i){
+
+  for(int i=0; i<nbins;++i){
     pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-1);
     neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-1);
   }
   //now fit each one.
   massFit* theFitspos;
   massFit* theFitsneg;
-  double the_sig_pos[5],the_sig_pos_err[5];
-  double the_sig_neg[5],the_sig_neg_err[5];
+  double the_sig_pos[nbins],the_sig_pos_err[nbins];
+  double the_sig_neg[nbins],the_sig_neg_err[nbins];
 
-  for(int i=0;i<5;++i){
+  for(int i=0;i<nbins;++i){
     theFitspos = new massFit(Form("RS_dst_mass_pos_bin%d",i+1),"j3g",w);
     theFitspos->setData(pos_bins[i]);
     //theFitspos->FloatMeanWidth();
@@ -129,7 +131,7 @@ int main(int argc, char* const argv[]){
   }
 
   
-  for(int i=0;i<5;++i){
+  for(int i=0;i<nbins;++i){
     theFitsneg = new massFit(Form("RS_dst_mass_neg_bin%d",i+1),"j3g",w);
     theFitsneg->setData(neg_bins[i]);
     //theFitsneg->FloatMeanWidth();
@@ -140,8 +142,8 @@ int main(int argc, char* const argv[]){
     theFitsneg->Reset();
   }
 
-  double binVal[5],binValErr[5];
-  for(int i=0; i<5;++i){
+  double binVal[nbins],binValErr[nbins];
+  for(int i=0; i<nbins;++i){
     binVal[i]=the_sig_neg[i]/the_sig_pos[i];
     binValErr[i]=TMath::Sqrt((binVal[i]*binVal[i])*(TMath::Power(the_sig_pos_err[i]/the_sig_pos[i],2)+TMath::Power(the_sig_neg_err[i]/the_sig_neg[i],2)));
   }
@@ -152,16 +154,18 @@ int main(int argc, char* const argv[]){
   the_td_distr_ss->Sumw2();
   the_td_distr->Add(the_td_distr_ss,-1);
   int bins_td []= {46,53,56,60,66,the_td_distr->GetNbinsX()};
-  double mean_td_pos[5];
-  double xLow[5],xHi[5];
-  for(int i=0;i<5;++i){
+  //int bins_td []= {46,52,53,55,56,58,60,63,66,108,the_td_distr->GetNbinsX()};
+
+  double mean_td_pos[nbins];
+  double xLow[nbins],xHi[nbins];
+  for(int i=0;i<nbins;++i){
     the_td_distr->GetXaxis()->SetRange(bins_td[i],bins_td[i+1]);
     mean_td_pos[i] = the_td_distr->GetMean();
     the_td_distr->GetXaxis()->SetRange();
     xLow[i]=mean_td_pos[i] - the_td_distr->GetBinCenter(bins_td[i]);
     xHi[i]=the_td_distr->GetBinCenter(bins_td[i+1])-mean_td_pos[i];
   }
-  TGraphAsymmErrors *thePlot = new TGraphAsymmErrors(5,mean_td_pos,binVal,xLow,xHi,binValErr,binValErr);
+  TGraphAsymmErrors *thePlot = new TGraphAsymmErrors(nbins,mean_td_pos,binVal,xLow,xHi,binValErr,binValErr);
   thePlot->SetMarkerSize(1.5);
   thePlot->SetMarkerColor(kBlack);
   thePlot->SetLineColor(kBlack);

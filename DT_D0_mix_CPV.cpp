@@ -8,6 +8,7 @@
 #include <TMath.h>
 #include <TLorentzVector.h>
 #include <iostream>
+#include <TLeaf.h>
 using namespace std;
 
 void DT_D0_mix_CPV::Loop()
@@ -67,7 +68,62 @@ void DT_D0_mix_CPV::Loop()
          //&&Mu_MC12TuneV3_ProbNNmu > mu_probnnmu_cut
          
          )) continue;
-    
+    //now do a truthmatching
+    bool isMC = true;
+    if(isMC){
+      Int_t Pd_TRUEID = fChain->GetLeaf("Pd_TRUEID")->GetValue();
+      Int_t Ps_TRUEID = fChain->GetLeaf("Ps_TRUEID")->GetValue();
+      Int_t K_TRUEID = fChain->GetLeaf("K_TRUEID")->GetValue();
+      Int_t D_TRUEID = fChain->GetLeaf("D_TRUEID")->GetValue();
+      Int_t Dstar_TRUEID = fChain->GetLeaf("Dstar_TRUEID")->GetValue();
+      Int_t Mu_TRUEID = fChain->GetLeaf("Mu_TRUEID")->GetValue();
+      Int_t B_TRUEID = fChain->GetLeaf("B_TRUEID")->GetValue();
+      Int_t Pd_MC_MOTHER_ID = fChain->GetLeaf("Pd_MC_MOTHER_ID")->GetValue();
+      Int_t K_MC_MOTHER_ID = fChain->GetLeaf("K_MC_MOTHER_ID")->GetValue();
+      Int_t D_MC_MOTHER_ID = fChain->GetLeaf("D_MC_MOTHER_ID")->GetValue();
+      Int_t Ps_MC_MOTHER_ID = fChain->GetLeaf("Ps_MC_MOTHER_ID")->GetValue();
+      Int_t Dstar_MC_MOTHER_ID = fChain->GetLeaf("Dstar_MC_MOTHER_ID")->GetValue();
+      Int_t Mu_MC_MOTHER_ID = fChain->GetLeaf("Mu_MC_MOTHER_ID")->GetValue();
+      Int_t Pd_MC_GD_MOTHER_ID = fChain->GetLeaf("Pd_MC_GD_MOTHER_ID")->GetValue();
+      Int_t K_MC_GD_MOTHER_ID = fChain->GetLeaf("K_MC_GD_MOTHER_ID")->GetValue();
+      Int_t D_MC_GD_MOTHER_ID = fChain->GetLeaf("D_MC_GD_MOTHER_ID")->GetValue();
+      Int_t Dstar_MC_GD_MOTHER_ID = fChain->GetLeaf("Dstar_MC_GD_MOTHER_ID")->GetValue();
+      Int_t Dstar_MC_GD_GD_MOTHER_ID = fChain->GetLeaf("Dstar_MC_GD_GD_MOTHER_ID")->GetValue();
+      Int_t Mu_MC_GD_MOTHER_ID = fChain->GetLeaf("Mu_MC_GD_MOTHER_ID")->GetValue();
+
+      Int_t Pd_MC_MOTHER_KEY = fChain->GetLeaf("Pd_MC_MOTHER_KEY")->GetValue();
+      Int_t K_MC_MOTHER_KEY = fChain->GetLeaf("K_MC_MOTHER_KEY")->GetValue();
+      Int_t D_MC_MOTHER_KEY = fChain->GetLeaf("D_MC_MOTHER_KEY")->GetValue();
+      Int_t Ps_MC_MOTHER_KEY = fChain->GetLeaf("Ps_MC_MOTHER_KEY")->GetValue();
+      Int_t Dstar_MC_MOTHER_KEY = fChain->GetLeaf("Dstar_MC_MOTHER_KEY")->GetValue();
+      Int_t Mu_MC_MOTHER_KEY = fChain->GetLeaf("Mu_MC_MOTHER_KEY")->GetValue();
+      Int_t Pd_MC_GD_MOTHER_KEY = fChain->GetLeaf("Pd_MC_GD_MOTHER_KEY")->GetValue();
+      Int_t K_MC_GD_MOTHER_KEY = fChain->GetLeaf("K_MC_GD_MOTHER_KEY")->GetValue();
+      Int_t D_MC_GD_MOTHER_KEY = fChain->GetLeaf("D_MC_GD_MOTHER_KEY")->GetValue();
+      Int_t Dstar_MC_GD_MOTHER_KEY = fChain->GetLeaf("Dstar_MC_GD_MOTHER_KEY")->GetValue();
+      Int_t Dstar_MC_GD_GD_MOTHER_KEY = fChain->GetLeaf("Dstar_MC_GD_GD_MOTHER_KEY")->GetValue();
+      Int_t Mu_MC_GD_MOTHER_KEY = fChain->GetLeaf("Mu_MC_GD_MOTHER_KEY")->GetValue();
+      
+      bool idMatch = TMath::Abs(Pd_TRUEID)==211 && TMath::Abs(Ps_TRUEID)==211 && TMath::Abs(K_TRUEID)==321 && TMath::Abs(D_TRUEID)==421 && TMath::Abs(Dstar_TRUEID)==413 && TMath::Abs(Mu_TRUEID)==13 && TMath::Abs(B_TRUEID)==511;
+      bool d0match = Pd_MC_MOTHER_ID ==K_MC_MOTHER_ID && Pd_MC_MOTHER_ID== D_TRUEID;//pion and kaon are matched to D0
+      bool dstarmatch = Dstar_TRUEID==D_MC_MOTHER_ID && D_MC_MOTHER_ID==Ps_MC_MOTHER_ID && Pd_MC_GD_MOTHER_ID==D_MC_MOTHER_ID && K_MC_GD_MOTHER_ID==D_MC_MOTHER_ID;//pi daughter, k, slow pion and D are matched to dstar;
+      bool bmatch = (Dstar_MC_MOTHER_ID==Mu_MC_MOTHER_ID || Dstar_MC_GD_MOTHER_ID == Mu_MC_MOTHER_ID || Dstar_MC_GD_GD_MOTHER_ID==Mu_MC_MOTHER_ID);//match the D* or higher resonance to the muon
+      bool bmatch2= Dstar_MC_MOTHER_ID==B_TRUEID && D_MC_GD_MOTHER_ID == B_TRUEID && D_MC_GD_MOTHER_ID == Dstar_MC_MOTHER_ID;
+      bool truth_match_ids = idMatch+d0match+dstarmatch+bmatch+bmatch2 &&Dstar_MC_MOTHER_ID!=0;
+
+      //match keys as well
+      bool d0KeyMatch = Pd_MC_MOTHER_KEY ==K_MC_MOTHER_KEY;//pion and kaon are matched to D0
+      bool dstarKeyMatch =  D_MC_MOTHER_KEY==Ps_MC_MOTHER_KEY && Pd_MC_GD_MOTHER_KEY==D_MC_MOTHER_KEY && K_MC_GD_MOTHER_KEY==D_MC_MOTHER_KEY;//pi daughter, k, slow pion and D are matched to dstar;
+      bool bKeyMatch = (Dstar_MC_MOTHER_KEY==Mu_MC_MOTHER_KEY || Dstar_MC_GD_MOTHER_KEY == Mu_MC_MOTHER_KEY || Dstar_MC_GD_GD_MOTHER_KEY==Mu_MC_MOTHER_KEY);//match the D* or higher resonance to the muon
+      bool bKeyMatch2= (D_MC_GD_MOTHER_KEY==Dstar_MC_MOTHER_KEY);
+      bool truth_match_keys = d0KeyMatch+dstarKeyMatch+bKeyMatch+bKeyMatch2;
+
+      bool promptDstars = idMatch&&d0match&&dstarmatch&&!Dstar_MC_MOTHER_ID==Mu_MC_MOTHER_ID && !Dstar_MC_GD_MOTHER_ID &&!Mu_MC_MOTHER_ID && !Dstar_MC_GD_GD_MOTHER_ID==Mu_MC_MOTHER_ID;
+      bool promptDstars2= d0KeyMatch&&dstarKeyMatch&&!Dstar_MC_MOTHER_KEY==Mu_MC_MOTHER_KEY && !Dstar_MC_GD_MOTHER_KEY == Mu_MC_MOTHER_KEY && !Dstar_MC_GD_GD_MOTHER_KEY==Mu_MC_MOTHER_KEY;
+
+      bool totalTruthMatch = truth_match_ids&&truth_match_keys;//+&&+d0Econs+&&+d0PxCons+&&+d0PyCons+&&+d0PzCons; 
+      if(! totalTruthMatch)continue;
+    }
     //there's only 1 pv per event.
     //for(int j_npv = 0; j_npv<B_VFit_nPV;++j_npv)    {
       
@@ -341,8 +397,8 @@ void DT_D0_mix_CPV::Loop()
 			       pi_pid_k_bin5_k_pid_k_bin5}};
 			       
     //now the fun part. divide into the 5x5 matrix.
-    for(int i_kpid =0; i_kpid<kpid_bins.size();++i_kpid){
-      for(int j_pipid=0;j_pipid<pipid_bins.size();++j_pipid){
+    for(unsigned int i_kpid =0; i_kpid<kpid_bins.size();++i_kpid){
+      for(unsigned int j_pipid=0;j_pipid<pipid_bins.size();++j_pipid){
 	//fill the binned things.
 	if(kpid_bins[i_kpid] && pipid_bins[j_pipid]){
 	  the_pid_bins[j_pipid][i_kpid]->Fill(dstm);
@@ -350,6 +406,7 @@ void DT_D0_mix_CPV::Loop()
       }
     }
     //decay time distr
+    
     if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.75){ td0_bin_neg10_to_neg075->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_bin1->Fill(dstm);}
@@ -357,24 +414,61 @@ void DT_D0_mix_CPV::Loop()
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_bin3->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_bin4->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_bin5->Fill(dstm);}
-    
+    //check with more bins
+    /*if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.75){ td0_bin_neg10_to_neg075->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
+        
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary1a){td0_bin1->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_bin2->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2a){td0_bin3->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_bin4->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3a){td0_bin5->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_bin6->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4a){td0_bin7->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_bin8->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5a){td0_bin9->Fill(dstm);}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5a){td0_bin10->Fill(dstm);}*/
     //split by charge
     //pos
     if(Ps_ID/TMath::Abs(Ps_ID)>0){
+      
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_pos_bin1->Fill(dstm);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_pos_bin2->Fill(dstm);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_pos_bin3->Fill(dstm);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_pos_bin4->Fill(dstm);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_pos_bin5->Fill(dstm);}
-   
- 
+      
+      /*
+      
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary1a){td0_pos_bin1->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_pos_bin2->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2a){td0_pos_bin3->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_pos_bin4->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3a){td0_pos_bin5->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_pos_bin6->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4a){td0_pos_bin7->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_pos_bin8->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5a){td0_pos_bin9->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5a){td0_pos_bin10->Fill(dstm);}*/
     }else{
+      
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_neg_bin1->Fill(dstm);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_neg_bin2->Fill(dstm);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_neg_bin3->Fill(dstm);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_neg_bin4->Fill(dstm);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_neg_bin5->Fill(dstm);}
-   
+      
+      /*
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary1a){td0_neg_bin1->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_neg_bin2->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2a){td0_neg_bin3->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_neg_bin4->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3a){td0_neg_bin5->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_neg_bin6->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4a){td0_neg_bin7->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4a && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_neg_bin8->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5a){td0_neg_bin9->Fill(dstm);}
+      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5a){td0_neg_bin10->Fill(dstm);}*/
     }
 
     //slow pion boundaries.

@@ -538,6 +538,7 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, int addpol){
     mass->setRange("peak",2010.26-0.9,2010.26+0.9);
     RooAbsReal* peak_int_bkg = arg->createIntegral(*mass,NormSet(*mass),Range("peak"));
     RooAbsReal* tot_int_bkg2 = arg->createIntegral(*mass,NormSet(*mass));
+    std::cout<<"to shut up the compiler, tot_int_bkg2->getVal() = "<<tot_int_bkg2->getVal()<<std::endl;
     mass->setRange("sideband",2015,2025);
     RooAbsReal* sideband_int_bkg = arg->createIntegral(*mass,NormSet(*mass),Range("sideband"));
     std::cout<<"******************************************************"<<std::endl;
