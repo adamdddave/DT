@@ -256,6 +256,9 @@ int main(int argc, char* const argv[]){
   rs_looper.d_logIPchi2_vs_td0_pos->Write();
   rs_looper.d_logIPchi2_vs_dstm_neg->Write();
   rs_looper.d_logIPchi2_vs_td0_neg->Write();
+  rs_looper.muon_vs_slow_pion_OWNPV_X->Write();
+  rs_looper.muon_vs_slow_pion_OWNPV_Y->Write();
+  rs_looper.muon_vs_slow_pion_OWNPV_Z->Write();
 
   //ss
   
@@ -383,6 +386,9 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.d_logIPchi2_vs_td0_pos->Write();
   rs_ss_looper.d_logIPchi2_vs_dstm_neg->Write();
   rs_ss_looper.d_logIPchi2_vs_td0_neg->Write();
+  rs_ss_looper.muon_vs_slow_pion_OWNPV_X->Write();
+  rs_ss_looper.muon_vs_slow_pion_OWNPV_Y->Write();
+  rs_ss_looper.muon_vs_slow_pion_OWNPV_Z->Write();
 
   
   fout->Close();
@@ -514,6 +520,9 @@ int main(int argc, char* const argv[]){
   ws_looper.d_logIPchi2_vs_td0_pos->Write();
   ws_looper.d_logIPchi2_vs_dstm_neg->Write();
   ws_looper.d_logIPchi2_vs_td0_neg->Write();
+  ws_looper.muon_vs_slow_pion_OWNPV_X->Write();
+  ws_looper.muon_vs_slow_pion_OWNPV_Y->Write();
+  ws_looper.muon_vs_slow_pion_OWNPV_Z->Write();
 
 
   //ss
@@ -640,6 +649,11 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.d_logIPchi2_vs_dstm_neg->Write();
   ws_ss_looper.d_logIPchi2_vs_td0_neg->Write();
 
+  ws_ss_looper.muon_vs_slow_pion_OWNPV_X->Write();
+  ws_ss_looper.muon_vs_slow_pion_OWNPV_Y->Write();
+  ws_ss_looper.muon_vs_slow_pion_OWNPV_Z->Write();
+
+  
   fout2->Close();
   WrongB wrongbws("wrongbws",ws_looper,ws_ss_looper);
   wrongbws.MakeMassComparisons();

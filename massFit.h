@@ -62,7 +62,8 @@ class massFit {
 public: 
   /// Standard constructor
   
-  massFit(TString Channel,TString modelname,RooWorkspace* w=0); 
+  massFit(TString Channel,TString modelname,RooWorkspace* w=0, TString localDir = "");
+  ~massFit();
   void fit();
   void saveWorkspace();
   //setters
@@ -85,7 +86,7 @@ public:
   inline double getrSigmaErr(){return rsigma->getError();}
   inline double getDMean(){return dmean->getVal();}
   inline double getDMeanErr(){return dmean->getError();}
-  virtual ~massFit( ); ///< Destructor
+  //virtual ~massFit( ); ///< Destructor
 
 protected:
 
@@ -96,7 +97,7 @@ private:
   const Double_t xmax = 2025;
   TString channel;//rs,ws,rs_ss,ws_ss
   TString modelName;
-  
+  TString theLocalDir;
   RooWorkspace* existing_fit;//if we already have a fit model that works, put it here.
   bool use_existing_fit;
   RooWorkspace* new_fit;

@@ -118,17 +118,20 @@ int main(int argc, char* const argv[]){
     TFile *f2 = TFile::Open(argv[2]);
     f2->ls();
     TString channelFromFile = argv[2];
-    channelFromFile.ReplaceAll("SavedFits","");
-    channelFromFile.ReplaceAll("fitModel.root","");
-    channelFromFile.ReplaceAll("/","");
-    channelFromFile.ReplaceAll("j3g","");
-    channelFromFile.ReplaceAll("_","");
+    channelFromFile.ToLower();
+    if(channelFromFile.Contains("rs")){
+      channelFromFile = "rs";
+    }
+    else{
+      cout<<"wtf kind of a fit model file is that??"<<endl;
+      return 0;
+    }
     channelFromFile+="w";
     cout<<"channel from file = "<<channelFromFile<<endl;
     
     RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
     //assert0);
-    massFit fit(nameForFit,"j3g", w);
+    massFit fit(nameForFit,"j3g", w,"WorkspaceFit");
     //return 0;
     //fit.initModelValues();
     fit.setData(hist);

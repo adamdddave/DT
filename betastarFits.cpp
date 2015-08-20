@@ -106,6 +106,7 @@ int main(int argc, char* const argv[]){
   b.DrawPlots();
   //if(isWS){
   b.FitWSDoubleMisID();
+  b.FitWSDoubleMisIDLiang();
       //}
   return 0;
 }

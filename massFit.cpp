@@ -8,6 +8,7 @@
 #include <cmath>
 #include <assert.h>
 #include <string>
+#include <sys/stat.h>//mkdir
 //root
 #include <TH1.h>
 #include <TH2.h>
@@ -66,9 +67,16 @@ using namespace std;
 //=============================================================================
 // Standard constructor, initializes variables
 //=============================================================================
-massFit::massFit(TString Channel,TString modelname,RooWorkspace* w) {
+massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString localDir) {
   channel = Channel;
   setFitModel(modelname);
+  theLocalDir = localDir;
+  //make a local directory in case we have one
+  if(theLocalDir!=""){
+    TString d2make = "./SavedFits/"+localDir;
+    umask(0);
+    mkdir(d2make.Data(),0755);
+  }
   //stuff we'll need
   //pion_mass_pdg = 139.57018;
   //  d0_mass_pdg =1864.86;
@@ -356,7 +364,106 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w) {
 //=============================================================================
 // Destructor
 //=============================================================================
-massFit::~massFit() {} 
+massFit::~massFit(){
+  delete existing_fit;
+  
+  delete new_fit;
+  delete mass;
+  delete dmean;
+  delete rsigma;
+
+  delete m0;
+  delete fm0;
+  delete delta;
+  delete sigma;
+  delete fsigma;
+  delete gamma;
+  delete sig_john;
+  delete mean1;
+
+  delete fgau1mean;
+  delete mean2;
+  delete fgau2mean;
+  delete mean3;
+  delete fgau3mean;
+  
+  delete width1;
+  delete fgau1sigma;
+  delete width2;
+  delete fgau2sigma;
+  delete width3;
+  delete fgau3sigma;
+  
+  
+  delete g1;
+  delete g2;
+  delete g3;
+  
+
+  delete cb1_m0;
+  delete cb1_sigma;
+  delete cb1_alpha;
+  delete cb1_n;
+  delete CBall1;
+  
+  delete cb2_m0;
+  delete cb2_sigma;
+  delete cb2_alpha;
+  delete cb2_n;
+  delete CBall2;
+
+  delete rbw_m0;
+  delete rbw_sigma;
+  delete rbw_width;
+  delete res_mean1;
+  delete res_mean2;
+  delete res_mean3;
+  delete res_width1;
+  delete res_width2;
+  delete res_width3;
+  delete res_frac1;
+  delete res_frac2;
+  delete eps_width;
+  delete eps_mean;
+  delete res_gau_1;
+  delete res_gau_2;
+  delete res_gau_3;
+  delete rbw;
+  delete mean1sh;
+  delete mean2sh;
+  delete mean3sh;
+  delete width1sh;
+  delete width2sh;
+  delete width3sh;
+
+  delete Rcp1;
+  delete Rcp2;
+  delete Rcp3;
+
+  delete decay_in_flight_kappa;
+  delete decay_in_flight_n;
+  delete decay_in_flight_endpt;
+  delete decay_in_flight_shape;
+  delete frac_dif;
+
+  delete xscale;
+  delete endpt;
+  delete minusDM;
+  delete kappa;
+  delete n;
+  delete bkg_arg;
+  delete nsig;
+  delete frac1;
+  delete frac2;
+  delete frac3;
+  delete nbkg;
+
+  delete sigpdf;
+  delete data;
+  delete model;
+
+}
+
 
 //=============================================================================
 
@@ -437,17 +544,17 @@ void massFit::initModelValues(){
 	    ctemp->SetLogy(true);
 	    ctemp->SaveAs("./SavedFits/RBW_conv_3gau_model_logy.pdf");
 	    ctemp->SetLogy(false);*/
-      ctemp->SaveAs("./SavedFits/resolution_function.pdf");
+      ctemp->SaveAs("./SavedFits"+theLocalDir+"/resolution_function.pdf");
       ctemp->SetLogy(true);
-      ctemp->SaveAs("./SavedFits/resolution_function_logy.pdf");
+      ctemp->SaveAs("./SavedFits/"+theLocalDir+"resolution_function_logy.pdf");
       ctemp->SetLogy(false);
       mass->setRange(xmin,2050);
       temp = mass->frame();
       rbw->plotOn(temp);
       temp->Draw();
-      ctemp->SaveAs("./SavedFits/RBW.pdf");
+      ctemp->SaveAs("./SavedFits/"+theLocalDir+"RBW.pdf");
       ctemp->SetLogy(true);
-      ctemp->SaveAs("./SavedFits/RBW_logy.pdf");
+      ctemp->SaveAs("./SavedFits/"+theLocalDir+"RBW_logy.pdf");
       ctemp->SetLogy(false);
       delete ctemp;
       delete temp;
@@ -467,9 +574,9 @@ void massFit::initModelValues(){
       //model->plotOn(temp,Components(*res_gau_3),LineColor(kGreen+2),LineStyle(kDashed));
       
       temp->Draw();
-      ctemp->SaveAs("./SavedFits/Rcp3_conv_3gau_model.pdf");
+      ctemp->SaveAs("./SavedFits/"+theLocalDir+"Rcp3_conv_3gau_model.pdf");
       ctemp->SetLogy(true);
-      ctemp->SaveAs("./SavedFits/Rcp3_conv_3gau_model_logy.pdf");
+      ctemp->SaveAs("./SavedFits/"+theLocalDir+"Rcp3_conv_3gau_model_logy.pdf");
       ctemp->SetLogy(false);
       delete ctemp;
       delete temp;
@@ -508,7 +615,7 @@ void massFit::fit(){
 
 void massFit::saveFinalFit(){
   new_fit->import(*model);
-  new_fit->writeToFile("./SavedFits/"+channel+"_"+modelName+"fitModel.root");
+  new_fit->writeToFile("./SavedFits/"+theLocalDir+"/"+channel+"_"+modelName+"fitModel.root");
 }
 
 void massFit::savePlots(bool doPullPlots, TString extraName){
@@ -568,19 +675,19 @@ void massFit::savePlots(bool doPullPlots, TString extraName){
    frame->Draw();
    frame->GetYaxis()->SetTitleOffset(1.4);
    
-   cc->SaveAs("./SavedFits/"+channel+extraName+modelName+"_fit.pdf");
+   cc->SaveAs("./SavedFits/"+theLocalDir+"/"+channel+extraName+modelName+"_fit.pdf");
    cc->SetLogy(true);
    frame->GetYaxis()->SetRangeUser(1, frame->GetMaximum()*1.5);
    frame->Draw();
-   cc->SaveAs("./SavedFits/"+channel+extraName+modelName+"_fit_logy.pdf");
+   cc->SaveAs("./SavedFits/"+theLocalDir+"/"+channel+extraName+modelName+"_fit_logy.pdf");
    cc->SetLogy(false);
    cc->Clear();
    if(doPullPlots){
      
-     TString liang_save_name = "./SavedFits/RS_fit_pulls"+extraName+channel;
+     TString liang_save_name = "./SavedFits/"+theLocalDir+"/RS_fit_pulls"+extraName+channel;
      PlottingTools::makeResidualPlotsLiang(frame,*mass,*data, model,liang_save_name.Data(),2000./*pion_mass_pdg+d0_mass_pdg*/,2025);
-     TString nameforshow = "./SavedFits/"+extraName+channel+modelName+"pulls_other_method";
-     PlottingTools::showPlot(*mass,*data,model,nameforshow.Data(),"m(D^{0}#pi_{S}");
+     //TString nameforshow = "./SavedFits/"+theLocalDir+"/"+extraName+channel+modelName+"pulls_other_method";
+     //PlottingTools::showPlot(*mass,*data,model,nameforshow.Data(),"m(D^{0}#pi_{S}");
    }
    return;
 }
@@ -593,9 +700,9 @@ void massFit::saveSignalRegionZoom(){
   framesig->GetXaxis()->SetRangeUser(2009.5,2010.9);
   TCanvas* cc2 = new TCanvas();
   framesig->Draw();
-  cc2->SaveAs("SavedFits/Augusto_SigCheck.pdf");
+  cc2->SaveAs("SavedFits/"+theLocalDir+"/Augusto_SigCheck.pdf");
   cc2->SetLogy(true);
-  cc2->SaveAs("SavedFits/Augusto_SigCheck_logy.pdf");
+  cc2->SaveAs("SavedFits/"+theLocalDir+"/Augusto_SigCheck_logy.pdf");
   cc2->SetLogy(false);
   
 }

@@ -22,6 +22,7 @@
 #include <TString.h>
 #include <TLorentzVector.h>
 #include <TVector3.h>
+#include <TLine.h>
 //roofit
 #ifndef __CINT__
 #include "RooGlobalFunc.h"
@@ -82,8 +83,17 @@ void WrongB::MakeMassComparisons(){
   rs_ss_bmass->SetLineColor(kRed);
   //rs_ss_bmass->Scale(rs_bmass->Integral(310,400)/rs_ss_bmass->Integral(310,400));//bin goes from 5600 to 
   TCanvas* cc = new TCanvas();
+  rs_bmass->SetTitle(";m(D*#mu);Entries / 10 MeV");
+  TLine low(3100,0.1,3100,rs_bmass->GetMaximum()*1.2);
+  TLine high(5100,0.1,5100,rs_bmass->GetMaximum()*1.2);
+  low.SetLineColor(kOrange+3);
+  high.SetLineColor(kOrange+3);
+  low.SetLineStyle(kDashed);
+  high.SetLineStyle(kDashed);
   rs_bmass->Draw();
   rs_ss_bmass->Draw("same");
+  low.Draw();
+  high.Draw();
   cc->SaveAs("./SavedFits/"+m_name+"bmass_regions_ss_os_scaled_to_high_sideband.pdf");
   cc->SetLogy(true);
   cc->SaveAs("./SavedFits/"+m_name+"bmass_regions_ss_os_scaled_to_high_sideband_logy.pdf");

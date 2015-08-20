@@ -26,6 +26,8 @@
 #include <RooGenericPdf.h>
 #include <TCanvas.h>
 #include <TAxis.h>
+#include <TFitResult.h>
+#include <TVectorD.h>
 #include <RooPlot.h>
 #include <RooHist.h>
 #include <RooDataHist.h>
@@ -153,7 +155,49 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
 //=============================================================================
 // Destructor
 //=============================================================================
-betastar_plot::~betastar_plot() {} 
+betastar_plot::~betastar_plot() {
+  delete h2sig ;
+  delete h2kpisb ;
+  delete h2kpisb_hi ;
+  delete h2kpisb_lo ;
+  delete h2kksb ;
+  delete h2pipisb ;
+  delete h2piksb ;
+  delete h2rob ;
+  delete h2kpisb_cut_range ;
+  delete h2pi_probnnmu_dstar_sideband_high ;
+  delete h2pi_probnnmu_dstar_sideband_low;
+  delete h2k_probnnmu_dstar_sideband_high;
+  delete h2k_probnnmu_dstar_sideband_low;
+  delete h2pi_probnne_dstar_sideband_high;
+  delete h2pi_probnne_dstar_sideband_low;
+  delete h2k_probnne_dstar_sideband_high;
+  delete h2k_probnne_dstar_sideband_low;
+  
+  delete hmsig ;
+  delete hmkpisb ;
+  delete hmkksb ;
+  delete hmpipisb ;
+  delete hmpiksb ;
+  delete hmrob ;
+
+  delete hmkpisb_cut_range ;
+  delete hmkpisb_cut_range_hi ;
+  delete hmkpisb_cut_range_lo ;
+  delete hmkpisb_cut_range_hi_1 ;
+  delete hmkpisb_cut_range_lo_1 ;
+  delete hmkpisb_cut_range_hi_2 ;
+  delete hmkpisb_cut_range_lo_2 ;
+  delete hmD0_pik_sig ;
+  delete hmD0_pik_sb ;
+  delete hmD0_pik_tot ;
+
+  delete double_misid_dmass_dst_sig_region;
+  delete double_misid_dmass_dst_sideband_region;
+  delete double_misid_subtr;//final subtracted result.
+
+
+} 
 
 //=============================================================================
 //Draw the plots and save them.
@@ -617,7 +661,7 @@ void betastar_plot::FitWSDoubleMisID(){
   //now we have the histogram, fit it with a second order polynomial.
   RooRealVar* x = new RooRealVar("x","m(K #pi)",1700,2100,"MeV");
   x->setRange("lo",1780,(1.86484 - 5*0.008)*1e3);
-  x->setRange("hi",(1.86484 + 5*0.008)*1e3,1950);
+  x->setRange("hi",(1.86484 + 5*0.008)*1e3,1944);
   x->setRange("sig",1864.84-24,1864.84+24);
   RooRealVar a0("a0","a0",-0.1,-50,50);
   RooRealVar a1("a1","a1",0.004,-100,100);
@@ -656,6 +700,40 @@ void betastar_plot::FitWSDoubleMisID(){
   std::cout<<"tot number of doubly misID in signal region for polynomial fit = "<<sig_int->getVal()*nsig.getVal()<<"+/-"<<sig_int->getPropagatedError(*res_pol)*nsig.getVal()<<std::endl;
   std::cout<<"error propagated from the fit = "<<getErrorFromPropagation(x,&model,res_pol,data,1700,2100,1864.84-24,1864.84+24)<<std::endl;
   //now construct secondary fit with linear shape.
+
+  RooRealVar b0("b0","b0",10.,4.,15.);
+  RooRealVar nsig2("nsig2","nsig2",200,5,10000);
+  //RooChebychev lin("lin","lin",*x,RooArgSet(b0));
+  RooPolynomial lin("lin","lin",*x,RooArgSet(b0));
+  RooExtendPdf model2("model2","model2",lin,nsig2);
+  RooFitResult* res_lin = model2.fitTo(*data,Range("hi,lo"),RooFit::Save(),Extended(1));
+
+  res_lin->Print("v");
+  TCanvas* clin = new TCanvas();
+  frame = frame->emptyClone("linframe");
+  frame->SetTitle("");
+  data->plotOn(frame);
+  
+  model2.plotOn(frame,LineColor(kMagenta),Range(1780,1950));
+  frame->Draw();
+  
+  sigreg.Draw();
+  clin->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_double_misid_d0_sideband_subtracted_fit_linear.pdf");
+  //create the integral.
+  RooAbsReal* tot_int2_double_misid = model2.createIntegral(*x,NormSet(*x));
+  std::cout<<"nsig2 before = "<<nsig2.getVal()*tot_int2_double_misid->getVal()<<std::endl;
+  RooAbsReal* sig_int2 = model2.createIntegral(*x,NormSet(*x),Range("sig"));
+  cout<<"nsig2 after = "<<nsig2.getVal()<<endl;
+  std::cout<<"nsig2*I after = "<<nsig2.getVal()*sig_int2->getVal()<<std::endl;
+  std::vector<double>liny_fit;
+  liny_fit.push_back(nsig2.getVal()*sig_int2->getVal());//central value
+  liny_fit.push_back(sig_int2->getPropagatedError(*res_lin)*nsig2.getVal());//propagated error
+
+  std::cout<<"Result of the fit"<<std::endl;
+  std::cout<<"Linear Fit: "<<liny_fit[0]<<" +/- "<<liny_fit[1]<<std::endl;
+  std::cout<<"Polynomial Fit: "<<poly_fit[0]<<" +/- "<<poly_fit[1]<<std::endl;
+  liny_fit.clear();
+  poly_fit.clear();
   return;
 }
 
@@ -677,4 +755,63 @@ double betastar_plot::getErrorFromPropagation(RooRealVar* x,RooAbsPdf* model, Ro
   // //the idea here is that we 
   // return dinteg2;
   return 0;  
+}
+
+void betastar_plot::FitWSDoubleMisIDLiang(){
+  double_misid_subtr = (TH1*)double_misid_dmass_dst_sig_region->Clone("double_misid_subtr");
+  double_misid_subtr->Sumw2();
+  TH1* double_misid_sideband_scaled = (TH1*)double_misid_dmass_dst_sideband_region->Clone("double_misid_sideband_scaled");
+  double_misid_sideband_scaled->Sumw2();
+  double_misid_sideband_scaled->Scale(pik_background_subtraction_ratio_result);
+  double_misid_subtr->Add(double_misid_sideband_scaled,-1);
+
+  TF1* f1 = new TF1("f1", "[0]*([1]-x)*(x-[2])");
+  f1->SetParLimits(0, 1e-4, 1e5);
+  f1->SetParLimits(1, 1.86484*1e3,3000);
+  f1->SetParLimits(2, 0, 1.86484*1e3);
+  TFitResultPtr r = double_misid_subtr->Fit("f1", "ES");
+  TMatrixDSym mat = r->GetCorrelationMatrix();
+  const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
+  const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
+  const double x0[2] = {(1.86484-3*0.008)*1e3, (1.86484+3*0.008)*1e3};
+  double_misid_subtr->GetYaxis()->SetRangeUser(0,1.1*double_misid_subtr->GetMaximum());
+  TCanvas *ctemp = new TCanvas();
+  double_misid_subtr->Draw();
+  f1->SetLineColor(kMagenta);
+  f1->Draw();
+  TBox *box = new TBox(x0[0], 0, x0[1], double_misid_subtr->GetMaximum());
+  box->SetFillColor(kGreen);
+  box->Draw();
+  ctemp->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_double_misid_d0_sideband_subtracted_fit_liang.pdf");
+  double* pars = f1->GetParameters();
+  double* epars = f1->GetParErrors();
+  //double int1, int2, int0;
+  const Int_t npars = f1->GetNpar();
+  Double_t d0ratio  = (intf(x0[1], pars, npars) - intf(x0[0], pars, npars))/(intf(x1[1], pars, npars) - intf(x1[0], pars, npars)+intf(x2[1], pars, npars) - intf(x2[0], pars, npars));
+  TVectorD vF(npars);
+  double* newpars = new double[npars];
+  for (int j=0;j<npars;j++){
+    for (int k=0;k<npars;k++) newpars[k] = pars[k];
+    newpars[j] = pars[j]+epars[j];
+    Double_t yhigh = (intf(x0[1], newpars, npars) - intf(x0[0], newpars, npars))/(intf(x1[1], newpars, npars) - intf(x1[0], newpars, npars)+intf(x2[1], newpars, npars) - intf(x2[0], newpars, npars));
+    newpars[j] = pars[j]-epars[j];
+    Double_t ylow = (intf(x0[1], newpars, npars) - intf(x0[0], newpars, npars))/(intf(x1[1], newpars, npars) - intf(x1[0], newpars, npars)+intf(x2[1], newpars, npars) - intf(x2[0], newpars, npars));
+    vF[j] = 0.5*(yhigh-ylow);
+  }
+  Double_t error = TMath::Sqrt(vF*(mat*vF));
+  cout<<"Ratio: "<<d0ratio<<" +/- "<<error<<endl;
+}
+
+
+double betastar_plot::intf(double x, double p[], int n){
+  Double_t* p2 = new Double_t[n];
+  p2[0] = -p[0]*p[1]*p[2];
+  p2[1] = p[0]*(p[1]+p[2]);
+  p2[2] = -p[0];
+  double r =0 ; double xmx = x;
+  for (int i=0;i<n;i++) {
+    r += p2[i]*xmx/(i+1);
+    xmx *= x;}
+  delete p2;
+  return r;
 }

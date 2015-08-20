@@ -35,6 +35,14 @@ using namespace std;
 //
 //2015-1-8 : Adam Davis
 //-----------
+TimeIntegratedSystematicsClass::~TimeIntegratedSystematicsClass(){
+  delete theFit;
+  delete varSigHist;
+  delete varBkgHist;
+  delete sigHist;
+  delete bkgHist;
+  for(int i=0; i<5;++i){delete sigHistBins[i]; delete bkgHistBins[i];}
+}//destructor
 TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFile *fin,
 							       RooWorkspace* w,
 							       TString var2Test, TString var2subtr,
@@ -43,7 +51,8 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
 							       int nbins){
   mName = name;
   nBins = nbins;
-  fin->ls();
+  //fin->ls();
+  wLocal = new RooWorkspace(*w);
   //Get the data to use from the file.
   if(!(var2Test.Contains("pidk"))){
     //first the distribution of the variable we're binning in
@@ -85,7 +94,7 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
     bkgHistBins[i]->Sumw2();
     sigHistBins[i]->Add(bkgHistBins[i],-1);    
     cout<<"Double check, "<<histoForBins+Form("%d",i+1)<<"->Integral()="<<sigHistBins[i]->Integral()<<endl;
-    theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",w);
+    theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",wLocal,"TimeIntegratedSystematics");
     theFit->setData(sigHistBins[i]);
     theFit->FloatMeanWidth();
     theFit->fit();
@@ -186,5 +195,19 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
   cc->SetLogy(true);
   cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+var2Test+"dst_mass_comparison_logy.pdf");
   cc->SetLogy(false);
+  cc->Clear();
+  //draw the shit normalized to the peak.
+  
+  for(int i=0; i<5;++i){
+    sigHistBins[i]->Scale(1./sigHistBins[i]->GetMaximum());
+  }
+  hs->Modified();
+  hs->Draw("nostack");
+  leg->Draw();
+    cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+var2Test+"dst_mass_comparison_norm_to_peak.pdf");
+  cc->SetLogy(true);
+  cc->SaveAs("./SavedFits/TimeIntegratedSystematics/"+var2Test+"dst_mass_comparison_norm_to_peak_logy.pdf");
+  cc->SetLogy(false);
+
   delete leg;
 }

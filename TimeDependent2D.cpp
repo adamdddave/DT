@@ -24,7 +24,7 @@ TimeDependent2D::TimeDependent2D(TString histName, TFile *f1, TString saveName, 
   //hist name tells us the 2d histogram from the file, so get it.
   //convention will be to pass the name with "td0" in it. This is without the "RS" or "RS_ss"
   //make sure to subtract the background.
-  f1->ls();
+  //f1->ls();
   cout<<"now looking for RS_"<<histName<<endl;
   theHist_vs_time = (TH2D*)f1->Get("RS_"+histName);
   theHist_vs_time->Sumw2();

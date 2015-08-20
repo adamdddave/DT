@@ -1700,7 +1700,9 @@ public :
   TH2D* b_fd_chi2_vs_td0_neg;
   TH2D* d_logIPchi2_vs_td0_neg;
 
-
+  TH2D* muon_vs_slow_pion_OWNPV_X;
+  TH2D* muon_vs_slow_pion_OWNPV_Y;
+  TH2D* muon_vs_slow_pion_OWNPV_Z;
   
   //TH1D* kaon_pidk_plot;
   //TH1D* daughter_pi_pid_k_plot;
@@ -1738,7 +1740,7 @@ private:
   const double pdg_kplus_m = 493.677;// MeV
   const double pdg_piplus_m = 139.57018;//MeV
   const double kpidk_cut = 2;
-  const double pi_dau_pidk_cut = -2;
+  const double pi_dau_pidk_cut = 2;
   const double pi_slow_pide_cut=1;
   const double pi_slow_probnnghost_cut = 0.5;
   const double dmass_cut = 24;// MeV, for |m - m_pdg|<dmass_cut
@@ -1747,8 +1749,8 @@ private:
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
-  const double pis_ghost_prob_cut = 0.25;//no units
-  const double pis_probnnp_cut =  0.4;//less than this, no unitso
+  const double pis_ghost_prob_cut = 0.5;//no units
+  //const double pis_probnnp_cut =  0.4;//less than this, no unitso
   //  const double mu_ip_chi2_cut = 100;//no units
   //  const double dst_bin_boundary1=2.690000e+03;//MeV
   //const double dst_bin_boundary2=4.330000e+03;//MeV, pt bin boundaries.
@@ -2400,6 +2402,11 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    b_endvertex_chi2_vs_td0_neg=new TH2D(name+"_b_endvertex_chi2_vs_td0_neg",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
    b_fd_chi2_vs_td0_neg=new TH2D(name+"_b_fd_chi2_vs_td0_neg",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);
 
+
+   //finally, the pv positions of the pi_S and the mu
+   muon_vs_slow_pion_OWNPV_X = new TH2D(name+"_mu_vs_slow_pion_ownpvX",";#pi_{S} Own PV X; #mu Own PV X",400,-2,2,400,-2,2);
+   muon_vs_slow_pion_OWNPV_Y = new TH2D(name+"_mu_vs_slow_pion_ownpvY",";#pi_{S} Own PV Y; #mu Own PV Y",400,-2,2,400,-2,2);
+   muon_vs_slow_pion_OWNPV_Z = new TH2D(name+"_mu_vs_slow_pion_ownpvZ",";#pi_{S} Own PV Z; #mu Own PV Z",1000,-500,500,1000,-500,500);
 }
 
 DT_D0_mix_CPV::~DT_D0_mix_CPV()

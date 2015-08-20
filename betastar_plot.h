@@ -34,6 +34,7 @@ public:
   void SavePlots();
   void FitWSDoubleMisID();
   double getErrorFromPropagation(RooRealVar* x, RooAbsPdf* model, RooFitResult* fr, RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max);
+  void FitWSDoubleMisIDLiang();
   TH2* h2sig ;
   TH2* h2kpisb ;
   TH2* h2kpisb_hi ;
@@ -79,6 +80,6 @@ protected:
 private:
   RooWorkspace *w_local;
   TString m_name;
-
+  double intf(double x, double p[],int n);
 };
 #endif // COMPLETE_ANALYSIS_BETASTAR_PLOT_H

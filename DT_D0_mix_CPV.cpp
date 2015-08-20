@@ -63,13 +63,13 @@ void DT_D0_mix_CPV::Loop()
          Mu_MC12TuneV2_ProbNNmu > mu_probnnmu_cut&&
          !Ps_isMuon &&
 	 Ps_MC12TuneV2_ProbNNghost< pis_ghost_prob_cut
-	 &&Ps_MC12TuneV2_ProbNNp<pis_probnnp_cut
+	 //&&Ps_MC12TuneV2_ProbNNp<pis_probnnp_cut
 	 //&& Mu_IPCHI2_OWNPV > mu_ip_chi2_cut
          //&&Mu_MC12TuneV3_ProbNNmu > mu_probnnmu_cut
          
          )) continue;
     //now do a truthmatching
-    bool isMC = true;
+    bool isMC = false;
     if(isMC){
       Int_t Pd_TRUEID = fChain->GetLeaf("Pd_TRUEID")->GetValue();
       Int_t Ps_TRUEID = fChain->GetLeaf("Ps_TRUEID")->GetValue();
@@ -89,7 +89,7 @@ void DT_D0_mix_CPV::Loop()
       Int_t D_MC_GD_MOTHER_ID = fChain->GetLeaf("D_MC_GD_MOTHER_ID")->GetValue();
       Int_t Dstar_MC_GD_MOTHER_ID = fChain->GetLeaf("Dstar_MC_GD_MOTHER_ID")->GetValue();
       Int_t Dstar_MC_GD_GD_MOTHER_ID = fChain->GetLeaf("Dstar_MC_GD_GD_MOTHER_ID")->GetValue();
-      Int_t Mu_MC_GD_MOTHER_ID = fChain->GetLeaf("Mu_MC_GD_MOTHER_ID")->GetValue();
+      //Int_t Mu_MC_GD_MOTHER_ID = fChain->GetLeaf("Mu_MC_GD_MOTHER_ID")->GetValue();
 
       Int_t Pd_MC_MOTHER_KEY = fChain->GetLeaf("Pd_MC_MOTHER_KEY")->GetValue();
       Int_t K_MC_MOTHER_KEY = fChain->GetLeaf("K_MC_MOTHER_KEY")->GetValue();
@@ -102,7 +102,7 @@ void DT_D0_mix_CPV::Loop()
       Int_t D_MC_GD_MOTHER_KEY = fChain->GetLeaf("D_MC_GD_MOTHER_KEY")->GetValue();
       Int_t Dstar_MC_GD_MOTHER_KEY = fChain->GetLeaf("Dstar_MC_GD_MOTHER_KEY")->GetValue();
       Int_t Dstar_MC_GD_GD_MOTHER_KEY = fChain->GetLeaf("Dstar_MC_GD_GD_MOTHER_KEY")->GetValue();
-      Int_t Mu_MC_GD_MOTHER_KEY = fChain->GetLeaf("Mu_MC_GD_MOTHER_KEY")->GetValue();
+      //Int_t Mu_MC_GD_MOTHER_KEY = fChain->GetLeaf("Mu_MC_GD_MOTHER_KEY")->GetValue();
       
       bool idMatch = TMath::Abs(Pd_TRUEID)==211 && TMath::Abs(Ps_TRUEID)==211 && TMath::Abs(K_TRUEID)==321 && TMath::Abs(D_TRUEID)==421 && TMath::Abs(Dstar_TRUEID)==413 && TMath::Abs(Mu_TRUEID)==13 && TMath::Abs(B_TRUEID)==511;
       bool d0match = Pd_MC_MOTHER_ID ==K_MC_MOTHER_ID && Pd_MC_MOTHER_ID== D_TRUEID;//pion and kaon are matched to D0
@@ -118,8 +118,8 @@ void DT_D0_mix_CPV::Loop()
       bool bKeyMatch2= (D_MC_GD_MOTHER_KEY==Dstar_MC_MOTHER_KEY);
       bool truth_match_keys = d0KeyMatch+dstarKeyMatch+bKeyMatch+bKeyMatch2;
 
-      bool promptDstars = idMatch&&d0match&&dstarmatch&&!Dstar_MC_MOTHER_ID==Mu_MC_MOTHER_ID && !Dstar_MC_GD_MOTHER_ID &&!Mu_MC_MOTHER_ID && !Dstar_MC_GD_GD_MOTHER_ID==Mu_MC_MOTHER_ID;
-      bool promptDstars2= d0KeyMatch&&dstarKeyMatch&&!Dstar_MC_MOTHER_KEY==Mu_MC_MOTHER_KEY && !Dstar_MC_GD_MOTHER_KEY == Mu_MC_MOTHER_KEY && !Dstar_MC_GD_GD_MOTHER_KEY==Mu_MC_MOTHER_KEY;
+      //bool promptDstars = idMatch&&d0match&&dstarmatch&&!Dstar_MC_MOTHER_ID==Mu_MC_MOTHER_ID && !Dstar_MC_GD_MOTHER_ID &&!Mu_MC_MOTHER_ID && !Dstar_MC_GD_GD_MOTHER_ID==Mu_MC_MOTHER_ID;
+      //bool promptDstars2= d0KeyMatch&&dstarKeyMatch&&!Dstar_MC_MOTHER_KEY==Mu_MC_MOTHER_KEY && !Dstar_MC_GD_MOTHER_KEY == Mu_MC_MOTHER_KEY && !Dstar_MC_GD_GD_MOTHER_KEY==Mu_MC_MOTHER_KEY;
 
       bool totalTruthMatch = truth_match_ids&&truth_match_keys;//+&&+d0Econs+&&+d0PxCons+&&+d0PyCons+&&+d0PzCons; 
       if(! totalTruthMatch)continue;
@@ -478,7 +478,7 @@ void DT_D0_mix_CPV::Loop()
     }
     if(Ps_MC12TuneV2_ProbNNghost>=the_pis_ghost_prob_bin_boundaries[19]){the_ghost_prob_bins[19]->Fill(dstm);}
     //2D VS DSTM and td0
-
+    
     b_flight_dist_vs_dstm->Fill(dstm,B_FD_OWNPV);
     b_corr_mass_vs_dstm->Fill(dstm,B_CORR_M);
     dtf_chi2_vs_dstm->Fill(dstm,B_VFit_chi2[0]);
@@ -496,6 +496,10 @@ void DT_D0_mix_CPV::Loop()
     b_endvertex_chi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_ENDVERTEX_CHI2);
     b_fd_chi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FDCHI2_OWNPV);
     d_logIPchi2_vs_td0->Fill((B_VFit_D0_ctau[0]/d0_pdg_ct),log(D_IPCHI2_OWNPV));
+    
+    muon_vs_slow_pion_OWNPV_X->Fill(Ps_OWNPV_X,Mu_OWNPV_X);
+    muon_vs_slow_pion_OWNPV_Y->Fill(Ps_OWNPV_Y,Mu_OWNPV_Y);
+    muon_vs_slow_pion_OWNPV_Z->Fill(Ps_OWNPV_Z,Mu_OWNPV_Z);
     //pos
     if(Ps_ID/TMath::Abs(Ps_ID)>0){
       b_flight_dist_vs_dstm_pos->Fill(dstm,B_FD_OWNPV);
@@ -507,7 +511,7 @@ void DT_D0_mix_CPV::Loop()
       b_endvertex_chi2_vs_dstm_pos->Fill(dstm,B_ENDVERTEX_CHI2);
       b_fd_chi2_vs_dstm_pos->Fill(dstm,B_FDCHI2_OWNPV);
       d_logIPchi2_vs_dstm_pos->Fill(dstm,log(D_IPCHI2_OWNPV));    
-    
+      
       b_flight_dist_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FD_OWNPV);
       b_corr_mass_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_CORR_M);
       dtf_chi2_vs_td0_pos->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_VFit_chi2[0]);
@@ -536,10 +540,10 @@ void DT_D0_mix_CPV::Loop()
       logmuIPchi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(Mu_IPCHI2_OWNPV));
       b_endvertex_chi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_ENDVERTEX_CHI2);
       b_fd_chi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FDCHI2_OWNPV);
-      d_logIPchi2_vs_dstm_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(D_IPCHI2_OWNPV));
+      d_logIPchi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(D_IPCHI2_OWNPV));
     }
       
-      
+    
   }//loop on events
   
 }
