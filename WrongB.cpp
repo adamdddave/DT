@@ -110,3 +110,13 @@ void WrongB::MakeMassComparisons(){
 void WrongB::CompareIPchi2(){
   return;
 }
+WrongB::~WrongB(){
+  delete rs_bmass;
+  delete rs_ss_bmass;
+  delete rs_dstar_mass;
+  delete rs_ss_dstar_mass;
+  delete dstarm_vs_muIPchi2;
+  delete dstarm_ss_vs_muIPchi2;
+  delete bmass_vs_muIPchi2;
+  delete bmass_ss_vs_muIPChi2;
+}

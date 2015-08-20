@@ -68,7 +68,7 @@ class WrongB {
   //standard constructor
   WrongB(TString name, DT_D0_mix_CPV loop_rs, DT_D0_mix_CPV loop_rs_ss);
   //destructor
-  virtual ~WrongB(){ }
+  ~WrongB();
   void MakeMassComparisons();
   void CompareIPchi2();
  protected:
