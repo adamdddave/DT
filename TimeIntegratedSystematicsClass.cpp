@@ -35,14 +35,15 @@ using namespace std;
 //
 //2015-1-8 : Adam Davis
 //-----------
-TimeIntegratedSystematicsClass::~TimeIntegratedSystematicsClass(){
-  delete theFit;
-  delete varSigHist;
-  delete varBkgHist;
-  delete sigHist;
-  delete bkgHist;
-  for(int i=0; i<5;++i){delete sigHistBins[i]; delete bkgHistBins[i];}
-}//destructor
+// TimeIntegratedSystematicsClass::~TimeIntegratedSystematicsClass(){
+//   delete theFit;
+//   //delete varSigHist;
+//   delete varBkgHist;
+//   delete sigHist;
+//   delete bkgHist;
+//   delete wLocal;
+//   for(int i=0; i<5;++i){delete sigHistBins[i]; delete bkgHistBins[i];}
+// }//destructor
 TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFile *fin,
 							       RooWorkspace* w,
 							       TString var2Test, TString var2subtr,
@@ -96,6 +97,8 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
     cout<<"Double check, "<<histoForBins+Form("%d",i+1)<<"->Integral()="<<sigHistBins[i]->Integral()<<endl;
     theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",wLocal,"TimeIntegratedSystematics");
     theFit->setData(sigHistBins[i]);
+    //fit once to get params, then float the mean and width, and fit again
+    theFit->fit();
     theFit->FloatMeanWidth();
     theFit->fit();
     theFit->savePlots(true,histoForBins+Form("%d",i+1));

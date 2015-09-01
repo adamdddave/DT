@@ -81,7 +81,31 @@ int main(int argc, char* const argv[]){
   channelFromFile+="w";
   cout<<"channel from file = "<<channelFromFile<<endl;  
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
-    //now do the same for the 5x5 matrix in pids
+
+
+  //and the rest.
+  
+  int bins_dst_pt[]  ={1,107,148,196,274,((TH1D*)f1->Get("RS_dstar_pt"))->GetNbinsX()};
+  TimeIntegratedSystematicsClass dst_pt("dst_pt",f1,w,"RS_dstar_pt","RS_ss_dstar_pt","RS_dt_hist_dstar_m_pt_bin","RS_ss_dt_hist_dstar_m_pt_bin",bins_dst_pt);
+  std::vector<double>point_dst_pt ( dst_pt.GetSignalPoint());
+
+  int bins_dst_p[] = {1,179,230,294,400,((TH1D*)f1->Get("RS_dstar_p"))->GetNbinsX()};
+  TimeIntegratedSystematicsClass dst_p("dst_p",f1,w,"RS_dstar_p","RS_ss_dstar_p","RS_dt_hist_dstar_m_p_bin","RS_ss_dt_hist_dstar_m_p_bin",bins_dst_p);
+  std::vector<double>point_dst_p ( dst_p.GetSignalPoint());
+
+  int bins_mu_pt[]  ={1,104,132,166,223,((TH1D*)f1->Get("RS_mu_pt"))->GetNbinsX()};
+  TimeIntegratedSystematicsClass mu_pt("mu_pt",f1,w,"RS_mu_pt","RS_ss_mu_pt","RS_dt_hist_mu_m_pt_bin","RS_ss_dt_hist_mu_m_pt_bin",bins_mu_pt);
+  std::vector<double>point_mu_pt ( mu_pt.GetSignalPoint());
+
+  int bins_mu_p[] = {1,99,150,216,326,((TH1D*)f1->Get("RS_mu_p"))->GetNbinsX()};
+  TimeIntegratedSystematicsClass mu_p("mu_p",f1,w,"RS_mu_p","RS_ss_mu_p","RS_dt_hist_mu_m_p_bin","RS_ss_dt_hist_mu_m_p_bin",bins_mu_p);
+  std::vector<double>point_mu_p ( mu_p.GetSignalPoint());
+
+  int bins_mu_log_ip[]  ={1,342,389,432,482,((TH1D*)f1->Get("RS_mu_log_ip"))->GetNbinsX()};
+  TimeIntegratedSystematicsClass mu_log_ip("mu_log_ip",f1,w,"RS_mu_log_ip","RS_ss_mu_log_ip","RS_dt_hist_mu_log_ip_bin","RS_ss_dt_hist_mu_log_ip_bin",bins_mu_log_ip);
+  std::vector<double>point_mu_log_ip ( mu_log_ip.GetSignalPoint());
+
+      //now do the same for the 5x5 matrix in pids
   //we have stuff that looks like RS_dt_hist_pi_pid_k_bin1_k_pid_k_bin2
   //we want do only use the thing up to the last bin, and do it 5 times.
   //but we'll use the kpid k bins for each pi pid k bin.
@@ -124,29 +148,6 @@ int main(int argc, char* const argv[]){
   TimeIntegratedSystematicsClass pi_pidk("pi_pidk",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin",bins_pi_pidk);
   std::vector<double>point_pi_pidk ( pi_pidk.GetSignalPoint());
   
-
-
-  //and the rest.
-  
-  int bins_dst_pt[]  ={1,107,148,196,274,((TH1D*)f1->Get("RS_dstar_pt"))->GetNbinsX()};
-  TimeIntegratedSystematicsClass dst_pt("dst_pt",f1,w,"RS_dstar_pt","RS_ss_dstar_pt","RS_dt_hist_dstar_m_pt_bin","RS_ss_dt_hist_dstar_m_pt_bin",bins_dst_pt);
-  std::vector<double>point_dst_pt ( dst_pt.GetSignalPoint());
-
-  int bins_dst_p[] = {1,179,230,294,400,((TH1D*)f1->Get("RS_dstar_p"))->GetNbinsX()};
-  TimeIntegratedSystematicsClass dst_p("dst_p",f1,w,"RS_dstar_p","RS_ss_dstar_p","RS_dt_hist_dstar_m_p_bin","RS_ss_dt_hist_dstar_m_p_bin",bins_dst_p);
-  std::vector<double>point_dst_p ( dst_p.GetSignalPoint());
-
-  int bins_mu_pt[]  ={1,107,148,196,274,((TH1D*)f1->Get("RS_mu_pt"))->GetNbinsX()};
-  TimeIntegratedSystematicsClass mu_pt("mu_pt",f1,w,"RS_mu_pt","RS_ss_mu_pt","RS_dt_hist_mu_m_pt_bin","RS_ss_dt_hist_mu_m_pt_bin",bins_mu_pt);
-  std::vector<double>point_mu_pt ( mu_pt.GetSignalPoint());
-
-  int bins_mu_p[] = {1,179,230,294,400,((TH1D*)f1->Get("RS_mu_p"))->GetNbinsX()};
-  TimeIntegratedSystematicsClass mu_p("mu_p",f1,w,"RS_mu_p","RS_ss_mu_p","RS_dt_hist_mu_m_p_bin","RS_ss_dt_hist_mu_m_p_bin",bins_mu_p);
-  std::vector<double>point_mu_p ( mu_p.GetSignalPoint());
-
-  int bins_mu_log_ip[]  ={1,99,150,216,326,((TH1D*)f1->Get("RS_mu_log_ip"))->GetNbinsX()};
-  TimeIntegratedSystematicsClass mu_log_ip("mu_log_ip",f1,w,"RS_mu_log_ip","RS_ss_mu_log_ip","RS_dt_hist_mu_log_ip_bin","RS_ss_dt_hist_mu_log_ip_bin",bins_mu_log_ip);
-  std::vector<double>point_mu_log_ip ( mu_log_ip.GetSignalPoint());
 
   //return 0;
   //final check for time independent.

@@ -62,8 +62,8 @@ class massFit {
 public: 
   /// Standard constructor
   
-  massFit(TString Channel,TString modelname,RooWorkspace* w=0, TString localDir = "");
-  ~massFit();
+  massFit(TString Channel,TString modelname,RooWorkspace* w=0, TString localDir = "",bool addsigbox=0);
+  virtual ~massFit(){ };
   void fit();
   void saveWorkspace();
   //setters
@@ -98,6 +98,7 @@ private:
   TString channel;//rs,ws,rs_ss,ws_ss
   TString modelName;
   TString theLocalDir;
+  bool addSigBox;
   RooWorkspace* existing_fit;//if we already have a fit model that works, put it here.
   bool use_existing_fit;
   RooWorkspace* new_fit;

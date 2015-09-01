@@ -55,14 +55,16 @@ void DT_D0_mix_CPV::Loop()
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
          Mu_L0MuonDecision_TOS==1&&
+	 //Mu_L0MuonDecision_TIS==1&&
          Mu_Hlt1TrackMuonDecision_TOS==1&&
-         (B_Hlt2TopoMu2BodyBBDTDecision_TOS==1||
-          B_Hlt2TopoMu3BodyBBDTDecision_TOS==1||
-          B_Hlt2TopoMu4BodyBBDTDecision_TOS==1)&&
+         (B_Hlt2TopoMu2BodyBBDTDecision_TOS==1 ||
+	  B_Hlt2TopoMu3BodyBBDTDecision_TOS==1||
+	  B_Hlt2TopoMu4BodyBBDTDecision_TOS==1)&&
          Mu_isMuon &&
          Mu_MC12TuneV2_ProbNNmu > mu_probnnmu_cut&&
          !Ps_isMuon &&
 	 Ps_MC12TuneV2_ProbNNghost< pis_ghost_prob_cut
+	 //&& Ps_PT > pis_pt_cut
 	 //&&Ps_MC12TuneV2_ProbNNp<pis_probnnp_cut
 	 //&& Mu_IPCHI2_OWNPV > mu_ip_chi2_cut
          //&&Mu_MC12TuneV3_ProbNNmu > mu_probnnmu_cut

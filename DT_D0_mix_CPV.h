@@ -1750,6 +1750,7 @@ private:
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
   const double pis_ghost_prob_cut = 0.5;//no units
+  //const double pis_pt_cut = 100;//MeV
   //const double pis_probnnp_cut =  0.4;//less than this, no unitso
   //  const double mu_ip_chi2_cut = 100;//no units
   //  const double dst_bin_boundary1=2.690000e+03;//MeV

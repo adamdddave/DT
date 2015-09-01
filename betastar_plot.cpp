@@ -68,17 +68,17 @@ betastar_plot::betastar_plot(TString name  ) {
    h2rob = (TH2*)h2sig->Clone(name+"_h2rob");
    h2kpisb_cut_range = (TH2*)h2sig->Clone(name+"_h2kpisb_cut_range");
   
-   h2pi_probnnmu_dstar_sideband_high = new TH2D(name+"_h2pi_probnnmu_dstar_sideband_high","",100,0,1,250,2000,2025);
-   h2pi_probnnmu_dstar_sideband_low=new TH2D(name+"_h2pi_probnnmu_dstar_sideband_low","",100,0,1,250,2000,2025);
+   h2pi_probnnmu_dstar_sideband_high = new TH2D(name+"_h2pi_probnnmu_dstar_sideband_high","",1000,0,1,250,2000,2025);
+   h2pi_probnnmu_dstar_sideband_low=new TH2D(name+"_h2pi_probnnmu_dstar_sideband_low","",1000,0,1,250,2000,2025);
     
-   h2k_probnnmu_dstar_sideband_high=new TH2D(name+"_h2k_probnnmu_dstar_sideband_high","",100,0,1,250,2000,2025);
-   h2k_probnnmu_dstar_sideband_low=new TH2D(name+"_h2k_probnnmu_dstar_sideband_low","",100,0,1,250,2000,2025);    
+   h2k_probnnmu_dstar_sideband_high=new TH2D(name+"_h2k_probnnmu_dstar_sideband_high","",1000,0,1,250,2000,2025);
+   h2k_probnnmu_dstar_sideband_low=new TH2D(name+"_h2k_probnnmu_dstar_sideband_low","",1000,0,1,250,2000,2025);    
   
-   h2pi_probnne_dstar_sideband_high=new TH2D(name+"_h2pi_probnne_dstar_sideband_high","",100,0,1,250,2000,2025);
-   h2pi_probnne_dstar_sideband_low=new TH2D(name+"_h2pi_probnne_dstar_sideband_low","",100,0,1,250,2000,2025);
+   h2pi_probnne_dstar_sideband_high=new TH2D(name+"_h2pi_probnne_dstar_sideband_high","",1000,0,1,250,2000,2025);
+   h2pi_probnne_dstar_sideband_low=new TH2D(name+"_h2pi_probnne_dstar_sideband_low","",1000,0,1,250,2000,2025);
   
-   h2k_probnne_dstar_sideband_high=new TH2D(name+"_h2k_probnne_dstar_sideband_high","",100,0,1,250,2000,2025);
-   h2k_probnne_dstar_sideband_low=new TH2D(name+"_h2k_probnne_dstar_sideband_low","",100,0,1,250,2000,2025);    
+   h2k_probnne_dstar_sideband_high=new TH2D(name+"_h2k_probnne_dstar_sideband_high","",1000,0,1,250,2000,2025);
+   h2k_probnne_dstar_sideband_low=new TH2D(name+"_h2k_probnne_dstar_sideband_low","",1000,0,1,250,2000,2025);    
   
    hmsig = new TH1D(name+"_hmsig","", 250, 2000, 2025);
    hmkpisb = (TH1*)hmsig->Clone(name+"_hmkpisb");

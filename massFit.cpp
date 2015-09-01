@@ -23,6 +23,7 @@
 #include <TString.h>
 #include <TLorentzVector.h>
 #include <TVector3.h>
+#include <TPaveText.h>
 //roofit
 #ifndef __CINT__
 #include "RooGlobalFunc.h"
@@ -67,7 +68,8 @@ using namespace std;
 //=============================================================================
 // Standard constructor, initializes variables
 //=============================================================================
-massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString localDir) {
+massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString localDir,bool addsigbox) {
+  addSigBox = addsigbox;
   channel = Channel;
   setFitModel(modelname);
   theLocalDir = localDir;
@@ -229,7 +231,7 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString loca
     
     //mass->setRange(xmin,xmax);
     dmean= new RooRealVar("dmean","dmean",0,-1,1);//allowed variation for dstar mean value
-    rsigma= new RooRealVar("rsigma","rsigma",0,-50,50);//allowed variation for dstar width val
+    rsigma= new RooRealVar("rsigma","rsigma",0,-20,20);//allowed variation for dstar width val
     //johnson parameters
     //m0= new RooRealVar("m0","m0",2010.,2009.,2011.);
     double m0_liang = 2.00935381450188277*1e3;
@@ -364,105 +366,105 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString loca
 //=============================================================================
 // Destructor
 //=============================================================================
-massFit::~massFit(){
-  delete existing_fit;
+// massFit::~massFit(){
+//   //delete existing_fit;
   
-  delete new_fit;
-  delete mass;
-  delete dmean;
-  delete rsigma;
+//   //delete new_fit;
+//   delete mass;
+//   delete dmean;
+//   delete rsigma;
 
-  delete m0;
-  delete fm0;
-  delete delta;
-  delete sigma;
-  delete fsigma;
-  delete gamma;
-  delete sig_john;
-  delete mean1;
+//   delete m0;
+//   delete fm0;
+//   delete delta;
+//   delete sigma;
+//   delete fsigma;
+//   delete gamma;
+//   delete sig_john;
+//   delete mean1;
 
-  delete fgau1mean;
-  delete mean2;
-  delete fgau2mean;
-  delete mean3;
-  delete fgau3mean;
+//   delete fgau1mean;
+//   delete mean2;
+//   delete fgau2mean;
+//   delete mean3;
+//   delete fgau3mean;
   
-  delete width1;
-  delete fgau1sigma;
-  delete width2;
-  delete fgau2sigma;
-  delete width3;
-  delete fgau3sigma;
+//   delete width1;
+//   delete fgau1sigma;
+//   delete width2;
+//   delete fgau2sigma;
+//   delete width3;
+//   delete fgau3sigma;
   
   
-  delete g1;
-  delete g2;
-  delete g3;
+//   delete g1;
+//   delete g2;
+//   delete g3;
   
 
-  delete cb1_m0;
-  delete cb1_sigma;
-  delete cb1_alpha;
-  delete cb1_n;
-  delete CBall1;
+//   delete cb1_m0;
+//   delete cb1_sigma;
+//   delete cb1_alpha;
+//   delete cb1_n;
+//   delete CBall1;
   
-  delete cb2_m0;
-  delete cb2_sigma;
-  delete cb2_alpha;
-  delete cb2_n;
-  delete CBall2;
+//   delete cb2_m0;
+//   delete cb2_sigma;
+//   delete cb2_alpha;
+//   delete cb2_n;
+//   delete CBall2;
 
-  delete rbw_m0;
-  delete rbw_sigma;
-  delete rbw_width;
-  delete res_mean1;
-  delete res_mean2;
-  delete res_mean3;
-  delete res_width1;
-  delete res_width2;
-  delete res_width3;
-  delete res_frac1;
-  delete res_frac2;
-  delete eps_width;
-  delete eps_mean;
-  delete res_gau_1;
-  delete res_gau_2;
-  delete res_gau_3;
-  delete rbw;
-  delete mean1sh;
-  delete mean2sh;
-  delete mean3sh;
-  delete width1sh;
-  delete width2sh;
-  delete width3sh;
+//   delete rbw_m0;
+//   delete rbw_sigma;
+//   delete rbw_width;
+//   delete res_mean1;
+//   delete res_mean2;
+//   delete res_mean3;
+//   delete res_width1;
+//   delete res_width2;
+//   delete res_width3;
+//   delete res_frac1;
+//   delete res_frac2;
+//   delete eps_width;
+//   delete eps_mean;
+//   delete res_gau_1;
+//   delete res_gau_2;
+//   delete res_gau_3;
+//   delete rbw;
+//   delete mean1sh;
+//   delete mean2sh;
+//   delete mean3sh;
+//   delete width1sh;
+//   delete width2sh;
+//   delete width3sh;
 
-  delete Rcp1;
-  delete Rcp2;
-  delete Rcp3;
+//   delete Rcp1;
+//   delete Rcp2;
+//   delete Rcp3;
 
-  delete decay_in_flight_kappa;
-  delete decay_in_flight_n;
-  delete decay_in_flight_endpt;
-  delete decay_in_flight_shape;
-  delete frac_dif;
+//   delete decay_in_flight_kappa;
+//   delete decay_in_flight_n;
+//   delete decay_in_flight_endpt;
+//   delete decay_in_flight_shape;
+//   delete frac_dif;
 
-  delete xscale;
-  delete endpt;
-  delete minusDM;
-  delete kappa;
-  delete n;
-  delete bkg_arg;
-  delete nsig;
-  delete frac1;
-  delete frac2;
-  delete frac3;
-  delete nbkg;
+//   delete xscale;
+//   delete endpt;
+//   delete minusDM;
+//   delete kappa;
+//   delete n;
+//   delete bkg_arg;
+//   delete nsig;
+//   delete frac1;
+//   delete frac2;
+//   delete frac3;
+//   delete nbkg;
 
-  delete sigpdf;
-  delete data;
-  delete model;
+//   delete sigpdf;
+//   delete data;
+//   delete model;
 
-}
+// }
 
 
 //=============================================================================
@@ -671,14 +673,21 @@ void massFit::savePlots(bool doPullPlots, TString extraName){
      model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
      model->plotOn(frame,Components(*g3),LineColor(kMagenta+1),LineStyle(kDashed),Range("r1"));
    }
-   
+   frame->GetYaxis()->SetRangeUser(0,500);
    frame->Draw();
    frame->GetYaxis()->SetTitleOffset(1.4);
-   
+   TPaveText *txt;
+   if(addSigBox){
+     txt = new TPaveText(0.7, 0.8, 0.98, 0.98, "ndc");
+     txt->SetTextAlign(12);
+     txt->AddText(Form("N_{Signal} = %d #pm %d",(int)nsig->getVal(),(int)nsig->getError()));
+     txt->Draw();
+   }
    cc->SaveAs("./SavedFits/"+theLocalDir+"/"+channel+extraName+modelName+"_fit.pdf");
    cc->SetLogy(true);
    frame->GetYaxis()->SetRangeUser(1, frame->GetMaximum()*1.5);
    frame->Draw();
+   if(addSigBox){txt->Draw();}
    cc->SaveAs("./SavedFits/"+theLocalDir+"/"+channel+extraName+modelName+"_fit_logy.pdf");
    cc->SetLogy(false);
    cc->Clear();

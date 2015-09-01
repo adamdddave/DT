@@ -52,7 +52,7 @@ using namespace std;
 class TimeIntegratedSystematicsClass {
  public:
   TimeIntegratedSystematicsClass(TString name,TFile *fin,RooWorkspace* w,TString var2Test,TString var2subtr,TString histoForBins,TString histoForBinsBkg,int binRanges[6],int nbins=5);//constructor
-  ~TimeIntegratedSystematicsClass();
+  virtual ~TimeIntegratedSystematicsClass(){};
   //void doFit;
   inline std::vector<double>GetSignalPoint(){return SigAndErr;}
   
