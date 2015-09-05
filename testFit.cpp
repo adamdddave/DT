@@ -94,7 +94,7 @@ int main(int argc, char* const argv[]){
   }
   
   TFile *f1 = TFile::Open(argv[1]);
-  f1->ls();
+  //f1->ls();
   TH1D* mass = (TH1D*)f1->Get(histName);
   TH1D* ss_mass = (TH1D*)f1->Get(histSSName);
   TH1D* hist = (TH1D*)mass->Clone("mass");
@@ -116,7 +116,7 @@ int main(int argc, char* const argv[]){
   }
   else{
     TFile *f2 = TFile::Open(argv[2]);
-    f2->ls();
+    //f2->ls();
     TString channelFromFile = argv[2];
     channelFromFile.ToLower();
     if(channelFromFile.Contains("rs")){

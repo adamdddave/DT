@@ -303,7 +303,12 @@ void DT_D0_mix_CPV::Loop()
     mu_p->Fill(mup);
     mu_log_ip->Fill(log(Mu_IP_OWNPV));
     pis_ghost_prob->Fill(Ps_MC12TuneV2_ProbNNghost);
+    if(Pis_CHARGE>0){pis_ghost_prob_pos->Fill(Ps_MC12TuneV2_ProbNNghost);}
+    else if(Pis_CHARGE<0){pis_ghost_prob_neg->Fill(Ps_MC12TuneV2_ProbNNghost);}
+      
     pis_match_chi2->Fill(Ps_TRACK_MatchCHI2);
+    if(Pis_CHARGE>0){pis_match_chi2_pos->Fill(Ps_TRACK_MatchCHI2);}
+    else if(Pis_CHARGE<0){pis_match_chi2_neg->Fill(Ps_TRACK_MatchCHI2);}
     pis_match_chi2_vs_dstm->Fill(dstm,Ps_TRACK_MatchCHI2);
     pis_match_chi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Ps_TRACK_MatchCHI2);
     //pid stuff

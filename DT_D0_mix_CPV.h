@@ -1488,7 +1488,13 @@ public :
   TH1D* dstar_mass_plot_pos;
   TH1D* dstar_mass_plot_neg;
   TH1D* pis_ghost_prob;
+  TH1D* pis_ghost_prob_pos;
+  TH1D* pis_ghost_prob_neg;
+
   TH1D* pis_match_chi2;
+  TH1D* pis_match_chi2_pos;
+  TH1D* pis_match_chi2_neg;
+
   //for time integrated systematic studies.
   //there are so many binned things, make a vector out of them instead. makes it easier in analysis.cpp to write things
   TH1D* dstar_mass_pt_bin1;
@@ -1749,7 +1755,7 @@ private:
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
-  const double pis_ghost_prob_cut = 0.5;//no units
+  const double pis_ghost_prob_cut = 0.25;//no units
   //const double pis_pt_cut = 100;//MeV
   //const double pis_probnnp_cut =  0.4;//less than this, no unitso
   //  const double mu_ip_chi2_cut = 100;//no units
@@ -1873,8 +1879,13 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dstar_mass_plot_neg = new TH1D(name+"_dt_hist_dstar_m_neg","", 500, 2000,2025);
   dstar_mass_plot_neg->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot_neg->GetBinWidth(1)));
   pis_ghost_prob = new TH1D(name+"_slow_pion_ghost_prob",";#pi_{s} Ghost Prob; Entries / 0.001",1000,0,1);
+  pis_ghost_prob_pos = new TH1D(name+"_slow_pion_ghost_prob_pos",";#pi_{s} Ghost Prob; Entries / 0.001",1000,0,1);
+  pis_ghost_prob_neg = new TH1D(name+"_slow_pion_ghost_prob_neg",";#pi_{s} Ghost Prob; Entries / 0.001",1000,0,1);
+      
   
   pis_match_chi2= new TH1D(name+"_slow_pion_match_chi2","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
+  pis_match_chi2_pos= new TH1D(name+"_slow_pion_match_chi2_pos","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
+  pis_match_chi2_neg= new TH1D(name+"_slow_pion_match_chi2_neg","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
   //dstar p and pt bins
   dstar_mass_pt_bin1 = new TH1D(name+"_dt_hist_dstar_m_pt_bin1","", 500, 2000,2025);
   dstar_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin1->GetBinWidth(1)));

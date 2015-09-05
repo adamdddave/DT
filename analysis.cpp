@@ -132,7 +132,11 @@ int main(int argc, char* const argv[]){
   rs_looper.mu_p->Write();
   rs_looper.mu_log_ip->Write();
   rs_looper.pis_ghost_prob->Write();
+  rs_looper.pis_ghost_prob_pos->Write();
+  rs_looper.pis_ghost_prob_neg->Write();
   rs_looper.pis_match_chi2->Write();
+  rs_looper.pis_match_chi2_pos->Write();
+  rs_looper.pis_match_chi2_neg->Write();
   rs_looper.pis_match_chi2_vs_dstm->Write();
   rs_looper.pis_match_chi2_vs_td0->Write();
   rs_looper.dst_mass_vs_kpidk->Write();
@@ -273,7 +277,11 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.mu_p->Write();
   rs_ss_looper.mu_log_ip->Write();
   rs_ss_looper.pis_ghost_prob->Write();
+  rs_ss_looper.pis_ghost_prob_pos->Write();
+  rs_ss_looper.pis_ghost_prob_neg->Write();
   rs_ss_looper.pis_match_chi2->Write();
+  rs_ss_looper.pis_match_chi2_pos->Write();
+  rs_ss_looper.pis_match_chi2_neg->Write();
   rs_ss_looper.pis_match_chi2_vs_dstm->Write();
   rs_ss_looper.pis_match_chi2_vs_td0->Write();
   rs_ss_looper.dst_mass_vs_kpidk->Write();
@@ -407,7 +415,11 @@ int main(int argc, char* const argv[]){
   ws_looper.mu_p->Write();
   ws_looper.mu_log_ip->Write();
   ws_looper.pis_ghost_prob->Write();
+  ws_looper.pis_ghost_prob_pos->Write();
+  ws_looper.pis_ghost_prob_neg->Write();
   ws_looper.pis_match_chi2->Write();
+  ws_looper.pis_match_chi2_pos->Write();
+  ws_looper.pis_match_chi2_neg->Write();
   ws_looper.pis_match_chi2_vs_dstm->Write();
   ws_looper.pis_match_chi2_vs_td0->Write();
   ws_looper.dstar_mass_plot_pos->Write();
@@ -537,7 +549,11 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.mu_p->Write();
   ws_ss_looper.mu_log_ip->Write();
   ws_ss_looper.pis_ghost_prob->Write();
+  ws_ss_looper.pis_ghost_prob_pos->Write();
+  ws_ss_looper.pis_ghost_prob_neg->Write();
   ws_ss_looper.pis_match_chi2->Write();
+  ws_ss_looper.pis_match_chi2_pos->Write();
+  ws_ss_looper.pis_match_chi2_neg->Write();
   ws_ss_looper.pis_match_chi2_vs_dstm->Write();
   ws_ss_looper.pis_match_chi2_vs_td0->Write();
   ws_ss_looper.dst_mass_vs_kpidk->Write();

@@ -71,7 +71,7 @@ int main(int argc, char* const argv[]){
   cout<<"Now processing "<<argv[1]<<endl;
   TFile * f1 = TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
-  f2->ls();
+  //  f2->ls();
   TString channelFromFile = argv[2];
   channelFromFile.ReplaceAll("SavedFits","");
   channelFromFile.ReplaceAll("fitModel.root","");
