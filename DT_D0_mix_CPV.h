@@ -1484,6 +1484,7 @@ public :
   TBranch        *b_Hlt2Global;   //!
   
   TH1D* dstar_mass_plot;
+  TH1D* d0_mass_plot;
   TH1D* dstar_mass_plot_zoom;
   TH1D* dstar_mass_plot_pos;
   TH1D* dstar_mass_plot_neg;
@@ -1870,6 +1871,9 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dstar_mass_plot = new TH1D(name+"_dt_hist_dstar_m","", 500, 2000,2025);
   dstar_mass_plot->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot->GetBinWidth(1)));
 
+  d0_mass_plot = new TH1D(name+"_dt_d0_m","",400,1700.,2100.);
+  d0_mass_plot->SetTitle(Form("m(K#pi)[MeV];m(K#pi)[MeV];Entries/%.2f",d0_mass_plot->GetBinWidth(1)));
+  
   dstar_mass_plot_zoom = new TH1D(name+"_dt_hist_dstar_m_zoom","", 350, 2008,2015);
   dstar_mass_plot_zoom->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot->GetBinWidth(1)));
 

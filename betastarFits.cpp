@@ -105,8 +105,8 @@ int main(int argc, char* const argv[]){
   b.set_local_workspace(w);
   b.DrawPlots();
   //if(isWS){
-  b.FitWSDoubleMisID();
-  //b.FitWSDoubleMisIDLiang();
-      //}
+  //b.FitWSDoubleMisID();
+  b.FitWSDoubleMisIDLiang();
+  //}
   return 0;
 }

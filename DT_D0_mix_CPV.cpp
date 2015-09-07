@@ -165,7 +165,8 @@ void DT_D0_mix_CPV::Loop()
     Double_t Pis_CHARGE = Ps_ID/211.;
     Double_t Pi_CHARGE = Pd_ID/211.;
     Double_t beta = Pis_CHARGE*Pi_CHARGE*(pi_daughter.P()-k_daughter_as_pi.P())/(k_daughter_as_pi.P()+pi_daughter.P());
-
+    //fill the d0 mass plot without any cuts on delta M to show the cut range
+    d0_mass_plot->Fill((k_daughter+pi_daughter).M()*1e3);
     //add the d mass cuts too for the b mass plots.
     if(TMath::Abs((k_daughter + pi_daughter).M()*1e3 - pdg_d0_m)<24 &&
        TMath::Abs((pi_daughter_as_k+k_daughter).M()*1e3-pdg_d0_m)>40 &&
@@ -208,9 +209,19 @@ void DT_D0_mix_CPV::Loop()
       
       if(dstm>2015 && dstm <2025){//background region
 	bs_plot->double_misid_dmass_dst_sideband_region->Fill((k_daughter+pi_daughter).M()*1e3);
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){bs_plot->double_misid_dmass_dst_sideband_region_bin1->Fill((k_daughter+pi_daughter).M()*1e3);}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){bs_plot->double_misid_dmass_dst_sideband_region_bin2->Fill((k_daughter+pi_daughter).M()*1e3);}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){bs_plot->double_misid_dmass_dst_sideband_region_bin3->Fill((k_daughter+pi_daughter).M()*1e3);}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sideband_region_bin4->Fill((k_daughter+pi_daughter).M()*1e3);}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sideband_region_bin5->Fill((k_daughter+pi_daughter).M()*1e3);}
       }
       else if(fabs(dstm - pdg_dstar_m)<dstar_mass_cut){
 	bs_plot->double_misid_dmass_dst_sig_region->Fill((k_daughter+pi_daughter).M()*1e3);
+		if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){bs_plot->double_misid_dmass_dst_sig_region_bin1->Fill((k_daughter+pi_daughter).M()*1e3);}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){bs_plot->double_misid_dmass_dst_sig_region_bin2->Fill((k_daughter+pi_daughter).M()*1e3);}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){bs_plot->double_misid_dmass_dst_sig_region_bin3->Fill((k_daughter+pi_daughter).M()*1e3);}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sig_region_bin4->Fill((k_daughter+pi_daughter).M()*1e3);}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sig_region_bin5->Fill((k_daughter+pi_daughter).M()*1e3);}
       }
     }
     if(!(fabs((k_daughter + pi_daughter).M()*1e3-1864.84)<24 

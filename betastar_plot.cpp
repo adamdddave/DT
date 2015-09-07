@@ -13,6 +13,8 @@
 //roofit
 #ifndef __CINT__
 #include "RooGlobalFunc.h"
+#include "RooCFunction1Binding.h"
+#include "RooCFunction3Binding.h"
 #endif
 #include <RooFitResult.h>
 #include <RooProduct.h>
@@ -39,6 +41,7 @@
 #include <RooPolynomial.h>
 #include <RooExtendPdf.h>
 #include <RooWorkspace.h>
+#include <RooTFnBinding.h>
 
 #include <PlottingTools.h>
 using namespace RooFit ;
@@ -105,6 +108,22 @@ betastar_plot::betastar_plot(TString name  ) {
 
    double_misid_dmass_dst_sig_region = new TH1D(name+"_double_misid_dmass_dst_sig_region","",200,1700,2100);
    double_misid_dmass_dst_sideband_region = new TH1D(name+"_double_misid_dmass_dst_sideband_region","",200,1700,2100);
+   //clone these histograms in 5 bins of decay time.
+   double_misid_dmass_dst_sig_region_bin1 = (TH1*)double_misid_dmass_dst_sig_region->Clone(name+"_double_misid_dmass_dst_sig_region_bin1");
+   double_misid_dmass_dst_sideband_region_bin1 = (TH1*)double_misid_dmass_dst_sideband_region->Clone(name+"_double_misid_dmass_dst_sideband_region_bin1");
+
+   double_misid_dmass_dst_sig_region_bin2 = (TH1*)double_misid_dmass_dst_sig_region->Clone(name+"_double_misid_dmass_dst_sig_region_bin2");
+   double_misid_dmass_dst_sideband_region_bin2 = (TH1*)double_misid_dmass_dst_sideband_region->Clone(name+"_double_misid_dmass_dst_sideband_region_bin2");
+
+   double_misid_dmass_dst_sig_region_bin3 = (TH1*)double_misid_dmass_dst_sig_region->Clone(name+"_double_misid_dmass_dst_sig_region_bin3");
+   double_misid_dmass_dst_sideband_region_bin3 = (TH1*)double_misid_dmass_dst_sideband_region->Clone(name+"_double_misid_dmass_dst_sideband_region_bin3");
+   
+   double_misid_dmass_dst_sig_region_bin4 = (TH1*)double_misid_dmass_dst_sig_region->Clone(name+"_double_misid_dmass_dst_sig_region_bin4");
+   double_misid_dmass_dst_sideband_region_bin4 = (TH1*)double_misid_dmass_dst_sideband_region->Clone(name+"_double_misid_dmass_dst_sideband_region_bin4");
+
+   double_misid_dmass_dst_sig_region_bin5 = (TH1*)double_misid_dmass_dst_sig_region->Clone(name+"_double_misid_dmass_dst_sig_region_bin5");
+   double_misid_dmass_dst_sideband_region_bin5 = (TH1*)double_misid_dmass_dst_sideband_region->Clone(name+"_double_misid_dmass_dst_sideband_region_bin5");
+
 }
 //=============================================================================
 // Secondary constructor from root file
@@ -695,20 +714,14 @@ void betastar_plot::FitWSDoubleMisID(){
   std::cout<<"nsig*I after = "<<nsig.getVal()*sig_int->getVal()<<std::endl;
   std::vector<double>poly_fit;
   poly_fit.push_back(nsig.getVal()*sig_int->getVal());//central value
-  //poly_fit.push_back(1);
-  //poly_fit.push_back(sig_int->getPropagatedError(*res_pol)*nsig.getVal());//propagated error
-  poly_fit.push_back(getErrorFromPropagation(x,&model,res_pol,data,1700,2100,1864.84-24,1864.84+24));
-  //Augusto's propagated error is just wrong.
-  //do the error propagation myself
-  
-  
-  //std::cout<<"tot number of doubly misID in signal region for polynomial fit = "<<sig_int->getVal()*nsig.getVal()<<"+/-"<<sig_int->getPropagatedError(*res_pol)*nsig.getVal()<<std::endl;
-  //std::cout<<"error propagated from the fit = "<<getErrorFromPropagation(x,&model,res_pol,data,1700,2100,1864.84-24,1864.84+24)<<std::endl;
+  //poly_fit.push_back(getErrorFromPropagation(x,&model,res_pol,data,1700,2100,1864.84-24,1864.84+24));
+  poly_fit.push_back(1);
+    
   //now construct secondary fit with linear shape.
 
-  RooRealVar b0("b0","b0",10.,0.,200.);
+  RooRealVar b0("b0","b0",100.,0.,2000.);
   RooRealVar nsig2("nsig2","nsig2",200,5,10000);
-  RooChebychev lin("lin","lin",*x,RooArgSet(b0));
+  RooPolynomial lin("lin","lin",*x,RooArgSet(b0));
   //RooPolynomial lin("lin","lin",*x,RooArgSet(b0));
   RooExtendPdf model2("model2","model2",lin,nsig2);
   RooFitResult* res_lin = model2.fitTo(*data,Range("hi,lo"),RooFit::Save(),Extended(1),SumW2Error(kFALSE));
@@ -732,9 +745,8 @@ void betastar_plot::FitWSDoubleMisID(){
   std::cout<<"nsig2*I after = "<<nsig2.getVal()*sig_int2->getVal()<<std::endl;
   std::vector<double>liny_fit;
   liny_fit.push_back(nsig2.getVal()*sig_int2->getVal());//central value
-  //liny_fit.push_back(sig_int2->getPropagatedError(*res_lin)*nsig2.getVal());//propagated error
-  liny_fit.push_back(getErrorFromPropagation(x,&model2,res_lin,data,1700,2100,1864.84-24,1864.84+24));
-  //liny_fit.push_back(1);
+  //liny_fit.push_back(getErrorFromPropagation(x,&model2,res_lin,data,1700,2100,1864.84-24,1864.84+24,true));
+  liny_fit.push_back(1);
 
   std::cout<<"Result of the fit"<<std::endl;
   std::cout<<"Linear Fit: "<<liny_fit[0]<<" +/- "<<liny_fit[1]<<std::endl;
@@ -744,31 +756,44 @@ void betastar_plot::FitWSDoubleMisID(){
   return;
 }
 
-double betastar_plot::getErrorFromPropagation(RooRealVar* x,RooAbsPdf* model, RooFitResult* fr,RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max){
+double betastar_plot::getErrorFromPropagation(RooRealVar* x,RooAbsPdf* model, RooFitResult* fr,RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max,bool linearfit){
   //taken from example at https://root.cern.ch/phpBB3/viewtopic.php?t=12949
   RooArgList pars(* model->getParameters(RooArgSet(*x) ) );
   RooArgSet prodSet(*model); //prodSet.add(nsig);
   RooProduct unNormPdf("fitted Function", "fitted Function", prodSet);
   TF1 * f2 = unNormPdf.asTF(RooArgList(*x), pars);
   //cross check: make sure we can get the info from the fit result
-  float nsig1 = ((RooRealVar*) pars.find("nsig"))->getVal();
-  float dnsig1 = ((RooRealVar*) pars.find("nsig"))->getError();
+  float nsig1,dnsig1;
+  if(linearfit){
+    nsig1 = ((RooRealVar*)pars.find("nsig2"))->getVal();
+    dnsig1 = ((RooRealVar*)pars.find("nsig2"))->getError();
+  }
+  else{
+    nsig1 = ((RooRealVar*) pars.find("nsig"))->getVal();
+    dnsig1 = ((RooRealVar*) pars.find("nsig"))->getError();
+  }
+  /*
   float par1 = ((RooRealVar*) pars.find("a0"))->getVal();
   float dpar1 = ((RooRealVar*) pars.find("a0"))->getError();
   float par2 = ((RooRealVar*) pars.find("a1"))->getVal();
-  float dpar2 = ((RooRealVar*) pars.find("a1"))->getError();
-  //cout<<"sanity check"<<endl;
-  //cout << " nsig = " << nsig1 << " +- " << dnsig1 << endl;
+  float dpar2 = ((RooRealVar*) pars.find("a1"))->getError();*/
+  cout<<"sanity check"<<endl;
+  cout << " nsig = " << nsig1 << " +- " << dnsig1 << endl;
   //cout << " par1 = " << par1 << " +- " << dpar1 << endl;
   //cout << " par2 = " << par2 << " +- " << dpar2 << endl;
   //that makes sense, let's do the rest
-  Double_t integ2_full = f2->Integral(xmin, xmax);
-  Double_t integ2 = nsig1*f2->Integral(sig_min, sig_max, 0);///integ2_full;
-  //cout<<"integ2_full = "<<integ2_full<<endl;
-  //cout<<"integ2 ="<<integ2<<endl;
-  Double_t dinteg2 = nsig1*f2->IntegralError(sig_min,sig_max,0,fr->covarianceMatrix().GetMatrixArray())/integ2_full;
-  //cout<<"dinteg2 = "<<dinteg2<<endl;
-  return dinteg2;  
+
+  Double_t integ2_full= f2->Integral(xmin,xmax);
+  Double_t integ2 = nsig1*f2->Integral(sig_min, sig_max, 0)/integ2_full;
+  cout<<"ratio of integrals = "<<f2->Integral(sig_min,sig_max,0)/integ2_full<<endl;
+  cout<<"integ2_full = "<<integ2_full<<endl;
+  cout<<"integ2 ="<<integ2<<endl;
+  Double_t dinteg = nsig1*f2->IntegralError(sig_min,sig_max,0,fr->covarianceMatrix().GetMatrixArray())/integ2_full;
+  Double_t dnumber = dnsig1*f2->Integral(sig_min, sig_max, 0)/integ2_full;
+  cout<<"error from prop = "<<TMath::Sqrt(dinteg*dinteg + dnumber*dnumber)<<endl;
+  return TMath::Sqrt(dinteg*dinteg + dnumber*dnumber);
+  
+  
 }
 
 void betastar_plot::FitWSDoubleMisIDLiang(){
@@ -779,12 +804,13 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   double_misid_sideband_scaled->Scale(pik_background_subtraction_ratio_result);
   double_misid_subtr->Add(double_misid_sideband_scaled,-1);
 
-  TF1* f1 = new TF1("f1", "[0]*([1]-x)*(x-[2])",1700,2100);
-  f1->SetParLimits(0, 1e-4, 1e5);
-  f1->SetParLimits(1, 1.86484*1e3,3000*1e3);
-  f1->SetParLimits(2, 0, 1.86484*1e3);
+  //TF1* f1 = new TF1("f1", "[0]*([1]-x)*(x-[2])",1700,2100);
+  TF1* f1 = new TF1("f1", "[0]*([1]+x)",1740,2100);
+  //f1->SetParLimits(0, 1e-4, 1e5);
+  //\f1->SetParLimits(1, 1.86484*1e3,3000*1e3);
+  //f1->SetParLimits(2, 0, 1.86484*1e3);
 
-  TFitResultPtr r = double_misid_subtr->Fit("f1", "ES");
+  TFitResultPtr r = double_misid_subtr->Fit("f1", "ES","",1780+4,1940);
   TMatrixDSym mat = r->GetCorrelationMatrix();
   const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
   const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
@@ -795,26 +821,106 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   f1->SetLineColor(kMagenta);
   f1->Draw("psame");
   TBox *box = new TBox(x0[0], 0, x0[1], double_misid_subtr->GetMaximum());
-  box->SetFillColor(kGreen);
+  box->SetFillColor(kGreen+2);
+  box->SetFillColorAlpha(kGreen+2,0.5);
   box->Draw();
   ctemp->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_double_misid_d0_sideband_subtracted_fit_liang.pdf");
   double* pars = f1->GetParameters();
-  double* epars = f1->GetParErrors();
+  const Double_t* epars = f1->GetParErrors();
   //double int1, int2, int0;
   const Int_t npars = f1->GetNpar();
-  Double_t d0ratio  = (intf(x0[1], pars, npars) - intf(x0[0], pars, npars))/(intf(x1[1], pars, npars) - intf(x1[0], pars, npars)+intf(x2[1], pars, npars) - intf(x2[0], pars, npars));
+  //Double_t d0ratio  = (intf(x0[1], pars, npars) - intf(x0[0], pars, npars))/(intf(x1[1], pars, npars) - intf(x1[0], pars, npars)+intf(x2[1], pars, npars) - intf(x2[0], pars, npars));
+  
+  Double_t d0ratio  = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars))/(int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
+  double sideband_int = (int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
+  double sigint = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars));
   TVectorD vF(npars);
   double* newpars = new double[npars];
   for (int j=0;j<npars;j++){
     for (int k=0;k<npars;k++) newpars[k] = pars[k];
     newpars[j] = pars[j]+epars[j];
-    Double_t yhigh = (intf(x0[1], newpars, npars) - intf(x0[0], newpars, npars))/(intf(x1[1], newpars, npars) - intf(x1[0], newpars, npars)+intf(x2[1], newpars, npars) - intf(x2[0], newpars, npars));
+    //    Double_t yhigh = (intf(x0[1], newpars, npars) - intf(x0[0], newpars, npars))/(intf(x1[1], newpars, npars) - intf(x1[0], newpars, npars)+intf(x2[1], newpars, npars) - intf(x2[0], newpars, npars));
+    //newpars[j] = pars[j]-epars[j];
+    //Double_t ylow = (intf(x0[1], newpars, npars) - intf(x0[0], newpars, npars))/(intf(x1[1], newpars, npars) - intf(x1[0], newpars, npars)+intf(x2[1], newpars, npars) - intf(x2[0], newpars, npars));
+    
+    Double_t yhigh = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x1[1], newpars, npars) - int2f(x1[0], newpars, npars)+int2f(x2[1], newpars, npars) - int2f(x2[0], newpars, npars));
     newpars[j] = pars[j]-epars[j];
-    Double_t ylow = (intf(x0[1], newpars, npars) - intf(x0[0], newpars, npars))/(intf(x1[1], newpars, npars) - intf(x1[0], newpars, npars)+intf(x2[1], newpars, npars) - intf(x2[0], newpars, npars));
+    Double_t ylow = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x1[1], newpars, npars) - int2f(x1[0], newpars, npars)+int2f(x2[1], newpars, npars) - int2f(x2[0], newpars, npars));
     vF[j] = 0.5*(yhigh-ylow);
   }
   Double_t error = TMath::Sqrt(vF*(mat*vF));
   cout<<"Ratio: "<<d0ratio<<" +/- "<<error<<endl;
+  cout<<"pars[0]="<<pars[0]<<endl;
+  //we know that the function fits, so now let's bind a PDF to roofit and get the number of signal events.
+  RooRealVar x("x","x",1700,2100);
+  RooRealVar par1("par1","par1",pars[0]);
+  RooRealVar par2("par2","par2",pars[1]);
+  RooRealVar nsig("nsig","nsig",100,5,2e5);
+  //RooAbsReal *lineVal = bindFunction(f1,x,RooArgList(par1,par2));
+
+  //make a PDF out of this
+  RooGenericPdf *line=new RooGenericPdf("line","line","par1* (par2+x)",RooArgSet(x,par1,par2));
+  RooExtendPdf mod("mod","mod",*line,nsig);
+  RooDataHist* data = new RooDataHist((m_name+"double_misid_subtracted_data").Data(),"",x,double_misid_subtr);
+  x.setRange("lo",x1[0],x1[1]);
+  x.setRange("hi",x2[0],x2[1]);
+  x.setRange("sig",x0[0],x0[1]);
+  RooFitResult* res =mod.fitTo(*data,Extended(1),Range("lo,hi"),SumW2Error(kFALSE),Save(1));
+  res->Print("v");
+  RooPlot* frame = x.frame();
+  frame->SetTitle(";m(K#pi)[MeV];Entries/ 2 MeV");
+  data->plotOn(frame);
+  mod.plotOn(frame,Range(1780,1950));
+  TCanvas* cc = new TCanvas();
+  frame->Draw();
+  cc->SaveAs("SavedFits/betastar/"+m_name+"double_misid_from_generic_pdf.pdf");
+  //now double check that the integral in the range is correct.
+  //RooMsgService::instance().getStream(1).removeTopic(Eval) ;
+  
+  RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
+  gErrorIgnoreLevel = kBreak;
+  RooMsgService::instance().setStreamStatus(0,false);
+  RooMsgService::instance().setStreamStatus(1,false);
+  
+
+  RooAbsReal* intTot = mod.createIntegral(x,NormSet(x));
+  RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
+  gErrorIgnoreLevel = kBreak;
+  RooMsgService::instance().setStreamStatus(0,false);
+  RooMsgService::instance().setStreamStatus(1,false);
+
+  RooAbsReal* intBand = mod.createIntegral(x,NormSet(x),Range("lo,hi"));
+  RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
+  gErrorIgnoreLevel = kBreak;
+  RooMsgService::instance().setStreamStatus(0,false);
+  RooMsgService::instance().setStreamStatus(1,false);
+
+  RooAbsReal* intSig = mod.createIntegral(x,NormSet(x),Range("sig"));
+  RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
+  gErrorIgnoreLevel = kBreak;
+  RooMsgService::instance().setStreamStatus(0,false);
+  RooMsgService::instance().setStreamStatus(1,false);
+  
+  double intTotVal = intTot->getVal();
+
+  double intBandVal = intBand->getVal();
+  double intSigVal = intSig->getVal();
+  cout<<"intTot = "<<intTotVal<<endl;
+  cout<<"intBand = "<<intBandVal<<endl;
+  cout<<"intSig = "<<intSigVal<<endl;
+  cout<<"-----"<<endl;
+  cout<<"from orig fit"<<endl;
+  cout<<"d0ratio = "<<d0ratio<<endl;
+  cout<<"sideband_int = "<<sideband_int<<endl;
+  cout<<"sigiint = "<<sigint<<endl;
+  cout<<"from roofit, d0ratio = "<<sigint/sideband_int<<endl;
+  double totError = nsig.getVal()*intSigVal*nsig.getVal()*intSigVal;
+  totError*=TMath::Power(nsig.getError()/nsig.getVal(),2)+TMath::Power(error/d0ratio,2);
+  totError=TMath::Sqrt(totError);
+  cout<<"number of peaking d0 = "<<nsig.getVal()*intSigVal<<" +/- "<<totError<<endl;
+  //now that this is varified, we can extract the number of signal events and the error.
+  
+  //
 }
 
 
@@ -823,6 +929,20 @@ double betastar_plot::intf(double x, double p[], int n){
   p2[0] = -p[0]*p[1]*p[2];
   p2[1] = p[0]*(p[1]+p[2]);
   p2[2] = -p[0];
+  double r =0 ; double xmx = x;
+  for (int i=0;i<n;i++) {
+    r += p2[i]*xmx/(i+1);
+    xmx *= x;}
+  delete p2;
+  return r;
+}
+
+
+double betastar_plot::int2f(double x, double p[], int n){
+  Double_t* p2 = new Double_t[n];
+  p2[0] = p[0]*p[1];
+  //p2[1] = p[0]*(p[1]+p[2]);
+  p2[1] = p[0];
   double r =0 ; double xmx = x;
   for (int i=0;i<n;i++) {
     r += p2[i]*xmx/(i+1);

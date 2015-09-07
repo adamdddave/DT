@@ -32,7 +32,7 @@ public:
   inline void set_local_workspace(RooWorkspace*w){w_local=w;}
   void SavePlots();
   void FitWSDoubleMisID();
-  double getErrorFromPropagation(RooRealVar* x, RooAbsPdf* model, RooFitResult* fr, RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max);
+  double getErrorFromPropagation(RooRealVar* x, RooAbsPdf* model, RooFitResult* fr, RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max,bool linearfit=false);
   void FitWSDoubleMisIDLiang();
   TH2* h2sig ;
   TH2* h2kpisb ;
@@ -73,6 +73,27 @@ public:
   TH1* double_misid_dmass_dst_sig_region;
   TH1* double_misid_dmass_dst_sideband_region;
   TH1* double_misid_subtr;//final subtracted result.
+  //time bins
+  TH1* double_misid_dmass_dst_sig_region_bin1;
+  TH1* double_misid_dmass_dst_sideband_region_bin1;
+  TH1* double_misid_subtr_bin1;//final subtracted result.
+  
+  TH1* double_misid_dmass_dst_sig_region_bin2;
+  TH1* double_misid_dmass_dst_sideband_region_bin2;
+  TH1* double_misid_subtr_bin2;//final subtracted result.
+
+  TH1* double_misid_dmass_dst_sig_region_bin3;
+  TH1* double_misid_dmass_dst_sideband_region_bin3;
+  TH1* double_misid_subtr_bin3;//final subtracted result.
+
+  TH1* double_misid_dmass_dst_sig_region_bin4;
+  TH1* double_misid_dmass_dst_sideband_region_bin4;
+  TH1* double_misid_subtr_bin4;//final subtracted result.
+
+  TH1* double_misid_dmass_dst_sig_region_bin5;
+  TH1* double_misid_dmass_dst_sideband_region_bin5;
+  TH1* double_misid_subtr_bin5;//final subtracted result.
+
   double  pik_background_subtraction_ratio_result;
 protected:
 
@@ -80,5 +101,6 @@ private:
   RooWorkspace *w_local;
   TString m_name;
   double intf(double x, double p[],int n);
+  double int2f(double x, double p[],int n);
 };
 #endif // COMPLETE_ANALYSIS_BETASTAR_PLOT_H

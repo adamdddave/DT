@@ -125,6 +125,7 @@ int main(int argc, char* const argv[]){
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");
   fout->cd();
   rs_looper.dstar_mass_plot->Write();
+  rs_looper.d0_mass_plot->Write();
   rs_looper.b_mass_plot->Write();
   rs_looper.dstar_pt->Write();
   rs_looper.dstar_p->Write();
@@ -267,6 +268,7 @@ int main(int argc, char* const argv[]){
   //ss
   
   rs_ss_looper.dstar_mass_plot->Write();
+  rs_ss_looper.d0_mass_plot->Write();
   rs_ss_looper.b_mass_plot->Write();
   rs_ss_looper.decay_time_distr->Write();
   rs_looper.dstar_mass_vs_muIPchi2->Write();
@@ -408,6 +410,7 @@ int main(int argc, char* const argv[]){
   TFile *fout2 = new TFile("./SavedFits/ws_mass.root","RECREATE");
   fout2->cd();
   ws_looper.dstar_mass_plot->Write();
+  ws_looper.d0_mass_plot->Write();
   ws_looper.b_mass_plot->Write();
   ws_looper.dstar_pt->Write();
   ws_looper.dstar_p->Write();
@@ -539,9 +542,10 @@ int main(int argc, char* const argv[]){
 
   //ss
   ws_ss_looper.dstar_mass_plot->Write();
+  ws_ss_looper.d0_mass_plot->Write();
   ws_ss_looper.b_mass_plot->Write();
   ws_ss_looper.decay_time_distr->Write();
-  ws_looper.dstar_mass_vs_muIPchi2->Write();
+  ws_ss_looper.dstar_mass_vs_muIPchi2->Write();
   ws_ss_looper.dstar_mass_vs_muIPchi2->Write();
   ws_ss_looper.dstar_pt->Write();
   ws_ss_looper.dstar_p->Write();
