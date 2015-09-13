@@ -1746,8 +1746,10 @@ private:
   const double pdg_dstar_m = 2010.26;// MeV
   const double pdg_kplus_m = 493.677;// MeV
   const double pdg_piplus_m = 139.57018;//MeV
-  const double kpidk_cut = 2;
-  const double pi_dau_pidk_cut = 2;
+  const double kpidk_cut = 8;
+  //const double kpidk_cut = 2;
+  const double pi_dau_pidk_cut = -5;
+  //  const double pi_dau_pidk_cut = 2;
   const double pi_slow_pide_cut=1;
   const double pi_slow_probnnghost_cut = 0.5;
   const double dmass_cut = 24;// MeV, for |m - m_pdg|<dmass_cut

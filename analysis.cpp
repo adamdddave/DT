@@ -112,6 +112,7 @@ int main(int argc, char* const argv[]){
   
   DT_D0_mix_CPV rs_ss_looper(rs_ss_tree);
   rs_ss_looper.Loop();
+  rs_ss_looper.bs_plot->SavePlots();
   cout<<"ws tree"<<endl;
   DT_D0_mix_CPV ws_looper(ws_tree);
   ws_looper.Loop();
@@ -120,6 +121,7 @@ int main(int argc, char* const argv[]){
   
   DT_D0_mix_CPV ws_ss_looper(ws_ss_tree);
   ws_ss_looper.Loop();
+  ws_ss_looper.bs_plot->SavePlots();
   
   
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");

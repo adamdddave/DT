@@ -24,16 +24,22 @@ public:
   /// Standard constructor
   betastar_plot(TString name = "" );
   //secondary constructor
-  betastar_plot(TFile *f1, TString name); 
+  betastar_plot(TFile *f1, TString name);
+  //constructor to take out background
+  betastar_plot(TFile *f1,TFile* fbkg, TString name);
   ~betastar_plot( ); ///< Destructor
   void DrawPlots();
   void makefitplot(RooWorkspace*w, TH1* h1, TH1* h2);//template for total peaking fit and signal
   void makefitplot(RooWorkspace*w, TH1* h1, int addpol = 0);//template for individual peaking
+  std::vector<double> makefitplotretvals(RooWorkspace*w,TH1* h1, int addpol = 0);//template for fitting peaking bkg and return signal values.
   inline void set_local_workspace(RooWorkspace*w){w_local=w;}
   void SavePlots();
   void FitWSDoubleMisID();
+  void FitWSDoubleMisIDTimeDependence();
+  //void FitForPeakingBkg();
   double getErrorFromPropagation(RooRealVar* x, RooAbsPdf* model, RooFitResult* fr, RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max,bool linearfit=false);
   void FitWSDoubleMisIDLiang();
+  TH2* h2tot;//total betastar plot
   TH2* h2sig ;
   TH2* h2kpisb ;
   TH2* h2kpisb_hi ;
@@ -43,6 +49,19 @@ public:
   TH2* h2piksb ;
   TH2* h2rob ;
   TH2* h2kpisb_cut_range ;
+
+  //stuff just for background drawing.
+  TH2* h2sig_bkg ;
+  TH2* h2tot_bkg ;
+  TH2* h2kpisb_bkg ;
+  TH2* h2kpisb_hi_bkg ;
+  TH2* h2kpisb_lo_bkg ;
+  TH2* h2kksb_bkg ;
+  TH2* h2pipisb_bkg ;
+  TH2* h2piksb_bkg ;
+  TH2* h2rob_bkg ;
+  
+  
   TH2* h2pi_probnnmu_dstar_sideband_high ;
   TH2* h2pi_probnnmu_dstar_sideband_low;
   TH2* h2k_probnnmu_dstar_sideband_high;
@@ -58,14 +77,31 @@ public:
   TH1* hmpipisb ;
   TH1* hmpiksb ;
   TH1* hmrob ;
-
+  //these were initially from mike, and I didn't know what was going on.
+  // repurposing these to be used as a peaking background check.
+  //the ranges of these bins are in d0 mass from 1790 to d0m - 40 MeV (lo)
+  //and d0m+40 MeV to 1940 (hi)
+  //we by hand exclude the KK and pi pi D0 here.
+  //the repurposing comes as we change the number of bins to 6 each from 2
+  
   TH1* hmkpisb_cut_range ;
   TH1* hmkpisb_cut_range_hi ;
   TH1* hmkpisb_cut_range_lo ;
   TH1* hmkpisb_cut_range_hi_1 ;
-  TH1* hmkpisb_cut_range_lo_1 ;
   TH1* hmkpisb_cut_range_hi_2 ;
+  TH1* hmkpisb_cut_range_hi_3 ;
+  TH1* hmkpisb_cut_range_hi_4 ;
+  TH1* hmkpisb_cut_range_hi_5 ;
+  TH1* hmkpisb_cut_range_hi_6 ;
+
+  TH1* hmkpisb_cut_range_lo_1 ;
   TH1* hmkpisb_cut_range_lo_2 ;
+  TH1* hmkpisb_cut_range_lo_3 ;
+  TH1* hmkpisb_cut_range_lo_4 ;
+  TH1* hmkpisb_cut_range_lo_5 ;
+  TH1* hmkpisb_cut_range_lo_6 ;
+  
+  
   TH1* hmD0_pik_sig ;
   TH1* hmD0_pik_sb ;
   TH1* hmD0_pik_tot ;

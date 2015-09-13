@@ -59,7 +59,8 @@ betastar_plot::betastar_plot(TString name  ) {
   m_name =name.ReplaceAll("/DecayTree","");
   std::cout<<"constructin betastar_plot with name "<<m_name<<std::endl;
   
-   h2sig = new TH2D(name+"_h2sig","",200,-1.,1.,200,1.2,2.0);
+  h2sig = new TH2D(name+"_h2sig","",200,-1.,1.,200,1.2,2.0);
+  h2tot = new TH2D(name+"_h2tot","",200,-1.,1.,200,1.2,2.0);
    h2kpisb = (TH2*)h2sig->Clone(name+"_h2kpisb");
   
    h2kpisb_hi = (TH2*)h2sig->Clone(name+"_h2kpisb_hi");
@@ -94,11 +95,20 @@ betastar_plot::betastar_plot(TString name  ) {
    hmkpisb_cut_range_hi = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi");
    hmkpisb_cut_range_lo = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo");
 
-   hmkpisb_cut_range_hi_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1");//40-52
-   hmkpisb_cut_range_lo_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1");//40-52
+   hmkpisb_cut_range_hi_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1");
+   hmkpisb_cut_range_hi_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2");
+   hmkpisb_cut_range_hi_3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3");
+   hmkpisb_cut_range_hi_4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4");
+   hmkpisb_cut_range_hi_5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5");
+   hmkpisb_cut_range_hi_6 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6");
 
-   hmkpisb_cut_range_hi_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2");//52-64
-   hmkpisb_cut_range_lo_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2");//52-64
+   
+   hmkpisb_cut_range_lo_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1");
+   hmkpisb_cut_range_lo_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2");
+   hmkpisb_cut_range_lo_3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3");
+   hmkpisb_cut_range_lo_4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4");
+   hmkpisb_cut_range_lo_5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5");
+   hmkpisb_cut_range_lo_6 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6");
 
     
     
@@ -133,6 +143,7 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
   m_name = name;
   std::cout<<"Looking for file "<<m_name<<"_h2sig"<<std::endl;
   h2sig=(TH2*)file->Get(m_name+"_h2sig");
+  h2tot=(TH2*)file->Get(m_name+"_h2tot");
   h2kpisb=(TH2*)file->Get(m_name+"_h2kpisb");
   h2kpisb_hi=(TH2*)file->Get(m_name+"_h2kpisb_hi");
   h2kpisb_lo=(TH2*)file->Get(m_name+"_h2kpisb_lo");
@@ -161,21 +172,239 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
   hmkpisb_cut_range_hi=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi");
   hmkpisb_cut_range_lo=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo");
   hmkpisb_cut_range_hi_1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1");
-  hmkpisb_cut_range_lo_1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1");
   hmkpisb_cut_range_hi_2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2");
+  hmkpisb_cut_range_hi_3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3");
+  hmkpisb_cut_range_hi_4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4");
+  hmkpisb_cut_range_hi_5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5");
+  hmkpisb_cut_range_hi_6=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6");
+  
+  hmkpisb_cut_range_lo_1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1");
   hmkpisb_cut_range_lo_2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2");
+  hmkpisb_cut_range_lo_3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3");
+  hmkpisb_cut_range_lo_4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4");
+  hmkpisb_cut_range_lo_5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5");
+  hmkpisb_cut_range_lo_6=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6");
+  
   hmD0_pik_sig=(TH1*)file->Get(m_name+"_hmD0_pik_sig");
   hmD0_pik_sb=(TH1*)file->Get(m_name+"_hmD0_pik_sb");
   hmD0_pik_tot=(TH1*)file->Get(m_name+"_hmD0_pik");
 
-   double_misid_dmass_dst_sig_region = (TH1*)file->Get(name+"_double_misid_dmass_dst_sig_region");
-   double_misid_dmass_dst_sideband_region = (TH1*)file->Get(name+"_double_misid_dmass_dst_sideband_region");
+  double_misid_dmass_dst_sig_region = (TH1*)file->Get(name+"_double_misid_dmass_dst_sig_region");
+  double_misid_dmass_dst_sideband_region = (TH1*)file->Get(name+"_double_misid_dmass_dst_sideband_region");
+
+  double_misid_dmass_dst_sig_region_bin1 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sig_region_bin1");
+  double_misid_dmass_dst_sig_region_bin2 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sig_region_bin2");
+  double_misid_dmass_dst_sig_region_bin3 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sig_region_bin3");
+  double_misid_dmass_dst_sig_region_bin4 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sig_region_bin4");
+  double_misid_dmass_dst_sig_region_bin5 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sig_region_bin5");
+
+  double_misid_dmass_dst_sideband_region_bin1 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sideband_region_bin1");
+  double_misid_dmass_dst_sideband_region_bin2 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sideband_region_bin2");
+  double_misid_dmass_dst_sideband_region_bin3 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sideband_region_bin3");
+  double_misid_dmass_dst_sideband_region_bin4 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sideband_region_bin4");
+  double_misid_dmass_dst_sideband_region_bin5 = (TH1*)file->Get(name+"_double_misid_dmass_dst_sideband_region_bin5");
+}
+//
+//=============================================================================
+// tertiary constructor from root file for signal and background
+//=============================================================================
+
+betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
+  m_name = name;
+  std::cout<<"Looking for file "<<m_name<<"_h2sig"<<std::endl;
+  h2sig=(TH2*)f1->Get(m_name+"_h2sig");
+  h2tot=(TH2*)f1->Get(m_name+"_h2tot");
+  h2kpisb=(TH2*)f1->Get(m_name+"_h2kpisb");
+  h2kpisb_hi=(TH2*)f1->Get(m_name+"_h2kpisb_hi");
+  h2kpisb_lo=(TH2*)f1->Get(m_name+"_h2kpisb_lo");
+  h2kksb=(TH2*)f1->Get(m_name+"_h2kksb");
+  h2pipisb=(TH2*)f1->Get(m_name+"_h2pipisb");
+  h2piksb=(TH2*)f1->Get(m_name+"_h2piksb");
+  h2rob=(TH2*)f1->Get(m_name+"_h2rob");
+  h2kpisb_cut_range=(TH2*)f1->Get(m_name+"_h2kpisb_cut_range");
+  h2pi_probnnmu_dstar_sideband_high=(TH2*)f1->Get(m_name+"_h2pi_probnnmu_dstar_sideband_high");
+  h2pi_probnnmu_dstar_sideband_low=(TH2*)f1->Get(m_name+"_h2pi_probnnmu_dstar_sideband_low");
+  h2k_probnnmu_dstar_sideband_high=(TH2*)f1->Get(m_name+"_h2k_probnnmu_dstar_sideband_high");
+  h2k_probnnmu_dstar_sideband_low=(TH2*)f1->Get(m_name+"_h2k_probnnmu_dstar_sideband_low");
+  h2pi_probnne_dstar_sideband_high=(TH2*)f1->Get(m_name+"_h2pi_probnne_dstar_sideband_high");
+  h2pi_probnne_dstar_sideband_low=(TH2*)f1->Get(m_name+"_h2pi_probnne_dstar_sideband_low");
+  h2k_probnne_dstar_sideband_high=(TH2*)f1->Get(m_name+"_h2k_probnne_dstar_sideband_high");
+  h2k_probnne_dstar_sideband_low=(TH2*)f1->Get(m_name+"_h2k_probnne_dstar_sideband_low");
+  
+  hmsig=(TH1*)f1->Get(m_name+"_hmsig");
+  hmkpisb=(TH1*)f1->Get(m_name+"_hmkpisb");
+  hmkksb=(TH1*)f1->Get(m_name+"_hmkksb");
+  hmpipisb=(TH1*)f1->Get(m_name+"_hmpipisb");
+  hmpiksb=(TH1*)f1->Get(m_name+"_hmpiksb");
+  hmrob=(TH1*)f1->Get(m_name+"_hmrob");
+
+  hmkpisb_cut_range=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range");
+  hmkpisb_cut_range_hi=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi");
+  hmkpisb_cut_range_lo=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo");
+  hmkpisb_cut_range_hi_1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1");
+  hmkpisb_cut_range_hi_2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2");
+  hmkpisb_cut_range_hi_3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3");
+  hmkpisb_cut_range_hi_4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4");
+  hmkpisb_cut_range_hi_5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5");
+  hmkpisb_cut_range_hi_6=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6");
+  
+  hmkpisb_cut_range_lo_1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1");
+  hmkpisb_cut_range_lo_2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2");
+  hmkpisb_cut_range_lo_3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3");
+  hmkpisb_cut_range_lo_4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4");
+  hmkpisb_cut_range_lo_5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5");
+  hmkpisb_cut_range_lo_6=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6");
+  
+  hmD0_pik_sig=(TH1*)f1->Get(m_name+"_hmD0_pik_sig");
+  hmD0_pik_sb=(TH1*)f1->Get(m_name+"_hmD0_pik_sb");
+  hmD0_pik_tot=(TH1*)f1->Get(m_name+"_hmD0_pik");
+
+  double_misid_dmass_dst_sig_region = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sig_region");
+  double_misid_dmass_dst_sideband_region = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sideband_region");
+
+  double_misid_dmass_dst_sig_region_bin1 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sig_region_bin1");
+  double_misid_dmass_dst_sig_region_bin2 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sig_region_bin2");
+  double_misid_dmass_dst_sig_region_bin3 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sig_region_bin3");
+  double_misid_dmass_dst_sig_region_bin4 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sig_region_bin4");
+  double_misid_dmass_dst_sig_region_bin5 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sig_region_bin5");
+
+  double_misid_dmass_dst_sideband_region_bin1 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sideband_region_bin1");
+  double_misid_dmass_dst_sideband_region_bin2 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sideband_region_bin2");
+  double_misid_dmass_dst_sideband_region_bin3 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sideband_region_bin3");
+  double_misid_dmass_dst_sideband_region_bin4 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sideband_region_bin4");
+  double_misid_dmass_dst_sideband_region_bin5 = (TH1*)f1->Get(m_name+"_double_misid_dmass_dst_sideband_region_bin5");
+  cout<<"looking for background"<<endl;
+  TString m_name_ss = m_name+"_ss";
+  h2sig_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2sig");
+  h2tot_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2tot");
+  h2kpisb_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2kpisb");
+  h2kpisb_hi_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2kpisb_hi");
+  h2kpisb_lo_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2kpisb_lo");
+  h2kksb_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2kksb");
+  h2pipisb_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2pipisb");
+  h2piksb_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2piksb");
+  h2rob_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2rob");
+  /*h2kpisb_cut_range_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2kpisb_cut_range");
+  h2pi_probnnmu_dstar_sideband_high_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2pi_probnnmu_dstar_sideband_high");
+  TH2* h2pi_probnnmu_dstar_sideband_low_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2pi_probnnmu_dstar_sideband_low");
+  TH2* h2k_probnnmu_dstar_sideband_high_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2k_probnnmu_dstar_sideband_high");
+  TH2* h2k_probnnmu_dstar_sideband_low_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2k_probnnmu_dstar_sideband_low");
+  TH2* h2pi_probnne_dstar_sideband_high_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2pi_probnne_dstar_sideband_high");
+  TH2* h2pi_probnne_dstar_sideband_low_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2pi_probnne_dstar_sideband_low");
+  TH2* h2k_probnne_dstar_sideband_high_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2k_probnne_dstar_sideband_high");
+  TH2* h2k_probnne_dstar_sideband_low_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2k_probnne_dstar_sideband_low");
+  */
+  TH1* hmsig_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmsig");
+  TH1* hmkpisb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb");
+  TH1* hmkksb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkksb");
+  TH1* hmpipisb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmpipisb");
+  TH1* hmpiksb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmpiksb");
+  TH1* hmrob_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmrob");
+
+  TH1* hmkpisb_cut_range_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range");
+  TH1* hmkpisb_cut_range_hi_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi");
+  TH1* hmkpisb_cut_range_lo_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo");
+  TH1* hmkpisb_cut_range_hi_1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1");
+  TH1* hmkpisb_cut_range_hi_2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2");
+  TH1* hmkpisb_cut_range_hi_3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3");
+  TH1* hmkpisb_cut_range_hi_4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4");
+  TH1* hmkpisb_cut_range_hi_5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5");
+  TH1* hmkpisb_cut_range_hi_6_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6");
+  
+  TH1* hmkpisb_cut_range_lo_1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1");
+  TH1* hmkpisb_cut_range_lo_2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2");
+  TH1* hmkpisb_cut_range_lo_3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3");
+  TH1* hmkpisb_cut_range_lo_4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4");
+  TH1* hmkpisb_cut_range_lo_5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5");
+  TH1* hmkpisb_cut_range_lo_6_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6");
+  
+  TH1* hmD0_pik_sig_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik_sig");
+  TH1* hmD0_pik_sb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik_sb");
+  TH1* hmD0_pik_tot_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik");
+
+  TH1* double_misid_dmass_dst_sig_region_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sig_region");
+  TH1* double_misid_dmass_dst_sideband_region_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region");
+
+  TH1* double_misid_dmass_dst_sig_region_bin1_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sig_region_bin1");
+  TH1* double_misid_dmass_dst_sig_region_bin2_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sig_region_bin2");
+  TH1* double_misid_dmass_dst_sig_region_bin3_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sig_region_bin3");
+  TH1* double_misid_dmass_dst_sig_region_bin4_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sig_region_bin4");
+  TH1* double_misid_dmass_dst_sig_region_bin5_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sig_region_bin5");
+
+  TH1* double_misid_dmass_dst_sideband_region_bin1_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region_bin1");
+  TH1* double_misid_dmass_dst_sideband_region_bin2_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region_bin2");
+  TH1* double_misid_dmass_dst_sideband_region_bin3_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region_bin3");
+  TH1* double_misid_dmass_dst_sideband_region_bin4_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region_bin4");
+  TH1* double_misid_dmass_dst_sideband_region_bin5_bkg= (TH1*)fbkg->Get(m_name+"_double_misid_dmass_dst_sideband_region_bin5");
+  //do bkg subtraction
+  /*
+  h2sig->Add(h2sig_bkg,-1);
+  h2kpisb->Add(h2kpisb_bkg,-1);
+  h2kpisb_hi->Add(h2kpisb_hi_bkg,-1);
+  h2kpisb_lo->Add(h2kpisb_lo_bkg,-1);
+  h2kksb->Add(h2kksb_bkg,-1);
+  h2pipisb->Add(h2pipisb_bkg,-1);
+  h2piksb->Add(h2piksb_bkg,-1);
+  h2rob->Add(h2rob_bkg,-1);
+  h2kpisb_cut_range->Add(h2kpisb_cut_range_bkg,-1);
+  h2pi_probnnmu_dstar_sideband_high->Add(h2pi_probnnmu_dstar_sideband_high_bkg,-1);
+  h2pi_probnnmu_dstar_sideband_low->Add(h2pi_probnnmu_dstar_sideband_low_bkg,-1);
+  h2k_probnnmu_dstar_sideband_high->Add(h2k_probnnmu_dstar_sideband_high_bkg,-1);
+  h2k_probnnmu_dstar_sideband_low->Add(h2k_probnnmu_dstar_sideband_low_bkg,-1);
+  h2pi_probnne_dstar_sideband_high->Add(h2pi_probnne_dstar_sideband_high_bkg,-1);
+  h2pi_probnne_dstar_sideband_low->Add(h2pi_probnne_dstar_sideband_low_bkg,-1);
+  h2k_probnne_dstar_sideband_high->Add(h2k_probnne_dstar_sideband_high_bkg,-1);
+  h2k_probnne_dstar_sideband_low->Add(h2k_probnne_dstar_sideband_low_bkg,-1);
+  */
+  hmsig->Add(hmsig_bkg,-1);
+  hmkpisb->Add(hmkpisb_bkg,-1);
+  hmkksb->Add(hmkksb_bkg,-1);
+  hmpipisb->Add(hmpipisb_bkg,-1);
+  hmpiksb->Add(hmpiksb_bkg,-1);
+  hmrob->Add(hmrob_bkg,-1);
+
+  hmkpisb_cut_range->Add(hmkpisb_cut_range_bkg,-1);
+  hmkpisb_cut_range_hi->Add(hmkpisb_cut_range_hi_bkg,-1);
+  hmkpisb_cut_range_lo->Add(hmkpisb_cut_range_lo_bkg,-1);
+  hmkpisb_cut_range_hi_1->Add(hmkpisb_cut_range_hi_1_bkg,-1);
+  hmkpisb_cut_range_hi_2->Add(hmkpisb_cut_range_hi_2_bkg,-1);
+  hmkpisb_cut_range_hi_3->Add(hmkpisb_cut_range_hi_3_bkg,-1);
+  hmkpisb_cut_range_hi_4->Add(hmkpisb_cut_range_hi_4_bkg,-1);
+  hmkpisb_cut_range_hi_5->Add(hmkpisb_cut_range_hi_5_bkg,-1);
+  hmkpisb_cut_range_hi_6->Add(hmkpisb_cut_range_hi_6_bkg,-1);
+  
+  hmkpisb_cut_range_lo_1->Add(hmkpisb_cut_range_lo_1_bkg,-1);
+  hmkpisb_cut_range_lo_2->Add(hmkpisb_cut_range_lo_2_bkg,-1);
+  hmkpisb_cut_range_lo_3->Add(hmkpisb_cut_range_lo_3_bkg,-1);
+  hmkpisb_cut_range_lo_4->Add(hmkpisb_cut_range_lo_4_bkg,-1);
+  hmkpisb_cut_range_lo_5->Add(hmkpisb_cut_range_lo_5_bkg,-1);
+  hmkpisb_cut_range_lo_6->Add(hmkpisb_cut_range_lo_6_bkg,-1);
+  
+  hmD0_pik_sig->Add(hmD0_pik_sig_bkg,-1);
+  hmD0_pik_sb->Add(hmD0_pik_sb_bkg,-1);
+  hmD0_pik_tot->Add(hmD0_pik_tot_bkg,-1);
+
+  double_misid_dmass_dst_sig_region->Add(double_misid_dmass_dst_sig_region_bkg,-1);
+  double_misid_dmass_dst_sideband_region->Add(double_misid_dmass_dst_sideband_region_bkg,-1);
+
+  double_misid_dmass_dst_sig_region_bin1->Add(double_misid_dmass_dst_sig_region_bin1_bkg,-1);
+  double_misid_dmass_dst_sig_region_bin2->Add(double_misid_dmass_dst_sig_region_bin2_bkg,-1);
+  double_misid_dmass_dst_sig_region_bin3->Add(double_misid_dmass_dst_sig_region_bin3_bkg,-1);
+  double_misid_dmass_dst_sig_region_bin4->Add(double_misid_dmass_dst_sig_region_bin4_bkg,-1);
+  double_misid_dmass_dst_sig_region_bin5->Add(double_misid_dmass_dst_sig_region_bin5_bkg,-1);
+
+  double_misid_dmass_dst_sideband_region_bin1->Add(double_misid_dmass_dst_sideband_region_bin1_bkg,-1);
+  double_misid_dmass_dst_sideband_region_bin2->Add(double_misid_dmass_dst_sideband_region_bin2_bkg,-1);
+  double_misid_dmass_dst_sideband_region_bin3->Add(double_misid_dmass_dst_sideband_region_bin3_bkg,-1);
+  double_misid_dmass_dst_sideband_region_bin4->Add(double_misid_dmass_dst_sideband_region_bin4_bkg,-1);
+  double_misid_dmass_dst_sideband_region_bin5->Add(double_misid_dmass_dst_sideband_region_bin5_bkg,-1);
 }
 //=============================================================================
 // Destructor
 //=============================================================================
 betastar_plot::~betastar_plot() {
   delete h2sig ;
+  delete h2tot;
   delete h2kpisb ;
   delete h2kpisb_hi ;
   delete h2kpisb_lo ;
@@ -204,9 +433,17 @@ betastar_plot::~betastar_plot() {
   delete hmkpisb_cut_range_hi ;
   delete hmkpisb_cut_range_lo ;
   delete hmkpisb_cut_range_hi_1 ;
-  delete hmkpisb_cut_range_lo_1 ;
   delete hmkpisb_cut_range_hi_2 ;
+  delete hmkpisb_cut_range_hi_3 ;
+  delete hmkpisb_cut_range_hi_4 ;
+  delete hmkpisb_cut_range_hi_5 ;
+  delete hmkpisb_cut_range_hi_6 ;
+  delete hmkpisb_cut_range_lo_1 ;
   delete hmkpisb_cut_range_lo_2 ;
+  delete hmkpisb_cut_range_lo_3 ;
+  delete hmkpisb_cut_range_lo_4 ;
+  delete hmkpisb_cut_range_lo_5 ;
+  delete hmkpisb_cut_range_lo_6 ;
   delete hmD0_pik_sig ;
   delete hmD0_pik_sb ;
   delete hmD0_pik_tot ;
@@ -399,15 +636,62 @@ void betastar_plot::DrawPlots(){
     hmpipisb->SetLineColor(kBlue);
     hmpiksb->SetLineColor(kMagenta);
     hmkpisb->SetLineColor(kRed);
+    //
+    /*h2sig_bkg->SetMarkerColor(kGreen+2);
+    h2kpisb_bkg->SetMarkerColor(kRed);
+    h2kksb_bkg->SetMarkerColor(kYellow+1);
+    h2pipisb_bkg->SetMarkerColor(kBlue);
+    h2piksb_bkg->SetMarkerColor(kMagenta);*/
+    /*    hmsig_bkg->SetLineColor(kGreen+2);
+    hmkpisb_bkg->SetLineColor(kRed);
+    hmkksb_bkg->SetLineColor(kYellow+1);
+    hmpipisb_bkg->SetLineColor(kBlue);
+    hmpiksb_bkg->SetLineColor(kMagenta);
+    hmkpisb_bkg->SetLineColor(kRed);
+    */
+    
     /*    hmkksb->SetLineColor(kYellow+1);
     hmpipisb->SetLineColor(kBlue);
     hmpiksb->SetLineColor(kMagenta);*/
     //setcanvas();
+    TCanvas *cc_bg = new TCanvas();
+    gStyle->SetOptStat(00);
+    gStyle->SetTitleOffset(1.4,"y");
+    h2tot->SetTitle(";#beta*; m(#pi#pi)[GeV]");
+    h2tot->Draw("colz");
+    cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_tot_colz.pdf");
+    cc_bg->SetLogz(true);
+    cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_tot_colz_logz.pdf");
+    cc_bg->SetLogz(false);
+    cc_bg->Clear();
+    h2tot_bkg->SetTitle(";#beta*; m(#pi#pi)[GeV]");
+    h2tot_bkg->Draw("colz");
+    cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_ss_bkg_tot_colz.pdf");
+    cc_bg->SetLogz(true);
+    cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_ss_bkg_tot_colz_logz.pdf");
+    cc_bg->SetLogz(false);
+    cc_bg->Clear();
+    /*
+    h2sig_bkg->Draw();
+    h2rob_bkg->Draw("same");
+    h2kpisb->Draw("same");
+    cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_bkg_sig_sideband.pdf");
+    cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_bkg_sig_sideband.C");
+    cc_bg->Clear();
+    h2sig_bkg->Draw();
+    h2rob_bkg->Draw("same");
+    h2kksb_bkg->Draw("same");
+    h2pipisb_bkg0>Draw("same");
+    h2piksb->Draw("same");
+    cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_bkg_indiv_sb.pdf");
+    cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_bkg_indiv_sb.C");*/
+    delete cc_bg;
     gStyle->SetOptStat(00);
     gStyle->SetTitleOffset(1.4,"y");
     TCanvas *cv = new TCanvas("cv", "", 1200, 400*3);
     cv->Divide(2,3);
     cv->cd(1);
+    h2sig->SetTitle(";#beta*;m(#pi#pi)[GeV]");
     h2sig->Draw();
     h2rob->Draw("same");
     h2kpisb->Draw("same");
@@ -417,7 +701,7 @@ void betastar_plot::DrawPlots(){
     h2kksb->Draw("same");
     h2pipisb->Draw("same");
     h2piksb->Draw("same");
-    
+    hmsig->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / .2%f MeV",hmsig->GetBinWidth(1)));
     TPad* pad = (TPad*)cv->cd(3);
     pad->SetLogy(1);
     if(w_local!=NULL){makefitplot(w_local, hmsig, hmkpisb);}
@@ -425,15 +709,18 @@ void betastar_plot::DrawPlots(){
       hmsig->Draw("e");
       hmkpisb->Draw("esame");
     }
+    hmpiksb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / .2%f",hmpiksb->GetBinWidth(1)));
     cv->cd(4);
     if(w_local!=NULL){makefitplot(w_local, hmpiksb);}
     else{hmpiksb->Draw("e");}
     //
     cv->cd(5);
+    hmkksb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / .2%f",hmkksb->GetBinWidth(1)));
     if(w_local!=NULL){makefitplot(w_local, hmkksb,1);}
     else{hmkksb->Draw("e");}
     //
     cv->cd(6);
+    hmpipisb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / .2%f",hmpipisb->GetBinWidth(1)));
     if(w_local!=NULL){makefitplot(w_local, hmpipisb,1);}
     else{hmpipisb->Draw("e");}
     
@@ -533,8 +820,11 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, TH1* h2){
                   RooFit::LineColor(h2->GetLineColor()));
   allpdf2->plotOn(frame,RooFit::Components("gau2"),RooFit::LineColor(h2->GetLineColor()), RooFit::LineStyle(4));
   //allpdf2->plotOn(frame,RooFit::Components("cball"),RooFit::LineColor(kGreen+2));
-  frame->Draw();
   //frame->GetYaxis()->SetRangeUser(frame->GetYaxis()->GetXmin()/10, frame->GetYaxis()->GetXmax());
+  frame->GetYaxis()->SetRangeUser(0.1,h1->GetMaximum()*1.5);
+  //frame->GetYaxis()->SetRangeUser(h1->GetMinimum(),h1->GetMaximum());
+  frame->Draw();
+
   TPaveText *txt = new TPaveText(0.7, 0.7, 0.98, 0.98, "ndc");
   txt->SetTextAlign(12);
   txt->AddText(TString::Format("N_{sig}: %d #pm %d", (int)nsig->getVal(), (int)nsig->getError()));
@@ -586,6 +876,7 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, int addpol){
                  RooFit::LineColor(h1->GetLineColor()));
   if (addpol) allpdf->plotOn(frame, RooFit::Components("bkg,gau2"),RooFit::LineWidth(2), RooFit::LineStyle(kDotted), 
                              RooFit::LineColor(h1->GetLineColor()));
+  frame->GetYaxis()->SetRangeUser(h1->GetMinimum(),h1->GetMaximum()*1.5);
   frame->Draw();
   TPaveText *txt = new TPaveText(0.7, 0.8, 0.98, 0.98, "ndc");
   txt->SetTextAlign(12);
@@ -620,10 +911,95 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, int addpol){
   }
 }
 
+//
+std::vector<double> betastar_plot::makefitplotretvals(RooWorkspace*w, TH1* h1, int addpol){
+  std::vector<double> ret;
+  RooRealVar *mass = w->var("dstarM"); 
+  RooRealVar *nsig = w->var("nsig");
+  RooRealVar *kappa = w->var("kappa");
+  kappa->setConstant(0);
+  RooAbsPdf *arg = w->pdf("bkg");
+  RooAbsPdf* allpdf = NULL;
+  RooDataHist* rhist = NULL;
+  RooRealVar gmean("fmean", "", 2.01*1e3, 2.009*1e3,2.011*1e3);
+  RooRealVar gsigma("gsigma", "", 0.001*1e3, 1e-5*1e3,1e-2*1e3);
+  RooGaussian gau("gau", "", *mass, gmean, gsigma);
+  RooRealVar gmean2("fmean2", "", 2.01*1e3, 2.009*1e3,2.011*1e3);
+  RooRealVar gsigma2("gsigma2", "", 0.001*1e3, 1e-5*1e3,1e-2*1e3);
+  RooFormulaVar fgsigma("fgsigma", "@0+@1", RooArgList(gsigma, gsigma2));
+  RooGaussian gau2("gau2", "", *mass, gmean2, fgsigma);
+  RooRealVar *nbkg = w->var("nbkg");
+  RooRealVar nbkg2("nbkg2", "", 1e3,0, 1e8);
+  if (!addpol){
+    //allpdf = new RooAddPdf("allpdf", "", RooArgList(gau,*arg), RooArgList(*nsig,*nbkg)); nbkg2.setVal(0);}
+    allpdf = w->pdf("model");
+    nbkg2.setVal(0);
+    w->var("rsigma")->setConstant(0);
+    w->var("dmean")->setConstant(0);
+  }
+  else allpdf = new RooAddPdf("allpdf", "", RooArgList(gau,*arg, gau2), RooArgList(*nsig,*nbkg, nbkg2));
+  
+  
+  TString rhname = "r_"; rhname += h1->GetName();
+  rhist = new RooDataHist(rhname.Data(), "", *mass, h1);
+  allpdf->fitTo(*rhist, RooFit::Save(), RooFit::Minos());
+  RooFitResult* res = allpdf->fitTo(*rhist, RooFit::Save(),Extended(1));
+  res->Print("v");
+  RooPlot *frame = mass->frame(RooFit::Range(h1->GetBinLowEdge(1), h1->GetBinLowEdge(h1->GetNbinsX()+1)));
+  frame->SetTitle("");
+  frame->SetXTitle(h1->GetXaxis()->GetTitle());
+  frame->SetYTitle(h1->GetYaxis()->GetTitle());
+  rhist->plotOn(frame);
+  allpdf->plotOn(frame, RooFit::LineWidth(2), RooFit::LineColor(h1->GetLineColor()));
+  allpdf->plotOn(frame, RooFit::Components("bkg"),RooFit::LineWidth(2), RooFit::LineStyle(kDashed), 
+                 RooFit::LineColor(h1->GetLineColor()));
+  if (addpol) allpdf->plotOn(frame, RooFit::Components("bkg,gau2"),RooFit::LineWidth(2), RooFit::LineStyle(kDotted), 
+                             RooFit::LineColor(h1->GetLineColor()));
+  frame->GetYaxis()->SetRangeUser(h1->GetMinimum(),h1->GetMaximum()*1.5);
+  frame->Draw();
+  TPaveText *txt = new TPaveText(0.7, 0.8, 0.98, 0.98, "ndc");
+  txt->SetTextAlign(12);
+  txt->AddText(TString::Format("N_{peak}: %d #pm %d", (int)(nsig->getVal()+nbkg2.getVal()), 
+                               (int)TMath::Sqrt(nsig->getError()*nsig->getError()+nbkg2.getError()*nbkg2.getError())));
+  ret.push_back(nsig->getVal()+nbkg2.getVal());
+  ret.push_back(TMath::Sqrt(nsig->getError()*nsig->getError()+nbkg2.getError()*nbkg2.getError()));
+   
+  txt->Draw();
+  if(!addpol){
+    //integrate the two regions for the background, and print them out. Save the ratio in the class.
+    //first,normalize
+    RooArgSet nset(*mass) ;
+    std::cout << "normalized integral = " << mass->getVal(&nset) << std::endl ;
+    RooAbsReal* tot_int_bkg = arg->createIntegral(*mass,NormSet(*mass));
+    mass->setRange("peak",2010.26-0.9,2010.26+0.9);
+    RooAbsReal* peak_int_bkg = arg->createIntegral(*mass,NormSet(*mass),Range("peak"));
+    RooAbsReal* tot_int_bkg2 = arg->createIntegral(*mass,NormSet(*mass));
+    std::cout<<"to shut up the compiler, tot_int_bkg2->getVal() = "<<tot_int_bkg2->getVal()<<std::endl;
+    mass->setRange("sideband",2015,2025);
+    RooAbsReal* sideband_int_bkg = arg->createIntegral(*mass,NormSet(*mass),Range("sideband"));
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"For h1 = "<<h1->GetName()<<std::endl;
+    std::cout<<"Total integral of background = "<<tot_int_bkg->getVal()<<std::endl;
+    std::cout<<"integral of background in signal region = "<<peak_int_bkg->getVal()<<std::endl;
+    std::cout<<"integral of background in sideband region = "<<sideband_int_bkg->getVal()<<std::endl;
+    pik_background_subtraction_ratio_result = peak_int_bkg->getVal()/sideband_int_bkg->getVal();
+    std::cout<<"int(sig)/int(bkg) = "<<pik_background_subtraction_ratio_result<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    std::cout<<"******************************************************"<<std::endl;
+    //PlottingTools::makeResidualPlotsLiang(frame,*mass,*rhist,allpdf,"./SavedFits/betastar/RSpeakingBkgFit_pik_fit",2000,2025);
+   
+  }
+  return ret;
+}
+
 void betastar_plot::SavePlots(){
   TFile fout("./SavedFits/betastar/"+m_name+"_betastar_plots.root","RECREATE");
   fout.cd();
   h2sig->Write();
+  h2tot->Write();
   h2kpisb->Write();
   h2kpisb_hi->Write();
   h2kpisb_lo->Write();
@@ -652,9 +1028,18 @@ void betastar_plot::SavePlots(){
   hmkpisb_cut_range_hi->Write();
   hmkpisb_cut_range_lo->Write();
   hmkpisb_cut_range_hi_1->Write();
-  hmkpisb_cut_range_lo_1->Write();
   hmkpisb_cut_range_hi_2->Write();
+  hmkpisb_cut_range_hi_3->Write();
+  hmkpisb_cut_range_hi_4->Write();
+  hmkpisb_cut_range_hi_5->Write();
+  hmkpisb_cut_range_hi_6->Write();
+  
+  hmkpisb_cut_range_lo_1->Write();
   hmkpisb_cut_range_lo_2->Write();
+  hmkpisb_cut_range_lo_3->Write();
+  hmkpisb_cut_range_lo_4->Write();
+  hmkpisb_cut_range_lo_5->Write();
+  hmkpisb_cut_range_lo_6->Write();
   hmD0_pik_sig->Write();
   hmD0_pik_sb->Write();
   hmD0_pik_tot->Write();
@@ -662,6 +1047,17 @@ void betastar_plot::SavePlots(){
   double_misid_dmass_dst_sig_region->Write();
   double_misid_dmass_dst_sideband_region->Write();
 
+  double_misid_dmass_dst_sig_region_bin1->Write();
+  double_misid_dmass_dst_sideband_region_bin1->Write();
+  double_misid_dmass_dst_sig_region_bin2->Write();
+  double_misid_dmass_dst_sideband_region_bin2->Write();
+  double_misid_dmass_dst_sig_region_bin3->Write();
+  double_misid_dmass_dst_sideband_region_bin3->Write();
+  double_misid_dmass_dst_sig_region_bin4->Write();
+  double_misid_dmass_dst_sideband_region_bin4->Write();
+  double_misid_dmass_dst_sig_region_bin5->Write();
+  double_misid_dmass_dst_sideband_region_bin5->Write();
+  
   
   fout.Close();
 
@@ -803,18 +1199,23 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   double_misid_sideband_scaled->Sumw2();
   double_misid_sideband_scaled->Scale(pik_background_subtraction_ratio_result);
   double_misid_subtr->Add(double_misid_sideband_scaled,-1);
-
+  for(int bin =1; bin<=double_misid_subtr->GetNbinsX();++bin){
+    if(double_misid_subtr->GetBinContent(bin)<0){double_misid_subtr->SetBinContent(bin,0);}
+  }
   //TF1* f1 = new TF1("f1", "[0]*([1]-x)*(x-[2])",1700,2100);
   TF1* f1 = new TF1("f1", "[0]*([1]+x)",1740,2100);
   //f1->SetParLimits(0, 1e-4, 1e5);
   //\f1->SetParLimits(1, 1.86484*1e3,3000*1e3);
   //f1->SetParLimits(2, 0, 1.86484*1e3);
-
+  f1->SetParameter(0,0.1);
+  f1->SetParameter(1,-200);
+		   
   TFitResultPtr r = double_misid_subtr->Fit("f1", "ES","",1780+4,1940);
   TMatrixDSym mat = r->GetCorrelationMatrix();
   const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
   const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
   const double x0[2] = {(1.86484-3*0.008)*1e3, (1.86484+3*0.008)*1e3};
+  const double x_full[2]={1784,1940};
   double_misid_subtr->GetYaxis()->SetRangeUser(0,1.1*double_misid_subtr->GetMaximum());
   TCanvas *ctemp = new TCanvas();
   double_misid_subtr->Draw();
@@ -834,7 +1235,11 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   Double_t d0ratio  = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars))/(int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
   double sideband_int = (int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
   double sigint = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars));
+  double intfull= (int2f(x_full[1],pars,npars)-int2f(x_full[0],pars,npars));
+  Double_t ratio_full = sigint/intfull;//to get the error right with roofit.
   TVectorD vF(npars);
+  TVectorD vFfull(npars);
+  
   double* newpars = new double[npars];
   for (int j=0;j<npars;j++){
     for (int k=0;k<npars;k++) newpars[k] = pars[k];
@@ -844,12 +1249,17 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
     //Double_t ylow = (intf(x0[1], newpars, npars) - intf(x0[0], newpars, npars))/(intf(x1[1], newpars, npars) - intf(x1[0], newpars, npars)+intf(x2[1], newpars, npars) - intf(x2[0], newpars, npars));
     
     Double_t yhigh = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x1[1], newpars, npars) - int2f(x1[0], newpars, npars)+int2f(x2[1], newpars, npars) - int2f(x2[0], newpars, npars));
+    Double_t yhighfull = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x_full[1], newpars, npars) - int2f(x_full[0], newpars, npars));
     newpars[j] = pars[j]-epars[j];
     Double_t ylow = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x1[1], newpars, npars) - int2f(x1[0], newpars, npars)+int2f(x2[1], newpars, npars) - int2f(x2[0], newpars, npars));
+    Double_t ylowfull = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x_full[1], newpars, npars) - int2f(x_full[0], newpars, npars));
     vF[j] = 0.5*(yhigh-ylow);
+    vFfull[j]=0.5*(yhighfull-ylowfull);
   }
   Double_t error = TMath::Sqrt(vF*(mat*vF));
+  Double_t errorFull = TMath::Sqrt(vFfull*(mat*vFfull));
   cout<<"Ratio: "<<d0ratio<<" +/- "<<error<<endl;
+  cout<<"Ratio of signal to full integral = "<<ratio_full<<"+/-"<<errorFull<<endl;
   cout<<"pars[0]="<<pars[0]<<endl;
   //we know that the function fits, so now let's bind a PDF to roofit and get the number of signal events.
   RooRealVar x("x","x",1700,2100);
@@ -876,31 +1286,34 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   cc->SaveAs("SavedFits/betastar/"+m_name+"double_misid_from_generic_pdf.pdf");
   //now double check that the integral in the range is correct.
   //RooMsgService::instance().getStream(1).removeTopic(Eval) ;
-  
+  /*  
   RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
   gErrorIgnoreLevel = kBreak;
   RooMsgService::instance().setStreamStatus(0,false);
   RooMsgService::instance().setStreamStatus(1,false);
   
-
+  */
   RooAbsReal* intTot = mod.createIntegral(x,NormSet(x));
+  /*
   RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
   gErrorIgnoreLevel = kBreak;
   RooMsgService::instance().setStreamStatus(0,false);
   RooMsgService::instance().setStreamStatus(1,false);
-
+  */
   RooAbsReal* intBand = mod.createIntegral(x,NormSet(x),Range("lo,hi"));
+  /*
   RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
   gErrorIgnoreLevel = kBreak;
   RooMsgService::instance().setStreamStatus(0,false);
   RooMsgService::instance().setStreamStatus(1,false);
-
+  */
   RooAbsReal* intSig = mod.createIntegral(x,NormSet(x),Range("sig"));
+  /*
   RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
   gErrorIgnoreLevel = kBreak;
   RooMsgService::instance().setStreamStatus(0,false);
   RooMsgService::instance().setStreamStatus(1,false);
-  
+  */
   double intTotVal = intTot->getVal();
 
   double intBandVal = intBand->getVal();
@@ -950,3 +1363,53 @@ double betastar_plot::int2f(double x, double p[], int n){
   delete p2;
   return r;
 }
+
+void betastar_plot::FitWSDoubleMisIDTimeDependence(){
+  //get the histograms.
+  TH1D* the_hists[5];
+  TH1D* the_bkgs[5];
+  the_hists[0]=(TH1D*)double_misid_dmass_dst_sig_region_bin1->Clone("h1");
+  the_hists[1]=(TH1D*)double_misid_dmass_dst_sig_region_bin2->Clone("h2");
+  the_hists[2]=(TH1D*)double_misid_dmass_dst_sig_region_bin3->Clone("h3");
+  the_hists[3]=(TH1D*)double_misid_dmass_dst_sig_region_bin4->Clone("h4");
+  the_hists[4]=(TH1D*)double_misid_dmass_dst_sig_region_bin5->Clone("h5");
+
+  the_bkgs[0]=(TH1D*)double_misid_dmass_dst_sideband_region_bin1->Clone("bg1");
+  the_bkgs[1]=(TH1D*)double_misid_dmass_dst_sideband_region_bin2->Clone("bg2");
+  the_bkgs[2]=(TH1D*)double_misid_dmass_dst_sideband_region_bin3->Clone("bg3");
+  the_bkgs[3]=(TH1D*)double_misid_dmass_dst_sideband_region_bin4->Clone("bg4");
+  the_bkgs[4]=(TH1D*)double_misid_dmass_dst_sideband_region_bin5->Clone("bg5");
+  //subtract the background.
+  for(int i=0; i<5;++i){
+    the_hists[i]->Sumw2();
+    the_bkgs[i]->Sumw2();
+    the_hists[i]->Add(the_bkgs[i],-1);
+  }
+  //now do the fit as with liang's shiz
+  TF1* f1 = new TF1("f1", "[0]*([1]+x)",1740,2100);
+  f1->SetParameter(0,0.1);
+  f1->SetParameter(1,-200);
+  f1->SetLineColor(kMagenta);
+  TFitResultPtr r[5];
+  //const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
+  //const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
+  const double x0[2] = {(1.86484-3*0.008)*1e3, (1.86484+3*0.008)*1e3};
+  //const double x_full[2]={1784,1940};
+  TCanvas *ct = new TCanvas();
+  TBox *box = new TBox(x0[0], 0, x0[1], double_misid_subtr->GetMaximum());
+  box->SetFillColor(kGreen+2);
+  box->SetFillColorAlpha(kGreen+2,0.5);
+  
+  for(int i=0;i<5;++i){
+    the_hists[i]->GetYaxis()->SetRangeUser(0,1.1*double_misid_subtr->GetMaximum());
+    r[i] = the_hists[i]->Fit("f1","ES","",1784,1940);
+    TMatrixDSym mat = r[i]->GetCorrelationMatrix();
+    the_hists[i]->Draw();
+    
+    f1->Draw("psame");
+    box->Draw();
+    ct->SaveAs("./SavedFits/betastar/"+m_name+Form("_betastar_double_misid_d0_sideband_subtr_bin%d.pdf",i+i));
+  }
+}
+
+//check the peaking background from fitting.

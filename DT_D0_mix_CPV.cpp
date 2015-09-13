@@ -51,7 +51,9 @@ void DT_D0_mix_CPV::Loop()
     if(!(
          B_VFit_status[0]==0 &&
          K_PIDK>kpidk_cut&&
+	 //K_PIDK>2.&&K_PIDK<=8.&&
          Pd_PIDK<pi_dau_pidk_cut &&
+	 //Pd_PIDK<2 && Pd_PIDK>=-5 &&
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
          Mu_L0MuonDecision_TOS==1&&
@@ -179,6 +181,7 @@ void DT_D0_mix_CPV::Loop()
     //fill bmass cuts now, so that we have everything ok.
     if(!(B_VFit_M[0] < bmass_cut_hi &&B_VFit_M[0] > bmass_cut_low))continue;
 
+    bs_plot->h2tot->Fill(beta,(k_daughter_as_pi+pi_daughter).M());
     if(fabs((k_daughter + pi_daughter).M()*1e3-1864.84)<24 
        && fabs((pi_daughter_as_k+k_daughter).M()-(1864.84/1e3))>5*8./1e3 
        && fabs((k_daughter_as_pi+pi_daughter).M()-(1864.84/1e3))>5*8./1e3)
@@ -257,21 +260,40 @@ void DT_D0_mix_CPV::Loop()
       bs_plot->h2kpisb_lo->Fill(beta,(k_daughter_as_pi+pi_daughter).M());
       bs_plot->hmkpisb_cut_range_lo->Fill(dstm);
     }
-    if(((k_daughter + pi_daughter).M()*1e3-1864.84) >5*8 && ((k_daughter + pi_daughter).M()*1e3-1864.84)<=52){//high side, region 1
-      bs_plot->hmkpisb_cut_range_hi_1->Fill(dstm);
+    //exclude the kk and pi pi by hand
+    if(TMath::Abs((pi_daughter_as_k+k_daughter).M()*1e3-pdg_d0_m)>40 &&
+       TMath::Abs((k_daughter_as_pi+pi_daughter).M()*1e3-pdg_d0_m)>40){
+      //ranges are 1790+(5.8*n)-(1790+5.8*(n+1))
+      //so
+      //1790-1795.8
+      //1795.8 - 1801.6
+      //1801.6 - 1807.4
+      //1807.4 - 1813.2
+      //1813.2 - 1819
+      //1819 - 1824.84
+      //lo sideband
+      if((k_daughter+pi_daughter).M()*1e3>1790 && (k_daughter+pi_daughter).M()*1e3<=1795.8){bs_plot->hmkpisb_cut_range_lo_1->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1795.8 && (k_daughter+pi_daughter).M()*1e3<=1801.6){bs_plot->hmkpisb_cut_range_lo_2->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1801.6 && (k_daughter+pi_daughter).M()*1e3<=1807.4){bs_plot->hmkpisb_cut_range_lo_3->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1807.4 && (k_daughter+pi_daughter).M()*1e3<=1813.2){bs_plot->hmkpisb_cut_range_lo_4->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1813.2 && (k_daughter+pi_daughter).M()*1e3<=1819.){bs_plot->hmkpisb_cut_range_lo_5->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1819. && (k_daughter+pi_daughter).M()*1e3<=(pdg_d0_m-40)){bs_plot->hmkpisb_cut_range_lo_6->Fill(dstm);}
+      //hi sideband
+      //here we have
+      //1904.84 - 1911.
+      //1911. - 1916.8
+      //1916.8 - 1922.6
+      //1922.6 - 1928.4
+      //1928.4 - 1934.2
+      //1934.2 - 1940
+      //give the closest bins to the blinded region a bit more statistics
+      else if((k_daughter+pi_daughter).M()*1e3>(pdg_d0_m+40) && (k_daughter+pi_daughter).M()*1e3<=1911.){bs_plot->hmkpisb_cut_range_hi_1->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1911. && (k_daughter+pi_daughter).M()*1e3<=1916.8){bs_plot->hmkpisb_cut_range_hi_2->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1916.8 && (k_daughter+pi_daughter).M()*1e3<=1922.6){bs_plot->hmkpisb_cut_range_hi_3->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1922.6 && (k_daughter+pi_daughter).M()*1e3<=1928.4){bs_plot->hmkpisb_cut_range_hi_4->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1928.4 && (k_daughter+pi_daughter).M()*1e3<=1934.2){bs_plot->hmkpisb_cut_range_hi_5->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>1934.2 && (k_daughter+pi_daughter).M()*1e3<=1940.){bs_plot->hmkpisb_cut_range_hi_6->Fill(dstm);}
     }
-    if(((k_daughter + pi_daughter).M()*1e3-1864.84) >52 && ((k_daughter + pi_daughter).M()*1e3-1864.84)<64){//high side, region 2
-      bs_plot->hmkpisb_cut_range_hi_2->Fill(dstm);
-    }
-
-    if(((k_daughter + pi_daughter).M()*1e3-1864.84) <-5*8 && ((k_daughter + pi_daughter).M()*1e3-1864.84)>=-52){//low side, region 1
-      bs_plot->hmkpisb_cut_range_lo_1->Fill(dstm);
-    }
-    if(((k_daughter + pi_daughter).M()*1e3-1864.84)<-52 && ((k_daughter + pi_daughter).M()*1e3-1864.84)>-64){//low side, region 2
-      bs_plot->hmkpisb_cut_range_lo_2->Fill(dstm);
-    }
-      
-      
     //if(!doD0plots)continue;
     //fill the d0 mass histograms too
     //if WS, blind the signal region
