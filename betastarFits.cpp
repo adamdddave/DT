@@ -23,6 +23,7 @@
 #include <TLegend.h>
 #include <TGraph.h>
 #include <TGraphErrors.h>
+#include <TGraphAsymmErrors.h>
 #include <TString.h>
 #include <TLorentzVector.h>
 #include <TVector3.h>
@@ -119,6 +120,62 @@ int main(int argc, char* const argv[]){
   
   std::vector<TH1*>lo_hists,lo_hists_bkg;
   std::vector<TH1*>hi_hists,hi_hists_bkg;
+  //mean vals extracted from histogram.
+  double meansRS_lo[6]={1.792983e+03,1.798521e+03,1.804496e+03,1.810549e+03,1.816545e+03,1.822059e+03};
+  double meansWS_lo[6]={1.792922e+03,1.798483e+03,1.804465e+03,1.810468e+03,1.816577e+03,1.821967e+03};
+
+  double meansRS_hi[6]={1.907833e+03,1.913940e+03,1.919455e+03,1.925523e+03,1.931450e+03,1.937406e+03};
+  double meansWS_hi[6]={1.907934e+03,1.913844e+03,1.919426e+03,1.925560e+03,1.931533e+03,1.937479e+03};
+
+  double meansRS[12];
+  double meansWS[12];
+  for(int i=0;i<6;++i){
+    meansRS[i]=meansRS_lo[i];
+    meansRS[i+6]=meansRS_hi[i];
+    meansWS[i]=meansWS_lo[i];
+    meansWS[i+6]=meansWS_hi[i];
+  }
+  double D0_bin_edges_lo[7]={1790.,1795.8,1801.6,1807.4,1813.2,1819.,1824.84};
+  double D0_bin_edges_hi[7]={1904.84,1911.,1916.8,1922.6,1928.4,1934.2,1940.};
+  double x_errs_lo_down_RS[6];
+  double x_errs_lo_up_RS[6];
+  double x_errs_hi_down_RS[6];
+  double x_errs_hi_up_RS[6];
+
+  double x_errs_lo_down_WS[6];
+  double x_errs_lo_up_WS[6];
+  double x_errs_hi_down_WS[6];
+  double x_errs_hi_up_WS[6];
+
+  double x_errs_RS_up[12];
+  double x_errs_RS_down[12];
+  double x_errs_WS_up[12];
+  double x_errs_WS_down[12];
+
+
+  for(int i=0; i<6;++i){
+    x_errs_lo_down_RS[i]= meansRS_lo[i]-D0_bin_edges_lo[i];
+    x_errs_lo_up_RS[i]=D0_bin_edges_lo[i+1]-meansRS_lo[i];
+
+    x_errs_hi_down_RS[i]= meansRS_hi[i]-D0_bin_edges_hi[i];
+    x_errs_hi_up_RS[i]=D0_bin_edges_hi[i+1]-meansRS_hi[i];
+
+    x_errs_lo_down_WS[i]= meansWS_lo[i]-D0_bin_edges_lo[i];
+    x_errs_lo_up_WS[i]=D0_bin_edges_lo[i+1]-meansWS_lo[i];
+
+    x_errs_hi_down_WS[i]= meansWS_hi[i]-D0_bin_edges_hi[i];
+    x_errs_hi_up_WS[i]=D0_bin_edges_hi[i+1]-meansWS_hi[i];
+    //the big array.
+    x_errs_RS_down[i]=x_errs_lo_down_RS[i];
+    x_errs_RS_down[i+6]=x_errs_hi_down_RS[i];
+    x_errs_WS_down[i]=x_errs_lo_down_WS[i];
+    x_errs_WS_down[i+6]=x_errs_hi_down_WS[i];
+    //up
+    x_errs_RS_up[i]=x_errs_lo_up_RS[i];
+    x_errs_RS_up[i+6]=x_errs_hi_up_RS[i];
+    x_errs_WS_up[i]=x_errs_lo_up_WS[i];
+    x_errs_WS_up[i+6]=x_errs_hi_up_WS[i];
+  }
   //double sigYield[6];
   //double sigYieldErr[6];
   lo_hists.push_back(b.hmkpisb_cut_range_lo_1);
@@ -134,10 +191,10 @@ int main(int argc, char* const argv[]){
   hi_hists.push_back(b.hmkpisb_cut_range_hi_4);
   hi_hists.push_back(b.hmkpisb_cut_range_hi_5);
   hi_hists.push_back(b.hmkpisb_cut_range_hi_6);
-  double lo_sig_vals[5];
-  double lo_sig_errs[5];
-  double hi_sig_vals[5];
-  double hi_sig_errs[5];
+  double sig_vals[12];
+  double sig_errs[12];
+  //  double hi_sig_vals[12];
+  //double hi_sig_errs[5];
   std::vector<double>tmp;
   TCanvas* cc = new TCanvas();
   for(int i=0; i<5;++i){
@@ -147,8 +204,8 @@ int main(int argc, char* const argv[]){
     cc->SetLogy(true);
     cc->SaveAs("./SavedFits/betastar/"+nameForFit+Form("fit_pkg_bkg_lo_sb_%d_logy.pdf",i+1));
     cc->SetLogy(false);
-    lo_sig_vals[i]=tmp[0];
-    lo_sig_errs[i]=tmp[1];
+    sig_vals[i]=tmp[0];
+    sig_errs[i]=tmp[1];
     tmp.clear();
     cc->Clear();
   }
@@ -160,14 +217,21 @@ int main(int argc, char* const argv[]){
     cc->SetLogy(true);
     cc->SaveAs("./SavedFits/betastar/"+nameForFit+Form("fit_pkg_bkg_hi_sb_%d_logy.pdf",i+1));
     cc->SetLogy(false);
-    hi_sig_vals[i]=tmp[0];
-    hi_sig_errs[i]=tmp[1];
+    sig_vals[i+6]=tmp[0];
+    sig_errs[i+6]=tmp[1];
     tmp.clear();
     cc->Clear();
   }
   
-  double zeros[5]={0.,0.,0.,0.,0.};
-  
+  //double zeros[5]={0.,0.,0.,0.,0.};
+  //decide if it's WS or RS
+  TGraphAsymmErrors* the_graph;
+  if(nameForFit.Contains("rs")){
+    the_graph = new TGraphAsymmErrors(12,meansRS,sig_vals,x_errs_RS_down,x_errs_RS_up,sig_errs,sig_errs);
+  }
+  else if(nameForFit.Contains("ws")){
+    the_graph = new TGraphAsymmErrors(12,meansWS,sig_vals,x_errs_WS_down,x_errs_WS_up,sig_errs,sig_errs);
+  }
   
   //cc->SaveAs("tmp.png");
   //massFit *fit_low;
