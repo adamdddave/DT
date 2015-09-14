@@ -197,7 +197,7 @@ int main(int argc, char* const argv[]){
   //double hi_sig_errs[5];
   std::vector<double>tmp;
   TCanvas* cc = new TCanvas();
-  for(int i=0; i<5;++i){
+  for(int i=0; i<6;++i){
     lo_hists[i]->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f MeV",lo_hists[i]->GetBinWidth(1)));
     tmp=b.makefitplotretvals(w,lo_hists[i]);
     cc->SaveAs("./SavedFits/betastar/"+nameForFit+Form("fit_pkg_bkg_lo_sb_%d.pdf",i+1));
@@ -210,7 +210,7 @@ int main(int argc, char* const argv[]){
     cc->Clear();
   }
 
-  for(int i=0; i<5;++i){
+  for(int i=0; i<6;++i){
     hi_hists[i]->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f MeV",hi_hists[i]->GetBinWidth(1)));
     tmp=b.makefitplotretvals(w,hi_hists[i]);
     cc->SaveAs("./SavedFits/betastar/"+nameForFit+Form("fit_pkg_bkg_hi_sb_%d.pdf",i+1));
@@ -226,14 +226,23 @@ int main(int argc, char* const argv[]){
   //double zeros[5]={0.,0.,0.,0.,0.};
   //decide if it's WS or RS
   TGraphAsymmErrors* the_graph;
-  if(nameForFit.Contains("rs")){
+  cout<<"name for fit = "<<nameForFit<<endl;
+  if(nameForFit.Contains("RS")){
     the_graph = new TGraphAsymmErrors(12,meansRS,sig_vals,x_errs_RS_down,x_errs_RS_up,sig_errs,sig_errs);
   }
-  else if(nameForFit.Contains("ws")){
+  else if(nameForFit.Contains("WS")){
     the_graph = new TGraphAsymmErrors(12,meansWS,sig_vals,x_errs_WS_down,x_errs_WS_up,sig_errs,sig_errs);
   }
-  
-  //cc->SaveAs("tmp.png");
+  the_graph->SetTitle(";m(K#pi)[MeV];N(Signal)");
+  the_graph->SetMarkerStyle(20);
+  the_graph->SetMarkerColor(kBlack);
+  the_graph->Draw("ap");
+  cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit.pdf");
+  cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit.root");
+  //now fit this graph with a polynomial shape
+  the_graph->Fit("pol2", "FERS");
+  //access to the fit function
+  TF1 *fpol = the_graph->GetFunction("pol2");
   //massFit *fit_low;
   //massFit *fit_hi;
   //low sideband

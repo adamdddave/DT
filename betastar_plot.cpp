@@ -1199,6 +1199,7 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   double_misid_sideband_scaled->Sumw2();
   double_misid_sideband_scaled->Scale(pik_background_subtraction_ratio_result);
   double_misid_subtr->Add(double_misid_sideband_scaled,-1);
+  double_misid_subtr->GetXaxis()->SetRange(double_misid_subtr->FindBin(1780.),double_misid_subtr->FindBin(1940.));
   for(int bin =1; bin<=double_misid_subtr->GetNbinsX();++bin){
     if(double_misid_subtr->GetBinContent(bin)<0){double_misid_subtr->SetBinContent(bin,0);}
   }
@@ -1210,12 +1211,12 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   f1->SetParameter(0,0.1);
   f1->SetParameter(1,-200);
 		   
-  TFitResultPtr r = double_misid_subtr->Fit("f1", "ES","",1780+4,1940);
+  TFitResultPtr r = double_misid_subtr->Fit("f1", "ERS","",1780+4,1940);
   TMatrixDSym mat = r->GetCorrelationMatrix();
-  const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
-  const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
+  //const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
+  //const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
   const double x0[2] = {(1.86484-3*0.008)*1e3, (1.86484+3*0.008)*1e3};
-  const double x_full[2]={1784,1940};
+  //const double x_full[2]={1784,1940};
   double_misid_subtr->GetYaxis()->SetRangeUser(0,1.1*double_misid_subtr->GetMaximum());
   TCanvas *ctemp = new TCanvas();
   double_misid_subtr->Draw();
@@ -1232,13 +1233,13 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   const Int_t npars = f1->GetNpar();
   //Double_t d0ratio  = (intf(x0[1], pars, npars) - intf(x0[0], pars, npars))/(intf(x1[1], pars, npars) - intf(x1[0], pars, npars)+intf(x2[1], pars, npars) - intf(x2[0], pars, npars));
   
-  Double_t d0ratio  = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars))/(int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
-  double sideband_int = (int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
+  //  Double_t d0ratio  = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars))/(int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
+  //  double sideband_int = (int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
   double sigint = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars));
-  double intfull= (int2f(x_full[1],pars,npars)-int2f(x_full[0],pars,npars));
-  Double_t ratio_full = sigint/intfull;//to get the error right with roofit.
+  //double intfull= (int2f(x_full[1],pars,npars)-int2f(x_full[0],pars,npars));
+  //Double_t ratio_full = sigint/intfull;//to get the error right with roofit.
   TVectorD vF(npars);
-  TVectorD vFfull(npars);
+  //TVectorD vFfull(npars);
   
   double* newpars = new double[npars];
   for (int j=0;j<npars;j++){
@@ -1248,92 +1249,43 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
     //newpars[j] = pars[j]-epars[j];
     //Double_t ylow = (intf(x0[1], newpars, npars) - intf(x0[0], newpars, npars))/(intf(x1[1], newpars, npars) - intf(x1[0], newpars, npars)+intf(x2[1], newpars, npars) - intf(x2[0], newpars, npars));
     
-    Double_t yhigh = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x1[1], newpars, npars) - int2f(x1[0], newpars, npars)+int2f(x2[1], newpars, npars) - int2f(x2[0], newpars, npars));
-    Double_t yhighfull = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x_full[1], newpars, npars) - int2f(x_full[0], newpars, npars));
+    Double_t yhigh = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars));// /(int2f(x1[1], newpars, npars) - int2f(x1[0], newpars, npars)+int2f(x2[1], newpars, npars) - int2f(x2[0], newpars, npars));
+    //    Double_t yhighfull = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x_full[1], newpars, npars) - int2f(x_full[0], newpars, npars));
     newpars[j] = pars[j]-epars[j];
-    Double_t ylow = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x1[1], newpars, npars) - int2f(x1[0], newpars, npars)+int2f(x2[1], newpars, npars) - int2f(x2[0], newpars, npars));
-    Double_t ylowfull = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x_full[1], newpars, npars) - int2f(x_full[0], newpars, npars));
+    Double_t ylow = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars));// /(int2f(x1[1], newpars, npars) - int2f(x1[0], newpars, npars)+int2f(x2[1], newpars, npars) - int2f(x2[0], newpars, npars));
+    //    Double_t ylowfull = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars))/(int2f(x_full[1], newpars, npars) - int2f(x_full[0], newpars, npars));
+    
     vF[j] = 0.5*(yhigh-ylow);
-    vFfull[j]=0.5*(yhighfull-ylowfull);
+    //vFfull[j]=0.5*(yhighfull-ylowfull);
   }
   Double_t error = TMath::Sqrt(vF*(mat*vF));
-  Double_t errorFull = TMath::Sqrt(vFfull*(mat*vFfull));
-  cout<<"Ratio: "<<d0ratio<<" +/- "<<error<<endl;
-  cout<<"Ratio of signal to full integral = "<<ratio_full<<"+/-"<<errorFull<<endl;
-  cout<<"pars[0]="<<pars[0]<<endl;
-  //we know that the function fits, so now let's bind a PDF to roofit and get the number of signal events.
-  RooRealVar x("x","x",1700,2100);
-  RooRealVar par1("par1","par1",pars[0]);
-  RooRealVar par2("par2","par2",pars[1]);
-  RooRealVar nsig("nsig","nsig",100,5,2e5);
-  //RooAbsReal *lineVal = bindFunction(f1,x,RooArgList(par1,par2));
+  //Double_t errorFull = TMath::Sqrt(vFfull*(mat*vFfull));
+  f1->SetParameters(pars);
+  //integrate by hand as steffi suggested
+  double thefinalans(0.);
+  for(int bin=double_misid_subtr->FindBin(1864.84-24);bin<=double_misid_subtr->FindBin(1864.84+24);++bin){
+    thefinalans+=  f1->Eval(double_misid_subtr->GetBinCenter(bin));
+  }
+  /*
+  cout<<"the number of entries from steffi "<<thefinalans<<endl;
+  cout<<"signal integral from liang = "<<sigint<<endl;
+  cout<<"integral from tf1 for fun = "<<f1->Integral(1864.84-24,1864.84+24)<<endl;
+  cout<<"double check what we already know. Signal events from the sidebands"<<endl;
+  cout<<"histo integral  = "<<double_misid_subtr->Integral()<<endl;
+  cout<<"integral of tf1 in sidebands"<<f1->Integral(1780,x1[1])+f1->Integral(x2[0],1940)<<endl;
+  cout<<"sideband integral from liang"<<sideband_int<<endl;
+  cout<<"error in integral by varying params = "<<error<<endl;
+  //cout<<"Ratio: "<<d0ratio<<" +/- "<<error<<endl;
+  //cout<<"Ratio of signal to full integral = "<<ratio_full<<"+/-"<<errorFull<<endl;
+  //cout<<"pars[0]="<<pars[0]<<endl;
+  */
+  // as from https://root.cern.ch/phpBB3/viewtopic.php?t=14869, in order to get the right scale invariant measure of events, divide
+  // the result of the integral by the bin width. ONly works here as we have static bin width
+ 
+  cout<<"Resulting number of D0 peaking background events "<<f1->Integral(x0[0],x0[1])/double_misid_subtr->GetBinWidth(1)<<" +/- "<<error/double_misid_subtr->GetBinWidth(1)<<endl;
+  cout<<"double checking the calculation with the analytic integral gives "<<sigint/double_misid_subtr->GetBinWidth(1)<<endl;
 
-  //make a PDF out of this
-  RooGenericPdf *line=new RooGenericPdf("line","line","par1* (par2+x)",RooArgSet(x,par1,par2));
-  RooExtendPdf mod("mod","mod",*line,nsig);
-  RooDataHist* data = new RooDataHist((m_name+"double_misid_subtracted_data").Data(),"",x,double_misid_subtr);
-  x.setRange("lo",x1[0],x1[1]);
-  x.setRange("hi",x2[0],x2[1]);
-  x.setRange("sig",x0[0],x0[1]);
-  RooFitResult* res =mod.fitTo(*data,Extended(1),Range("lo,hi"),SumW2Error(kFALSE),Save(1));
-  res->Print("v");
-  RooPlot* frame = x.frame();
-  frame->SetTitle(";m(K#pi)[MeV];Entries/ 2 MeV");
-  data->plotOn(frame);
-  mod.plotOn(frame,Range(1780,1950));
-  TCanvas* cc = new TCanvas();
-  frame->Draw();
-  cc->SaveAs("SavedFits/betastar/"+m_name+"double_misid_from_generic_pdf.pdf");
-  //now double check that the integral in the range is correct.
-  //RooMsgService::instance().getStream(1).removeTopic(Eval) ;
-  /*  
-  RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
-  gErrorIgnoreLevel = kBreak;
-  RooMsgService::instance().setStreamStatus(0,false);
-  RooMsgService::instance().setStreamStatus(1,false);
-  
-  */
-  RooAbsReal* intTot = mod.createIntegral(x,NormSet(x));
-  /*
-  RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
-  gErrorIgnoreLevel = kBreak;
-  RooMsgService::instance().setStreamStatus(0,false);
-  RooMsgService::instance().setStreamStatus(1,false);
-  */
-  RooAbsReal* intBand = mod.createIntegral(x,NormSet(x),Range("lo,hi"));
-  /*
-  RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
-  gErrorIgnoreLevel = kBreak;
-  RooMsgService::instance().setStreamStatus(0,false);
-  RooMsgService::instance().setStreamStatus(1,false);
-  */
-  RooAbsReal* intSig = mod.createIntegral(x,NormSet(x),Range("sig"));
-  /*
-  RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
-  gErrorIgnoreLevel = kBreak;
-  RooMsgService::instance().setStreamStatus(0,false);
-  RooMsgService::instance().setStreamStatus(1,false);
-  */
-  double intTotVal = intTot->getVal();
 
-  double intBandVal = intBand->getVal();
-  double intSigVal = intSig->getVal();
-  cout<<"intTot = "<<intTotVal<<endl;
-  cout<<"intBand = "<<intBandVal<<endl;
-  cout<<"intSig = "<<intSigVal<<endl;
-  cout<<"-----"<<endl;
-  cout<<"from orig fit"<<endl;
-  cout<<"d0ratio = "<<d0ratio<<endl;
-  cout<<"sideband_int = "<<sideband_int<<endl;
-  cout<<"sigiint = "<<sigint<<endl;
-  cout<<"from roofit, d0ratio = "<<sigint/sideband_int<<endl;
-  double totError = nsig.getVal()*intSigVal*nsig.getVal()*intSigVal;
-  totError*=TMath::Power(nsig.getError()/nsig.getVal(),2)+TMath::Power(error/d0ratio,2);
-  totError=TMath::Sqrt(totError);
-  cout<<"number of peaking d0 = "<<nsig.getVal()*intSigVal<<" +/- "<<totError<<endl;
-  //now that this is varified, we can extract the number of signal events and the error.
-  
-  //
 }
 
 

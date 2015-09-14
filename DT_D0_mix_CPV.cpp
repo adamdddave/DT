@@ -50,10 +50,10 @@ void DT_D0_mix_CPV::Loop()
     //cuts
     if(!(
          B_VFit_status[0]==0 &&
-         K_PIDK>kpidk_cut&&
-	 //K_PIDK>2.&&K_PIDK<=8.&&
-         Pd_PIDK<pi_dau_pidk_cut &&
-	 //Pd_PIDK<2 && Pd_PIDK>=-5 &&
+         //K_PIDK>kpidk_cut&&//tight K
+	 K_PIDK>2.&&K_PIDK<=8.&&//loose K
+         //Pd_PIDK<pi_dau_pidk_cut &&//tight pi
+	 Pd_PIDK<2 && Pd_PIDK>=-5 &&//loose pi
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
          Mu_L0MuonDecision_TOS==1&&
