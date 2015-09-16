@@ -197,7 +197,20 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString loca
       existing_fit->var("frac3")->setConstant(1);
 
     }
-    
+    else if (modelName=="2g"){//for background studes
+      existing_fit->var("mean1")->setConstant(1);
+      existing_fit->var("mean2")->setConstant(1);
+      existing_fit->var("width1")->setConstant(1);
+      existing_fit->var("width2")->setConstant(1);
+      existing_fit->var("frac1")->setConstant(1);
+      g1 = (RooGaussian*)existing_fit->pdf("g1");
+      g2 = (RooGaussian*)existing_fit->pdf("g2");
+    }
+    else if (modelName=="1g"){//for background studes
+      existing_fit->var("mean1")->setConstant(1);
+      existing_fit->var("width1")->setConstant(1);
+      g2 = (RooGaussian*)existing_fit->pdf("g2");
+    }
     else
     {
       //existing_fit->var("fm0")->setConstant(1);
@@ -497,7 +510,7 @@ void massFit::initModelValues(){
                             RooArgList(*frac1),kTRUE);
     else if(modelName=="3g")
       sigpdf = new RooAddPdf("sigpdf","",RooArgList(*g1,*g2,*g3),
-                             RooArgList(*frac1,*frac2),kTRUE);
+                             RooArgList(*frac1,*frac2),kTRUE);    
     else if(modelName=="rbw"){
       RooAbsPdf* res_model = new RooAddPdf("res_model","",RooArgList(*res_gau_1,*res_gau_2,*res_gau_3),
 					   RooArgList(*res_frac1,*res_frac2),kTRUE);
@@ -515,7 +528,12 @@ void massFit::initModelValues(){
       sigpdf = new RooAddPdf("sigpdf","",RooArgList(*Rcp1,*Rcp2,*Rcp3),RooArgList(*res_frac1,*res_frac2),kTRUE);
 
     }
-   
+
+    else if(modelName=="2g")
+      sigpdf = new RooAddPdf("sigpdf","",RooArgList(*g1,*g2),
+                             RooArgList(*frac1));
+    else if(modelName=="1g")
+      sigpdf = g1;
     //			  RooArgList(frac1),kTR);
     else
       sigpdf=new RooAddPdf("sigpdf","",RooArgList(*sig_john,*g1,*g2,*g3),
@@ -651,6 +669,13 @@ void massFit::savePlots(bool doPullPlots, TString extraName){
        model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
        model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
        model->plotOn(frame,Components(*g3),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
+   }
+   else if(modelName=="2g"){
+       model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
+       model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
+   }
+   else if(modelName=="1g"){
+       model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
    }
    else if(modelName=="rbw"){
      model->plotOn(frame,Components(*rbw),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));
