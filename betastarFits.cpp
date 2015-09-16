@@ -28,7 +28,11 @@
 #include <TLorentzVector.h>
 #include <TVector3.h>
 #include <TText.h>
-
+#include <TF1.h>
+#include <TPaveStats.h>
+#include <TBox.h>
+#include <TFitResult.h>
+#include <TVectorD.h>
 //roofit
 #ifndef __CINT__
 #include "RooGlobalFunc.h"
@@ -191,12 +195,43 @@ int main(int argc, char* const argv[]){
   hi_hists.push_back(b.hmkpisb_cut_range_hi_4);
   hi_hists.push_back(b.hmkpisb_cut_range_hi_5);
   hi_hists.push_back(b.hmkpisb_cut_range_hi_6);
+
+    //try rebinning the histograms
+  /*  for(auto hist: lo_hists){
+    hist->Rebin();
+  }
+  for(auto hist: hi_hists){
+    hist->Rebin();
+    }*/
+  //try making a massFit with a single gaussian+bkg to the combined sample.
+  TH1D* tot_histo = (TH1D*)lo_hists[0]->Clone("tot_pkg_bkg");
+  for(int i=1; i<6;++i){
+    tot_histo->Add(lo_hists[i]);
+  }
+  for(auto hist : hi_hists){
+    tot_histo->Add(hist);
+  }
+
   double sig_vals[12];
   double sig_errs[12];
   //  double hi_sig_vals[12];
   //double hi_sig_errs[5];
   std::vector<double>tmp;
   TCanvas* cc = new TCanvas();
+  tot_histo->Draw();
+  cc->SaveAs("tmp.pdf");
+  massFit tot_bkg_fit(nameForFit,"1g",0,"betastar");
+  tot_bkg_fit.initModelValues();
+  tot_bkg_fit.setData(tot_histo);
+  tot_bkg_fit.fit();
+  tot_bkg_fit.savePlots(false,"_bkg_model");
+  tot_bkg_fit.saveFinalFit();
+  //now that we have a fit model that works, go find it.
+  TFile* f_tmp = TFile::Open("./SavedFits/betastar/"+nameForFit+"_1gfitModel.root");
+  //f_tmp->ls();
+  RooWorkspace *w_tmp = (RooWorkspace*)f_tmp->Get(nameForFit+"w");
+  
+  return 0;
   for(int i=0; i<6;++i){
     lo_hists[i]->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f MeV",lo_hists[i]->GetBinWidth(1)));
     tmp=b.makefitplotretvals(w,lo_hists[i]);
@@ -222,33 +257,103 @@ int main(int argc, char* const argv[]){
     tmp.clear();
     cc->Clear();
   }
-  
+  double sig_errs_up[12],sig_errs_down[12];
+  for(int i=0;i<12;++i){
+    sig_errs_up[i]=sig_errs[i];
+    if(sig_vals[i]-sig_errs[i]<0){
+      sig_errs_down[i]=sig_vals[i];
+    }
+    else{sig_errs_down[i]=sig_errs[i];}
+  }
   //double zeros[5]={0.,0.,0.,0.,0.};
   //decide if it's WS or RS
   TGraphAsymmErrors* the_graph;
   cout<<"name for fit = "<<nameForFit<<endl;
   if(nameForFit.Contains("RS")){
-    the_graph = new TGraphAsymmErrors(12,meansRS,sig_vals,x_errs_RS_down,x_errs_RS_up,sig_errs,sig_errs);
+    the_graph = new TGraphAsymmErrors(12,meansRS,sig_vals,x_errs_RS_down,x_errs_RS_up,sig_errs_down,sig_errs_up);
   }
   else if(nameForFit.Contains("WS")){
-    the_graph = new TGraphAsymmErrors(12,meansWS,sig_vals,x_errs_WS_down,x_errs_WS_up,sig_errs,sig_errs);
+    the_graph = new TGraphAsymmErrors(12,meansWS,sig_vals,x_errs_WS_down,x_errs_WS_up,sig_errs_down,sig_errs_up);
   }
   the_graph->SetTitle(";m(K#pi)[MeV];N(Signal)");
   the_graph->SetMarkerStyle(20);
   the_graph->SetMarkerColor(kBlack);
+  the_graph->GetYaxis()->SetRangeUser(0.,the_graph->GetYaxis()->GetXmax());
   the_graph->Draw("ap");
   cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit.pdf");
   cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit.root");
+  TBox sigreg(1864.84-24,0,1864.84+24,the_graph->GetYaxis()->GetXmax());
+  sigreg.SetFillColor(kGreen+2);
+  sigreg.SetFillColorAlpha(kGreen+2,0.5);
+  sigreg.Draw();
   //now fit this graph with a polynomial shape
-  the_graph->Fit("pol2", "FERS");
+  TF1* mf =  new TF1("mf","pol2(0)",the_graph->GetXaxis()->GetXmin(),the_graph->GetXaxis()->GetXmax());
+  mf->SetParameters(-8000.,8000.-0.001);
+  TFitResultPtr r =the_graph->Fit("mf", "FRS");
+  gStyle->SetOptFit(1111);
   //access to the fit function
-  TF1 *fpol = the_graph->GetFunction("pol2");
-  //massFit *fit_low;
-  //massFit *fit_hi;
-  //low sideband
-  // for(int i=0; i<6;++i){
-    
+  //move the stats box
+  TPaveStats* ps = (TPaveStats *)the_graph->GetListOfFunctions()->FindObject("stats");
+  ps->SetX1NDC(0.15);
+  ps->SetX2NDC(0.55);
+  cc->Modified();
+  cc->Update();
+  cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit_fitted.pdf");
+  cc->Clear();
+  //now integrate the curve in the signal region
+  double sb_integral = mf->Integral(D0_bin_edges_lo[0],D0_bin_edges_lo[6])+ mf->Integral(D0_bin_edges_hi[0],D0_bin_edges_hi[6]);
+  double sig_reg_integral = mf->Integral(1864.84-24,1864.84,+24);
+  double tot_sb_sig =0;
+  double tot_sb_sig_err = 0;
+  //find error in the integral
+  
+  TMatrixDSym mat = r->GetCorrelationMatrix();
+  TF1* mf_tester =mf;//copy constructor
+  Int_t npars = mf->GetNpar();
+  double* pars = mf->GetParameters();
+  const double* epars = mf->GetParErrors();
+  double err_Rat = b.ErrorFromTF1(mf_tester,npars,pars,epars,mat,D0_bin_edges_lo[0],D0_bin_edges_lo[6],D0_bin_edges_hi[0],D0_bin_edges_hi[6],1864.84-24,1864.84+24);
 
-  // }
+  for(auto val : sig_vals){
+    tot_sb_sig+=val;
+  }
+  for(auto val: sig_errs){
+    tot_sb_sig_err+= val*val;
+  }
+  //Double_t errFrac = sig_reg_integral/sb_integral*(err_Num/sig_reg_integral-err_Den/sb_integral);
+  Double_t errNsig_sigreg = (tot_sb_sig*sig_reg_integral/sb_integral)*TMath::Sqrt(tot_sb_sig_err/(tot_sb_sig*tot_sb_sig)+err_Rat*err_Rat/(sig_reg_integral*sig_reg_integral/(sb_integral*sb_integral)));
+
+  //now do the same thing for a linear fit.
+  TF1* mf_lin =  new TF1("mf_lin","pol1(0)",the_graph->GetXaxis()->GetXmin(),the_graph->GetXaxis()->GetXmax());
+  the_graph->GetFunction("mf")->Delete();//remove the polynomial fit
+  the_graph->Draw("ap");
+  TFitResultPtr rl = the_graph->Fit("mf_lin","FRS");
+  TPaveStats* psl = (TPaveStats*)the_graph->GetListOfFunctions()->FindObject("stats");
+  psl->SetX1NDC(0.15);
+  psl->SetX2NDC(0.55);
+  cc->Modified();
+  cc->Update();
+  cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit_fitted_linear.pdf");
+  cc->Clear();
+  double sb_integral_lin = mf_lin->Integral(D0_bin_edges_lo[0],D0_bin_edges_lo[6])+ mf_lin->Integral(D0_bin_edges_hi[0],D0_bin_edges_hi[6]);
+  double sig_reg_integral_lin = mf_lin->Integral(1864.84-24,1864.84,+24);
+  TMatrixDSym mat2 = rl->GetCorrelationMatrix();
+  TF1* mf_lintest =mf_lin;//copy constructor
+  Int_t npars2 = mf_lin->GetNpar();
+  double* pars2 = mf_lin->GetParameters();
+  const double* epars2 = mf->GetParErrors();
+  double err_Rat2 = b.ErrorFromTF1(mf_lintest,npars2,pars2,epars2,mat2,D0_bin_edges_lo[0],D0_bin_edges_lo[6],D0_bin_edges_hi[0],D0_bin_edges_hi[6],1864.84-24,1864.84+24);
+  Double_t errNsig_sigreg2 = (tot_sb_sig*sig_reg_integral_lin/sb_integral_lin)*TMath::Sqrt(tot_sb_sig_err/(tot_sb_sig*tot_sb_sig)+err_Rat2*err_Rat2/(sig_reg_integral_lin*sig_reg_integral_lin/(sb_integral_lin*sb_integral_lin)));
+
+  /*  cout<<"Total integral of curve = "<<mf->Integral(the_graph->GetXaxis()->GetXmin(),the_graph->GetXaxis()->GetXmax())<<endl;
+  cout<<"Integral over the first bin = "<<mf->Integral(x_errs_WS_down[0],x_errs_WS_up[0])<<endl;
+  cout<<"integral over sideband region = "<<sb_integral<<endl;
+  cout<<"integral over signal region = "<<sig_reg_integral<<endl;*/
+  cout<<"Number of events in sideband times ratio of signal to sideband = "<< tot_sb_sig * sig_reg_integral/sb_integral<<" +/- "
+      <<errNsig_sigreg<<endl;
+  //cout<<"Number of signal events in first bin = "<<sig_vals[0]<<endl;
+  //cout<<"From total peaking background, number of events in the signal region is "<<mf->Integral(1864.84-24,1864.84+24)<<endl;
+  cout<<"Same for linear fit = "<< tot_sb_sig * sig_reg_integral_lin/sb_integral_lin<<" +/- "
+      <<errNsig_sigreg2<<endl;
   return 0;
 }

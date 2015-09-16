@@ -37,7 +37,7 @@ mass_fits_compiled: analysis.cpp
 test_mass_fits: testFit.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o testMassFit  $(GLIBS) $<
 bs_fits: betastarFits.cpp
-	$(CXX) $(CXXFLAGS) betastar_plot.cpp -o doBetastarFits $(GLIBS) $<
+	$(CXX) $(CXXFLAGS) betastar_plot.cpp massFit.cpp -o doBetastarFits $(GLIBS) $<
 time_int_systs: TimeIntegratedSystematics.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp TimeIntegratedSystematicsClass.cpp -o doTimeIntegratedSystematics $(GLIBS) $<
 test_single_bin: TestSingleBinFit.cpp

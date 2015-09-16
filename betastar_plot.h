@@ -6,6 +6,7 @@
 #include <TH1.h>
 #include <TH2.h>
 #include <TString.h>
+#include <TVectorD.h>
 //roofit
 #ifndef __CINT__
 #include "RooGlobalFunc.h"
@@ -38,6 +39,7 @@ public:
   void FitWSDoubleMisIDTimeDependence();
   //void FitForPeakingBkg();
   double getErrorFromPropagation(RooRealVar* x, RooAbsPdf* model, RooFitResult* fr, RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max,bool linearfit=false);
+  double ErrorFromTF1(TF1* f1,Int_t npars, double* pars, const double* epars,TMatrixDSym mat,double sb_low_min, double sb_low_max, double sb_hi_min, double sb_hi_max,double sig_min, double sig_max);
   void FitWSDoubleMisIDLiang();
   TH2* h2tot;//total betastar plot
   TH2* h2sig ;

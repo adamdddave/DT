@@ -1211,10 +1211,10 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   f1->SetParameter(0,0.1);
   f1->SetParameter(1,-200);
 		   
-  TFitResultPtr r = double_misid_subtr->Fit("f1", "ERS","",1780+4,1940);
+  TFitResultPtr r = double_misid_subtr->Fit("f1", "WLERS","",1780+4,1940);
   TMatrixDSym mat = r->GetCorrelationMatrix();
-  //const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
-  //const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
+  //  const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
+  //  const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
   const double x0[2] = {(1.86484-3*0.008)*1e3, (1.86484+3*0.008)*1e3};
   //const double x_full[2]={1784,1940};
   double_misid_subtr->GetYaxis()->SetRangeUser(0,1.1*double_misid_subtr->GetMaximum());
@@ -1233,8 +1233,8 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
   const Int_t npars = f1->GetNpar();
   //Double_t d0ratio  = (intf(x0[1], pars, npars) - intf(x0[0], pars, npars))/(intf(x1[1], pars, npars) - intf(x1[0], pars, npars)+intf(x2[1], pars, npars) - intf(x2[0], pars, npars));
   
-  //  Double_t d0ratio  = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars))/(int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
-  //  double sideband_int = (int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
+  //Double_t d0ratio  = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars))/(int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
+  //double sideband_int = (int2f(x1[1], pars, npars) - int2f(x1[0], pars, npars)+int2f(x2[1], pars, npars) - int2f(x2[0], pars, npars));
   double sigint = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars));
   //double intfull= (int2f(x_full[1],pars,npars)-int2f(x_full[0],pars,npars));
   //Double_t ratio_full = sigint/intfull;//to get the error right with roofit.
@@ -1284,7 +1284,8 @@ void betastar_plot::FitWSDoubleMisIDLiang(){
  
   cout<<"Resulting number of D0 peaking background events "<<f1->Integral(x0[0],x0[1])/double_misid_subtr->GetBinWidth(1)<<" +/- "<<error/double_misid_subtr->GetBinWidth(1)<<endl;
   cout<<"double checking the calculation with the analytic integral gives "<<sigint/double_misid_subtr->GetBinWidth(1)<<endl;
-
+  //cout<<"Ratio: "<<d0ratio<<" +/- "<<error<<endl;
+  //cout<<"Double check again using ratio "<<d0ratio*double_misid_subtr->Integral("width")<<endl;
 
 }
 
@@ -1364,4 +1365,28 @@ void betastar_plot::FitWSDoubleMisIDTimeDependence(){
   }
 }
 
-//check the peaking background from fitting.
+//helper function to get the error of the ratio of integrals of TF1 sidebands and signal
+double betastar_plot::ErrorFromTF1(TF1* f1, Int_t npars, double* pars, const double* epars,TMatrixDSym mat,double sb_low_min,double sb_low_max, double sb_hi_min,double sb_hi_max, double sig_min, double sig_max){
+  TVectorD vF(npars);
+  TF1* mf_tester =f1;//copy constructor
+  double* newpars = new double[npars];
+  for(int i=0;i<npars;++i){
+    for(int k=0;k<npars;++k){newpars[k]=pars[k];}//reset parameters
+    //high error
+    newpars[i]=pars[i]+epars[i];
+    mf_tester->SetParameters(newpars);
+    //most important thing is the ratio of the sb to the signal integral. ps, errors are 100% correlated
+    Double_t yhigh = mf_tester->Integral(sig_min,sig_max)/(mf_tester->Integral(sb_low_min,sb_low_max)+mf_tester->Integral(sb_hi_min,sb_hi_max));
+    
+    newpars[i]=pars[i]-epars[i];
+    mf_tester->SetParameters(newpars);
+    Double_t ylow = mf_tester->Integral(sig_min,sig_max)/(mf_tester->Integral(sb_low_min,sb_low_max)+mf_tester->Integral(sb_hi_min,sb_hi_max));
+    
+    
+    vF[i]=0.5*(yhigh-ylow);
+    
+  }
+  double err_Rat= TMath::Sqrt(vF*(mat*vF));
+  return err_Rat;
+  
+}
