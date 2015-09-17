@@ -675,7 +675,7 @@ void massFit::savePlots(bool doPullPlots, TString extraName){
        model->plotOn(frame,Components(*g2),LineColor(kOrange+1),LineStyle(kDashed),Range("r1"));
    }
    else if(modelName=="1g"){
-       model->plotOn(frame,Components(*g1),LineColor(kRed),LineStyle(kDashed),Range("r1"));
+     model->plotOn(frame,LineColor(kRed),LineStyle(kDashed),Range("r1"));
    }
    else if(modelName=="rbw"){
      model->plotOn(frame,Components(*rbw),LineColor(kGreen+2),LineStyle(kDashed),Range("r1"));

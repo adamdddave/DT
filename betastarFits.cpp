@@ -216,10 +216,11 @@ int main(int argc, char* const argv[]){
   double sig_errs[12];
   //  double hi_sig_vals[12];
   //double hi_sig_errs[5];
-  std::vector<double>tmp;
-  TCanvas* cc = new TCanvas();
-  tot_histo->Draw();
+  //std::vector<double>tmp;
+  //  TCanvas* cc = new TCanvas();
+  /*  tot_histo->Draw();
   cc->SaveAs("tmp.pdf");
+  cc->Clear();*/
   massFit tot_bkg_fit(nameForFit,"1g",0,"betastar");
   tot_bkg_fit.initModelValues();
   tot_bkg_fit.setData(tot_histo);
@@ -231,31 +232,29 @@ int main(int argc, char* const argv[]){
   //f_tmp->ls();
   RooWorkspace *w_tmp = (RooWorkspace*)f_tmp->Get(nameForFit+"w");
   
-  return 0;
+  
   for(int i=0; i<6;++i){
     lo_hists[i]->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f MeV",lo_hists[i]->GetBinWidth(1)));
-    tmp=b.makefitplotretvals(w,lo_hists[i]);
-    cc->SaveAs("./SavedFits/betastar/"+nameForFit+Form("fit_pkg_bkg_lo_sb_%d.pdf",i+1));
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+nameForFit+Form("fit_pkg_bkg_lo_sb_%d_logy.pdf",i+1));
-    cc->SetLogy(false);
-    sig_vals[i]=tmp[0];
-    sig_errs[i]=tmp[1];
-    tmp.clear();
-    cc->Clear();
+    massFit fit_lo(nameForFit+Form("_pkg_bkg_lo_%d",i+1),"1g",w_tmp,"betastar");
+    fit_lo.setData(lo_hists[i]);
+    fit_lo.fit();
+    fit_lo.savePlots(false,"_sideband_fit_");
+    sig_vals[i]=fit_lo.getNsig();
+    sig_errs[i]=fit_lo.getNsigErr();
+    fit_lo.Reset();
+    //cc->Clear();
   }
 
   for(int i=0; i<6;++i){
     hi_hists[i]->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f MeV",hi_hists[i]->GetBinWidth(1)));
-    tmp=b.makefitplotretvals(w,hi_hists[i]);
-    cc->SaveAs("./SavedFits/betastar/"+nameForFit+Form("fit_pkg_bkg_hi_sb_%d.pdf",i+1));
-    cc->SetLogy(true);
-    cc->SaveAs("./SavedFits/betastar/"+nameForFit+Form("fit_pkg_bkg_hi_sb_%d_logy.pdf",i+1));
-    cc->SetLogy(false);
-    sig_vals[i+6]=tmp[0];
-    sig_errs[i+6]=tmp[1];
-    tmp.clear();
-    cc->Clear();
+    massFit fit_hi(nameForFit+Form("_pkg_bkg_hi_%d",i+1),"1g",w_tmp,"betastar");
+    fit_hi.setData(hi_hists[i]);
+    fit_hi.fit();
+    fit_hi.savePlots(false,"_sideband_fit_");
+    sig_vals[i+6]=fit_hi.getNsig();
+    sig_errs[i+6]=fit_hi.getNsigErr();
+    fit_hi.Reset();
+    //    cc->Clear();
   }
   double sig_errs_up[12],sig_errs_down[12];
   for(int i=0;i<12;++i){
@@ -265,7 +264,11 @@ int main(int argc, char* const argv[]){
     }
     else{sig_errs_down[i]=sig_errs[i];}
   }
+  f_tmp->Close();
   //double zeros[5]={0.,0.,0.,0.,0.};
+  TCanvas* cnv = new TCanvas();
+  cnv->Clear();
+
   //decide if it's WS or RS
   TGraphAsymmErrors* the_graph;
   cout<<"name for fit = "<<nameForFit<<endl;
@@ -280,8 +283,11 @@ int main(int argc, char* const argv[]){
   the_graph->SetMarkerColor(kBlack);
   the_graph->GetYaxis()->SetRangeUser(0.,the_graph->GetYaxis()->GetXmax());
   the_graph->Draw("ap");
-  cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit.pdf");
-  cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit.root");
+  cnv->Modified();
+  cnv->Update();
+  cnv->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit.pdf");
+  cnv->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit.root");
+
   TBox sigreg(1864.84-24,0,1864.84+24,the_graph->GetYaxis()->GetXmax());
   sigreg.SetFillColor(kGreen+2);
   sigreg.SetFillColorAlpha(kGreen+2,0.5);
@@ -291,15 +297,15 @@ int main(int argc, char* const argv[]){
   mf->SetParameters(-8000.,8000.-0.001);
   TFitResultPtr r =the_graph->Fit("mf", "FRS");
   gStyle->SetOptFit(1111);
-  //access to the fit function
+  //acnvess to the fit function
   //move the stats box
   TPaveStats* ps = (TPaveStats *)the_graph->GetListOfFunctions()->FindObject("stats");
   ps->SetX1NDC(0.15);
   ps->SetX2NDC(0.55);
-  cc->Modified();
-  cc->Update();
-  cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit_fitted.pdf");
-  cc->Clear();
+  cnv->Modified();
+  cnv->Update();
+  cnv->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit_fitted_polynomial.pdf");
+  cnv->Clear();
   //now integrate the curve in the signal region
   double sb_integral = mf->Integral(D0_bin_edges_lo[0],D0_bin_edges_lo[6])+ mf->Integral(D0_bin_edges_hi[0],D0_bin_edges_hi[6]);
   double sig_reg_integral = mf->Integral(1864.84-24,1864.84,+24);
@@ -331,10 +337,10 @@ int main(int argc, char* const argv[]){
   TPaveStats* psl = (TPaveStats*)the_graph->GetListOfFunctions()->FindObject("stats");
   psl->SetX1NDC(0.15);
   psl->SetX2NDC(0.55);
-  cc->Modified();
-  cc->Update();
-  cc->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit_fitted_linear.pdf");
-  cc->Clear();
+  cnv->Modified();
+  cnv->Update();
+  cnv->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit_fitted_linear.pdf");
+  cnv->Clear();
   double sb_integral_lin = mf_lin->Integral(D0_bin_edges_lo[0],D0_bin_edges_lo[6])+ mf_lin->Integral(D0_bin_edges_hi[0],D0_bin_edges_hi[6]);
   double sig_reg_integral_lin = mf_lin->Integral(1864.84-24,1864.84,+24);
   TMatrixDSym mat2 = rl->GetCorrelationMatrix();
