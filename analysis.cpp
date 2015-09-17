@@ -232,7 +232,8 @@ int main(int argc, char* const argv[]){
   }
 
   for(int i=0; i<20;++i){
-    rs_looper.the_ghost_prob_bins[i]->Write();
+    rs_looper.the_ghost_prob_bins_pos[i]->Write();
+    rs_looper.the_ghost_prob_bins_neg[i]->Write();
   }
     
   //5x5 matrix
@@ -390,7 +391,8 @@ int main(int argc, char* const argv[]){
   }
 
   for(int i=0; i<20;++i){
-    rs_ss_looper.the_ghost_prob_bins[i]->Write();
+    rs_ss_looper.the_ghost_prob_bins_pos[i]->Write();
+    rs_ss_looper.the_ghost_prob_bins_neg[i]->Write();
   }
   rs_ss_looper.d_logIPchi2_vs_dstm->Write();
   rs_ss_looper.d_logIPchi2_vs_td0->Write();
@@ -529,7 +531,8 @@ int main(int argc, char* const argv[]){
     hist->Write();
   }
   for(int i=0; i<20;++i){
-    ws_looper.the_ghost_prob_bins[i]->Write();
+    ws_looper.the_ghost_prob_bins_pos[i]->Write();
+    ws_looper.the_ghost_prob_bins_neg[i]->Write();
   }
   ws_looper.d_logIPchi2_vs_dstm->Write();
   ws_looper.d_logIPchi2_vs_td0->Write();
@@ -661,7 +664,8 @@ int main(int argc, char* const argv[]){
     hist->Write();
   }
   for(int i=0; i<20;++i){
-    ws_ss_looper.the_ghost_prob_bins[i]->Write();
+    ws_ss_looper.the_ghost_prob_bins_pos[i]->Write();
+    ws_ss_looper.the_ghost_prob_bins_neg[i]->Write();
   }
   
   ws_ss_looper.d_logIPchi2_vs_dstm->Write();
