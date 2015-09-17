@@ -50,10 +50,10 @@ void DT_D0_mix_CPV::Loop()
     //cuts
     if(!(
          B_VFit_status[0]==0 &&
-         //K_PIDK>kpidk_cut&&//tight K
-	 K_PIDK>2.&&K_PIDK<=8.&&//loose K
-         //Pd_PIDK<pi_dau_pidk_cut &&//tight pi
-	 Pd_PIDK<2 && Pd_PIDK>=-5 &&//loose pi
+         K_PIDK>kpidk_cut&&//tight K
+	 //K_PIDK>2.&&K_PIDK<=8.&&//loose K
+         Pd_PIDK<pi_dau_pidk_cut &&//tight pi
+	 //Pd_PIDK<2 && Pd_PIDK>=-5 &&//loose pi
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
          Mu_L0MuonDecision_TOS==1&&
@@ -512,11 +512,24 @@ void DT_D0_mix_CPV::Loop()
     }
 
     //slow pion boundaries.
-    if(Ps_MC12TuneV2_ProbNNghost<the_pis_ghost_prob_bin_boundaries[0]){the_ghost_prob_bins[0]->Fill(dstm);}
-    for(int i=1; i<19;++i){
-      if(Ps_MC12TuneV2_ProbNNghost>=the_pis_ghost_prob_bin_boundaries[i] && Ps_MC12TuneV2_ProbNNghost<the_pis_ghost_prob_bin_boundaries[i+1]){the_ghost_prob_bins[i]->Fill(dstm);}
+    if(Ps_MC12TuneV2_ProbNNghost<the_pis_ghost_prob_bin_boundaries[0]){
+      if(Pis_CHARGE>0){
+	the_ghost_prob_bins_pos[0]->Fill(dstm);}
+      else{the_ghost_prob_bins_neg[0]->Fill(dstm);}
     }
-    if(Ps_MC12TuneV2_ProbNNghost>=the_pis_ghost_prob_bin_boundaries[19]){the_ghost_prob_bins[19]->Fill(dstm);}
+    for(int i=1; i<19;++i){
+      if(Ps_MC12TuneV2_ProbNNghost>=the_pis_ghost_prob_bin_boundaries[i] && Ps_MC12TuneV2_ProbNNghost<the_pis_ghost_prob_bin_boundaries[i+1]){
+	if(Pis_CHARGE>0){
+	the_ghost_prob_bins_pos[i]->Fill(dstm);}
+	else{the_ghost_prob_bins_neg[i]->Fill(dstm);}
+      }
+    }
+    if(Ps_MC12TuneV2_ProbNNghost>=the_pis_ghost_prob_bin_boundaries[19]){
+      if(Pis_CHARGE>0){
+	the_ghost_prob_bins_pos[19]->Fill(dstm);}
+      else{
+	the_ghost_prob_bins_neg[19]->Fill(dstm);}
+    }
     //2D VS DSTM and td0
     
     b_flight_dist_vs_dstm->Fill(dstm,B_FD_OWNPV);
