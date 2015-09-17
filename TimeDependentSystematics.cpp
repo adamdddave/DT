@@ -126,8 +126,8 @@ int main(int argc, char* const argv[]){
     //theFitspos->FloatMeanWidth();
     theFitspos->fit();
     theFitspos->savePlots(true,Form("RS_dst_mass_pos_bin%d",i+1));
-    the_sig_pos[i]=theFitspos->getNsig();
-    the_sig_pos_err[i]=theFitspos->getNsigErr();
+    the_sig_pos[i]=theFitspos->getNsig()*2;//prescale
+    the_sig_pos_err[i]=theFitspos->getNsigErr()*2;//prescale
     theFitspos->Reset();
   }
 
@@ -138,8 +138,8 @@ int main(int argc, char* const argv[]){
     //theFitsneg->FloatMeanWidth();
     theFitsneg->fit();
     theFitsneg->savePlots(true,Form("RS_dst_mass_neg_bin%d",i+1));
-    the_sig_neg[i]=theFitsneg->getNsig();
-    the_sig_neg_err[i]=theFitsneg->getNsigErr();
+    the_sig_neg[i]=theFitsneg->getNsig()*2;//prescale
+    the_sig_neg_err[i]=theFitsneg->getNsigErr()*2;//prescale
     theFitsneg->Reset();
   }
 
@@ -147,6 +147,11 @@ int main(int argc, char* const argv[]){
   for(int i=0; i<nbins;++i){
     binVal[i]=the_sig_neg[i]/the_sig_pos[i];
     binValErr[i]=TMath::Sqrt((binVal[i]*binVal[i])*(TMath::Power(the_sig_pos_err[i]/the_sig_pos[i],2)+TMath::Power(the_sig_neg_err[i]/the_sig_neg[i],2)));
+    //double error;
+    /*    error = the_sig_neg[i]/TMath::Power(the_sig_pos[i],2);
+    error+=TMath::Power(the_sig_neg[i],2)/TMath::Power(the_sig_pos[i],3);
+    error = TMath::Sqrt(error);
+    binValErr[i]=error;*/
   }
   //now make a tgraph out of it and we're done!
   TH1D* the_td_distr  = (TH1D*)f1->Get("RS_dt_d0_decay_time_distr");
