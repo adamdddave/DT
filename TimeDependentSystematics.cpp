@@ -1,5 +1,6 @@
 //c++
 #include <iostream>
+
 #include <cmath>
 //root
 
@@ -55,6 +56,7 @@
 using namespace std;
 using namespace PlottingTools;
 
+
 int main(int argc, char* const argv[]){
   cout<<"Code for doing Time Dependent Systematics"<<endl;
   if(argc<3){
@@ -79,7 +81,7 @@ int main(int argc, char* const argv[]){
   channelFromFile+="w";
   cout<<"channel from file = "<<channelFromFile<<endl;  
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
-
+  std::vector<double> dm_p, dme_p, rs_p,rse_p,dm_n,dme_n,rs_n,rse_n;
   //do 2d checks first
   std::vector<int>sl;
   std::vector<int>zoomBins;zoomBins.push_back(1);zoomBins.push_back(136);zoomBins.push_back(198);zoomBins.push_back(260);zoomBins.push_back(327);zoomBins.push_back(410);
@@ -123,11 +125,15 @@ int main(int argc, char* const argv[]){
   for(int i=0;i<nbins;++i){
     theFitspos = new massFit(Form("RS_dst_mass_pos_bin%d",i+1),"j3g",w,"TimeDependentSystematics");
     theFitspos->setData(pos_bins[i]);
-    //theFitspos->FloatMeanWidth();
+    theFitspos->FloatMeanWidth();
     theFitspos->fit();
     theFitspos->savePlots(true,Form("RS_dst_mass_pos_bin%d",i+1));
     the_sig_pos[i]=theFitspos->getNsig()*2;//prescale
     the_sig_pos_err[i]=theFitspos->getNsigErr()*2;//prescale
+    dm_p.push_back(theFitspos->getDMean());
+    dme_p.push_back(theFitspos->getDMeanErr());
+    rs_p.push_back(theFitspos->getrSigma());
+    rse_p.push_back(theFitspos->getrSigmaErr());
     theFitspos->Reset();
   }
 
@@ -135,11 +141,15 @@ int main(int argc, char* const argv[]){
   for(int i=0;i<nbins;++i){
     theFitsneg = new massFit(Form("RS_dst_mass_neg_bin%d",i+1),"j3g",w,"TimeDependentSystematics");
     theFitsneg->setData(neg_bins[i]);
-    //theFitsneg->FloatMeanWidth();
+    theFitsneg->FloatMeanWidth();
     theFitsneg->fit();
     theFitsneg->savePlots(true,Form("RS_dst_mass_neg_bin%d",i+1));
     the_sig_neg[i]=theFitsneg->getNsig()*2;//prescale
     the_sig_neg_err[i]=theFitsneg->getNsigErr()*2;//prescale
+    dm_n.push_back(theFitsneg->getDMean());
+    dme_n.push_back(theFitsneg->getDMeanErr());
+    rs_n.push_back(theFitsneg->getrSigma());
+    rse_n.push_back(theFitsneg->getrSigmaErr());
     theFitsneg->Reset();
   }
 
@@ -191,7 +201,36 @@ int main(int argc, char* const argv[]){
   fout_timedep.cd();
   thePlot->Write();
   fout_timedep.Close();
-  //now do the 2d studies for mike.
+
+  //print out a table of the dmeans and rsigmas
+  cout<<"dmeans"<<endl;
+  cout<<"positive"<<endl;
+  for(unsigned int i=0;i<dm_p.size();++i){
+    cout<<dm_p[i]<<"  +-  "<<dme_p[i]<<endl;
+  }
+  cout<<"negative"<<endl;
+  for(unsigned int i=0;i<dm_n.size();++i){
+    cout<<dm_n[i]<<"  +-  "<<dme_n[i]<<endl;
+  }
+  cout<<"rsigmas"<<endl;
+  cout<<"positive"<<endl;
+  for(unsigned int i=0;i<rs_p.size();++i){
+    cout<<rs_p[i]<<"  +-  "<<rse_p[i]<<endl;
+  }
+  cout<<"negative"<<endl;
+  for(unsigned int i=0;i<rs_n.size();++i){
+    cout<<rs_n[i]<<"  +-  "<<rse_n[i]<<endl;
+  }
+  cout<<"positive"<<endl;
+  for(auto val : the_sig_pos){
+    cout<<"val = "<<val<<endl;
+  }
+
+    cout<<"negitive"<<endl;
+  for(auto val : the_sig_neg){
+    cout<<"val = "<<val<<endl;
+  }
+//now do the 2d studies for mike.
   
   return 0;
 }

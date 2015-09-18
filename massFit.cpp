@@ -102,6 +102,7 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString loca
     model = (existing_fit->pdf("model"));
     bkg_arg = (RooArgusBG*)(existing_fit->pdf("bkg"));
     sigpdf = (existing_fit->pdf("sigpdf"));
+    nbkg = (existing_fit->var("nbkg"));
     model->Print("v");
     
     if(modelName== "j2g"){

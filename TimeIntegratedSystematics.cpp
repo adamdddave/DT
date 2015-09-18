@@ -83,12 +83,11 @@ int main(int argc, char* const argv[]){
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
 
 
-  //and the rest.
-  
+  //and the rest.  
   int bins_dst_pt[]  ={1,107,148,196,274,((TH1D*)f1->Get("RS_dstar_pt"))->GetNbinsX()};
   TimeIntegratedSystematicsClass dst_pt("dst_pt",f1,w,"RS_dstar_pt","RS_ss_dstar_pt","RS_dt_hist_dstar_m_pt_bin","RS_ss_dt_hist_dstar_m_pt_bin",bins_dst_pt);
   std::vector<double>point_dst_pt ( dst_pt.GetSignalPoint());
-
+  
   int bins_dst_p[] = {1,179,230,294,400,((TH1D*)f1->Get("RS_dstar_p"))->GetNbinsX()};
   TimeIntegratedSystematicsClass dst_p("dst_p",f1,w,"RS_dstar_p","RS_ss_dstar_p","RS_dt_hist_dstar_m_p_bin","RS_ss_dt_hist_dstar_m_p_bin",bins_dst_p);
   std::vector<double>point_dst_p ( dst_p.GetSignalPoint());

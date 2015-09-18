@@ -235,7 +235,12 @@ int main(int argc, char* const argv[]){
     rs_looper.the_ghost_prob_bins_pos[i]->Write();
     rs_looper.the_ghost_prob_bins_neg[i]->Write();
   }
-    
+  for(int i=0; i<10;++i){
+    rs_looper.pis_gp_pass_pos[i]->Write();
+    rs_looper.pis_gp_fail_pos[i]->Write();
+    rs_looper.pis_gp_pass_neg[i]->Write();
+    rs_looper.pis_gp_fail_neg[i]->Write();
+  }
   //5x5 matrix
   for(auto hist: rs_looper.thepidMatrix){
     //guaranteed to be in the right order.

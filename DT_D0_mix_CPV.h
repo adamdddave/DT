@@ -1614,8 +1614,13 @@ public :
   TH1D* dst_mass_pis_ghostprob_bin18_neg;
   TH1D* dst_mass_pis_ghostprob_bin19_neg;
   TH1D* dst_mass_pis_ghostprob_bin20_neg;
-
-
+  //pass, fail for eff, bkg rej
+  TH1D* pis_gp_pass_pos[10];
+  TH1D* pis_gp_fail_pos[10];
+  
+  //negative
+  TH1D* pis_gp_pass_neg[10];
+  TH1D* pis_gp_fail_neg[10];
 
   std::vector<TH1D*> the_ghost_prob_bins_pos;
   std::vector<TH1D*> the_ghost_prob_bins_neg;
@@ -1783,7 +1788,7 @@ private:
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
-  const double pis_ghost_prob_cut = 0.25;//no units
+  const double pis_ghost_prob_cut = 0.5;//no units
   //const double pis_pt_cut = 100;//MeV
   //const double pis_probnnp_cut =  0.4;//less than this, no unitso
   //  const double mu_ip_chi2_cut = 100;//no units
@@ -1869,7 +1874,8 @@ private:
   const double pis_ghost_bin_boundary19=0.2795;
   const double pis_ghost_bin_boundary20=0.3735;
   std::vector<double> the_pis_ghost_prob_bin_boundaries;
-    
+
+  const double pis_gp_pf_vals[10] = {0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5};
   const double d0_pdg_ct = 0.1229;//mm
   
 };
@@ -2397,6 +2403,17 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
      the_ghost_prob_bins_neg[i] = new TH1D(name+Form("_dst_mass_pis_ghostprob_bin%d_neg",i+1),"",500,2000,2025);
      the_ghost_prob_bins_neg[i]->SetTitle(Form("m(D^{0}#pi_{s}); m(D^{0}#pi_{s})[MeV]; Entries/%.2f MeV",the_ghost_prob_bins_neg[i]->GetBinWidth(1)));
    }
+   for(int i=0; i<10;++i){
+     pis_gp_pass_pos[i]= new TH1D(name+Form("_dstm_pis_ghostprob_pos_pass_%d",i+1),"",250,2000,2025);
+     pis_gp_pass_pos[i]->SetTitle(Form("m(D^{0}#pi_{s}); m(D^{0}#pi_{s})[MeV]; Entries/%.2f MeV",pis_gp_pass_pos[i]->GetBinWidth(1)));
+     pis_gp_fail_pos[i]= new TH1D(name+Form("_dstm_pis_ghostprob_pos_fail_%d",i+1),"",250,2000,2025);
+     pis_gp_fail_pos[i]->SetTitle(Form("m(D^{0}#pi_{s}); m(D^{0}#pi_{s})[MeV]; Entries/%.2f MeV",pis_gp_fail_pos[i]->GetBinWidth(1)));
+     pis_gp_pass_neg[i]= new TH1D(name+Form("_dstm_pis_ghostprob_neg_pass_%d",i+1),"",250,2000,2025);
+     pis_gp_pass_neg[i]->SetTitle(Form("m(D^{0}#pi_{s}); m(D^{0}#pi_{s})[MeV]; Entries/%.2f MeV",pis_gp_pass_neg[i]->GetBinWidth(1)));
+     pis_gp_fail_neg[i]= new TH1D(name+Form("_dstm_pis_ghostprob_neg_fail_%d",i+1),"",250,2000,2025);
+     pis_gp_fail_neg[i]->SetTitle(Form("m(D^{0}#pi_{s}); m(D^{0}#pi_{s})[MeV]; Entries/%.2f MeV",pis_gp_fail_neg[i]->GetBinWidth(1)));
+   }
+   
    b_flight_dist = new TH1D(name+"_b_flight_distance",";B Flight Distance [mm]",1000,0,1000);
    pis_match_chi2_vs_dstm = new TH2D(name+"_pis_match_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];#pi_{S} #chi^{2}_{Match}",500,2000,2025,1000,0,100);
    b_flight_dist_vs_dstm = new TH2D(name+"_b_flight_distance_vs_dstm",";m(D^{0}#pi_{S})[MeV];B Flight Distance[mm]",500,2000,2025,1000,0,1000);

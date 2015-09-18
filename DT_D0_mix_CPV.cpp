@@ -50,10 +50,16 @@ void DT_D0_mix_CPV::Loop()
     //cuts
     if(!(
          B_VFit_status[0]==0 &&
-         K_PIDK>kpidk_cut&&//tight K
+	 //combined pid samples
+	 ((K_PIDK>kpidk_cut&&Pd_PIDK<pi_dau_pidk_cut)//tight tight
+	  ||(K_PIDK>kpidk_cut&&Pd_PIDK<2 && Pd_PIDK>=-5)//tight loose
+	  ||(K_PIDK>2.&&K_PIDK<=8.&&Pd_PIDK<pi_dau_pidk_cut)//loose tight
+	  )&&
+	 /*K_PIDK>kpidk_cut&&//tight K
 	 //K_PIDK>2.&&K_PIDK<=8.&&//loose K
          Pd_PIDK<pi_dau_pidk_cut &&//tight pi
 	 //Pd_PIDK<2 && Pd_PIDK>=-5 &&//loose pi
+	 */
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
          Mu_L0MuonDecision_TOS==1&&
@@ -530,6 +536,18 @@ void DT_D0_mix_CPV::Loop()
       else{
 	the_ghost_prob_bins_neg[19]->Fill(dstm);}
     }
+
+    //efficiency,bkg rej plots for the same thing
+    for(int i_gp=0; i_gp<10;++i_gp){
+      if(Ps_MC12TuneV2_ProbNNghost<pis_gp_pf_vals[i_gp]){
+	if(Pis_CHARGE>0){pis_gp_pass_pos[i_gp]->Fill(dstm);}
+	else{pis_gp_pass_neg[i_gp]->Fill(dstm);}
+      }else{
+	if(Pis_CHARGE>0){pis_gp_fail_pos[i_gp]->Fill(dstm);}
+	else{pis_gp_fail_neg[i_gp]->Fill(dstm);}
+      }
+    }
+    
     //2D VS DSTM and td0
     
     b_flight_dist_vs_dstm->Fill(dstm,B_FD_OWNPV);

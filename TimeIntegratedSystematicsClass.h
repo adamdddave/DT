@@ -55,14 +55,14 @@ class TimeIntegratedSystematicsClass {
   virtual ~TimeIntegratedSystematicsClass(){};
   //void doFit;
   inline std::vector<double>GetSignalPoint(){return SigAndErr;}
-  
+  void Reset();
  protected:
 
  private:
   TString mName;
   RooWorkspace* wLocal;
   int nBins;//number of bins of the variable in question
-  massFit* theFit;//the fitter
+  //massFit* theFit;//the fitter
   TH1D* varSigHist;//the RS histogram of the variable in question
   TH1D* varBkgHist;//the RS ss histogram of the variable in question
   TH1D* sigHist;//the Dstar mass histogram for RS
