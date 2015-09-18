@@ -44,10 +44,10 @@ int main(int argc, char* const argv[]){
   TFile* hist_f = TFile::Open(argv[1]);
   std::vector<TH1D*> hpp,hpf,hnp,hnf;
   for(int i=0; i<10;++i){
-    hpp.push_back((TH1D*)hist_f->Get(Form("somehsitname%d",i+1)));
-    hpf.push_back((TH1D*)hist_f->Get(Form("somehsitname%d",i+1)));
-    hnp.push_back((TH1D*)hist_f->Get(Form("somehsitname%d",i+1)));
-    hnf.push_back((TH1D*)hist_f->Get(Form("somehsitname%d",i+1)));
+    hpp.push_back((TH1D*)hist_f->Get(Form("RS_dstm_pis_ghostprob_pos_pass_%d",i+1)));
+    hpf.push_back((TH1D*)hist_f->Get(Form("RS_dstm_pis_ghostprob_pos_fail_%d",i+1)));
+    hnp.push_back((TH1D*)hist_f->Get(Form("RS_dstm_pis_ghostprob_neg_pass_%d",i+1)));
+    hnf.push_back((TH1D*)hist_f->Get(Form("RS_dstm_pis_ghostprob_neg_fail_%d",i+1)));
   }
   slowPionStudy st("SlowPionEffBkgStudy",w);
   st.setHistogramsPositive(hpp,hpf);

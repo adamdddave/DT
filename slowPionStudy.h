@@ -44,10 +44,23 @@ class slowPionStudy {
   std::vector<double> nsigErr_neg_pass;
   std::vector<double> nsigErr_pos_fail;
   std::vector<double> nsigErr_neg_fail;
+
+
+  std::vector<double> nbkg_pos_pass;
+  std::vector<double> nbkg_neg_pass;
+  std::vector<double> nbkg_pos_fail;
+  std::vector<double> nbkg_neg_fail;
+
+  std::vector<double> nbkgErr_pos_pass;
+  std::vector<double> nbkgErr_neg_pass;
+  std::vector<double> nbkgErr_pos_fail;
+  std::vector<double> nbkgErr_neg_fail;
   TGraphErrors* the_eff_plot_pos;
   TGraphErrors* the_bkg_rej_plot_pos;
   TGraphErrors* the_eff_plot_neg;
   TGraphErrors* the_bkg_rej_plot_neg;
+  TGraphErrors* eff_vs_bkg_rej_pos;
+  TGraphErrors* eff_vs_bkg_rej_neg;
 };
 
 #endif

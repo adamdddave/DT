@@ -81,8 +81,12 @@ void slowPionStudy::makeProbNNghostPlots(){
     fit.savePlots(false,"_positive_pass_");
     nsig_pos_pass.push_back(fit.getNsig());
     nsigErr_pos_pass.push_back(fit.getNsigErr());
+    cout<<"fit.getNbkg() = "<<fit.getNbkg()<<endl;
+    nbkg_pos_pass.push_back(fit.getNbkg());
+    nbkgErr_pos_pass.push_back(fit.getNbkgErr());
     fit.Reset();
   }
+  counter = 0;
   for(auto hist: hists_neg_pass){
     counter++;
     massFit fit(Form("ProbNNghostPlot%d",counter),"j3g",wLocal,"SlowPionGhostProbStudy");
@@ -91,8 +95,12 @@ void slowPionStudy::makeProbNNghostPlots(){
     fit.savePlots(false,"_negative_pass_");
     nsig_neg_pass.push_back(fit.getNsig());
     nsigErr_neg_pass.push_back(fit.getNsigErr());
+
+    nbkg_neg_pass.push_back(fit.getNbkg());
+    nbkgErr_neg_pass.push_back(fit.getNbkgErr());
     fit.Reset();
   }
+  counter=0;
   //fail
     for(auto hist: hists_pos_fail){
     counter++;
@@ -102,8 +110,12 @@ void slowPionStudy::makeProbNNghostPlots(){
     fit.savePlots(false,"_positive_fail_");
     nsig_pos_fail.push_back(fit.getNsig());
     nsigErr_pos_fail.push_back(fit.getNsigErr());
+
+    nbkg_pos_fail.push_back(fit.getNbkg());
+    nbkgErr_pos_fail.push_back(fit.getNbkgErr());
     fit.Reset();
   }
+  counter=0;
   for(auto hist: hists_neg_fail){
     counter++;
     massFit fit(Form("ProbNNghostPlot%d",counter),"j3g",wLocal,"SlowPionGhostProbStudy");
@@ -112,8 +124,13 @@ void slowPionStudy::makeProbNNghostPlots(){
     fit.savePlots(false,"_negative_fail_");
     nsig_neg_fail.push_back(fit.getNsig());
     nsigErr_neg_fail.push_back(fit.getNsigErr());
+
+    nbkg_neg_fail.push_back(fit.getNbkg());
+    nbkgErr_neg_fail.push_back(fit.getNbkgErr());
+
     fit.Reset();
   }
+  
   double xvals[] = {0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5};
   double zeros[] = {0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
   double eff_pos[10],eff_neg[10],bkg_rej_pos[10],bkg_rej_neg[10];
@@ -125,11 +142,11 @@ void slowPionStudy::makeProbNNghostPlots(){
     eff_neg[i]=nsig_neg_pass[i]/(nsig_neg_pass[i]+nsig_neg_fail[i]);
     eff_err_neg[i]=eff_err(nsig_neg_pass[i],nsig_neg_pass[i]+nsig_neg_fail[i]);
 
-    bkg_rej_pos[i]=nsig_pos_pass[i]/(nsig_pos_pass[i]+nsig_pos_fail[i]);
-    bkg_rej_err_pos[i]=eff_err(nsig_pos_pass[i],nsig_pos_pass[i]+nsig_pos_fail[i]);
+    bkg_rej_pos[i]=1-nbkg_pos_pass[i]/(nbkg_pos_pass[i]+nbkg_pos_fail[i]);
+    bkg_rej_err_pos[i]=eff_err(nbkg_pos_pass[i],nbkg_pos_pass[i]+nbkg_pos_fail[i]);
 
-    bkg_rej_neg[i]=nsig_neg_pass[i]/(nsig_neg_pass[i]+nsig_neg_fail[i]);
-    bkg_rej_err_neg[i]=eff_err(nsig_neg_pass[i],nsig_neg_pass[i]+nsig_neg_fail[i]);
+    bkg_rej_neg[i]=1- nbkg_neg_pass[i]/(nbkg_neg_pass[i]+nbkg_neg_fail[i]);
+    bkg_rej_err_neg[i]=eff_err(nbkg_neg_pass[i],nbkg_neg_pass[i]+nbkg_neg_fail[i]);
   }
   the_eff_plot_pos = new TGraphErrors(10,xvals,eff_pos,zeros,eff_err_pos);
   the_eff_plot_neg = new TGraphErrors(10,xvals,eff_neg,zeros,eff_err_neg);
@@ -148,6 +165,19 @@ void slowPionStudy::makeProbNNghostPlots(){
 
   the_bkg_rej_plot_pos->SetMarkerStyle(21);
   the_bkg_rej_plot_neg->SetMarkerStyle(21);
+  /*cout<<"     nsig_pass           nsig_fail"<<endl;
+  cout<<"pos"<<endl;
+  for(int i=0; i<nsig_pos_pass.size();++i){
+    cout<<nsig_pos_pass[i]<<"       "<<nsig_pos_fail[i]<<endl;
+  }
+  cout<<"neg"<<endl;
+  for(int i=0; i<nsig_neg_pass.size();++i){
+    cout<<nsig_neg_pass[i]<<"       "<<nsig_neg_fail[i]<<endl;
+    }*/
+  cout<<"Difference in efficinecy per cut bin for ghost prob cut (plus - minus) in %= "<<endl;
+  for(int i=0; i<9;++i){
+    cout<<"bin "<<i<<setw(15)<<(eff_pos[i]-eff_neg[i])*100<<endl;
+  }
   
 }
 
@@ -156,10 +186,25 @@ void slowPionStudy::drawPlot(){
   TMultiGraph* mg = new TMultiGraph();
   mg->Add(the_eff_plot_pos);
   mg->Add(the_eff_plot_neg);
-  mg->Add(the_bkg_rej_plot_pos);
-  mg->Add(the_bkg_rej_plot_neg);
+  mg->SetTitle(";#pi_{S} ProbNNghost Cut; #epsilon");
   mg->Draw("ap");
+  TLegend leg(0.7,0.3,0.9,0.5);
+  leg.AddEntry(the_eff_plot_pos,"#pi_{S}^{+}","lpe");
+  leg.AddEntry(the_eff_plot_neg,"#pi_{S}^{-}","lpe");
+  leg.Draw();
   cc->SaveAs(theDir+mName+"SlowPionEfficiencyPlot.pdf");
+  cc->Clear();
+  TMultiGraph* mg2 = new TMultiGraph();
+  mg2->Add(the_bkg_rej_plot_pos);
+  mg2->Add(the_bkg_rej_plot_neg);
+  mg2->SetTitle(";#pi_{S} ProbNNghost Cut;Background Rejection");
+  mg2->Draw("ap");
+  TLegend leg2(0.7,0.7,0.9,0.9);
+  leg2.AddEntry(the_eff_plot_pos,"#pi_{S}^{+}","lpe");
+  leg2.AddEntry(the_eff_plot_neg,"#pi_{S}^{-}","lpe");
+  leg2.Draw();
+  cc->SaveAs(theDir+mName+"SlowPionBkgRejPlot.pdf");
+  cc->Clear();
 }
 
 slowPionStudy::~slowPionStudy(){
