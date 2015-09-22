@@ -104,7 +104,8 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString loca
     sigpdf = (existing_fit->pdf("sigpdf"));
     nbkg = (existing_fit->var("nbkg"));
     model->Print("v");
-    
+    kappa = (existing_fit->var("kappa"));
+    n = (existing_fit->var("n"));
     if(modelName== "j2g"){
       //fm0=existing_fit->var("fm0")->setConstant(1);
       existing_fit->var("m0")->setConstant(1);
@@ -263,7 +264,7 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString loca
     double gamma_liang = -8.64089594146807194e-01;
     gamma= new RooRealVar("gamma","gamma",gamma_liang, 1.80*gamma_liang,0.40*gamma_liang);//flopped since negative.
     //m0->setConstant(1);
-    //delta->setConstant(1);
+    //    delta->setConstant(1);
     //gamma->setConstant(1);
     //    sigma->setConstant(1);
     sig_john= new RooJohnsonSU("sig_john","sig_john",*mass,*fm0,*fsigma,*gamma,*delta);
@@ -365,6 +366,7 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString loca
     minusDM= new RooFormulaVar("minusDM", "@2-@1*(@0-@2)", RooArgList(*mass, *xscale, *endpt));
     kappa= new RooRealVar("kappa", "argpar1", -3.8935e+01, -100, 20);
     n= new RooRealVar("n", "", 0.5, 0.4, 0.9);
+    //n->setConstant(kTRUE);
     bkg_arg= new RooArgusBG("bkg", "argus_bkg",* minusDM, *endpt, *kappa, *n);
     nsig= new RooRealVar("nsig", "nsig", 9e6, 0, 1e10);
     frac1= new RooRealVar("frac1", "frac1", .6,0.,1);
@@ -636,6 +638,7 @@ void massFit::fit(){
 
 void massFit::saveFinalFit(){
   new_fit->import(*model);
+  new_fit->saveSnapshot(channel+modelName+"Snapshot",* (model->getParameters(*mass)),kTRUE);
   new_fit->writeToFile("./SavedFits/"+theLocalDir+"/"+channel+"_"+modelName+"fitModel.root");
 }
 
@@ -749,4 +752,26 @@ void massFit::Reset(){
   nsig = NULL;
   sigpdf = NULL;
   bkg_arg=  NULL;
+  existing_fit = NULL;
+}
+
+void massFit::initValsByHand(array<double,4> thePars){
+  /*
+NO.   NAME      VALUE            ERROR       STEP SIZE       VALUE
+   1  dmean        2.55303e-03   8.90426e-04   1.88402e-04   2.55303e-03
+   2  kappa       -2.73131e+01   1.87980e+00   5.21041e-04   2.13057e-01
+   3  n            6.90967e-01   1.46323e-02   8.52096e-04   3.08074e-01
+   4  nbkg         8.37522e+04   3.26489e+02   4.56050e-06  -1.51291e+00
+   5  nsig         1.63165e+05   4.31284e+02   2.19935e-06  -1.56272e+00
+   6  rsigma       7.27422e-02   3.16079e-03   6.38629e-06   3.63712e-03
+   */
+  dmean->setVal(0.);
+  cout<<"Setting Kappa to "<<thePars[0]<<endl;
+  kappa->setVal(thePars[0]);
+  cout<<"setting n to "<<thePars[1]<<endl;
+  n->setVal(thePars[1]);
+  nbkg->setVal(thePars[2]);
+  nsig->setVal(thePars[3]);
+  rsigma->setVal(0.);
+
 }

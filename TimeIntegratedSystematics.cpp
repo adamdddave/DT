@@ -82,7 +82,44 @@ int main(int argc, char* const argv[]){
   cout<<"channel from file = "<<channelFromFile<<endl;  
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
 
+  //get the values from the workspace.
+  array<double,4> thePars{
+    (w->var("kappa")->getVal()),
+      (w->var("n")->getVal()),
+      (w->var("nbkg")->getVal()),
+      (w->var("nsig")->getVal())};
+  //binned twice  
+  int bins_pi_pidk[]  ={1,150,165,176,185,((TH1D*)f1->Get("RS_dst_mass_vs_pi_pidk"))->GetNbinsX()};  
+  int bins_k_pidk[]  ={1,11,19,26,37,((TH1D*)f1->Get("RS_dst_mass_vs_k_pidk"))->GetNbinsX()};
 
+  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin1("pi_pidk_vs_kpidk_bin1",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin1_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin1_k_pid_k_bin",bins_pi_pidk,5,thePars);
+  std::vector<double>point_pi_pidk_vs_kpidk_bin1 (pi_pidk_vs_kpidk_bin1.GetSignalPoint());
+
+  
+  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin2("pi_pidk_vs_kpidk_bin2",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin2_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin2_k_pid_k_bin",bins_pi_pidk,5,thePars);
+  std::vector<double>point_pi_pidk_vs_kpidk_bin2 ( pi_pidk_vs_kpidk_bin2.GetSignalPoint());
+
+  
+  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin3("pi_pidk_vs_kpidk_bin3",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin3_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin3_k_pid_k_bin",bins_pi_pidk,5,thePars);
+  std::vector<double>point_pi_pidk_vs_kpidk_bin3 ( pi_pidk_vs_kpidk_bin3.GetSignalPoint());
+
+  
+  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin4("pi_pidk_vs_kpidk_bin4",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin4_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin4_k_pid_k_bin",bins_pi_pidk,5,thePars);
+  std::vector<double>point_pi_pidk_vs_kpidk_bin4 ( pi_pidk_vs_kpidk_bin4.GetSignalPoint());
+
+  
+  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin5("pi_pidk_vs_kpidk_bin5",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin5_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin5_k_pid_k_bin",bins_pi_pidk,5,thePars);
+  std::vector<double>point_pi_pidk_vs_kpidk_bin5 ( pi_pidk_vs_kpidk_bin5.GetSignalPoint());
+  
+  std::vector<double>point_pi_k_pidk_bins_tot;
+  point_pi_k_pidk_bins_tot.push_back(point_pi_pidk_vs_kpidk_bin1[0]+point_pi_pidk_vs_kpidk_bin2[0]+point_pi_pidk_vs_kpidk_bin3[0]+point_pi_pidk_vs_kpidk_bin4[0]+point_pi_pidk_vs_kpidk_bin5[0]);
+  double the_err_from_bins = (point_pi_pidk_vs_kpidk_bin1[1]*point_pi_pidk_vs_kpidk_bin1[1])+
+    (point_pi_pidk_vs_kpidk_bin2[1]*point_pi_pidk_vs_kpidk_bin2[1])+
+    (point_pi_pidk_vs_kpidk_bin3[1]*point_pi_pidk_vs_kpidk_bin3[1])+
+    (point_pi_pidk_vs_kpidk_bin4[1]*point_pi_pidk_vs_kpidk_bin4[1])+
+    (point_pi_pidk_vs_kpidk_bin5[1]*point_pi_pidk_vs_kpidk_bin5[1]);
+  point_pi_k_pidk_bins_tot.push_back(TMath::Sqrt(the_err_from_bins));
+    
   //and the rest.  
   int bins_dst_pt[]  ={1,107,148,196,274,((TH1D*)f1->Get("RS_dstar_pt"))->GetNbinsX()};
   TimeIntegratedSystematicsClass dst_pt("dst_pt",f1,w,"RS_dstar_pt","RS_ss_dstar_pt","RS_dt_hist_dstar_m_pt_bin","RS_ss_dt_hist_dstar_m_pt_bin",bins_dst_pt);
@@ -101,52 +138,24 @@ int main(int argc, char* const argv[]){
   std::vector<double>point_mu_p ( mu_p.GetSignalPoint());
 
   int bins_mu_log_ip[]  ={1,342,389,432,482,((TH1D*)f1->Get("RS_mu_log_ip"))->GetNbinsX()};
-  TimeIntegratedSystematicsClass mu_log_ip("mu_log_ip",f1,w,"RS_mu_log_ip","RS_ss_mu_log_ip","RS_dt_hist_mu_log_ip_bin","RS_ss_dt_hist_mu_log_ip_bin",bins_mu_log_ip);
+  TimeIntegratedSystematicsClass mu_log_ip("mu_log_ip",f1,w,"RS_mu_log_ip","RS_ss_mu_log_ip","RS_dt_hist_mu_log_ip_bin","RS_ss_dt_hist_mu_log_ip_bin",bins_mu_log_ip,5,thePars);
   std::vector<double>point_mu_log_ip ( mu_log_ip.GetSignalPoint());
 
       //now do the same for the 5x5 matrix in pids
   //we have stuff that looks like RS_dt_hist_pi_pid_k_bin1_k_pid_k_bin2
   //we want do only use the thing up to the last bin, and do it 5 times.
   //but we'll use the kpid k bins for each pi pid k bin.
-  int bins_pi_pidk[]  ={1,150,165,176,185,((TH1D*)f1->Get("RS_dst_mass_vs_pi_pidk"))->GetNbinsX()};  
-  
-  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin1("pi_pidk_vs_kpidk_bin1",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin1_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin1_k_pid_k_bin",bins_pi_pidk);
-  std::vector<double>point_pi_pidk_vs_kpidk_bin1 (pi_pidk_vs_kpidk_bin1.GetSignalPoint());
-
-  
-  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin2("pi_pidk_vs_kpidk_bin2",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin2_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin2_k_pid_k_bin",bins_pi_pidk);
-  std::vector<double>point_pi_pidk_vs_kpidk_bin2 ( pi_pidk_vs_kpidk_bin2.GetSignalPoint());
-
-  
-  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin3("pi_pidk_vs_kpidk_bin3",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin3_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin3_k_pid_k_bin",bins_pi_pidk);
-  std::vector<double>point_pi_pidk_vs_kpidk_bin3 ( pi_pidk_vs_kpidk_bin3.GetSignalPoint());
-
-  
-  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin4("pi_pidk_vs_kpidk_bin4",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin4_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin4_k_pid_k_bin",bins_pi_pidk);
-  std::vector<double>point_pi_pidk_vs_kpidk_bin4 ( pi_pidk_vs_kpidk_bin4.GetSignalPoint());
-
-  
-  TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin5("pi_pidk_vs_kpidk_bin5",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin5_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin5_k_pid_k_bin",bins_pi_pidk);
-  std::vector<double>point_pi_pidk_vs_kpidk_bin5 ( pi_pidk_vs_kpidk_bin5.GetSignalPoint());
-
-  std::vector<double>point_pi_k_pidk_bins_tot;
-  point_pi_k_pidk_bins_tot.push_back(point_pi_pidk_vs_kpidk_bin1[0]+point_pi_pidk_vs_kpidk_bin2[0]+point_pi_pidk_vs_kpidk_bin3[0]+point_pi_pidk_vs_kpidk_bin4[0]+point_pi_pidk_vs_kpidk_bin5[0]);
-  double the_err_from_bins = (point_pi_pidk_vs_kpidk_bin1[1]*point_pi_pidk_vs_kpidk_bin1[1])+
-    (point_pi_pidk_vs_kpidk_bin2[1]*point_pi_pidk_vs_kpidk_bin2[1])+
-    (point_pi_pidk_vs_kpidk_bin3[1]*point_pi_pidk_vs_kpidk_bin3[1])+
-    (point_pi_pidk_vs_kpidk_bin4[1]*point_pi_pidk_vs_kpidk_bin4[1])+
-    (point_pi_pidk_vs_kpidk_bin5[1]*point_pi_pidk_vs_kpidk_bin5[1]);
-  point_pi_k_pidk_bins_tot.push_back(TMath::Sqrt(the_err_from_bins));
-    
-
-  int bins_k_pidk[]  ={1,11,19,26,37,((TH1D*)f1->Get("RS_dst_mass_vs_k_pidk"))->GetNbinsX()};
-  TimeIntegratedSystematicsClass k_pidk("k_pidk",f1,w,"RS_dst_mass_vs_k_pidk","RS_ss_dst_mass_vs_k_pidk","RS_dt_hist_k_pid_k_bin","RS_ss_dt_hist_k_pid_k_bin",bins_k_pidk);
+  //  int bins_pi_pidk[]  ={1,150,165,176,185,((TH1D*)f1->Get("RS_dst_mass_vs_pi_pidk"))->GetNbinsX()};  
+  //  int bins_k_pidk[]  ={1,11,19,26,37,((TH1D*)f1->Get("RS_dst_mass_vs_k_pidk"))->GetNbinsX()};
+  TimeIntegratedSystematicsClass k_pidk("k_pidk",f1,w,"RS_dst_mass_vs_k_pidk","RS_ss_dst_mass_vs_k_pidk","RS_dt_hist_k_pid_k_bin","RS_ss_dt_hist_k_pid_k_bin",bins_k_pidk,5,thePars);
   std::vector<double>point_k_pidk ( k_pidk.GetSignalPoint());
   //int bins_pi_pidk[]  ={1,150,165,176,185,((TH1D*)f1->Get("RS_dst_mass_vs_pi_pidk"))->GetNbinsX()};
   
-  TimeIntegratedSystematicsClass pi_pidk("pi_pidk",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin",bins_pi_pidk);
+  TimeIntegratedSystematicsClass pi_pidk("pi_pidk",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin",bins_pi_pidk,5,thePars);
   std::vector<double>point_pi_pidk ( pi_pidk.GetSignalPoint());
   
+    
+  //return 0;
 
   //return 0;
   //final check for time independent.

@@ -51,8 +51,8 @@ using namespace std;
 
 class TimeIntegratedSystematicsClass {
  public:
-  TimeIntegratedSystematicsClass(TString name,TFile *fin,RooWorkspace* w,TString var2Test,TString var2subtr,TString histoForBins,TString histoForBinsBkg,int binRanges[6],int nbins=5);//constructor
-  virtual ~TimeIntegratedSystematicsClass(){};
+  TimeIntegratedSystematicsClass(TString name,TFile *fin,RooWorkspace* w,TString var2Test,TString var2subtr,TString histoForBins,TString histoForBinsBkg,int binRanges[6],int nbins=5,array<double,4> initVals={0.,0.,0.,0.,});//constructor
+  virtual ~TimeIntegratedSystematicsClass(){delete theFit;};
   //void doFit;
   inline std::vector<double>GetSignalPoint(){return SigAndErr;}
   void Reset();
@@ -62,7 +62,7 @@ class TimeIntegratedSystematicsClass {
   TString mName;
   RooWorkspace* wLocal;
   int nBins;//number of bins of the variable in question
-  //massFit* theFit;//the fitter
+  massFit* theFit;//the fitter
   TH1D* varSigHist;//the RS histogram of the variable in question
   TH1D* varBkgHist;//the RS ss histogram of the variable in question
   TH1D* sigHist;//the Dstar mass histogram for RS

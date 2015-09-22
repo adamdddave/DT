@@ -78,6 +78,8 @@ public:
   TString getFitModel(){return modelName;}
   void savePlots(bool doPullPlots = false,TString extraName = "");
   void saveSignalRegionZoom();
+  void initValsByHand(array<double,4> thepars);
+  inline void printModelParams(){model->getParameters(*mass)->Print("s") ;}
   inline double getNsig(){return nsig->getVal();}
   inline double getNbkg(){return nbkg->getVal();}
   inline double getNsigErr(){return nsig->getError();}
@@ -86,6 +88,8 @@ public:
   inline double getrSigmaErr(){return rsigma->getError();}
   inline double getDMean(){return dmean->getVal();}
   inline double getDMeanErr(){return dmean->getError();}
+  //
+  
   //virtual ~massFit( ); ///< Destructor
 
 protected:

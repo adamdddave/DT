@@ -57,7 +57,8 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
 							       TString var2Test, TString var2subtr,
 							       TString histoForBins,TString histoForBinsBkg,
 							       int binRanges[6],
-							       int nbins){
+							       int nbins,
+							       array<double,4> initVals){
   mName = name;
   nBins = nbins;
   //fin->ls();
@@ -103,7 +104,21 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
     bkgHistBins[i]->Sumw2();
     sigHistBins[i]->Add(bkgHistBins[i],-1);    
     cout<<"Double check, "<<histoForBins+Form("%d",i+1)<<"->Integral()="<<sigHistBins[i]->Integral()<<endl;
-    massFit *theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",wLocal,"TimeIntegratedSystematics");
+    //massFit *theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",wLocal,"TimeIntegratedSystematics");
+    theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",wLocal,"TimeIntegratedSystematics");
+    if(initVals[0]!=0.&& initVals[1]!=0.){
+      cout<<"Initializing variables"<<endl;
+      theFit->initValsByHand(initVals);
+    }
+    // if(i==1 && var2Test.Contains("mu_log_ip")){
+    //   char dum[100];
+    //   cout<<"This is where the trouble starts. Print the configuration variables?"<<endl;
+    //   cin>>dum;
+    //   cout<<"Printing stored variables"<<endl;
+    //   theFit->printModelParams();
+    //   cout<<"Continue?"<<endl;
+    //   cin>>dum;
+    // }
     theFit->setData(sigHistBins[i]);
     //fit once to get params, then float the mean and width, and fit again
     theFit->fit();
@@ -119,6 +134,8 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
     theFit->Reset();
     xError_low[i] = mean_positions_of_variable[i] - varSigHist->GetBinCenter(bin_ranges[i]);
     xError_hi[i] =  varSigHist->GetBinCenter(bin_ranges[i+1])-mean_positions_of_variable[i];
+    
+    theFit->Reset();
   }
   TCanvas * cc = new TCanvas();
   //make the axis label from theinput name.
