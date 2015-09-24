@@ -37,6 +37,7 @@ public:
   void SavePlots();
   void FitWSDoubleMisID();
   void FitWSDoubleMisIDTimeDependence();
+  std::vector<double> extractWSDoubleMisIDLiang(TH1* h);//to implement
   //void FitForPeakingBkg();
   double getErrorFromPropagation(RooRealVar* x, RooAbsPdf* model, RooFitResult* fr, RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max,bool linearfit=false);
   double ErrorFromTF1(TF1* f1,Int_t npars, double* pars, const double* epars,TMatrixDSym mat,double sb_low_min, double sb_low_max, double sb_hi_min, double sb_hi_max,double sig_min, double sig_max);
@@ -89,6 +90,7 @@ public:
   TH1* hmkpisb_cut_range ;
   TH1* hmkpisb_cut_range_hi ;
   TH1* hmkpisb_cut_range_lo ;
+  
   TH1* hmkpisb_cut_range_hi_1 ;
   TH1* hmkpisb_cut_range_hi_2 ;
   TH1* hmkpisb_cut_range_hi_3 ;
@@ -102,7 +104,83 @@ public:
   TH1* hmkpisb_cut_range_lo_4 ;
   TH1* hmkpisb_cut_range_lo_5 ;
   TH1* hmkpisb_cut_range_lo_6 ;
+
+  //time bins
   
+  TH1* hmkpisb_cut_range_hi_1_time_bin1;
+  TH1* hmkpisb_cut_range_hi_2_time_bin1;
+  TH1* hmkpisb_cut_range_hi_3_time_bin1;
+  TH1* hmkpisb_cut_range_hi_4_time_bin1;
+  TH1* hmkpisb_cut_range_hi_5_time_bin1;
+  TH1* hmkpisb_cut_range_hi_6_time_bin1;
+
+  TH1* hmkpisb_cut_range_lo_1_time_bin1;
+  TH1* hmkpisb_cut_range_lo_2_time_bin1;
+  TH1* hmkpisb_cut_range_lo_3_time_bin1;
+  TH1* hmkpisb_cut_range_lo_4_time_bin1;
+  TH1* hmkpisb_cut_range_lo_5_time_bin1;
+  TH1* hmkpisb_cut_range_lo_6_time_bin1;
+
+  
+  TH1* hmkpisb_cut_range_hi_1_time_bin2;
+  TH1* hmkpisb_cut_range_hi_2_time_bin2;
+  TH1* hmkpisb_cut_range_hi_3_time_bin2;
+  TH1* hmkpisb_cut_range_hi_4_time_bin2;
+  TH1* hmkpisb_cut_range_hi_5_time_bin2;
+  TH1* hmkpisb_cut_range_hi_6_time_bin2;
+
+  TH1* hmkpisb_cut_range_lo_1_time_bin2;
+  TH1* hmkpisb_cut_range_lo_2_time_bin2;
+  TH1* hmkpisb_cut_range_lo_3_time_bin2;
+  TH1* hmkpisb_cut_range_lo_4_time_bin2;
+  TH1* hmkpisb_cut_range_lo_5_time_bin2;
+  TH1* hmkpisb_cut_range_lo_6_time_bin2;
+
+  
+  TH1* hmkpisb_cut_range_hi_1_time_bin3;
+  TH1* hmkpisb_cut_range_hi_2_time_bin3;
+  TH1* hmkpisb_cut_range_hi_3_time_bin3;
+  TH1* hmkpisb_cut_range_hi_4_time_bin3;
+  TH1* hmkpisb_cut_range_hi_5_time_bin3;
+  TH1* hmkpisb_cut_range_hi_6_time_bin3;
+
+  TH1* hmkpisb_cut_range_lo_1_time_bin3;
+  TH1* hmkpisb_cut_range_lo_2_time_bin3;
+  TH1* hmkpisb_cut_range_lo_3_time_bin3;
+  TH1* hmkpisb_cut_range_lo_4_time_bin3;
+  TH1* hmkpisb_cut_range_lo_5_time_bin3;
+  TH1* hmkpisb_cut_range_lo_6_time_bin3;
+
+  
+  TH1* hmkpisb_cut_range_hi_1_time_bin4;
+  TH1* hmkpisb_cut_range_hi_2_time_bin4;
+  TH1* hmkpisb_cut_range_hi_3_time_bin4;
+  TH1* hmkpisb_cut_range_hi_4_time_bin4;
+  TH1* hmkpisb_cut_range_hi_5_time_bin4;
+  TH1* hmkpisb_cut_range_hi_6_time_bin4;
+
+  TH1* hmkpisb_cut_range_lo_1_time_bin4;
+  TH1* hmkpisb_cut_range_lo_2_time_bin4;
+  TH1* hmkpisb_cut_range_lo_3_time_bin4;
+  TH1* hmkpisb_cut_range_lo_4_time_bin4;
+  TH1* hmkpisb_cut_range_lo_5_time_bin4;
+  TH1* hmkpisb_cut_range_lo_6_time_bin4;
+
+  
+  TH1* hmkpisb_cut_range_hi_1_time_bin5;
+  TH1* hmkpisb_cut_range_hi_2_time_bin5;
+  TH1* hmkpisb_cut_range_hi_3_time_bin5;
+  TH1* hmkpisb_cut_range_hi_4_time_bin5;
+  TH1* hmkpisb_cut_range_hi_5_time_bin5;
+  TH1* hmkpisb_cut_range_hi_6_time_bin5;
+
+  TH1* hmkpisb_cut_range_lo_1_time_bin5;
+  TH1* hmkpisb_cut_range_lo_2_time_bin5;
+  TH1* hmkpisb_cut_range_lo_3_time_bin5;
+  TH1* hmkpisb_cut_range_lo_4_time_bin5;
+  TH1* hmkpisb_cut_range_lo_5_time_bin5;
+  TH1* hmkpisb_cut_range_lo_6_time_bin5;
+  //end time bins
   
   TH1* hmD0_pik_sig ;
   TH1* hmD0_pik_sb ;

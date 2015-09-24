@@ -110,6 +110,85 @@ betastar_plot::betastar_plot(TString name  ) {
    hmkpisb_cut_range_lo_5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5");
    hmkpisb_cut_range_lo_6 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6");
 
+   //time bins for total sideband method from mike
+
+   hmkpisb_cut_range_hi_1_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin1");
+   hmkpisb_cut_range_hi_2_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin1");
+   hmkpisb_cut_range_hi_3_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin1");
+   hmkpisb_cut_range_hi_4_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin1");
+   hmkpisb_cut_range_hi_5_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin1");
+   hmkpisb_cut_range_hi_6_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin1");
+
+   
+   hmkpisb_cut_range_lo_1_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin1");
+   hmkpisb_cut_range_lo_2_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin1");
+   hmkpisb_cut_range_lo_3_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin1");
+   hmkpisb_cut_range_lo_4_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin1");
+   hmkpisb_cut_range_lo_5_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin1");
+   hmkpisb_cut_range_lo_6_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin1");
+
+   
+   hmkpisb_cut_range_hi_1_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin2");
+   hmkpisb_cut_range_hi_2_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin2");
+   hmkpisb_cut_range_hi_3_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin2");
+   hmkpisb_cut_range_hi_4_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin2");
+   hmkpisb_cut_range_hi_5_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin2");
+   hmkpisb_cut_range_hi_6_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin2");
+
+   
+   hmkpisb_cut_range_lo_1_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin2");
+   hmkpisb_cut_range_lo_2_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin2");
+   hmkpisb_cut_range_lo_3_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin2");
+   hmkpisb_cut_range_lo_4_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin2");
+   hmkpisb_cut_range_lo_5_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin2");
+   hmkpisb_cut_range_lo_6_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin2");
+
+   hmkpisb_cut_range_hi_1_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin3");
+   hmkpisb_cut_range_hi_2_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin3");
+   hmkpisb_cut_range_hi_3_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin3");
+   hmkpisb_cut_range_hi_4_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin3");
+   hmkpisb_cut_range_hi_5_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin3");
+   hmkpisb_cut_range_hi_6_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin3");
+
+   
+   hmkpisb_cut_range_lo_1_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin3");
+   hmkpisb_cut_range_lo_2_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin3");
+   hmkpisb_cut_range_lo_3_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin3");
+   hmkpisb_cut_range_lo_4_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin3");
+   hmkpisb_cut_range_lo_5_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin3");
+   hmkpisb_cut_range_lo_6_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin3");
+   
+   hmkpisb_cut_range_hi_1_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin4");
+   hmkpisb_cut_range_hi_2_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin4");
+   hmkpisb_cut_range_hi_3_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin4");
+   hmkpisb_cut_range_hi_4_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin4");
+   hmkpisb_cut_range_hi_5_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin4");
+   hmkpisb_cut_range_hi_6_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin4");
+
+   
+   hmkpisb_cut_range_lo_1_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin4");
+   hmkpisb_cut_range_lo_2_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin4");
+   hmkpisb_cut_range_lo_3_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin4");
+   hmkpisb_cut_range_lo_4_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin4");
+   hmkpisb_cut_range_lo_5_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin4");
+   hmkpisb_cut_range_lo_6_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin4");
+
+   hmkpisb_cut_range_hi_1_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin5");
+   hmkpisb_cut_range_hi_2_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin5");
+   hmkpisb_cut_range_hi_3_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin5");
+   hmkpisb_cut_range_hi_4_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin5");
+   hmkpisb_cut_range_hi_5_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin5");
+   hmkpisb_cut_range_hi_6_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin5");
+
+   
+   hmkpisb_cut_range_lo_1_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin5");
+   hmkpisb_cut_range_lo_2_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin5");
+   hmkpisb_cut_range_lo_3_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin5");
+   hmkpisb_cut_range_lo_4_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin5");
+   hmkpisb_cut_range_lo_5_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin5");
+   hmkpisb_cut_range_lo_6_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin5");
+
+   //end time bins
     
     
    hmD0_pik_sig = new TH1D(name+"_hmD0_pik_sig","D^{0}->#pi K mass, #Delta M signal range; m(#pi K)[MeV];",200, 1700,2100);
@@ -184,7 +263,79 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
   hmkpisb_cut_range_lo_4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4");
   hmkpisb_cut_range_lo_5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5");
   hmkpisb_cut_range_lo_6=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6");
+
+  //time bins
+  hmkpisb_cut_range_hi_1_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin1");
+  hmkpisb_cut_range_hi_2_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin1");
+  hmkpisb_cut_range_hi_3_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin1");
+  hmkpisb_cut_range_hi_4_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin1");
+  hmkpisb_cut_range_hi_5_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin1");
+  hmkpisb_cut_range_hi_6_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin1");
   
+  hmkpisb_cut_range_lo_1_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin1");
+  hmkpisb_cut_range_lo_2_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin1");
+  hmkpisb_cut_range_lo_3_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin1");
+  hmkpisb_cut_range_lo_4_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin1");
+  hmkpisb_cut_range_lo_5_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin1");
+  hmkpisb_cut_range_lo_6_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin1");
+
+    hmkpisb_cut_range_hi_1_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin2");
+  hmkpisb_cut_range_hi_2_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin2");
+  hmkpisb_cut_range_hi_3_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin2");
+  hmkpisb_cut_range_hi_4_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin2");
+  hmkpisb_cut_range_hi_5_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin2");
+  hmkpisb_cut_range_hi_6_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin2");
+  
+  hmkpisb_cut_range_lo_1_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin2");
+  hmkpisb_cut_range_lo_2_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin2");
+  hmkpisb_cut_range_lo_3_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin2");
+  hmkpisb_cut_range_lo_4_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin2");
+  hmkpisb_cut_range_lo_5_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin2");
+  hmkpisb_cut_range_lo_6_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin2");
+
+    hmkpisb_cut_range_hi_1_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin3");
+  hmkpisb_cut_range_hi_2_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin3");
+  hmkpisb_cut_range_hi_3_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin3");
+  hmkpisb_cut_range_hi_4_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin3");
+  hmkpisb_cut_range_hi_5_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin3");
+  hmkpisb_cut_range_hi_6_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin3");
+  
+  hmkpisb_cut_range_lo_1_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin3");
+  hmkpisb_cut_range_lo_2_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin3");
+  hmkpisb_cut_range_lo_3_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin3");
+  hmkpisb_cut_range_lo_4_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin3");
+  hmkpisb_cut_range_lo_5_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin3");
+  hmkpisb_cut_range_lo_6_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin3");
+
+    hmkpisb_cut_range_hi_1_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin4");
+  hmkpisb_cut_range_hi_2_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin4");
+  hmkpisb_cut_range_hi_3_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin4");
+  hmkpisb_cut_range_hi_4_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin4");
+  hmkpisb_cut_range_hi_5_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin4");
+  hmkpisb_cut_range_hi_6_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin4");
+  
+  hmkpisb_cut_range_lo_1_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin4");
+  hmkpisb_cut_range_lo_2_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin4");
+  hmkpisb_cut_range_lo_3_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin4");
+  hmkpisb_cut_range_lo_4_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin4");
+  hmkpisb_cut_range_lo_5_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin4");
+  hmkpisb_cut_range_lo_6_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin4");
+
+    hmkpisb_cut_range_hi_1_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin5");
+  hmkpisb_cut_range_hi_2_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin5");
+  hmkpisb_cut_range_hi_3_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin5");
+  hmkpisb_cut_range_hi_4_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin5");
+  hmkpisb_cut_range_hi_5_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin5");
+  hmkpisb_cut_range_hi_6_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin5");
+  
+  hmkpisb_cut_range_lo_1_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin5");
+  hmkpisb_cut_range_lo_2_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin5");
+  hmkpisb_cut_range_lo_3_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin5");
+  hmkpisb_cut_range_lo_4_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin5");
+  hmkpisb_cut_range_lo_5_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin5");
+  hmkpisb_cut_range_lo_6_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin5");
+
+  //end time bins
   hmD0_pik_sig=(TH1*)file->Get(m_name+"_hmD0_pik_sig");
   hmD0_pik_sb=(TH1*)file->Get(m_name+"_hmD0_pik_sb");
   hmD0_pik_tot=(TH1*)file->Get(m_name+"_hmD0_pik");
@@ -254,6 +405,79 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   hmkpisb_cut_range_lo_4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4");
   hmkpisb_cut_range_lo_5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5");
   hmkpisb_cut_range_lo_6=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6");
+
+  //time bins
+  hmkpisb_cut_range_hi_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin1");
+  hmkpisb_cut_range_hi_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin1");
+  hmkpisb_cut_range_hi_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin1");
+  hmkpisb_cut_range_hi_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin1");
+  hmkpisb_cut_range_hi_5_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin1");
+  hmkpisb_cut_range_hi_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin1");
+  
+  hmkpisb_cut_range_lo_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin1");
+  hmkpisb_cut_range_lo_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin1");
+  hmkpisb_cut_range_lo_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin1");
+  hmkpisb_cut_range_lo_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin1");
+  hmkpisb_cut_range_lo_5_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin1");
+  hmkpisb_cut_range_lo_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin1");
+
+    hmkpisb_cut_range_hi_1_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin2");
+  hmkpisb_cut_range_hi_2_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin2");
+  hmkpisb_cut_range_hi_3_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin2");
+  hmkpisb_cut_range_hi_4_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin2");
+  hmkpisb_cut_range_hi_5_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin2");
+  hmkpisb_cut_range_hi_6_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin2");
+  
+  hmkpisb_cut_range_lo_1_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin2");
+  hmkpisb_cut_range_lo_2_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin2");
+  hmkpisb_cut_range_lo_3_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin2");
+  hmkpisb_cut_range_lo_4_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin2");
+  hmkpisb_cut_range_lo_5_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin2");
+  hmkpisb_cut_range_lo_6_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin2");
+
+    hmkpisb_cut_range_hi_1_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin3");
+  hmkpisb_cut_range_hi_2_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin3");
+  hmkpisb_cut_range_hi_3_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin3");
+  hmkpisb_cut_range_hi_4_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin3");
+  hmkpisb_cut_range_hi_5_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin3");
+  hmkpisb_cut_range_hi_6_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin3");
+  
+  hmkpisb_cut_range_lo_1_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin3");
+  hmkpisb_cut_range_lo_2_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin3");
+  hmkpisb_cut_range_lo_3_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin3");
+  hmkpisb_cut_range_lo_4_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin3");
+  hmkpisb_cut_range_lo_5_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin3");
+  hmkpisb_cut_range_lo_6_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin3");
+
+    hmkpisb_cut_range_hi_1_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin4");
+  hmkpisb_cut_range_hi_2_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin4");
+  hmkpisb_cut_range_hi_3_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin4");
+  hmkpisb_cut_range_hi_4_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin4");
+  hmkpisb_cut_range_hi_5_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin4");
+  hmkpisb_cut_range_hi_6_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin4");
+  
+  hmkpisb_cut_range_lo_1_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin4");
+  hmkpisb_cut_range_lo_2_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin4");
+  hmkpisb_cut_range_lo_3_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin4");
+  hmkpisb_cut_range_lo_4_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin4");
+  hmkpisb_cut_range_lo_5_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin4");
+  hmkpisb_cut_range_lo_6_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin4");
+
+    hmkpisb_cut_range_hi_1_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin5");
+  hmkpisb_cut_range_hi_2_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin5");
+  hmkpisb_cut_range_hi_3_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin5");
+  hmkpisb_cut_range_hi_4_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin5");
+  hmkpisb_cut_range_hi_5_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin5");
+  hmkpisb_cut_range_hi_6_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin5");
+  
+  hmkpisb_cut_range_lo_1_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin5");
+  hmkpisb_cut_range_lo_2_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin5");
+  hmkpisb_cut_range_lo_3_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin5");
+  hmkpisb_cut_range_lo_4_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin5");
+  hmkpisb_cut_range_lo_5_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin5");
+  hmkpisb_cut_range_lo_6_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin5");
+
+  //end time bins
   
   hmD0_pik_sig=(TH1*)f1->Get(m_name+"_hmD0_pik_sig");
   hmD0_pik_sb=(TH1*)f1->Get(m_name+"_hmD0_pik_sb");
@@ -294,6 +518,7 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   TH2* h2k_probnne_dstar_sideband_high_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2k_probnne_dstar_sideband_high");
   TH2* h2k_probnne_dstar_sideband_low_bkg=(TH2*)fbkg->Get(m_name_ss+"_h2k_probnne_dstar_sideband_low");
   */
+  //same sign to subtract
   TH1* hmsig_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmsig");
   TH1* hmkpisb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb");
   TH1* hmkksb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkksb");
@@ -317,7 +542,79 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   TH1* hmkpisb_cut_range_lo_4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4");
   TH1* hmkpisb_cut_range_lo_5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5");
   TH1* hmkpisb_cut_range_lo_6_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6");
+  //time bins
+  TH1* hmkpisb_cut_range_hi_1_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin1");
+  TH1* hmkpisb_cut_range_hi_2_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin1");
+  TH1* hmkpisb_cut_range_hi_3_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin1");
+  TH1* hmkpisb_cut_range_hi_4_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin1");
+  TH1* hmkpisb_cut_range_hi_5_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin1");
+  TH1* hmkpisb_cut_range_hi_6_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin1");
   
+  TH1* hmkpisb_cut_range_lo_1_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin1");
+  TH1* hmkpisb_cut_range_lo_2_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin1");
+  TH1* hmkpisb_cut_range_lo_3_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin1");
+  TH1* hmkpisb_cut_range_lo_4_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin1");
+  TH1* hmkpisb_cut_range_lo_5_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin1");
+  TH1* hmkpisb_cut_range_lo_6_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin1");
+
+    TH1* hmkpisb_cut_range_hi_1_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin2");
+  TH1* hmkpisb_cut_range_hi_2_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin2");
+  TH1* hmkpisb_cut_range_hi_3_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin2");
+  TH1* hmkpisb_cut_range_hi_4_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin2");
+  TH1* hmkpisb_cut_range_hi_5_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin2");
+  TH1* hmkpisb_cut_range_hi_6_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin2");
+  
+  TH1* hmkpisb_cut_range_lo_1_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin2");
+  TH1* hmkpisb_cut_range_lo_2_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin2");
+  TH1* hmkpisb_cut_range_lo_3_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin2");
+  TH1* hmkpisb_cut_range_lo_4_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin2");
+  TH1* hmkpisb_cut_range_lo_5_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin2");
+  TH1* hmkpisb_cut_range_lo_6_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin2");
+
+    TH1* hmkpisb_cut_range_hi_1_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin3");
+  TH1* hmkpisb_cut_range_hi_2_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin3");
+  TH1* hmkpisb_cut_range_hi_3_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin3");
+  TH1* hmkpisb_cut_range_hi_4_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin3");
+  TH1* hmkpisb_cut_range_hi_5_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin3");
+  TH1* hmkpisb_cut_range_hi_6_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin3");
+  
+  TH1* hmkpisb_cut_range_lo_1_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin3");
+  TH1* hmkpisb_cut_range_lo_2_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin3");
+  TH1* hmkpisb_cut_range_lo_3_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin3");
+  TH1* hmkpisb_cut_range_lo_4_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin3");
+  TH1* hmkpisb_cut_range_lo_5_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin3");
+  TH1* hmkpisb_cut_range_lo_6_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin3");
+
+    TH1* hmkpisb_cut_range_hi_1_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin4");
+  TH1* hmkpisb_cut_range_hi_2_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin4");
+  TH1* hmkpisb_cut_range_hi_3_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin4");
+  TH1* hmkpisb_cut_range_hi_4_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin4");
+  TH1* hmkpisb_cut_range_hi_5_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin4");
+  TH1* hmkpisb_cut_range_hi_6_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin4");
+  
+  TH1* hmkpisb_cut_range_lo_1_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin4");
+  TH1* hmkpisb_cut_range_lo_2_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin4");
+  TH1* hmkpisb_cut_range_lo_3_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin4");
+  TH1* hmkpisb_cut_range_lo_4_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin4");
+  TH1* hmkpisb_cut_range_lo_5_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin4");
+  TH1* hmkpisb_cut_range_lo_6_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin4");
+
+    TH1* hmkpisb_cut_range_hi_1_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin5");
+  TH1* hmkpisb_cut_range_hi_2_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin5");
+  TH1* hmkpisb_cut_range_hi_3_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin5");
+  TH1* hmkpisb_cut_range_hi_4_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin5");
+  TH1* hmkpisb_cut_range_hi_5_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin5");
+  TH1* hmkpisb_cut_range_hi_6_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin5");
+  
+  TH1* hmkpisb_cut_range_lo_1_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin5");
+  TH1* hmkpisb_cut_range_lo_2_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin5");
+  TH1* hmkpisb_cut_range_lo_3_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin5");
+  TH1* hmkpisb_cut_range_lo_4_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin5");
+  TH1* hmkpisb_cut_range_lo_5_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin5");
+  TH1* hmkpisb_cut_range_lo_6_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin5");
+
+ 
+  //end time bins
   TH1* hmD0_pik_sig_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik_sig");
   TH1* hmD0_pik_sb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik_sb");
   TH1* hmD0_pik_tot_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik");
@@ -379,6 +676,80 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   hmkpisb_cut_range_lo_4->Add(hmkpisb_cut_range_lo_4_bkg,-1);
   hmkpisb_cut_range_lo_5->Add(hmkpisb_cut_range_lo_5_bkg,-1);
   hmkpisb_cut_range_lo_6->Add(hmkpisb_cut_range_lo_6_bkg,-1);
+
+
+  //time bins
+  hmkpisb_cut_range_hi_1_time_bin1->Add(hmkpisb_cut_range_hi_1_time_bin1_bkg,-1);
+  hmkpisb_cut_range_hi_2_time_bin1->Add(hmkpisb_cut_range_hi_2_time_bin1_bkg,-1);
+  hmkpisb_cut_range_hi_3_time_bin1->Add(hmkpisb_cut_range_hi_3_time_bin1_bkg,-1);
+  hmkpisb_cut_range_hi_4_time_bin1->Add(hmkpisb_cut_range_hi_4_time_bin1_bkg,-1);
+  hmkpisb_cut_range_hi_5_time_bin1->Add(hmkpisb_cut_range_hi_5_time_bin1_bkg,-1);
+  hmkpisb_cut_range_hi_6_time_bin1->Add(hmkpisb_cut_range_hi_6_time_bin1_bkg,-1);
+  
+  hmkpisb_cut_range_lo_1_time_bin1->Add(hmkpisb_cut_range_lo_1_time_bin1_bkg,-1);
+  hmkpisb_cut_range_lo_2_time_bin1->Add(hmkpisb_cut_range_lo_2_time_bin1_bkg,-1);
+  hmkpisb_cut_range_lo_3_time_bin1->Add(hmkpisb_cut_range_lo_3_time_bin1_bkg,-1);
+  hmkpisb_cut_range_lo_4_time_bin1->Add(hmkpisb_cut_range_lo_4_time_bin1_bkg,-1);
+  hmkpisb_cut_range_lo_5_time_bin1->Add(hmkpisb_cut_range_lo_5_time_bin1_bkg,-1);
+  hmkpisb_cut_range_lo_6_time_bin1->Add(hmkpisb_cut_range_lo_6_time_bin1_bkg,-1);
+
+    hmkpisb_cut_range_hi_1_time_bin2->Add(hmkpisb_cut_range_hi_1_time_bin2_bkg,-1);
+  hmkpisb_cut_range_hi_2_time_bin2->Add(hmkpisb_cut_range_hi_2_time_bin2_bkg,-1);
+  hmkpisb_cut_range_hi_3_time_bin2->Add(hmkpisb_cut_range_hi_3_time_bin2_bkg,-1);
+  hmkpisb_cut_range_hi_4_time_bin2->Add(hmkpisb_cut_range_hi_4_time_bin2_bkg,-1);
+  hmkpisb_cut_range_hi_5_time_bin2->Add(hmkpisb_cut_range_hi_5_time_bin2_bkg,-1);
+  hmkpisb_cut_range_hi_6_time_bin2->Add(hmkpisb_cut_range_hi_6_time_bin2_bkg,-1);
+  
+  hmkpisb_cut_range_lo_1_time_bin2->Add(hmkpisb_cut_range_lo_1_time_bin2_bkg,-1);
+  hmkpisb_cut_range_lo_2_time_bin2->Add(hmkpisb_cut_range_lo_2_time_bin2_bkg,-1);
+  hmkpisb_cut_range_lo_3_time_bin2->Add(hmkpisb_cut_range_lo_3_time_bin2_bkg,-1);
+  hmkpisb_cut_range_lo_4_time_bin2->Add(hmkpisb_cut_range_lo_4_time_bin2_bkg,-1);
+  hmkpisb_cut_range_lo_5_time_bin2->Add(hmkpisb_cut_range_lo_5_time_bin2_bkg,-1);
+  hmkpisb_cut_range_lo_6_time_bin2->Add(hmkpisb_cut_range_lo_6_time_bin2_bkg,-1);
+
+    hmkpisb_cut_range_hi_1_time_bin3->Add(hmkpisb_cut_range_hi_1_time_bin3_bkg,-1);
+  hmkpisb_cut_range_hi_2_time_bin3->Add(hmkpisb_cut_range_hi_2_time_bin3_bkg,-1);
+  hmkpisb_cut_range_hi_3_time_bin3->Add(hmkpisb_cut_range_hi_3_time_bin3_bkg,-1);
+  hmkpisb_cut_range_hi_4_time_bin3->Add(hmkpisb_cut_range_hi_4_time_bin3_bkg,-1);
+  hmkpisb_cut_range_hi_5_time_bin3->Add(hmkpisb_cut_range_hi_5_time_bin3_bkg,-1);
+  hmkpisb_cut_range_hi_6_time_bin3->Add(hmkpisb_cut_range_hi_6_time_bin3_bkg,-1);
+  
+  hmkpisb_cut_range_lo_1_time_bin3->Add(hmkpisb_cut_range_lo_1_time_bin3_bkg,-1);
+  hmkpisb_cut_range_lo_2_time_bin3->Add(hmkpisb_cut_range_lo_2_time_bin3_bkg,-1);
+  hmkpisb_cut_range_lo_3_time_bin3->Add(hmkpisb_cut_range_lo_3_time_bin3_bkg,-1);
+  hmkpisb_cut_range_lo_4_time_bin3->Add(hmkpisb_cut_range_lo_4_time_bin3_bkg,-1);
+  hmkpisb_cut_range_lo_5_time_bin3->Add(hmkpisb_cut_range_lo_5_time_bin3_bkg,-1);
+  hmkpisb_cut_range_lo_6_time_bin3->Add(hmkpisb_cut_range_lo_6_time_bin3_bkg,-1);
+
+    hmkpisb_cut_range_hi_1_time_bin4->Add(hmkpisb_cut_range_hi_1_time_bin4_bkg,-1);
+  hmkpisb_cut_range_hi_2_time_bin4->Add(hmkpisb_cut_range_hi_2_time_bin4_bkg,-1);
+  hmkpisb_cut_range_hi_3_time_bin4->Add(hmkpisb_cut_range_hi_3_time_bin4_bkg,-1);
+  hmkpisb_cut_range_hi_4_time_bin4->Add(hmkpisb_cut_range_hi_4_time_bin4_bkg,-1);
+  hmkpisb_cut_range_hi_5_time_bin4->Add(hmkpisb_cut_range_hi_5_time_bin4_bkg,-1);
+  hmkpisb_cut_range_hi_6_time_bin4->Add(hmkpisb_cut_range_hi_6_time_bin4_bkg,-1);
+  
+  hmkpisb_cut_range_lo_1_time_bin4->Add(hmkpisb_cut_range_lo_1_time_bin4_bkg,-1);
+  hmkpisb_cut_range_lo_2_time_bin4->Add(hmkpisb_cut_range_lo_2_time_bin4_bkg,-1);
+  hmkpisb_cut_range_lo_3_time_bin4->Add(hmkpisb_cut_range_lo_3_time_bin4_bkg,-1);
+  hmkpisb_cut_range_lo_4_time_bin4->Add(hmkpisb_cut_range_lo_4_time_bin4_bkg,-1);
+  hmkpisb_cut_range_lo_5_time_bin4->Add(hmkpisb_cut_range_lo_5_time_bin4_bkg,-1);
+  hmkpisb_cut_range_lo_6_time_bin4->Add(hmkpisb_cut_range_lo_6_time_bin4_bkg,-1);
+
+    hmkpisb_cut_range_hi_1_time_bin5->Add(hmkpisb_cut_range_hi_1_time_bin5_bkg,-1);
+  hmkpisb_cut_range_hi_2_time_bin5->Add(hmkpisb_cut_range_hi_2_time_bin5_bkg,-1);
+  hmkpisb_cut_range_hi_3_time_bin5->Add(hmkpisb_cut_range_hi_3_time_bin5_bkg,-1);
+  hmkpisb_cut_range_hi_4_time_bin5->Add(hmkpisb_cut_range_hi_4_time_bin5_bkg,-1);
+  hmkpisb_cut_range_hi_5_time_bin5->Add(hmkpisb_cut_range_hi_5_time_bin5_bkg,-1);
+  hmkpisb_cut_range_hi_6_time_bin5->Add(hmkpisb_cut_range_hi_6_time_bin5_bkg,-1);
+  
+  hmkpisb_cut_range_lo_1_time_bin5->Add(hmkpisb_cut_range_lo_1_time_bin5_bkg,-1);
+  hmkpisb_cut_range_lo_2_time_bin5->Add(hmkpisb_cut_range_lo_2_time_bin5_bkg,-1);
+  hmkpisb_cut_range_lo_3_time_bin5->Add(hmkpisb_cut_range_lo_3_time_bin5_bkg,-1);
+  hmkpisb_cut_range_lo_4_time_bin5->Add(hmkpisb_cut_range_lo_4_time_bin5_bkg,-1);
+  hmkpisb_cut_range_lo_5_time_bin5->Add(hmkpisb_cut_range_lo_5_time_bin5_bkg,-1);
+  hmkpisb_cut_range_lo_6_time_bin5->Add(hmkpisb_cut_range_lo_6_time_bin5_bkg,-1);
+
+  //end time bins
   
   hmD0_pik_sig->Add(hmD0_pik_sig_bkg,-1);
   hmD0_pik_sb->Add(hmD0_pik_sb_bkg,-1);
@@ -444,6 +815,73 @@ betastar_plot::~betastar_plot() {
   delete hmkpisb_cut_range_lo_4 ;
   delete hmkpisb_cut_range_lo_5 ;
   delete hmkpisb_cut_range_lo_6 ;
+  //time bins
+  delete hmkpisb_cut_range_hi_1_time_bin1;
+  delete hmkpisb_cut_range_hi_2_time_bin1;
+  delete hmkpisb_cut_range_hi_3_time_bin1;
+  delete hmkpisb_cut_range_hi_4_time_bin1;
+  delete hmkpisb_cut_range_hi_5_time_bin1;
+  delete hmkpisb_cut_range_hi_6_time_bin1;
+  delete hmkpisb_cut_range_lo_1_time_bin1;
+  delete hmkpisb_cut_range_lo_2_time_bin1;
+  delete hmkpisb_cut_range_lo_3_time_bin1;
+  delete hmkpisb_cut_range_lo_4_time_bin1;
+  delete hmkpisb_cut_range_lo_5_time_bin1;
+  delete hmkpisb_cut_range_lo_6_time_bin1;
+
+    delete hmkpisb_cut_range_hi_1_time_bin2;
+  delete hmkpisb_cut_range_hi_2_time_bin2;
+  delete hmkpisb_cut_range_hi_3_time_bin2;
+  delete hmkpisb_cut_range_hi_4_time_bin2;
+  delete hmkpisb_cut_range_hi_5_time_bin2;
+  delete hmkpisb_cut_range_hi_6_time_bin2;
+  delete hmkpisb_cut_range_lo_1_time_bin2;
+  delete hmkpisb_cut_range_lo_2_time_bin2;
+  delete hmkpisb_cut_range_lo_3_time_bin2;
+  delete hmkpisb_cut_range_lo_4_time_bin2;
+  delete hmkpisb_cut_range_lo_5_time_bin2;
+  delete hmkpisb_cut_range_lo_6_time_bin2;
+
+    delete hmkpisb_cut_range_hi_1_time_bin3;
+  delete hmkpisb_cut_range_hi_2_time_bin3;
+  delete hmkpisb_cut_range_hi_3_time_bin3;
+  delete hmkpisb_cut_range_hi_4_time_bin3;
+  delete hmkpisb_cut_range_hi_5_time_bin3;
+  delete hmkpisb_cut_range_hi_6_time_bin3;
+  delete hmkpisb_cut_range_lo_1_time_bin3;
+  delete hmkpisb_cut_range_lo_2_time_bin3;
+  delete hmkpisb_cut_range_lo_3_time_bin3;
+  delete hmkpisb_cut_range_lo_4_time_bin3;
+  delete hmkpisb_cut_range_lo_5_time_bin3;
+  delete hmkpisb_cut_range_lo_6_time_bin3;
+
+    delete hmkpisb_cut_range_hi_1_time_bin4;
+  delete hmkpisb_cut_range_hi_2_time_bin4;
+  delete hmkpisb_cut_range_hi_3_time_bin4;
+  delete hmkpisb_cut_range_hi_4_time_bin4;
+  delete hmkpisb_cut_range_hi_5_time_bin4;
+  delete hmkpisb_cut_range_hi_6_time_bin4;
+  delete hmkpisb_cut_range_lo_1_time_bin4;
+  delete hmkpisb_cut_range_lo_2_time_bin4;
+  delete hmkpisb_cut_range_lo_3_time_bin4;
+  delete hmkpisb_cut_range_lo_4_time_bin4;
+  delete hmkpisb_cut_range_lo_5_time_bin4;
+  delete hmkpisb_cut_range_lo_6_time_bin4;
+
+    delete hmkpisb_cut_range_hi_1_time_bin5;
+  delete hmkpisb_cut_range_hi_2_time_bin5;
+  delete hmkpisb_cut_range_hi_3_time_bin5;
+  delete hmkpisb_cut_range_hi_4_time_bin5;
+  delete hmkpisb_cut_range_hi_5_time_bin5;
+  delete hmkpisb_cut_range_hi_6_time_bin5;
+  delete hmkpisb_cut_range_lo_1_time_bin5;
+  delete hmkpisb_cut_range_lo_2_time_bin5;
+  delete hmkpisb_cut_range_lo_3_time_bin5;
+  delete hmkpisb_cut_range_lo_4_time_bin5;
+  delete hmkpisb_cut_range_lo_5_time_bin5;
+  delete hmkpisb_cut_range_lo_6_time_bin5;
+
+  //end time bins
   delete hmD0_pik_sig ;
   delete hmD0_pik_sb ;
   delete hmD0_pik_tot ;
@@ -1040,6 +1478,77 @@ void betastar_plot::SavePlots(){
   hmkpisb_cut_range_lo_4->Write();
   hmkpisb_cut_range_lo_5->Write();
   hmkpisb_cut_range_lo_6->Write();
+  //time bins
+  hmkpisb_cut_range_hi_1_time_bin1->Write();
+  hmkpisb_cut_range_hi_2_time_bin1->Write();
+  hmkpisb_cut_range_hi_3_time_bin1->Write();
+  hmkpisb_cut_range_hi_4_time_bin1->Write();
+  hmkpisb_cut_range_hi_5_time_bin1->Write();
+  hmkpisb_cut_range_hi_6_time_bin1->Write();
+  
+  hmkpisb_cut_range_lo_1_time_bin1->Write();
+  hmkpisb_cut_range_lo_2_time_bin1->Write();
+  hmkpisb_cut_range_lo_3_time_bin1->Write();
+  hmkpisb_cut_range_lo_4_time_bin1->Write();
+  hmkpisb_cut_range_lo_5_time_bin1->Write();
+  hmkpisb_cut_range_lo_6_time_bin1->Write();
+
+  hmkpisb_cut_range_hi_1_time_bin2->Write();
+  hmkpisb_cut_range_hi_2_time_bin2->Write();
+  hmkpisb_cut_range_hi_3_time_bin2->Write();
+  hmkpisb_cut_range_hi_4_time_bin2->Write();
+  hmkpisb_cut_range_hi_5_time_bin2->Write();
+  hmkpisb_cut_range_hi_6_time_bin2->Write();
+  
+  hmkpisb_cut_range_lo_1_time_bin2->Write();
+  hmkpisb_cut_range_lo_2_time_bin2->Write();
+  hmkpisb_cut_range_lo_3_time_bin2->Write();
+  hmkpisb_cut_range_lo_4_time_bin2->Write();
+  hmkpisb_cut_range_lo_5_time_bin2->Write();
+  hmkpisb_cut_range_lo_6_time_bin2->Write();
+
+    hmkpisb_cut_range_hi_1_time_bin3->Write();
+  hmkpisb_cut_range_hi_2_time_bin3->Write();
+  hmkpisb_cut_range_hi_3_time_bin3->Write();
+  hmkpisb_cut_range_hi_4_time_bin3->Write();
+  hmkpisb_cut_range_hi_5_time_bin3->Write();
+  hmkpisb_cut_range_hi_6_time_bin3->Write();
+  
+  hmkpisb_cut_range_lo_1_time_bin3->Write();
+  hmkpisb_cut_range_lo_2_time_bin3->Write();
+  hmkpisb_cut_range_lo_3_time_bin3->Write();
+  hmkpisb_cut_range_lo_4_time_bin3->Write();
+  hmkpisb_cut_range_lo_5_time_bin3->Write();
+  hmkpisb_cut_range_lo_6_time_bin3->Write();
+
+    hmkpisb_cut_range_hi_1_time_bin4->Write();
+  hmkpisb_cut_range_hi_2_time_bin4->Write();
+  hmkpisb_cut_range_hi_3_time_bin4->Write();
+  hmkpisb_cut_range_hi_4_time_bin4->Write();
+  hmkpisb_cut_range_hi_5_time_bin4->Write();
+  hmkpisb_cut_range_hi_6_time_bin4->Write();
+  
+  hmkpisb_cut_range_lo_1_time_bin4->Write();
+  hmkpisb_cut_range_lo_2_time_bin4->Write();
+  hmkpisb_cut_range_lo_3_time_bin4->Write();
+  hmkpisb_cut_range_lo_4_time_bin4->Write();
+  hmkpisb_cut_range_lo_5_time_bin4->Write();
+  hmkpisb_cut_range_lo_6_time_bin4->Write();
+
+    hmkpisb_cut_range_hi_1_time_bin5->Write();
+  hmkpisb_cut_range_hi_2_time_bin5->Write();
+  hmkpisb_cut_range_hi_3_time_bin5->Write();
+  hmkpisb_cut_range_hi_4_time_bin5->Write();
+  hmkpisb_cut_range_hi_5_time_bin5->Write();
+  hmkpisb_cut_range_hi_6_time_bin5->Write();
+  
+  hmkpisb_cut_range_lo_1_time_bin5->Write();
+  hmkpisb_cut_range_lo_2_time_bin5->Write();
+  hmkpisb_cut_range_lo_3_time_bin5->Write();
+  hmkpisb_cut_range_lo_4_time_bin5->Write();
+  hmkpisb_cut_range_lo_5_time_bin5->Write();
+  hmkpisb_cut_range_lo_6_time_bin5->Write();
+  //end time bins
   hmD0_pik_sig->Write();
   hmD0_pik_sb->Write();
   hmD0_pik_tot->Write();
@@ -1192,7 +1701,7 @@ double betastar_plot::getErrorFromPropagation(RooRealVar* x,RooAbsPdf* model, Ro
   
 }
 
-void betastar_plot::FitWSDoubleMisIDLiang(){
+void betastar_plot::FitWSDoubleMisIDLiang(){////the testing method
   double_misid_subtr = (TH1*)double_misid_dmass_dst_sig_region->Clone("double_misid_subtr");
   double_misid_subtr->Sumw2();
   TH1* double_misid_sideband_scaled = (TH1*)double_misid_dmass_dst_sideband_region->Clone("double_misid_sideband_scaled");
@@ -1363,6 +1872,7 @@ void betastar_plot::FitWSDoubleMisIDTimeDependence(){
     box->Draw();
     ct->SaveAs("./SavedFits/betastar/"+m_name+Form("_betastar_double_misid_d0_sideband_subtr_bin%d.pdf",i+i));
   }
+  //now extract the values.
 }
 
 //helper function to get the error of the ratio of integrals of TF1 sidebands and signal
@@ -1389,4 +1899,63 @@ double betastar_plot::ErrorFromTF1(TF1* f1, Int_t npars, double* pars, const dou
   double err_Rat= TMath::Sqrt(vF*(mat*vF));
   return err_Rat;
   
+}
+
+std::vector<double> betastar_plot::extractWSDoubleMisIDLiang(TH1* h){
+  TF1* f1 = new TF1("f1", "[0]*([1]+x)",1740,2100);
+  f1->SetParameter(0,0.1);
+  f1->SetParameter(1,-200);
+		   
+  TFitResultPtr r = h->Fit("f1", "WLERS","",1780+4,1940);
+  TMatrixDSym mat = r->GetCorrelationMatrix();
+  const double x0[2] = {(1.86484-3*0.008)*1e3, (1.86484+3*0.008)*1e3};
+
+  h->GetYaxis()->SetRangeUser(0,1.1*h->GetMaximum());
+  TCanvas *ctemp = new TCanvas();
+  h->Draw();
+  f1->SetLineColor(kMagenta);
+  f1->Draw("psame");
+  TBox *box = new TBox(x0[0], 0, x0[1], h->GetMaximum());
+  box->SetFillColor(kGreen+2);
+  box->SetFillColorAlpha(kGreen+2,0.5);
+  box->Draw();
+  ctemp->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_double_misid_d0_sideband_subtracted_fit_liang.pdf");
+  double* pars = f1->GetParameters();
+  const Double_t* epars = f1->GetParErrors();
+  //double int1, int2, int0;
+  const Int_t npars = f1->GetNpar();
+  double sigint = (int2f(x0[1], pars, npars) - int2f(x0[0], pars, npars));
+  TVectorD vF(npars);
+
+  
+  double* newpars = new double[npars];
+  for (int j=0;j<npars;j++){
+    for (int k=0;k<npars;k++) newpars[k] = pars[k];
+    newpars[j] = pars[j]+epars[j];
+    Double_t yhigh = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars));
+
+    newpars[j] = pars[j]-epars[j];
+    Double_t ylow = (int2f(x0[1], newpars, npars) - int2f(x0[0], newpars, npars));
+    
+    vF[j] = 0.5*(yhigh-ylow);
+
+  }
+  Double_t error = TMath::Sqrt(vF*(mat*vF));
+
+  f1->SetParameters(pars);
+  //integrate by hand as steffi suggested
+  double thefinalans(0.);
+  for(int bin=h->FindBin(1864.84-24);bin<=h->FindBin(1864.84+24);++bin){
+    thefinalans+=  f1->Eval(h->GetBinCenter(bin));
+  }
+ 
+  cout<<"Resulting number of D0 peaking background events "<<f1->Integral(x0[0],x0[1])/h->GetBinWidth(1)<<" +/- "<<error/h->GetBinWidth(1)<<endl;
+  cout<<"double checking the calculation with the analytic integral gives "<<sigint/h->GetBinWidth(1)<<endl;
+
+  std::vector<double> ret;
+  ret.push_back(f1->Integral(x0[0],x0[1])/h->GetBinWidth(1));
+  ret.push_back(error/h->GetBinWidth(1));
+
+  return ret;
+
 }
