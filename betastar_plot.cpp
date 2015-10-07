@@ -62,7 +62,7 @@ betastar_plot::betastar_plot(TString name  ) {
   h2sig = new TH2D(name+"_h2sig","",200,-1.,1.,200,1.2,2.0);
   h2tot = new TH2D(name+"_h2tot","",200,-1.,1.,200,1.2,2.0);
    h2kpisb = (TH2*)h2sig->Clone(name+"_h2kpisb");
-  
+   
    h2kpisb_hi = (TH2*)h2sig->Clone(name+"_h2kpisb_hi");
    h2kpisb_lo = (TH2*)h2sig->Clone(name+"_h2kpisb_lo");
   
@@ -408,6 +408,7 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
 
   //time bins
   hmkpisb_cut_range_hi_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin1");
+  cout<<"double check timebin from file, name = "<<hmkpisb_cut_range_hi_1_time_bin1->GetName()<<endl;
   hmkpisb_cut_range_hi_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin1");
   hmkpisb_cut_range_hi_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin1");
   hmkpisb_cut_range_hi_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin1");
@@ -415,6 +416,7 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   hmkpisb_cut_range_hi_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin1");
   
   hmkpisb_cut_range_lo_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin1");
+    cout<<"double check timebin from file, name = "<<hmkpisb_cut_range_lo_1_time_bin1->GetName()<<endl;
   hmkpisb_cut_range_lo_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin1");
   hmkpisb_cut_range_lo_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin1");
   hmkpisb_cut_range_lo_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin1");
@@ -1139,7 +1141,7 @@ void betastar_plot::DrawPlots(){
     h2kksb->Draw("same");
     h2pipisb->Draw("same");
     h2piksb->Draw("same");
-    hmsig->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / .2%f MeV",hmsig->GetBinWidth(1)));
+    hmsig->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f MeV",hmsig->GetBinWidth(1)));
     TPad* pad = (TPad*)cv->cd(3);
     pad->SetLogy(1);
     if(w_local!=NULL){makefitplot(w_local, hmsig, hmkpisb);}
@@ -1147,18 +1149,18 @@ void betastar_plot::DrawPlots(){
       hmsig->Draw("e");
       hmkpisb->Draw("esame");
     }
-    hmpiksb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / .2%f",hmpiksb->GetBinWidth(1)));
+    hmpiksb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f",hmpiksb->GetBinWidth(1)));
     cv->cd(4);
     if(w_local!=NULL){makefitplot(w_local, hmpiksb);}
     else{hmpiksb->Draw("e");}
     //
     cv->cd(5);
-    hmkksb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / .2%f",hmkksb->GetBinWidth(1)));
+    hmkksb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f",hmkksb->GetBinWidth(1)));
     if(w_local!=NULL){makefitplot(w_local, hmkksb,1);}
     else{hmkksb->Draw("e");}
     //
     cv->cd(6);
-    hmpipisb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / .2%f",hmpipisb->GetBinWidth(1)));
+    hmpipisb->SetTitle(Form(";m(D^{0}#pi_{S})[MeV];Entries / %.2f",hmpipisb->GetBinWidth(1)));
     if(w_local!=NULL){makefitplot(w_local, hmpipisb,1);}
     else{hmpipisb->Draw("e");}
     
@@ -1583,7 +1585,7 @@ void betastar_plot::FitWSDoubleMisID(){
   double_misid_sideband_scaled->Scale(pik_background_subtraction_ratio_result);
   double_misid_subtr->Add(double_misid_sideband_scaled,-1);
   //now we have the histogram, fit it with a second order polynomial.
-  RooRealVar* x = new RooRealVar("x","m(K #pi)",1700,2100,"MeV");
+  RooRealVar* x = new RooRealVar("x","m(K #pi)",1780,1940,"MeV");
   x->setRange("lo",1780+4,(1.86484 - 5*0.008)*1e3 -4);
   x->setRange("hi",(1.86484 + 5*0.008)*1e3+4,1944-4);
   x->setRange("sig",1864.84-24,1864.84+24);
@@ -1717,10 +1719,14 @@ void betastar_plot::FitWSDoubleMisIDLiang(){////the testing method
   //f1->SetParLimits(0, 1e-4, 1e5);
   //\f1->SetParLimits(1, 1.86484*1e3,3000*1e3);
   //f1->SetParLimits(2, 0, 1.86484*1e3);
+  f1->SetParLimits(0,0.001,2);
   f1->SetParameter(0,0.1);
+  f1->SetParLimits(1,-300,-0.1);
   f1->SetParameter(1,-200);
+
+  
 		   
-  TFitResultPtr r = double_misid_subtr->Fit("f1", "WLERS","",1780+4,1940);
+  TFitResultPtr r = double_misid_subtr->Fit("f1", "LWERS","",1780+4,1940);
   TMatrixDSym mat = r->GetCorrelationMatrix();
   //  const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
   //  const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
@@ -1847,32 +1853,29 @@ void betastar_plot::FitWSDoubleMisIDTimeDependence(){
     the_bkgs[i]->Sumw2();
     the_hists[i]->Add(the_bkgs[i],-1);
   }
+  TFile *ftmp_bs = new TFile("./SavedFits/betastar/"+m_name+"_liang_fit_for_time_dept_hists.root","RECREATE");
+  ftmp_bs->cd();
+  for(auto hist: the_hists){
+    hist->Write();
+  }//write before fit
+  ftmp_bs->Close();
+  std::vector< std::vector<double> > the_result;
   //now do the fit as with liang's shiz
-  TF1* f1 = new TF1("f1", "[0]*([1]+x)",1740,2100);
-  f1->SetParameter(0,0.1);
-  f1->SetParameter(1,-200);
-  f1->SetLineColor(kMagenta);
-  TFitResultPtr r[5];
-  //const double x1[2] = {1.758*1e3, (1.86484-5*0.008)*1e3};
-  //const double x2[2] = {(1.86484+5*0.008)*1e3, (2.07)*1e3};
-  const double x0[2] = {(1.86484-3*0.008)*1e3, (1.86484+3*0.008)*1e3};
-  //const double x_full[2]={1784,1940};
-  TCanvas *ct = new TCanvas();
-  TBox *box = new TBox(x0[0], 0, x0[1], double_misid_subtr->GetMaximum());
-  box->SetFillColor(kGreen+2);
-  box->SetFillColorAlpha(kGreen+2,0.5);
-  
+
   for(int i=0;i<5;++i){
     the_hists[i]->GetYaxis()->SetRangeUser(0,1.1*double_misid_subtr->GetMaximum());
-    r[i] = the_hists[i]->Fit("f1","ES","",1784,1940);
-    TMatrixDSym mat = r[i]->GetCorrelationMatrix();
-    the_hists[i]->Draw();
-    
-    f1->Draw("psame");
-    box->Draw();
-    ct->SaveAs("./SavedFits/betastar/"+m_name+Form("_betastar_double_misid_d0_sideband_subtr_bin%d.pdf",i+i));
+    the_result.push_back(extractWSDoubleMisIDLiang(the_hists[i],Form("bin_%d",i+1)));
   }
   //now extract the values.
+  cout<<"extracted peaking background in time bins: "<<endl;
+  cout<<"Bin "<<setw(15)<<"Value"<<setw(15)<<"error"<<endl;
+  int counter=0;
+  for(auto list: the_result){
+    counter++;
+    cout<<counter<<setw(15)<<list[0]<<setw(15)<<list[1]<<endl;
+  }
+  //write to a root file for double checking.
+
 }
 
 //helper function to get the error of the ratio of integrals of TF1 sidebands and signal
@@ -1901,10 +1904,12 @@ double betastar_plot::ErrorFromTF1(TF1* f1, Int_t npars, double* pars, const dou
   
 }
 
-std::vector<double> betastar_plot::extractWSDoubleMisIDLiang(TH1* h){
+std::vector<double> betastar_plot::extractWSDoubleMisIDLiang(TH1* h, TString extraName){
   TF1* f1 = new TF1("f1", "[0]*([1]+x)",1740,2100);
+  //  f1->SetParRange(0,0.001,10);
+  //  f1->SetParRange(1,-10,10);
   f1->SetParameter(0,0.1);
-  f1->SetParameter(1,-200);
+  f1->SetParameter(1,200);
 		   
   TFitResultPtr r = h->Fit("f1", "WLERS","",1780+4,1940);
   TMatrixDSym mat = r->GetCorrelationMatrix();
@@ -1919,7 +1924,8 @@ std::vector<double> betastar_plot::extractWSDoubleMisIDLiang(TH1* h){
   box->SetFillColor(kGreen+2);
   box->SetFillColorAlpha(kGreen+2,0.5);
   box->Draw();
-  ctemp->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_double_misid_d0_sideband_subtracted_fit_liang.pdf");
+  ctemp->SaveAs("./SavedFits/betastar/"+m_name+extraName+"_betastar_double_misid_d0_sideband_subtracted_fit_liang.pdf");
+  ctemp->SaveAs("./SavedFits/betastar/"+m_name+extraName+"_betastar_double_misid_d0_sideband_subtracted_fit_liang.C");
   double* pars = f1->GetParameters();
   const Double_t* epars = f1->GetParErrors();
   //double int1, int2, int0;

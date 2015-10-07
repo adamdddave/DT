@@ -278,12 +278,120 @@ void DT_D0_mix_CPV::Loop()
       //1813.2 - 1819
       //1819 - 1824.84
       //lo sideband
-      if((k_daughter+pi_daughter).M()*1e3>1790 && (k_daughter+pi_daughter).M()*1e3<=1795.8){bs_plot->hmkpisb_cut_range_lo_1->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1795.8 && (k_daughter+pi_daughter).M()*1e3<=1801.6){bs_plot->hmkpisb_cut_range_lo_2->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1801.6 && (k_daughter+pi_daughter).M()*1e3<=1807.4){bs_plot->hmkpisb_cut_range_lo_3->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1807.4 && (k_daughter+pi_daughter).M()*1e3<=1813.2){bs_plot->hmkpisb_cut_range_lo_4->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1813.2 && (k_daughter+pi_daughter).M()*1e3<=1819.){bs_plot->hmkpisb_cut_range_lo_5->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1819. && (k_daughter+pi_daughter).M()*1e3<=(pdg_d0_m-40)){bs_plot->hmkpisb_cut_range_lo_6->Fill(dstm);}
+      if((k_daughter+pi_daughter).M()*1e3>1790 && (k_daughter+pi_daughter).M()*1e3<=1795.8){
+	bs_plot->hmkpisb_cut_range_lo_1->Fill(dstm);
+	//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_lo_1_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_lo_1_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_lo_1_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_1_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_1_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1795.8 && (k_daughter+pi_daughter).M()*1e3<=1801.6){
+	bs_plot->hmkpisb_cut_range_lo_2->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_lo_2_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_lo_2_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_lo_2_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_2_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_2_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1801.6 && (k_daughter+pi_daughter).M()*1e3<=1807.4){
+	bs_plot->hmkpisb_cut_range_lo_3->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_lo_3_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_lo_3_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_lo_3_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_3_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_3_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1807.4 && (k_daughter+pi_daughter).M()*1e3<=1813.2){
+	bs_plot->hmkpisb_cut_range_lo_4->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_lo_4_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_lo_4_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_lo_4_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_4_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_4_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1813.2 && (k_daughter+pi_daughter).M()*1e3<=1819.){
+	bs_plot->hmkpisb_cut_range_lo_5->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_lo_5_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_lo_5_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_lo_5_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_5_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_5_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1819. && (k_daughter+pi_daughter).M()*1e3<=(pdg_d0_m-40)){
+	bs_plot->hmkpisb_cut_range_lo_6->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_lo_6_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_lo_6_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_lo_6_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_6_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_lo_6_time_bin5->Fill(dstm);
+	}
+      }
       //hi sideband
       //here we have
       //1904.84 - 1911.
@@ -293,13 +401,123 @@ void DT_D0_mix_CPV::Loop()
       //1928.4 - 1934.2
       //1934.2 - 1940
       //give the closest bins to the blinded region a bit more statistics
-      else if((k_daughter+pi_daughter).M()*1e3>(pdg_d0_m+40) && (k_daughter+pi_daughter).M()*1e3<=1911.){bs_plot->hmkpisb_cut_range_hi_1->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1911. && (k_daughter+pi_daughter).M()*1e3<=1916.8){bs_plot->hmkpisb_cut_range_hi_2->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1916.8 && (k_daughter+pi_daughter).M()*1e3<=1922.6){bs_plot->hmkpisb_cut_range_hi_3->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1922.6 && (k_daughter+pi_daughter).M()*1e3<=1928.4){bs_plot->hmkpisb_cut_range_hi_4->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1928.4 && (k_daughter+pi_daughter).M()*1e3<=1934.2){bs_plot->hmkpisb_cut_range_hi_5->Fill(dstm);}
-      else if((k_daughter+pi_daughter).M()*1e3>1934.2 && (k_daughter+pi_daughter).M()*1e3<=1940.){bs_plot->hmkpisb_cut_range_hi_6->Fill(dstm);}
+      else if((k_daughter+pi_daughter).M()*1e3>(pdg_d0_m+40) && (k_daughter+pi_daughter).M()*1e3<=1911.){
+	bs_plot->hmkpisb_cut_range_hi_1->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_hi_1_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_hi_1_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_hi_1_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_1_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_1_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1911. && (k_daughter+pi_daughter).M()*1e3<=1916.8){
+	bs_plot->hmkpisb_cut_range_hi_2->Fill(dstm);
+	//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_hi_2_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_hi_2_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_hi_2_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_2_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_2_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1916.8 && (k_daughter+pi_daughter).M()*1e3<=1922.6){
+	bs_plot->hmkpisb_cut_range_hi_3->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_hi_3_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_hi_3_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_hi_3_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_3_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_3_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1922.6 && (k_daughter+pi_daughter).M()*1e3<=1928.4){
+	bs_plot->hmkpisb_cut_range_hi_4->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_hi_4_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_hi_4_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_hi_4_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_4_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_4_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1928.4 && (k_daughter+pi_daughter).M()*1e3<=1934.2){
+	bs_plot->hmkpisb_cut_range_hi_5->Fill(dstm);
+	//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_hi_5_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_hi_5_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_hi_5_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_5_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_5_time_bin5->Fill(dstm);
+	}
+      }
+      else if((k_daughter+pi_daughter).M()*1e3>1934.2 && (k_daughter+pi_daughter).M()*1e3<=1940.){
+	bs_plot->hmkpisb_cut_range_hi_6->Fill(dstm);
+		//time bins
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+	  bs_plot->hmkpisb_cut_range_hi_6_time_bin1->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
+	  bs_plot->hmkpisb_cut_range_hi_6_time_bin2->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+	  bs_plot->hmkpisb_cut_range_hi_6_time_bin3->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_6_time_bin4->Fill(dstm);
+	}
+	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
+	  bs_plot->hmkpisb_cut_range_hi_6_time_bin5->Fill(dstm);
+	}
+      }
     }
+
+    
     //if(!doD0plots)continue;
     //fill the d0 mass histograms too
     //if WS, blind the signal region

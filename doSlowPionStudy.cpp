@@ -38,6 +38,10 @@ int main(int argc, char* const argv[]){
     //return 0;
   }
   //get the rooworkspace
+  if(!hasWorkspace){
+    cout<<"this should never happen!"<<endl;
+    return 0;
+  }
   TFile *ws_f = TFile::Open(argv[2]);
   RooWorkspace * w = (RooWorkspace*)ws_f->Get("rsw");
   //get all the fucking histograms

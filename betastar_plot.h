@@ -37,7 +37,7 @@ public:
   void SavePlots();
   void FitWSDoubleMisID();
   void FitWSDoubleMisIDTimeDependence();
-  std::vector<double> extractWSDoubleMisIDLiang(TH1* h);//to implement
+  std::vector<double> extractWSDoubleMisIDLiang(TH1* h,TString extraName="");//to implement
   //void FitForPeakingBkg();
   double getErrorFromPropagation(RooRealVar* x, RooAbsPdf* model, RooFitResult* fr, RooDataHist* data,Double_t xmin, Double_t xmax, Double_t sig_min, Double_t sig_max,bool linearfit=false);
   double ErrorFromTF1(TF1* f1,Int_t npars, double* pars, const double* epars,TMatrixDSym mat,double sb_low_min, double sb_low_max, double sb_hi_min, double sb_hi_max,double sig_min, double sig_max);
