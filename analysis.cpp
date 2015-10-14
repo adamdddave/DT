@@ -272,7 +272,7 @@ int main(int argc, char* const argv[]){
   rs_looper.muon_vs_slow_pion_OWNPV_X->Write();
   rs_looper.muon_vs_slow_pion_OWNPV_Y->Write();
   rs_looper.muon_vs_slow_pion_OWNPV_Z->Write();
-
+  rs_looper.cos_muon_d0_angle->Write();
   //ss
   
   rs_ss_looper.dstar_mass_plot->Write();
@@ -408,7 +408,7 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.muon_vs_slow_pion_OWNPV_X->Write();
   rs_ss_looper.muon_vs_slow_pion_OWNPV_Y->Write();
   rs_ss_looper.muon_vs_slow_pion_OWNPV_Z->Write();
-
+  rs_ss_looper.cos_muon_d0_angle->Write();
   
   fout->Close();
   WrongB wrongb("wrongb",rs_looper,rs_ss_looper);
@@ -548,7 +548,7 @@ int main(int argc, char* const argv[]){
   ws_looper.muon_vs_slow_pion_OWNPV_X->Write();
   ws_looper.muon_vs_slow_pion_OWNPV_Y->Write();
   ws_looper.muon_vs_slow_pion_OWNPV_Z->Write();
-
+  ws_looper.cos_muon_d0_angle->Write();
 
   //ss
   ws_ss_looper.dstar_mass_plot->Write();
@@ -683,7 +683,7 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.muon_vs_slow_pion_OWNPV_X->Write();
   ws_ss_looper.muon_vs_slow_pion_OWNPV_Y->Write();
   ws_ss_looper.muon_vs_slow_pion_OWNPV_Z->Write();
-
+  ws_ss_looper.cos_muon_d0_angle->Write();
   
   fout2->Close();
   WrongB wrongbws("wrongbws",ws_looper,ws_ss_looper);

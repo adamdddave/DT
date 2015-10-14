@@ -1740,7 +1740,8 @@ public :
   TH2D* muon_vs_slow_pion_OWNPV_X;
   TH2D* muon_vs_slow_pion_OWNPV_Y;
   TH2D* muon_vs_slow_pion_OWNPV_Z;
-  
+
+  TH1D* cos_muon_d0_angle;
   //TH1D* kaon_pidk_plot;
   //TH1D* daughter_pi_pid_k_plot;
   //no need for these two, as we only want the ranges of PID from the original cpv analysis and the new.
@@ -1788,7 +1789,7 @@ private:
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
-  const double pis_ghost_prob_cut = 0.5;//no units
+  const double pis_ghost_prob_cut = 0.25;//no units
   //const double pis_pt_cut = 100;//MeV
   //const double pis_probnnp_cut =  0.4;//less than this, no unitso
   //  const double mu_ip_chi2_cut = 100;//no units
@@ -2490,6 +2491,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    muon_vs_slow_pion_OWNPV_X = new TH2D(name+"_mu_vs_slow_pion_ownpvX",";#pi_{S} Own PV X; #mu Own PV X",400,-2,2,400,-2,2);
    muon_vs_slow_pion_OWNPV_Y = new TH2D(name+"_mu_vs_slow_pion_ownpvY",";#pi_{S} Own PV Y; #mu Own PV Y",400,-2,2,400,-2,2);
    muon_vs_slow_pion_OWNPV_Z = new TH2D(name+"_mu_vs_slow_pion_ownpvZ",";#pi_{S} Own PV Z; #mu Own PV Z",1000,-500,500,1000,-500,500);
+   cos_muon_d0_angle = new TH1D(name+"_cos_muon_d0_angle","cos(#theta_{D^{0}#mu});cos(#theta_{D^{0}#mu});Entries / 0.05",40,-1,1);
 }
 
 DT_D0_mix_CPV::~DT_D0_mix_CPV()

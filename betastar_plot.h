@@ -180,6 +180,156 @@ public:
   TH1* hmkpisb_cut_range_lo_4_time_bin5;
   TH1* hmkpisb_cut_range_lo_5_time_bin5;
   TH1* hmkpisb_cut_range_lo_6_time_bin5;
+  //positive
+    
+  TH1* hmkpisb_pos_cut_range_hi_1_time_bin1;
+  TH1* hmkpisb_pos_cut_range_hi_2_time_bin1;
+  TH1* hmkpisb_pos_cut_range_hi_3_time_bin1;
+  TH1* hmkpisb_pos_cut_range_hi_4_time_bin1;
+  TH1* hmkpisb_pos_cut_range_hi_5_time_bin1;
+  TH1* hmkpisb_pos_cut_range_hi_6_time_bin1;
+
+  TH1* hmkpisb_pos_cut_range_lo_1_time_bin1;
+  TH1* hmkpisb_pos_cut_range_lo_2_time_bin1;
+  TH1* hmkpisb_pos_cut_range_lo_3_time_bin1;
+  TH1* hmkpisb_pos_cut_range_lo_4_time_bin1;
+  TH1* hmkpisb_pos_cut_range_lo_5_time_bin1;
+  TH1* hmkpisb_pos_cut_range_lo_6_time_bin1;
+
+  
+  TH1* hmkpisb_pos_cut_range_hi_1_time_bin2;
+  TH1* hmkpisb_pos_cut_range_hi_2_time_bin2;
+  TH1* hmkpisb_pos_cut_range_hi_3_time_bin2;
+  TH1* hmkpisb_pos_cut_range_hi_4_time_bin2;
+  TH1* hmkpisb_pos_cut_range_hi_5_time_bin2;
+  TH1* hmkpisb_pos_cut_range_hi_6_time_bin2;
+
+  TH1* hmkpisb_pos_cut_range_lo_1_time_bin2;
+  TH1* hmkpisb_pos_cut_range_lo_2_time_bin2;
+  TH1* hmkpisb_pos_cut_range_lo_3_time_bin2;
+  TH1* hmkpisb_pos_cut_range_lo_4_time_bin2;
+  TH1* hmkpisb_pos_cut_range_lo_5_time_bin2;
+  TH1* hmkpisb_pos_cut_range_lo_6_time_bin2;
+
+  
+  TH1* hmkpisb_pos_cut_range_hi_1_time_bin3;
+  TH1* hmkpisb_pos_cut_range_hi_2_time_bin3;
+  TH1* hmkpisb_pos_cut_range_hi_3_time_bin3;
+  TH1* hmkpisb_pos_cut_range_hi_4_time_bin3;
+  TH1* hmkpisb_pos_cut_range_hi_5_time_bin3;
+  TH1* hmkpisb_pos_cut_range_hi_6_time_bin3;
+
+  TH1* hmkpisb_pos_cut_range_lo_1_time_bin3;
+  TH1* hmkpisb_pos_cut_range_lo_2_time_bin3;
+  TH1* hmkpisb_pos_cut_range_lo_3_time_bin3;
+  TH1* hmkpisb_pos_cut_range_lo_4_time_bin3;
+  TH1* hmkpisb_pos_cut_range_lo_5_time_bin3;
+  TH1* hmkpisb_pos_cut_range_lo_6_time_bin3;
+
+  
+  TH1* hmkpisb_pos_cut_range_hi_1_time_bin4;
+  TH1* hmkpisb_pos_cut_range_hi_2_time_bin4;
+  TH1* hmkpisb_pos_cut_range_hi_3_time_bin4;
+  TH1* hmkpisb_pos_cut_range_hi_4_time_bin4;
+  TH1* hmkpisb_pos_cut_range_hi_5_time_bin4;
+  TH1* hmkpisb_pos_cut_range_hi_6_time_bin4;
+
+  TH1* hmkpisb_pos_cut_range_lo_1_time_bin4;
+  TH1* hmkpisb_pos_cut_range_lo_2_time_bin4;
+  TH1* hmkpisb_pos_cut_range_lo_3_time_bin4;
+  TH1* hmkpisb_pos_cut_range_lo_4_time_bin4;
+  TH1* hmkpisb_pos_cut_range_lo_5_time_bin4;
+  TH1* hmkpisb_pos_cut_range_lo_6_time_bin4;
+
+  
+  TH1* hmkpisb_pos_cut_range_hi_1_time_bin5;
+  TH1* hmkpisb_pos_cut_range_hi_2_time_bin5;
+  TH1* hmkpisb_pos_cut_range_hi_3_time_bin5;
+  TH1* hmkpisb_pos_cut_range_hi_4_time_bin5;
+  TH1* hmkpisb_pos_cut_range_hi_5_time_bin5;
+  TH1* hmkpisb_pos_cut_range_hi_6_time_bin5;
+
+  TH1* hmkpisb_pos_cut_range_lo_1_time_bin5;
+  TH1* hmkpisb_pos_cut_range_lo_2_time_bin5;
+  TH1* hmkpisb_pos_cut_range_lo_3_time_bin5;
+  TH1* hmkpisb_pos_cut_range_lo_4_time_bin5;
+  TH1* hmkpisb_pos_cut_range_lo_5_time_bin5;
+  TH1* hmkpisb_pos_cut_range_lo_6_time_bin5;
+  //negative
+    
+  TH1* hmkpisb_neg_cut_range_hi_1_time_bin1;
+  TH1* hmkpisb_neg_cut_range_hi_2_time_bin1;
+  TH1* hmkpisb_neg_cut_range_hi_3_time_bin1;
+  TH1* hmkpisb_neg_cut_range_hi_4_time_bin1;
+  TH1* hmkpisb_neg_cut_range_hi_5_time_bin1;
+  TH1* hmkpisb_neg_cut_range_hi_6_time_bin1;
+
+  TH1* hmkpisb_neg_cut_range_lo_1_time_bin1;
+  TH1* hmkpisb_neg_cut_range_lo_2_time_bin1;
+  TH1* hmkpisb_neg_cut_range_lo_3_time_bin1;
+  TH1* hmkpisb_neg_cut_range_lo_4_time_bin1;
+  TH1* hmkpisb_neg_cut_range_lo_5_time_bin1;
+  TH1* hmkpisb_neg_cut_range_lo_6_time_bin1;
+
+  
+  TH1* hmkpisb_neg_cut_range_hi_1_time_bin2;
+  TH1* hmkpisb_neg_cut_range_hi_2_time_bin2;
+  TH1* hmkpisb_neg_cut_range_hi_3_time_bin2;
+  TH1* hmkpisb_neg_cut_range_hi_4_time_bin2;
+  TH1* hmkpisb_neg_cut_range_hi_5_time_bin2;
+  TH1* hmkpisb_neg_cut_range_hi_6_time_bin2;
+
+  TH1* hmkpisb_neg_cut_range_lo_1_time_bin2;
+  TH1* hmkpisb_neg_cut_range_lo_2_time_bin2;
+  TH1* hmkpisb_neg_cut_range_lo_3_time_bin2;
+  TH1* hmkpisb_neg_cut_range_lo_4_time_bin2;
+  TH1* hmkpisb_neg_cut_range_lo_5_time_bin2;
+  TH1* hmkpisb_neg_cut_range_lo_6_time_bin2;
+
+  
+  TH1* hmkpisb_neg_cut_range_hi_1_time_bin3;
+  TH1* hmkpisb_neg_cut_range_hi_2_time_bin3;
+  TH1* hmkpisb_neg_cut_range_hi_3_time_bin3;
+  TH1* hmkpisb_neg_cut_range_hi_4_time_bin3;
+  TH1* hmkpisb_neg_cut_range_hi_5_time_bin3;
+  TH1* hmkpisb_neg_cut_range_hi_6_time_bin3;
+
+  TH1* hmkpisb_neg_cut_range_lo_1_time_bin3;
+  TH1* hmkpisb_neg_cut_range_lo_2_time_bin3;
+  TH1* hmkpisb_neg_cut_range_lo_3_time_bin3;
+  TH1* hmkpisb_neg_cut_range_lo_4_time_bin3;
+  TH1* hmkpisb_neg_cut_range_lo_5_time_bin3;
+  TH1* hmkpisb_neg_cut_range_lo_6_time_bin3;
+
+  
+  TH1* hmkpisb_neg_cut_range_hi_1_time_bin4;
+  TH1* hmkpisb_neg_cut_range_hi_2_time_bin4;
+  TH1* hmkpisb_neg_cut_range_hi_3_time_bin4;
+  TH1* hmkpisb_neg_cut_range_hi_4_time_bin4;
+  TH1* hmkpisb_neg_cut_range_hi_5_time_bin4;
+  TH1* hmkpisb_neg_cut_range_hi_6_time_bin4;
+
+  TH1* hmkpisb_neg_cut_range_lo_1_time_bin4;
+  TH1* hmkpisb_neg_cut_range_lo_2_time_bin4;
+  TH1* hmkpisb_neg_cut_range_lo_3_time_bin4;
+  TH1* hmkpisb_neg_cut_range_lo_4_time_bin4;
+  TH1* hmkpisb_neg_cut_range_lo_5_time_bin4;
+  TH1* hmkpisb_neg_cut_range_lo_6_time_bin4;
+
+  
+  TH1* hmkpisb_neg_cut_range_hi_1_time_bin5;
+  TH1* hmkpisb_neg_cut_range_hi_2_time_bin5;
+  TH1* hmkpisb_neg_cut_range_hi_3_time_bin5;
+  TH1* hmkpisb_neg_cut_range_hi_4_time_bin5;
+  TH1* hmkpisb_neg_cut_range_hi_5_time_bin5;
+  TH1* hmkpisb_neg_cut_range_hi_6_time_bin5;
+
+  TH1* hmkpisb_neg_cut_range_lo_1_time_bin5;
+  TH1* hmkpisb_neg_cut_range_lo_2_time_bin5;
+  TH1* hmkpisb_neg_cut_range_lo_3_time_bin5;
+  TH1* hmkpisb_neg_cut_range_lo_4_time_bin5;
+  TH1* hmkpisb_neg_cut_range_lo_5_time_bin5;
+  TH1* hmkpisb_neg_cut_range_lo_6_time_bin5;
   //end time bins
   
   TH1* hmD0_pik_sig ;

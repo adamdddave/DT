@@ -51,15 +51,15 @@ void DT_D0_mix_CPV::Loop()
     if(!(
          B_VFit_status[0]==0 &&
 	 //combined pid samples
-	 ((K_PIDK>kpidk_cut&&Pd_PIDK<pi_dau_pidk_cut)//tight tight
-	  ||(K_PIDK>kpidk_cut&&Pd_PIDK<2 && Pd_PIDK>=-5)//tight loose
-	  ||(K_PIDK>2.&&K_PIDK<=8.&&Pd_PIDK<pi_dau_pidk_cut)//loose tight
-	  )&&
-	 /*K_PIDK>kpidk_cut&&//tight K
+	 // ((K_PIDK>kpidk_cut&&Pd_PIDK<pi_dau_pidk_cut)//tight tight
+	 //  ||(K_PIDK>kpidk_cut&&Pd_PIDK<2 && Pd_PIDK>=-5)//tight loose
+	 //  ||(K_PIDK>2.&&K_PIDK<=8.&&Pd_PIDK<pi_dau_pidk_cut)//loose tight
+	 //  )&&
+	 K_PIDK>kpidk_cut&&//tight K
 	 //K_PIDK>2.&&K_PIDK<=8.&&//loose K
-         Pd_PIDK<pi_dau_pidk_cut &&//tight pi
+	 Pd_PIDK<pi_dau_pidk_cut &&//tight pi
 	 //Pd_PIDK<2 && Pd_PIDK>=-5 &&//loose pi
-	 */
+	 
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
          Mu_L0MuonDecision_TOS==1&&
@@ -283,18 +283,28 @@ void DT_D0_mix_CPV::Loop()
 	//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_lo_1_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_1_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_1_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_lo_1_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_1_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_1_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_lo_1_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_1_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_1_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_1_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_1_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_1_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_1_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_1_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_1_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1795.8 && (k_daughter+pi_daughter).M()*1e3<=1801.6){
@@ -302,18 +312,28 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_lo_2_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_2_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_2_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_lo_2_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_2_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_2_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_lo_2_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_2_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_2_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_2_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_2_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_2_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_2_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_2_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_2_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1801.6 && (k_daughter+pi_daughter).M()*1e3<=1807.4){
@@ -321,18 +341,28 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_lo_3_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_3_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_3_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_lo_3_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_3_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_3_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_lo_3_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_3_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_3_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_3_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_3_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_3_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_3_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_3_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_3_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1807.4 && (k_daughter+pi_daughter).M()*1e3<=1813.2){
@@ -340,18 +370,28 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_lo_4_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_4_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_4_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_lo_4_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_4_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_4_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_lo_4_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_4_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_4_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_4_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_4_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_4_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_4_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_4_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_4_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1813.2 && (k_daughter+pi_daughter).M()*1e3<=1819.){
@@ -359,18 +399,28 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_lo_5_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_5_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_5_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_lo_5_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_5_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_5_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_lo_5_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_5_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_5_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_5_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_5_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_5_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_5_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_5_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_5_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1819. && (k_daughter+pi_daughter).M()*1e3<=(pdg_d0_m-40)){
@@ -378,18 +428,28 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_lo_6_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_6_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_6_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_lo_6_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_6_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_6_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_lo_6_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_6_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_6_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_6_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_6_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_6_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_lo_6_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_6_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_6_time_bin5->Fill(dstm);}//negative
 	}
       }
       //hi sideband
@@ -406,18 +466,28 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_hi_1_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_1_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_1_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_hi_1_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_1_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_1_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_hi_1_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_1_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_1_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_1_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_1_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_1_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_1_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_1_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_1_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1911. && (k_daughter+pi_daughter).M()*1e3<=1916.8){
@@ -425,18 +495,28 @@ void DT_D0_mix_CPV::Loop()
 	//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_hi_2_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_2_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_2_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_hi_2_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_2_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_2_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_hi_2_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_2_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_2_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_2_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_2_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_2_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_2_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_2_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_2_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1916.8 && (k_daughter+pi_daughter).M()*1e3<=1922.6){
@@ -444,18 +524,28 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_hi_3_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_3_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_3_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_hi_3_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_3_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_3_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_hi_3_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_3_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_3_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_3_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_3_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_3_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_3_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_3_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_3_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1922.6 && (k_daughter+pi_daughter).M()*1e3<=1928.4){
@@ -463,18 +553,28 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_hi_4_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_4_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_4_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_hi_4_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_4_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_4_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_hi_4_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_4_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_4_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_4_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_4_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_4_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_4_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_4_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_4_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1928.4 && (k_daughter+pi_daughter).M()*1e3<=1934.2){
@@ -482,18 +582,28 @@ void DT_D0_mix_CPV::Loop()
 	//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_hi_5_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_5_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_5_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_hi_5_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_5_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_5_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_hi_5_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_5_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_5_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_5_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_5_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_5_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_5_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_5_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_5_time_bin5->Fill(dstm);}//negative
 	}
       }
       else if((k_daughter+pi_daughter).M()*1e3>1934.2 && (k_daughter+pi_daughter).M()*1e3<=1940.){
@@ -501,22 +611,32 @@ void DT_D0_mix_CPV::Loop()
 		//time bins
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
 	  bs_plot->hmkpisb_cut_range_hi_6_time_bin1->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_6_time_bin1->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_6_time_bin1->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
 	  bs_plot->hmkpisb_cut_range_hi_6_time_bin2->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_6_time_bin2->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_6_time_bin2->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
 	  bs_plot->hmkpisb_cut_range_hi_6_time_bin3->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_6_time_bin3->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_6_time_bin3->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_6_time_bin4->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_6_time_bin4->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_6_time_bin4->Fill(dstm);}//negative
 	}
 	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
 	  bs_plot->hmkpisb_cut_range_hi_6_time_bin5->Fill(dstm);
+	  if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_6_time_bin5->Fill(dstm);}//positive
+	  else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_6_time_bin5->Fill(dstm);}//negative
 	}
       }
     }
-
+    //END OF TIME BINS
     
     //if(!doD0plots)continue;
     //fill the d0 mass histograms too
@@ -789,6 +909,9 @@ void DT_D0_mix_CPV::Loop()
     muon_vs_slow_pion_OWNPV_X->Fill(Ps_OWNPV_X,Mu_OWNPV_X);
     muon_vs_slow_pion_OWNPV_Y->Fill(Ps_OWNPV_Y,Mu_OWNPV_Y);
     muon_vs_slow_pion_OWNPV_Z->Fill(Ps_OWNPV_Z,Mu_OWNPV_Z);
+    //angle between d0 and muon vectors
+    //    cos_muon_d0_angle->Fill(TMath::Cos(d0_vector.Angle(mu_from_b.Vect())));
+    cos_muon_d0_angle->Fill(((D_PX*Mu_PX)+(D_PY*Mu_PY))/(D_PT*Mu_PT));//Solve the dot product by hand, only for xy plane
     //pos
     if(Ps_ID/TMath::Abs(Ps_ID)>0){
       b_flight_dist_vs_dstm_pos->Fill(dstm,B_FD_OWNPV);
