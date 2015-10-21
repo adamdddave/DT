@@ -11,3 +11,5 @@ were on the constrained mass. That has been fixed.
 Changed betastar to take a name variable to avoid memory leaks with histograms.
 //////
 6-16-15. Added complete anlysis code to github
+/////
+10-21-15: The only way to shut up augusto is to redo the whole analysis unbinned. This involves switching to a roo dataset to get things right
