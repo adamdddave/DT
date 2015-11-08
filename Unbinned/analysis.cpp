@@ -126,6 +126,7 @@ int main(int argc, char* const argv[]){
   
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");
   fout->cd();
+  rs_looper.newTree->Write();
   rs_looper.dstar_mass_plot->Write();
   rs_looper.d0_mass_plot->Write();
   rs_looper.b_mass_plot->Write();

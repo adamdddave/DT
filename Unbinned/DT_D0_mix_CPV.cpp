@@ -172,6 +172,10 @@ void DT_D0_mix_CPV::Loop()
     Double_t dstm = (d0_vector+slow_pion_vec).M()*1e3;
     Double_t Pis_CHARGE = Ps_ID/211.;
     Double_t Pi_CHARGE = Pd_ID/211.;
+    newPiScharge = (int)Pi_CHARGE;
+    newDstM = dstm;
+    newD0M = (k_daughter+pi_daughter).M()*1e3;
+    newDecayTime = (B_VFit_D0_ctau[0]/ d0_pdg_ct);
     Double_t beta = Pis_CHARGE*Pi_CHARGE*(pi_daughter.P()-k_daughter_as_pi.P())/(k_daughter_as_pi.P()+pi_daughter.P());
     //fill the d0 mass plot without any cuts on delta M to show the cut range
     d0_mass_plot->Fill((k_daughter+pi_daughter).M()*1e3);
@@ -954,7 +958,8 @@ void DT_D0_mix_CPV::Loop()
       b_fd_chi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),B_FDCHI2_OWNPV);
       d_logIPchi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(D_IPCHI2_OWNPV));
     }
-      
+    //at the end of all the other crap, fill the tree
+    newTree->Fill();
     
   }//loop on events
   

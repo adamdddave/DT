@@ -20,6 +20,7 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TNtuple.h>//for unbinned
 //other classes
 #include "betastar_plot.h"
 // Header file for the classes stored in the TTree if any.
@@ -1482,6 +1483,27 @@ public :
   TBranch        *b_L0Global;   //!
   TBranch        *b_Hlt1Global;   //!
   TBranch        *b_Hlt2Global;   //!
+
+
+  //all of these histograms can be deleted in the unbinned fit in favour of a new ttree.
+  //make a smaller ttree
+  //the variables we want to store are
+  //dstar mass as angelo defines
+  //d0 mass
+  //decay time
+  //dstar pt
+  //dstar p
+  //mu pt
+  //mu p
+  //slow pion charge
+  //polarity
+  //DTF chi2
+  //slow pion match ipchi2
+  //slow pion ghost prob
+  //D0 ipchi2
+  //B fdchi2
+  //mu ipchi2
+  
   
   TH1D* dstar_mass_plot;
   TH1D* d0_mass_plot;
@@ -1497,6 +1519,7 @@ public :
   TH1D* pis_match_chi2_neg;
 
   //for time integrated systematic studies.
+  
   //there are so many binned things, make a vector out of them instead. makes it easier in analysis.cpp to write things
   TH1D* dstar_mass_pt_bin1;
   TH1D* dstar_mass_pt_bin2;
@@ -1750,6 +1773,7 @@ public :
   TH2D* dstar_mass_vs_muIPchi2;
   TH2D* bmass_vs_muIPchi2;
   TH1D* decay_time_distr;
+  TTree* newTree;//want doubles, so you can't use tntuple
   betastar_plot *bs_plot;
   virtual Int_t passCuts();
   DT_D0_mix_CPV(TTree *tree=0);
@@ -1763,6 +1787,15 @@ public :
   virtual void     Show(Long64_t entry = -1);
 
 private:
+
+  TBranch* brDstM;
+  TBranch* brD0M;
+  TBranch* brTD0;
+  TBranch* brPisQ;
+  double newDstM;
+  double newD0M;
+  double newDecayTime;
+  int newPiScharge;
   TLorentzVector k_daughter;
   TLorentzVector pi_daughter;
   TLorentzVector mu_vec;
@@ -1902,6 +1935,13 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   Init(tree);
   TString name = tree->GetName();
   name.ReplaceAll("/DecayTree","");
+  //ntuple for shit
+  //ntp = new TNtuple("ntp","UnbinnedDatasetNtuple","dstarM:decayTime");
+  newTree = new TTree("newTree","newTreeForUnbinnnedDataset");
+  brDstM = newTree->Branch("dstarM",&newDstM,"dstarM/D");
+  brD0M = newTree->Branch("d0M",&newD0M,"d0M/D");
+  brTD0 = newTree->Branch("tD0", &newDecayTime, "tD0/D");
+  brPisQ = newTree->Branch("pisQ",&newPiScharge,"pisQ/I");
   dstar_mass_plot = new TH1D(name+"_dt_hist_dstar_m","", 500, 2000,2025);
   dstar_mass_plot->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot->GetBinWidth(1)));
 
