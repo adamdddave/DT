@@ -104,24 +104,49 @@ int main(int argc, char* const argv[]){
     lumi_tree->Add(rootfname[i]);
   }
   getLuminosity(lumi_tree);
+  bool usingMC=false;
+  bool usingPromptMC = false;
+  for(auto name: rootfname){
+    if(name.Contains("MC") && ! usingMC){
+      cout<<"using MC information! setting the correct flags"<<endl;
+      usingMC = true;
+      if(name.Contains("prompt")||name.Contains("Prompt")){
+	usingPromptMC = true;
+      }
+    }
+  }
+  
+  
   cout<<"rs tree"<<endl;
   DT_D0_mix_CPV rs_looper(rs_tree);
+  rs_looper.isMC = usingMC;
+  rs_looper.isPromptMC = usingPromptMC;
   rs_looper.Loop();
   rs_looper.bs_plot->SavePlots();
+
   cout<<"rs ss tree"<<endl;
   
   DT_D0_mix_CPV rs_ss_looper(rs_ss_tree);
+  rs_ss_looper.isMC = usingMC;
+  rs_ss_looper.isPromptMC = usingPromptMC;
   rs_ss_looper.Loop();
   rs_ss_looper.bs_plot->SavePlots();
+
   cout<<"ws tree"<<endl;
   DT_D0_mix_CPV ws_looper(ws_tree);
+  ws_looper.isMC = usingMC;
+  ws_looper.isPromptMC = usingPromptMC;
   ws_looper.Loop();
   ws_looper.bs_plot->SavePlots();
+
   cout<<"ws ss tree"<<endl;
   
   DT_D0_mix_CPV ws_ss_looper(ws_ss_tree);
+  ws_ss_looper.isMC = usingMC;
+  ws_ss_looper.isPromptMC = usingPromptMC;
   ws_ss_looper.Loop();
   ws_ss_looper.bs_plot->SavePlots();
+
   
   
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");
@@ -129,6 +154,11 @@ int main(int argc, char* const argv[]){
   rs_looper.dstar_mass_plot->Write();
   rs_looper.d0_mass_plot->Write();
   rs_looper.b_mass_plot->Write();
+  rs_looper.b_mass_plot_time_bin1->Write();
+  rs_looper.b_mass_plot_time_bin2->Write();
+  rs_looper.b_mass_plot_time_bin3->Write();
+  rs_looper.b_mass_plot_time_bin4->Write();
+  rs_looper.b_mass_plot_time_bin5->Write();
   rs_looper.dstar_pt->Write();
   rs_looper.dstar_p->Write();
   rs_looper.mu_pt->Write();
@@ -278,6 +308,11 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.dstar_mass_plot->Write();
   rs_ss_looper.d0_mass_plot->Write();
   rs_ss_looper.b_mass_plot->Write();
+  rs_ss_looper.b_mass_plot_time_bin1->Write();
+  rs_ss_looper.b_mass_plot_time_bin2->Write();
+  rs_ss_looper.b_mass_plot_time_bin3->Write();
+  rs_ss_looper.b_mass_plot_time_bin4->Write();
+  rs_ss_looper.b_mass_plot_time_bin5->Write();
   rs_ss_looper.decay_time_distr->Write();
   rs_looper.dstar_mass_vs_muIPchi2->Write();
   rs_ss_looper.dstar_mass_vs_muIPchi2->Write();
@@ -421,6 +456,11 @@ int main(int argc, char* const argv[]){
   ws_looper.dstar_mass_plot->Write();
   ws_looper.d0_mass_plot->Write();
   ws_looper.b_mass_plot->Write();
+  ws_looper.b_mass_plot_time_bin1->Write();
+  ws_looper.b_mass_plot_time_bin2->Write();
+  ws_looper.b_mass_plot_time_bin3->Write();
+  ws_looper.b_mass_plot_time_bin4->Write();
+  ws_looper.b_mass_plot_time_bin5->Write();
   ws_looper.dstar_pt->Write();
   ws_looper.dstar_p->Write();
   ws_looper.mu_pt->Write();
@@ -554,6 +594,11 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.dstar_mass_plot->Write();
   ws_ss_looper.d0_mass_plot->Write();
   ws_ss_looper.b_mass_plot->Write();
+  ws_ss_looper.b_mass_plot_time_bin1->Write();
+  ws_ss_looper.b_mass_plot_time_bin2->Write();
+  ws_ss_looper.b_mass_plot_time_bin3->Write();
+  ws_ss_looper.b_mass_plot_time_bin4->Write();
+  ws_ss_looper.b_mass_plot_time_bin5->Write();
   ws_ss_looper.decay_time_distr->Write();
   ws_ss_looper.dstar_mass_vs_muIPchi2->Write();
   ws_ss_looper.dstar_mass_vs_muIPchi2->Write();

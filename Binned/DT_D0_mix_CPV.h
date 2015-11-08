@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////
 // This class has been automatically generated on
 // Thu Jan 22 21:25:43 2015 by ROOT version 5.34/25
@@ -1482,6 +1481,10 @@ public :
   TBranch        *b_L0Global;   //!
   TBranch        *b_Hlt1Global;   //!
   TBranch        *b_Hlt2Global;   //!
+
+  //mc?
+  bool isMC;// = false;
+  bool isPromptMC;
   
   TH1D* dstar_mass_plot;
   TH1D* d0_mass_plot;
@@ -1742,15 +1745,30 @@ public :
   TH2D* muon_vs_slow_pion_OWNPV_Z;
 
   TH1D* cos_muon_d0_angle;
+  TH2D* slow_pion_PX_vs_PZ;
+  TH2D* slow_pion_PY_vs_PZ;
+  TH2D* slow_pion_PX_vs_PY;
+
+  TH1D* b_fd_chi2;
+  TH1D* b_fd;
+  TH1D* d0_log_ip_chi2;
+  
+  
   //TH1D* kaon_pidk_plot;
   //TH1D* daughter_pi_pid_k_plot;
   //no need for these two, as we only want the ranges of PID from the original cpv analysis and the new.
     
   TH1D* b_mass_plot;
+  TH1D* b_mass_plot_time_bin1;
+  TH1D* b_mass_plot_time_bin2;
+  TH1D* b_mass_plot_time_bin3;
+  TH1D* b_mass_plot_time_bin4;
+  TH1D* b_mass_plot_time_bin5;
   TH2D* dstar_mass_vs_muIPchi2;
   TH2D* bmass_vs_muIPchi2;
   TH1D* decay_time_distr;
   betastar_plot *bs_plot;
+
   virtual Int_t passCuts();
   DT_D0_mix_CPV(TTree *tree=0);
   virtual ~DT_D0_mix_CPV();
@@ -1761,7 +1779,7 @@ public :
   virtual void     Loop();
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
-
+  
 private:
   TLorentzVector k_daughter;
   TLorentzVector pi_daughter;
@@ -1782,7 +1800,7 @@ private:
   const double pi_dau_pidk_cut = -5;
   //  const double pi_dau_pidk_cut = 2;
   const double pi_slow_pide_cut=1;
-  const double pi_slow_probnnghost_cut = 0.5;
+  const double pi_slow_probnnghost_cut = 0.25;
   const double dmass_cut = 24;// MeV, for |m - m_pdg|<dmass_cut
   const double dstar_mass_cut = 0.9;
   const double mu_probnnmu_cut = 0.4;
@@ -1790,6 +1808,10 @@ private:
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
   const double pis_ghost_prob_cut = 0.25;//no units
+  //const double mu_log_ip_chi2_cut = 5;
+  const double mu_ip_chi2_cut = 100;
+  const double b_fd_cut = 100;
+  const double dtf_chi2_ndf_cut = 100;
   //const double pis_pt_cut = 100;//MeV
   //const double pis_probnnp_cut =  0.4;//less than this, no unitso
   //  const double mu_ip_chi2_cut = 100;//no units
@@ -2176,7 +2198,14 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   //here
   b_mass_plot = new TH1D(name+"_dt_hist_b_m","", 400, 2500,6500);
   b_mass_plot->SetTitle(Form("m(D^{*+}#mu^{-}); m(D^{*+}#mu^{-})[MeV]; Entries / %.2f",b_mass_plot->GetBinWidth(1)));
+  b_mass_plot_time_bin1 = (TH1D*)b_mass_plot->Clone("_time_bin1");
+  b_mass_plot_time_bin2 = (TH1D*)b_mass_plot->Clone("_time_bin2");
+  b_mass_plot_time_bin3 = (TH1D*)b_mass_plot->Clone("_time_bin3");
+  b_mass_plot_time_bin4 = (TH1D*)b_mass_plot->Clone("_time_bin4");
+  b_mass_plot_time_bin5 = (TH1D*)b_mass_plot->Clone("_time_bin5");
+  
   bs_plot = new betastar_plot(tree->GetName());
+
   dstar_mass_vs_muIPchi2 = new TH2D(name+"_dstar_mass_vs_muIPchi2","m(D^{0}#pi_{S}) vs #mu log(#chi^{2}_{IP}), Own PV; #mu log(#chi^{2}_{IP}); m(D^{0}#pi_{S})[MeV]",
 				    2000,0,20000,500,2000,2025);
   dstar_pt = new TH1D(name+"_dstar_pt","",1000,0., 20000);
@@ -2492,6 +2521,12 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    muon_vs_slow_pion_OWNPV_Y = new TH2D(name+"_mu_vs_slow_pion_ownpvY",";#pi_{S} Own PV Y; #mu Own PV Y",400,-2,2,400,-2,2);
    muon_vs_slow_pion_OWNPV_Z = new TH2D(name+"_mu_vs_slow_pion_ownpvZ",";#pi_{S} Own PV Z; #mu Own PV Z",1000,-500,500,1000,-500,500);
    cos_muon_d0_angle = new TH1D(name+"_cos_muon_d0_angle","cos(#theta_{D^{0}#mu});cos(#theta_{D^{0}#mu});Entries / 0.05",40,-1,1);
+
+   b_fd_chi2 = new TH1D(name+"_b_fd_chi2", ";B #chi^{2}_{FD}; Entries / 0.5",1000,0,500);
+   //HERE
+
+   
+   //b_fd = new TH1D(name+"_b_fd","; B Flight Distance[mm]; Entries / ")
 }
 
 DT_D0_mix_CPV::~DT_D0_mix_CPV()

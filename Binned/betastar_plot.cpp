@@ -110,239 +110,38 @@ betastar_plot::betastar_plot(TString name  ) {
    hmkpisb_cut_range_lo_5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5");
    hmkpisb_cut_range_lo_6 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6");
 
-   //time bins for total sideband method from mike
 
-   hmkpisb_cut_range_hi_1_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin1");
-   hmkpisb_cut_range_hi_2_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin1");
-   hmkpisb_cut_range_hi_3_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin1");
-   hmkpisb_cut_range_hi_4_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin1");
-   hmkpisb_cut_range_hi_5_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin1");
-   hmkpisb_cut_range_hi_6_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin1");
-
-   
-   hmkpisb_cut_range_lo_1_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin1");
-   hmkpisb_cut_range_lo_2_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin1");
-   hmkpisb_cut_range_lo_3_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin1");
-   hmkpisb_cut_range_lo_4_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin1");
-   hmkpisb_cut_range_lo_5_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin1");
-   hmkpisb_cut_range_lo_6_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin1");
+   hmkpisb_pos_cut_range_hi_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_1");
+   hmkpisb_pos_cut_range_hi_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_2");
+   hmkpisb_pos_cut_range_hi_3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_3");
+   hmkpisb_pos_cut_range_hi_4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_4");
+   hmkpisb_pos_cut_range_hi_5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_5");
+   hmkpisb_pos_cut_range_hi_6 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_6");
 
    
-   hmkpisb_cut_range_hi_1_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin2");
-   hmkpisb_cut_range_hi_2_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin2");
-   hmkpisb_cut_range_hi_3_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin2");
-   hmkpisb_cut_range_hi_4_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin2");
-   hmkpisb_cut_range_hi_5_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin2");
-   hmkpisb_cut_range_hi_6_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin2");
+   hmkpisb_pos_cut_range_lo_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_1");
+   hmkpisb_pos_cut_range_lo_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_2");
+   hmkpisb_pos_cut_range_lo_3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_3");
+   hmkpisb_pos_cut_range_lo_4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_4");
+   hmkpisb_pos_cut_range_lo_5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_5");
+   hmkpisb_pos_cut_range_lo_6 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_6");
+
+      
+   hmkpisb_neg_cut_range_hi_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_1");
+   hmkpisb_neg_cut_range_hi_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_2");
+   hmkpisb_neg_cut_range_hi_3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_3");
+   hmkpisb_neg_cut_range_hi_4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_4");
+   hmkpisb_neg_cut_range_hi_5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_5");
+   hmkpisb_neg_cut_range_hi_6 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_6");
 
    
-   hmkpisb_cut_range_lo_1_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin2");
-   hmkpisb_cut_range_lo_2_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin2");
-   hmkpisb_cut_range_lo_3_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin2");
-   hmkpisb_cut_range_lo_4_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin2");
-   hmkpisb_cut_range_lo_5_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin2");
-   hmkpisb_cut_range_lo_6_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin2");
+   hmkpisb_neg_cut_range_lo_1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_1");
+   hmkpisb_neg_cut_range_lo_2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_2");
+   hmkpisb_neg_cut_range_lo_3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_3");
+   hmkpisb_neg_cut_range_lo_4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_4");
+   hmkpisb_neg_cut_range_lo_5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_5");
+   hmkpisb_neg_cut_range_lo_6 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_6");
 
-   hmkpisb_cut_range_hi_1_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin3");
-   hmkpisb_cut_range_hi_2_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin3");
-   hmkpisb_cut_range_hi_3_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin3");
-   hmkpisb_cut_range_hi_4_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin3");
-   hmkpisb_cut_range_hi_5_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin3");
-   hmkpisb_cut_range_hi_6_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin3");
-
-   
-   hmkpisb_cut_range_lo_1_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin3");
-   hmkpisb_cut_range_lo_2_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin3");
-   hmkpisb_cut_range_lo_3_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin3");
-   hmkpisb_cut_range_lo_4_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin3");
-   hmkpisb_cut_range_lo_5_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin3");
-   hmkpisb_cut_range_lo_6_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin3");
-   
-   hmkpisb_cut_range_hi_1_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin4");
-   hmkpisb_cut_range_hi_2_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin4");
-   hmkpisb_cut_range_hi_3_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin4");
-   hmkpisb_cut_range_hi_4_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin4");
-   hmkpisb_cut_range_hi_5_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin4");
-   hmkpisb_cut_range_hi_6_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin4");
-
-   
-   hmkpisb_cut_range_lo_1_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin4");
-   hmkpisb_cut_range_lo_2_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin4");
-   hmkpisb_cut_range_lo_3_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin4");
-   hmkpisb_cut_range_lo_4_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin4");
-   hmkpisb_cut_range_lo_5_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin4");
-   hmkpisb_cut_range_lo_6_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin4");
-
-   hmkpisb_cut_range_hi_1_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_1_time_bin5");
-   hmkpisb_cut_range_hi_2_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_2_time_bin5");
-   hmkpisb_cut_range_hi_3_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_3_time_bin5");
-   hmkpisb_cut_range_hi_4_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_4_time_bin5");
-   hmkpisb_cut_range_hi_5_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_5_time_bin5");
-   hmkpisb_cut_range_hi_6_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_hi_6_time_bin5");
-
-   
-   hmkpisb_cut_range_lo_1_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_1_time_bin5");
-   hmkpisb_cut_range_lo_2_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_2_time_bin5");
-   hmkpisb_cut_range_lo_3_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_3_time_bin5");
-   hmkpisb_cut_range_lo_4_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_4_time_bin5");
-   hmkpisb_cut_range_lo_5_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_5_time_bin5");
-   hmkpisb_cut_range_lo_6_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_cut_range_lo_6_time_bin5");
-   //same thing, split by charge (ugh)
-   
-   hmkpisb_pos_cut_range_hi_1_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_1_time_bin1");
-   hmkpisb_pos_cut_range_hi_2_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_2_time_bin1");
-   hmkpisb_pos_cut_range_hi_3_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_3_time_bin1");
-   hmkpisb_pos_cut_range_hi_4_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_4_time_bin1");
-   hmkpisb_pos_cut_range_hi_5_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_5_time_bin1");
-   hmkpisb_pos_cut_range_hi_6_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_6_time_bin1");
-
-   
-   hmkpisb_pos_cut_range_lo_1_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_1_time_bin1");
-   hmkpisb_pos_cut_range_lo_2_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_2_time_bin1");
-   hmkpisb_pos_cut_range_lo_3_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_3_time_bin1");
-   hmkpisb_pos_cut_range_lo_4_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_4_time_bin1");
-   hmkpisb_pos_cut_range_lo_5_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_5_time_bin1");
-   hmkpisb_pos_cut_range_lo_6_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_6_time_bin1");
-
-   
-   hmkpisb_pos_cut_range_hi_1_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_1_time_bin2");
-   hmkpisb_pos_cut_range_hi_2_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_2_time_bin2");
-   hmkpisb_pos_cut_range_hi_3_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_3_time_bin2");
-   hmkpisb_pos_cut_range_hi_4_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_4_time_bin2");
-   hmkpisb_pos_cut_range_hi_5_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_5_time_bin2");
-   hmkpisb_pos_cut_range_hi_6_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_6_time_bin2");
-
-   
-   hmkpisb_pos_cut_range_lo_1_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_1_time_bin2");
-   hmkpisb_pos_cut_range_lo_2_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_2_time_bin2");
-   hmkpisb_pos_cut_range_lo_3_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_3_time_bin2");
-   hmkpisb_pos_cut_range_lo_4_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_4_time_bin2");
-   hmkpisb_pos_cut_range_lo_5_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_5_time_bin2");
-   hmkpisb_pos_cut_range_lo_6_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_6_time_bin2");
-
-   hmkpisb_pos_cut_range_hi_1_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_1_time_bin3");
-   hmkpisb_pos_cut_range_hi_2_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_2_time_bin3");
-   hmkpisb_pos_cut_range_hi_3_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_3_time_bin3");
-   hmkpisb_pos_cut_range_hi_4_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_4_time_bin3");
-   hmkpisb_pos_cut_range_hi_5_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_5_time_bin3");
-   hmkpisb_pos_cut_range_hi_6_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_6_time_bin3");
-
-   
-   hmkpisb_pos_cut_range_lo_1_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_1_time_bin3");
-   hmkpisb_pos_cut_range_lo_2_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_2_time_bin3");
-   hmkpisb_pos_cut_range_lo_3_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_3_time_bin3");
-   hmkpisb_pos_cut_range_lo_4_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_4_time_bin3");
-   hmkpisb_pos_cut_range_lo_5_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_5_time_bin3");
-   hmkpisb_pos_cut_range_lo_6_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_6_time_bin3");
-   
-   hmkpisb_pos_cut_range_hi_1_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_1_time_bin4");
-   hmkpisb_pos_cut_range_hi_2_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_2_time_bin4");
-   hmkpisb_pos_cut_range_hi_3_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_3_time_bin4");
-   hmkpisb_pos_cut_range_hi_4_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_4_time_bin4");
-   hmkpisb_pos_cut_range_hi_5_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_5_time_bin4");
-   hmkpisb_pos_cut_range_hi_6_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_6_time_bin4");
-
-   
-   hmkpisb_pos_cut_range_lo_1_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_1_time_bin4");
-   hmkpisb_pos_cut_range_lo_2_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_2_time_bin4");
-   hmkpisb_pos_cut_range_lo_3_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_3_time_bin4");
-   hmkpisb_pos_cut_range_lo_4_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_4_time_bin4");
-   hmkpisb_pos_cut_range_lo_5_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_5_time_bin4");
-   hmkpisb_pos_cut_range_lo_6_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_6_time_bin4");
-
-   hmkpisb_pos_cut_range_hi_1_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_1_time_bin5");
-   hmkpisb_pos_cut_range_hi_2_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_2_time_bin5");
-   hmkpisb_pos_cut_range_hi_3_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_3_time_bin5");
-   hmkpisb_pos_cut_range_hi_4_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_4_time_bin5");
-   hmkpisb_pos_cut_range_hi_5_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_5_time_bin5");
-   hmkpisb_pos_cut_range_hi_6_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_hi_6_time_bin5");
-
-   
-   hmkpisb_pos_cut_range_lo_1_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_1_time_bin5");
-   hmkpisb_pos_cut_range_lo_2_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_2_time_bin5");
-   hmkpisb_pos_cut_range_lo_3_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_3_time_bin5");
-   hmkpisb_pos_cut_range_lo_4_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_4_time_bin5");
-   hmkpisb_pos_cut_range_lo_5_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_5_time_bin5");
-   hmkpisb_pos_cut_range_lo_6_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_pos_cut_range_lo_6_time_bin5");
-   //negative
-   
-   hmkpisb_neg_cut_range_hi_1_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_1_time_bin1");
-   hmkpisb_neg_cut_range_hi_2_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_2_time_bin1");
-   hmkpisb_neg_cut_range_hi_3_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_3_time_bin1");
-   hmkpisb_neg_cut_range_hi_4_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_4_time_bin1");
-   hmkpisb_neg_cut_range_hi_5_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_5_time_bin1");
-   hmkpisb_neg_cut_range_hi_6_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_6_time_bin1");
-
-   
-   hmkpisb_neg_cut_range_lo_1_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_1_time_bin1");
-   hmkpisb_neg_cut_range_lo_2_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_2_time_bin1");
-   hmkpisb_neg_cut_range_lo_3_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_3_time_bin1");
-   hmkpisb_neg_cut_range_lo_4_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_4_time_bin1");
-   hmkpisb_neg_cut_range_lo_5_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_5_time_bin1");
-   hmkpisb_neg_cut_range_lo_6_time_bin1 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_6_time_bin1");
-
-   
-   hmkpisb_neg_cut_range_hi_1_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_1_time_bin2");
-   hmkpisb_neg_cut_range_hi_2_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_2_time_bin2");
-   hmkpisb_neg_cut_range_hi_3_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_3_time_bin2");
-   hmkpisb_neg_cut_range_hi_4_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_4_time_bin2");
-   hmkpisb_neg_cut_range_hi_5_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_5_time_bin2");
-   hmkpisb_neg_cut_range_hi_6_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_6_time_bin2");
-
-   
-   hmkpisb_neg_cut_range_lo_1_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_1_time_bin2");
-   hmkpisb_neg_cut_range_lo_2_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_2_time_bin2");
-   hmkpisb_neg_cut_range_lo_3_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_3_time_bin2");
-   hmkpisb_neg_cut_range_lo_4_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_4_time_bin2");
-   hmkpisb_neg_cut_range_lo_5_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_5_time_bin2");
-   hmkpisb_neg_cut_range_lo_6_time_bin2 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_6_time_bin2");
-
-   hmkpisb_neg_cut_range_hi_1_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_1_time_bin3");
-   hmkpisb_neg_cut_range_hi_2_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_2_time_bin3");
-   hmkpisb_neg_cut_range_hi_3_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_3_time_bin3");
-   hmkpisb_neg_cut_range_hi_4_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_4_time_bin3");
-   hmkpisb_neg_cut_range_hi_5_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_5_time_bin3");
-   hmkpisb_neg_cut_range_hi_6_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_6_time_bin3");
-
-   
-   hmkpisb_neg_cut_range_lo_1_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_1_time_bin3");
-   hmkpisb_neg_cut_range_lo_2_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_2_time_bin3");
-   hmkpisb_neg_cut_range_lo_3_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_3_time_bin3");
-   hmkpisb_neg_cut_range_lo_4_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_4_time_bin3");
-   hmkpisb_neg_cut_range_lo_5_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_5_time_bin3");
-   hmkpisb_neg_cut_range_lo_6_time_bin3 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_6_time_bin3");
-   
-   hmkpisb_neg_cut_range_hi_1_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_1_time_bin4");
-   hmkpisb_neg_cut_range_hi_2_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_2_time_bin4");
-   hmkpisb_neg_cut_range_hi_3_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_3_time_bin4");
-   hmkpisb_neg_cut_range_hi_4_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_4_time_bin4");
-   hmkpisb_neg_cut_range_hi_5_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_5_time_bin4");
-   hmkpisb_neg_cut_range_hi_6_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_6_time_bin4");
-
-   
-   hmkpisb_neg_cut_range_lo_1_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_1_time_bin4");
-   hmkpisb_neg_cut_range_lo_2_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_2_time_bin4");
-   hmkpisb_neg_cut_range_lo_3_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_3_time_bin4");
-   hmkpisb_neg_cut_range_lo_4_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_4_time_bin4");
-   hmkpisb_neg_cut_range_lo_5_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_5_time_bin4");
-   hmkpisb_neg_cut_range_lo_6_time_bin4 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_6_time_bin4");
-
-   hmkpisb_neg_cut_range_hi_1_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_1_time_bin5");
-   hmkpisb_neg_cut_range_hi_2_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_2_time_bin5");
-   hmkpisb_neg_cut_range_hi_3_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_3_time_bin5");
-   hmkpisb_neg_cut_range_hi_4_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_4_time_bin5");
-   hmkpisb_neg_cut_range_hi_5_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_5_time_bin5");
-   hmkpisb_neg_cut_range_hi_6_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_hi_6_time_bin5");
-
-   
-   hmkpisb_neg_cut_range_lo_1_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_1_time_bin5");
-   hmkpisb_neg_cut_range_lo_2_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_2_time_bin5");
-   hmkpisb_neg_cut_range_lo_3_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_3_time_bin5");
-   hmkpisb_neg_cut_range_lo_4_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_4_time_bin5");
-   hmkpisb_neg_cut_range_lo_5_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_5_time_bin5");
-   hmkpisb_neg_cut_range_lo_6_time_bin5 = (TH1*)hmsig->Clone(name+"_hmkpisb_neg_cut_range_lo_6_time_bin5");
-
-   //end time bins
     
     
    hmD0_pik_sig = new TH1D(name+"_hmD0_pik_sig","D^{0}->#pi K mass, #Delta M signal range; m(#pi K)[MeV];",200, 1700,2100);
@@ -404,6 +203,7 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
   hmkpisb_cut_range=(TH1*)file->Get(m_name+"_hmkpisb_cut_range");
   hmkpisb_cut_range_hi=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi");
   hmkpisb_cut_range_lo=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo");
+
   hmkpisb_cut_range_hi_1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1");
   hmkpisb_cut_range_hi_2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2");
   hmkpisb_cut_range_hi_3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3");
@@ -417,220 +217,37 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
   hmkpisb_cut_range_lo_4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4");
   hmkpisb_cut_range_lo_5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5");
   hmkpisb_cut_range_lo_6=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6");
-
-  //time bins
-  hmkpisb_cut_range_hi_1_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin1");
-  hmkpisb_cut_range_hi_2_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin1");
-  hmkpisb_cut_range_hi_3_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin1");
-  hmkpisb_cut_range_hi_4_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin1");
-  hmkpisb_cut_range_hi_5_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin1");
-  hmkpisb_cut_range_hi_6_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin1");
+  //charge split
   
-  hmkpisb_cut_range_lo_1_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin1");
-  hmkpisb_cut_range_lo_2_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin1");
-  hmkpisb_cut_range_lo_3_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin1");
-  hmkpisb_cut_range_lo_4_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin1");
-  hmkpisb_cut_range_lo_5_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin1");
-  hmkpisb_cut_range_lo_6_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin1");
-
-    hmkpisb_cut_range_hi_1_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin2");
-  hmkpisb_cut_range_hi_2_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin2");
-  hmkpisb_cut_range_hi_3_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin2");
-  hmkpisb_cut_range_hi_4_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin2");
-  hmkpisb_cut_range_hi_5_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin2");
-  hmkpisb_cut_range_hi_6_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin2");
+  hmkpisb_pos_cut_range_hi_1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_1");
+  hmkpisb_pos_cut_range_hi_2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_2");
+  hmkpisb_pos_cut_range_hi_3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_3");
+  hmkpisb_pos_cut_range_hi_4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_4");
+  hmkpisb_pos_cut_range_hi_5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_5");
+  hmkpisb_pos_cut_range_hi_6=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_6");
   
-  hmkpisb_cut_range_lo_1_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin2");
-  hmkpisb_cut_range_lo_2_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin2");
-  hmkpisb_cut_range_lo_3_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin2");
-  hmkpisb_cut_range_lo_4_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin2");
-  hmkpisb_cut_range_lo_5_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin2");
-  hmkpisb_cut_range_lo_6_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin2");
+  hmkpisb_pos_cut_range_lo_1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_1");
+  hmkpisb_pos_cut_range_lo_2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_2");
+  hmkpisb_pos_cut_range_lo_3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_3");
+  hmkpisb_pos_cut_range_lo_4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_4");
+  hmkpisb_pos_cut_range_lo_5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_5");
+  hmkpisb_pos_cut_range_lo_6=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_6");
 
-    hmkpisb_cut_range_hi_1_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin3");
-  hmkpisb_cut_range_hi_2_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin3");
-  hmkpisb_cut_range_hi_3_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin3");
-  hmkpisb_cut_range_hi_4_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin3");
-  hmkpisb_cut_range_hi_5_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin3");
-  hmkpisb_cut_range_hi_6_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin3");
   
-  hmkpisb_cut_range_lo_1_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin3");
-  hmkpisb_cut_range_lo_2_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin3");
-  hmkpisb_cut_range_lo_3_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin3");
-  hmkpisb_cut_range_lo_4_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin3");
-  hmkpisb_cut_range_lo_5_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin3");
-  hmkpisb_cut_range_lo_6_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin3");
+  hmkpisb_neg_cut_range_hi_1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_1");
+  hmkpisb_neg_cut_range_hi_2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_2");
+  hmkpisb_neg_cut_range_hi_3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_3");
+  hmkpisb_neg_cut_range_hi_4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_4");
+  hmkpisb_neg_cut_range_hi_5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_5");
+  hmkpisb_neg_cut_range_hi_6=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_6");
+  
+  hmkpisb_neg_cut_range_lo_1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_1");
+  hmkpisb_neg_cut_range_lo_2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_2");
+  hmkpisb_neg_cut_range_lo_3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_3");
+  hmkpisb_neg_cut_range_lo_4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_4");
+  hmkpisb_neg_cut_range_lo_5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_5");
+  hmkpisb_neg_cut_range_lo_6=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_6");
 
-    hmkpisb_cut_range_hi_1_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin4");
-  hmkpisb_cut_range_hi_2_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin4");
-  hmkpisb_cut_range_hi_3_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin4");
-  hmkpisb_cut_range_hi_4_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin4");
-  hmkpisb_cut_range_hi_5_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin4");
-  hmkpisb_cut_range_hi_6_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin4");
-  
-  hmkpisb_cut_range_lo_1_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin4");
-  hmkpisb_cut_range_lo_2_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin4");
-  hmkpisb_cut_range_lo_3_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin4");
-  hmkpisb_cut_range_lo_4_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin4");
-  hmkpisb_cut_range_lo_5_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin4");
-  hmkpisb_cut_range_lo_6_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin4");
-
-    hmkpisb_cut_range_hi_1_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin5");
-  hmkpisb_cut_range_hi_2_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin5");
-  hmkpisb_cut_range_hi_3_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin5");
-  hmkpisb_cut_range_hi_4_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin5");
-  hmkpisb_cut_range_hi_5_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin5");
-  hmkpisb_cut_range_hi_6_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin5");
-  
-  hmkpisb_cut_range_lo_1_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin5");
-  hmkpisb_cut_range_lo_2_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin5");
-  hmkpisb_cut_range_lo_3_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin5");
-  hmkpisb_cut_range_lo_4_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin5");
-  hmkpisb_cut_range_lo_5_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin5");
-  hmkpisb_cut_range_lo_6_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin5");
-  //positive charge
-  hmkpisb_pos_cut_range_hi_1_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin1");
-  hmkpisb_pos_cut_range_hi_2_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin1");
-  hmkpisb_pos_cut_range_hi_3_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin1");
-  hmkpisb_pos_cut_range_hi_4_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin1");
-  hmkpisb_pos_cut_range_hi_5_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin1");
-  hmkpisb_pos_cut_range_hi_6_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin1");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin1");
-  hmkpisb_pos_cut_range_lo_2_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin1");
-  hmkpisb_pos_cut_range_lo_3_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin1");
-  hmkpisb_pos_cut_range_lo_4_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin1");
-  hmkpisb_pos_cut_range_lo_5_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin1");
-  hmkpisb_pos_cut_range_lo_6_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin1");
-
-    hmkpisb_pos_cut_range_hi_1_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin2");
-  hmkpisb_pos_cut_range_hi_2_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin2");
-  hmkpisb_pos_cut_range_hi_3_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin2");
-  hmkpisb_pos_cut_range_hi_4_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin2");
-  hmkpisb_pos_cut_range_hi_5_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin2");
-  hmkpisb_pos_cut_range_hi_6_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin2");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin2");
-  hmkpisb_pos_cut_range_lo_2_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin2");
-  hmkpisb_pos_cut_range_lo_3_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin2");
-  hmkpisb_pos_cut_range_lo_4_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin2");
-  hmkpisb_pos_cut_range_lo_5_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin2");
-  hmkpisb_pos_cut_range_lo_6_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin2");
-
-    hmkpisb_pos_cut_range_hi_1_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin3");
-  hmkpisb_pos_cut_range_hi_2_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin3");
-  hmkpisb_pos_cut_range_hi_3_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin3");
-  hmkpisb_pos_cut_range_hi_4_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin3");
-  hmkpisb_pos_cut_range_hi_5_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin3");
-  hmkpisb_pos_cut_range_hi_6_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin3");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin3");
-  hmkpisb_pos_cut_range_lo_2_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin3");
-  hmkpisb_pos_cut_range_lo_3_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin3");
-  hmkpisb_pos_cut_range_lo_4_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin3");
-  hmkpisb_pos_cut_range_lo_5_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin3");
-  hmkpisb_pos_cut_range_lo_6_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin3");
-
-    hmkpisb_pos_cut_range_hi_1_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin4");
-  hmkpisb_pos_cut_range_hi_2_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin4");
-  hmkpisb_pos_cut_range_hi_3_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin4");
-  hmkpisb_pos_cut_range_hi_4_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin4");
-  hmkpisb_pos_cut_range_hi_5_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin4");
-  hmkpisb_pos_cut_range_hi_6_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin4");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin4");
-  hmkpisb_pos_cut_range_lo_2_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin4");
-  hmkpisb_pos_cut_range_lo_3_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin4");
-  hmkpisb_pos_cut_range_lo_4_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin4");
-  hmkpisb_pos_cut_range_lo_5_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin4");
-  hmkpisb_pos_cut_range_lo_6_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin4");
-
-    hmkpisb_pos_cut_range_hi_1_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin5");
-  hmkpisb_pos_cut_range_hi_2_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin5");
-  hmkpisb_pos_cut_range_hi_3_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin5");
-  hmkpisb_pos_cut_range_hi_4_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin5");
-  hmkpisb_pos_cut_range_hi_5_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin5");
-  hmkpisb_pos_cut_range_hi_6_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin5");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin5");
-  hmkpisb_pos_cut_range_lo_2_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin5");
-  hmkpisb_pos_cut_range_lo_3_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin5");
-  hmkpisb_pos_cut_range_lo_4_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin5");
-  hmkpisb_pos_cut_range_lo_5_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin5");
-  hmkpisb_pos_cut_range_lo_6_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin5");
-
-  //negative
-    hmkpisb_neg_cut_range_hi_1_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin1");
-  hmkpisb_neg_cut_range_hi_2_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin1");
-  hmkpisb_neg_cut_range_hi_3_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin1");
-  hmkpisb_neg_cut_range_hi_4_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin1");
-  hmkpisb_neg_cut_range_hi_5_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin1");
-  hmkpisb_neg_cut_range_hi_6_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin1");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin1");
-  hmkpisb_neg_cut_range_lo_2_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin1");
-  hmkpisb_neg_cut_range_lo_3_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin1");
-  hmkpisb_neg_cut_range_lo_4_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin1");
-  hmkpisb_neg_cut_range_lo_5_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin1");
-  hmkpisb_neg_cut_range_lo_6_time_bin1=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin1");
-
-    hmkpisb_neg_cut_range_hi_1_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin2");
-  hmkpisb_neg_cut_range_hi_2_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin2");
-  hmkpisb_neg_cut_range_hi_3_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin2");
-  hmkpisb_neg_cut_range_hi_4_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin2");
-  hmkpisb_neg_cut_range_hi_5_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin2");
-  hmkpisb_neg_cut_range_hi_6_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin2");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin2");
-  hmkpisb_neg_cut_range_lo_2_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin2");
-  hmkpisb_neg_cut_range_lo_3_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin2");
-  hmkpisb_neg_cut_range_lo_4_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin2");
-  hmkpisb_neg_cut_range_lo_5_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin2");
-  hmkpisb_neg_cut_range_lo_6_time_bin2=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin2");
-
-    hmkpisb_neg_cut_range_hi_1_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin3");
-  hmkpisb_neg_cut_range_hi_2_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin3");
-  hmkpisb_neg_cut_range_hi_3_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin3");
-  hmkpisb_neg_cut_range_hi_4_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin3");
-  hmkpisb_neg_cut_range_hi_5_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin3");
-  hmkpisb_neg_cut_range_hi_6_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin3");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin3");
-  hmkpisb_neg_cut_range_lo_2_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin3");
-  hmkpisb_neg_cut_range_lo_3_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin3");
-  hmkpisb_neg_cut_range_lo_4_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin3");
-  hmkpisb_neg_cut_range_lo_5_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin3");
-  hmkpisb_neg_cut_range_lo_6_time_bin3=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin3");
-
-    hmkpisb_neg_cut_range_hi_1_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin4");
-  hmkpisb_neg_cut_range_hi_2_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin4");
-  hmkpisb_neg_cut_range_hi_3_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin4");
-  hmkpisb_neg_cut_range_hi_4_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin4");
-  hmkpisb_neg_cut_range_hi_5_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin4");
-  hmkpisb_neg_cut_range_hi_6_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin4");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin4");
-  hmkpisb_neg_cut_range_lo_2_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin4");
-  hmkpisb_neg_cut_range_lo_3_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin4");
-  hmkpisb_neg_cut_range_lo_4_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin4");
-  hmkpisb_neg_cut_range_lo_5_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin4");
-  hmkpisb_neg_cut_range_lo_6_time_bin4=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin4");
-
-    hmkpisb_neg_cut_range_hi_1_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin5");
-  hmkpisb_neg_cut_range_hi_2_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin5");
-  hmkpisb_neg_cut_range_hi_3_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin5");
-  hmkpisb_neg_cut_range_hi_4_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin5");
-  hmkpisb_neg_cut_range_hi_5_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin5");
-  hmkpisb_neg_cut_range_hi_6_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin5");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin5");
-  hmkpisb_neg_cut_range_lo_2_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin5");
-  hmkpisb_neg_cut_range_lo_3_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin5");
-  hmkpisb_neg_cut_range_lo_4_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin5");
-  hmkpisb_neg_cut_range_lo_5_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin5");
-  hmkpisb_neg_cut_range_lo_6_time_bin5=(TH1*)file->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin5");
-
-  //end time bins
   hmD0_pik_sig=(TH1*)file->Get(m_name+"_hmD0_pik_sig");
   hmD0_pik_sb=(TH1*)file->Get(m_name+"_hmD0_pik_sb");
   hmD0_pik_tot=(TH1*)file->Get(m_name+"_hmD0_pik");
@@ -701,225 +318,36 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   hmkpisb_cut_range_lo_5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5");
   hmkpisb_cut_range_lo_6=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6");
 
-  //time bins
-  hmkpisb_cut_range_hi_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin1");
-  cout<<"double check timebin from file, name = "<<hmkpisb_cut_range_hi_1_time_bin1->GetName()<<endl;
-  hmkpisb_cut_range_hi_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin1");
-  hmkpisb_cut_range_hi_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin1");
-  hmkpisb_cut_range_hi_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin1");
-  hmkpisb_cut_range_hi_5_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin1");
-  hmkpisb_cut_range_hi_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin1");
+  //charge split  
+  hmkpisb_pos_cut_range_hi_1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_1");
+  hmkpisb_pos_cut_range_hi_2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_2");
+  hmkpisb_pos_cut_range_hi_3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_3");
+  hmkpisb_pos_cut_range_hi_4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_4");
+  hmkpisb_pos_cut_range_hi_5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_5");
+  hmkpisb_pos_cut_range_hi_6=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_6");
   
-  hmkpisb_cut_range_lo_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin1");
-    cout<<"double check timebin from file, name = "<<hmkpisb_cut_range_lo_1_time_bin1->GetName()<<endl;
-  hmkpisb_cut_range_lo_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin1");
-  hmkpisb_cut_range_lo_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin1");
-  hmkpisb_cut_range_lo_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin1");
-  hmkpisb_cut_range_lo_5_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin1");
-  hmkpisb_cut_range_lo_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin1");
+  hmkpisb_pos_cut_range_lo_1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_1");
+  hmkpisb_pos_cut_range_lo_2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_2");
+  hmkpisb_pos_cut_range_lo_3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_3");
+  hmkpisb_pos_cut_range_lo_4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_4");
+  hmkpisb_pos_cut_range_lo_5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_5");
+  hmkpisb_pos_cut_range_lo_6=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_6");
 
-    hmkpisb_cut_range_hi_1_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin2");
-  hmkpisb_cut_range_hi_2_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin2");
-  hmkpisb_cut_range_hi_3_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin2");
-  hmkpisb_cut_range_hi_4_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin2");
-  hmkpisb_cut_range_hi_5_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin2");
-  hmkpisb_cut_range_hi_6_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin2");
+  hmkpisb_neg_cut_range_hi_1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_1");
+  hmkpisb_neg_cut_range_hi_2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_2");
+  hmkpisb_neg_cut_range_hi_3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_3");
+  hmkpisb_neg_cut_range_hi_4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_4");
+  hmkpisb_neg_cut_range_hi_5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_5");
+  hmkpisb_neg_cut_range_hi_6=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_6");
   
-  hmkpisb_cut_range_lo_1_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin2");
-  hmkpisb_cut_range_lo_2_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin2");
-  hmkpisb_cut_range_lo_3_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin2");
-  hmkpisb_cut_range_lo_4_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin2");
-  hmkpisb_cut_range_lo_5_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin2");
-  hmkpisb_cut_range_lo_6_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin2");
+  hmkpisb_neg_cut_range_lo_1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_1");
+  hmkpisb_neg_cut_range_lo_2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_2");
+  hmkpisb_neg_cut_range_lo_3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_3");
+  hmkpisb_neg_cut_range_lo_4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_4");
+  hmkpisb_neg_cut_range_lo_5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_5");
+  hmkpisb_neg_cut_range_lo_6=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_6");
 
-    hmkpisb_cut_range_hi_1_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin3");
-  hmkpisb_cut_range_hi_2_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin3");
-  hmkpisb_cut_range_hi_3_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin3");
-  hmkpisb_cut_range_hi_4_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin3");
-  hmkpisb_cut_range_hi_5_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin3");
-  hmkpisb_cut_range_hi_6_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin3");
-  
-  hmkpisb_cut_range_lo_1_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin3");
-  hmkpisb_cut_range_lo_2_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin3");
-  hmkpisb_cut_range_lo_3_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin3");
-  hmkpisb_cut_range_lo_4_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin3");
-  hmkpisb_cut_range_lo_5_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin3");
-  hmkpisb_cut_range_lo_6_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin3");
 
-    hmkpisb_cut_range_hi_1_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin4");
-  hmkpisb_cut_range_hi_2_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin4");
-  hmkpisb_cut_range_hi_3_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin4");
-  hmkpisb_cut_range_hi_4_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin4");
-  hmkpisb_cut_range_hi_5_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin4");
-  hmkpisb_cut_range_hi_6_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin4");
-  
-  hmkpisb_cut_range_lo_1_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin4");
-  hmkpisb_cut_range_lo_2_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin4");
-  hmkpisb_cut_range_lo_3_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin4");
-  hmkpisb_cut_range_lo_4_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin4");
-  hmkpisb_cut_range_lo_5_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin4");
-  hmkpisb_cut_range_lo_6_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin4");
-
-    hmkpisb_cut_range_hi_1_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_1_time_bin5");
-  hmkpisb_cut_range_hi_2_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_2_time_bin5");
-  hmkpisb_cut_range_hi_3_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_3_time_bin5");
-  hmkpisb_cut_range_hi_4_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_4_time_bin5");
-  hmkpisb_cut_range_hi_5_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_5_time_bin5");
-  hmkpisb_cut_range_hi_6_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_hi_6_time_bin5");
-  
-  hmkpisb_cut_range_lo_1_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_1_time_bin5");
-  hmkpisb_cut_range_lo_2_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_2_time_bin5");
-  hmkpisb_cut_range_lo_3_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_3_time_bin5");
-  hmkpisb_cut_range_lo_4_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_4_time_bin5");
-  hmkpisb_cut_range_lo_5_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_5_time_bin5");
-  hmkpisb_cut_range_lo_6_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_cut_range_lo_6_time_bin5");
-  //positive
-    hmkpisb_pos_cut_range_hi_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin1");
-  cout<<"double check timebin from file, name = "<<hmkpisb_pos_cut_range_hi_1_time_bin1->GetName()<<endl;
-  hmkpisb_pos_cut_range_hi_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin1");
-  hmkpisb_pos_cut_range_hi_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin1");
-  hmkpisb_pos_cut_range_hi_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin1");
-  hmkpisb_pos_cut_range_hi_5_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin1");
-  hmkpisb_pos_cut_range_hi_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin1");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin1");
-    cout<<"double check timebin from file, name = "<<hmkpisb_pos_cut_range_lo_1_time_bin1->GetName()<<endl;
-  hmkpisb_pos_cut_range_lo_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin1");
-  hmkpisb_pos_cut_range_lo_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin1");
-  hmkpisb_pos_cut_range_lo_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin1");
-  hmkpisb_pos_cut_range_lo_5_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin1");
-  hmkpisb_pos_cut_range_lo_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin1");
-
-    hmkpisb_pos_cut_range_hi_1_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin2");
-  hmkpisb_pos_cut_range_hi_2_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin2");
-  hmkpisb_pos_cut_range_hi_3_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin2");
-  hmkpisb_pos_cut_range_hi_4_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin2");
-  hmkpisb_pos_cut_range_hi_5_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin2");
-  hmkpisb_pos_cut_range_hi_6_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin2");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin2");
-  hmkpisb_pos_cut_range_lo_2_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin2");
-  hmkpisb_pos_cut_range_lo_3_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin2");
-  hmkpisb_pos_cut_range_lo_4_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin2");
-  hmkpisb_pos_cut_range_lo_5_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin2");
-  hmkpisb_pos_cut_range_lo_6_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin2");
-
-    hmkpisb_pos_cut_range_hi_1_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin3");
-  hmkpisb_pos_cut_range_hi_2_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin3");
-  hmkpisb_pos_cut_range_hi_3_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin3");
-  hmkpisb_pos_cut_range_hi_4_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin3");
-  hmkpisb_pos_cut_range_hi_5_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin3");
-  hmkpisb_pos_cut_range_hi_6_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin3");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin3");
-  hmkpisb_pos_cut_range_lo_2_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin3");
-  hmkpisb_pos_cut_range_lo_3_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin3");
-  hmkpisb_pos_cut_range_lo_4_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin3");
-  hmkpisb_pos_cut_range_lo_5_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin3");
-  hmkpisb_pos_cut_range_lo_6_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin3");
-
-    hmkpisb_pos_cut_range_hi_1_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin4");
-  hmkpisb_pos_cut_range_hi_2_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin4");
-  hmkpisb_pos_cut_range_hi_3_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin4");
-  hmkpisb_pos_cut_range_hi_4_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin4");
-  hmkpisb_pos_cut_range_hi_5_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin4");
-  hmkpisb_pos_cut_range_hi_6_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin4");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin4");
-  hmkpisb_pos_cut_range_lo_2_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin4");
-  hmkpisb_pos_cut_range_lo_3_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin4");
-  hmkpisb_pos_cut_range_lo_4_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin4");
-  hmkpisb_pos_cut_range_lo_5_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin4");
-  hmkpisb_pos_cut_range_lo_6_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin4");
-
-    hmkpisb_pos_cut_range_hi_1_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_1_time_bin5");
-  hmkpisb_pos_cut_range_hi_2_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_2_time_bin5");
-  hmkpisb_pos_cut_range_hi_3_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_3_time_bin5");
-  hmkpisb_pos_cut_range_hi_4_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_4_time_bin5");
-  hmkpisb_pos_cut_range_hi_5_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_5_time_bin5");
-  hmkpisb_pos_cut_range_hi_6_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_hi_6_time_bin5");
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_1_time_bin5");
-  hmkpisb_pos_cut_range_lo_2_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_2_time_bin5");
-  hmkpisb_pos_cut_range_lo_3_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_3_time_bin5");
-  hmkpisb_pos_cut_range_lo_4_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_4_time_bin5");
-  hmkpisb_pos_cut_range_lo_5_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_5_time_bin5");
-  hmkpisb_pos_cut_range_lo_6_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_pos_cut_range_lo_6_time_bin5");
-  //negative
-    hmkpisb_neg_cut_range_hi_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin1");
-  cout<<"double check timebin from file, name = "<<hmkpisb_neg_cut_range_hi_1_time_bin1->GetName()<<endl;
-  hmkpisb_neg_cut_range_hi_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin1");
-  hmkpisb_neg_cut_range_hi_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin1");
-  hmkpisb_neg_cut_range_hi_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin1");
-  hmkpisb_neg_cut_range_hi_5_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin1");
-  hmkpisb_neg_cut_range_hi_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin1");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin1");
-    cout<<"double check timebin from file, name = "<<hmkpisb_neg_cut_range_lo_1_time_bin1->GetName()<<endl;
-  hmkpisb_neg_cut_range_lo_2_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin1");
-  hmkpisb_neg_cut_range_lo_3_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin1");
-  hmkpisb_neg_cut_range_lo_4_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin1");
-  hmkpisb_neg_cut_range_lo_5_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin1");
-  hmkpisb_neg_cut_range_lo_6_time_bin1=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin1");
-
-    hmkpisb_neg_cut_range_hi_1_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin2");
-  hmkpisb_neg_cut_range_hi_2_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin2");
-  hmkpisb_neg_cut_range_hi_3_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin2");
-  hmkpisb_neg_cut_range_hi_4_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin2");
-  hmkpisb_neg_cut_range_hi_5_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin2");
-  hmkpisb_neg_cut_range_hi_6_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin2");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin2");
-  hmkpisb_neg_cut_range_lo_2_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin2");
-  hmkpisb_neg_cut_range_lo_3_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin2");
-  hmkpisb_neg_cut_range_lo_4_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin2");
-  hmkpisb_neg_cut_range_lo_5_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin2");
-  hmkpisb_neg_cut_range_lo_6_time_bin2=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin2");
-
-    hmkpisb_neg_cut_range_hi_1_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin3");
-  hmkpisb_neg_cut_range_hi_2_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin3");
-  hmkpisb_neg_cut_range_hi_3_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin3");
-  hmkpisb_neg_cut_range_hi_4_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin3");
-  hmkpisb_neg_cut_range_hi_5_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin3");
-  hmkpisb_neg_cut_range_hi_6_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin3");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin3");
-  hmkpisb_neg_cut_range_lo_2_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin3");
-  hmkpisb_neg_cut_range_lo_3_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin3");
-  hmkpisb_neg_cut_range_lo_4_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin3");
-  hmkpisb_neg_cut_range_lo_5_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin3");
-  hmkpisb_neg_cut_range_lo_6_time_bin3=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin3");
-
-    hmkpisb_neg_cut_range_hi_1_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin4");
-  hmkpisb_neg_cut_range_hi_2_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin4");
-  hmkpisb_neg_cut_range_hi_3_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin4");
-  hmkpisb_neg_cut_range_hi_4_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin4");
-  hmkpisb_neg_cut_range_hi_5_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin4");
-  hmkpisb_neg_cut_range_hi_6_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin4");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin4");
-  hmkpisb_neg_cut_range_lo_2_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin4");
-  hmkpisb_neg_cut_range_lo_3_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin4");
-  hmkpisb_neg_cut_range_lo_4_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin4");
-  hmkpisb_neg_cut_range_lo_5_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin4");
-  hmkpisb_neg_cut_range_lo_6_time_bin4=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin4");
-
-    hmkpisb_neg_cut_range_hi_1_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_1_time_bin5");
-  hmkpisb_neg_cut_range_hi_2_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_2_time_bin5");
-  hmkpisb_neg_cut_range_hi_3_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_3_time_bin5");
-  hmkpisb_neg_cut_range_hi_4_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_4_time_bin5");
-  hmkpisb_neg_cut_range_hi_5_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_5_time_bin5");
-  hmkpisb_neg_cut_range_hi_6_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_hi_6_time_bin5");
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_1_time_bin5");
-  hmkpisb_neg_cut_range_lo_2_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_2_time_bin5");
-  hmkpisb_neg_cut_range_lo_3_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_3_time_bin5");
-  hmkpisb_neg_cut_range_lo_4_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_4_time_bin5");
-  hmkpisb_neg_cut_range_lo_5_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_5_time_bin5");
-  hmkpisb_neg_cut_range_lo_6_time_bin5=(TH1*)f1->Get(m_name+"_hmkpisb_neg_cut_range_lo_6_time_bin5");
-
-  //end time bins
-  
   hmD0_pik_sig=(TH1*)f1->Get(m_name+"_hmD0_pik_sig");
   hmD0_pik_sb=(TH1*)f1->Get(m_name+"_hmD0_pik_sb");
   hmD0_pik_tot=(TH1*)f1->Get(m_name+"_hmD0_pik");
@@ -983,219 +411,35 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   TH1* hmkpisb_cut_range_lo_4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4");
   TH1* hmkpisb_cut_range_lo_5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5");
   TH1* hmkpisb_cut_range_lo_6_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6");
+  //split charge
+  TH1* hmkpisb_pos_cut_range_hi_1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_1");
+  TH1* hmkpisb_pos_cut_range_hi_2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_2");
+  TH1* hmkpisb_pos_cut_range_hi_3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_3");
+  TH1* hmkpisb_pos_cut_range_hi_4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_4");
+  TH1* hmkpisb_pos_cut_range_hi_5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_5");
+  TH1* hmkpisb_pos_cut_range_hi_6_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_6");
+  
+  TH1* hmkpisb_pos_cut_range_lo_1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_1");
+  TH1* hmkpisb_pos_cut_range_lo_2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_2");
+  TH1* hmkpisb_pos_cut_range_lo_3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_3");
+  TH1* hmkpisb_pos_cut_range_lo_4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_4");
+  TH1* hmkpisb_pos_cut_range_lo_5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_5");
+  TH1* hmkpisb_pos_cut_range_lo_6_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_6");
+
+  TH1* hmkpisb_neg_cut_range_hi_1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_1");
+  TH1* hmkpisb_neg_cut_range_hi_2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_2");
+  TH1* hmkpisb_neg_cut_range_hi_3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_3");
+  TH1* hmkpisb_neg_cut_range_hi_4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_4");
+  TH1* hmkpisb_neg_cut_range_hi_5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_5");
+  TH1* hmkpisb_neg_cut_range_hi_6_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_6");
+  
+  TH1* hmkpisb_neg_cut_range_lo_1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_1");
+  TH1* hmkpisb_neg_cut_range_lo_2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_2");
+  TH1* hmkpisb_neg_cut_range_lo_3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_3");
+  TH1* hmkpisb_neg_cut_range_lo_4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_4");
+  TH1* hmkpisb_neg_cut_range_lo_5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_5");
+  TH1* hmkpisb_neg_cut_range_lo_6_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_6");
   //time bins
-  TH1* hmkpisb_cut_range_hi_1_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin1");
-  TH1* hmkpisb_cut_range_hi_2_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin1");
-  TH1* hmkpisb_cut_range_hi_3_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin1");
-  TH1* hmkpisb_cut_range_hi_4_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin1");
-  TH1* hmkpisb_cut_range_hi_5_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin1");
-  TH1* hmkpisb_cut_range_hi_6_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin1");
-  
-  TH1* hmkpisb_cut_range_lo_1_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin1");
-  TH1* hmkpisb_cut_range_lo_2_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin1");
-  TH1* hmkpisb_cut_range_lo_3_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin1");
-  TH1* hmkpisb_cut_range_lo_4_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin1");
-  TH1* hmkpisb_cut_range_lo_5_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin1");
-  TH1* hmkpisb_cut_range_lo_6_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin1");
-
-    TH1* hmkpisb_cut_range_hi_1_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin2");
-  TH1* hmkpisb_cut_range_hi_2_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin2");
-  TH1* hmkpisb_cut_range_hi_3_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin2");
-  TH1* hmkpisb_cut_range_hi_4_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin2");
-  TH1* hmkpisb_cut_range_hi_5_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin2");
-  TH1* hmkpisb_cut_range_hi_6_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin2");
-  
-  TH1* hmkpisb_cut_range_lo_1_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin2");
-  TH1* hmkpisb_cut_range_lo_2_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin2");
-  TH1* hmkpisb_cut_range_lo_3_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin2");
-  TH1* hmkpisb_cut_range_lo_4_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin2");
-  TH1* hmkpisb_cut_range_lo_5_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin2");
-  TH1* hmkpisb_cut_range_lo_6_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin2");
-
-    TH1* hmkpisb_cut_range_hi_1_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin3");
-  TH1* hmkpisb_cut_range_hi_2_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin3");
-  TH1* hmkpisb_cut_range_hi_3_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin3");
-  TH1* hmkpisb_cut_range_hi_4_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin3");
-  TH1* hmkpisb_cut_range_hi_5_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin3");
-  TH1* hmkpisb_cut_range_hi_6_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin3");
-  
-  TH1* hmkpisb_cut_range_lo_1_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin3");
-  TH1* hmkpisb_cut_range_lo_2_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin3");
-  TH1* hmkpisb_cut_range_lo_3_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin3");
-  TH1* hmkpisb_cut_range_lo_4_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin3");
-  TH1* hmkpisb_cut_range_lo_5_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin3");
-  TH1* hmkpisb_cut_range_lo_6_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin3");
-
-    TH1* hmkpisb_cut_range_hi_1_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin4");
-  TH1* hmkpisb_cut_range_hi_2_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin4");
-  TH1* hmkpisb_cut_range_hi_3_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin4");
-  TH1* hmkpisb_cut_range_hi_4_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin4");
-  TH1* hmkpisb_cut_range_hi_5_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin4");
-  TH1* hmkpisb_cut_range_hi_6_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin4");
-  
-  TH1* hmkpisb_cut_range_lo_1_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin4");
-  TH1* hmkpisb_cut_range_lo_2_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin4");
-  TH1* hmkpisb_cut_range_lo_3_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin4");
-  TH1* hmkpisb_cut_range_lo_4_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin4");
-  TH1* hmkpisb_cut_range_lo_5_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin4");
-  TH1* hmkpisb_cut_range_lo_6_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin4");
-
-    TH1* hmkpisb_cut_range_hi_1_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_1_time_bin5");
-  TH1* hmkpisb_cut_range_hi_2_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_2_time_bin5");
-  TH1* hmkpisb_cut_range_hi_3_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_3_time_bin5");
-  TH1* hmkpisb_cut_range_hi_4_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_4_time_bin5");
-  TH1* hmkpisb_cut_range_hi_5_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_5_time_bin5");
-  TH1* hmkpisb_cut_range_hi_6_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_hi_6_time_bin5");
-  
-  TH1* hmkpisb_cut_range_lo_1_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_1_time_bin5");
-  TH1* hmkpisb_cut_range_lo_2_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_2_time_bin5");
-  TH1* hmkpisb_cut_range_lo_3_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_3_time_bin5");
-  TH1* hmkpisb_cut_range_lo_4_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_4_time_bin5");
-  TH1* hmkpisb_cut_range_lo_5_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_5_time_bin5");
-  TH1* hmkpisb_cut_range_lo_6_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_cut_range_lo_6_time_bin5");
-  //positive
-    TH1* hmkpisb_pos_cut_range_hi_1_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_1_time_bin1");
-  TH1* hmkpisb_pos_cut_range_hi_2_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_2_time_bin1");
-  TH1* hmkpisb_pos_cut_range_hi_3_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_3_time_bin1");
-  TH1* hmkpisb_pos_cut_range_hi_4_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_4_time_bin1");
-  TH1* hmkpisb_pos_cut_range_hi_5_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_5_time_bin1");
-  TH1* hmkpisb_pos_cut_range_hi_6_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_6_time_bin1");
-  
-  TH1* hmkpisb_pos_cut_range_lo_1_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_1_time_bin1");
-  TH1* hmkpisb_pos_cut_range_lo_2_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_2_time_bin1");
-  TH1* hmkpisb_pos_cut_range_lo_3_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_3_time_bin1");
-  TH1* hmkpisb_pos_cut_range_lo_4_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_4_time_bin1");
-  TH1* hmkpisb_pos_cut_range_lo_5_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_5_time_bin1");
-  TH1* hmkpisb_pos_cut_range_lo_6_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_6_time_bin1");
-
-    TH1* hmkpisb_pos_cut_range_hi_1_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_1_time_bin2");
-  TH1* hmkpisb_pos_cut_range_hi_2_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_2_time_bin2");
-  TH1* hmkpisb_pos_cut_range_hi_3_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_3_time_bin2");
-  TH1* hmkpisb_pos_cut_range_hi_4_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_4_time_bin2");
-  TH1* hmkpisb_pos_cut_range_hi_5_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_5_time_bin2");
-  TH1* hmkpisb_pos_cut_range_hi_6_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_6_time_bin2");
-  
-  TH1* hmkpisb_pos_cut_range_lo_1_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_1_time_bin2");
-  TH1* hmkpisb_pos_cut_range_lo_2_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_2_time_bin2");
-  TH1* hmkpisb_pos_cut_range_lo_3_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_3_time_bin2");
-  TH1* hmkpisb_pos_cut_range_lo_4_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_4_time_bin2");
-  TH1* hmkpisb_pos_cut_range_lo_5_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_5_time_bin2");
-  TH1* hmkpisb_pos_cut_range_lo_6_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_6_time_bin2");
-
-    TH1* hmkpisb_pos_cut_range_hi_1_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_1_time_bin3");
-  TH1* hmkpisb_pos_cut_range_hi_2_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_2_time_bin3");
-  TH1* hmkpisb_pos_cut_range_hi_3_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_3_time_bin3");
-  TH1* hmkpisb_pos_cut_range_hi_4_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_4_time_bin3");
-  TH1* hmkpisb_pos_cut_range_hi_5_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_5_time_bin3");
-  TH1* hmkpisb_pos_cut_range_hi_6_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_6_time_bin3");
-  
-  TH1* hmkpisb_pos_cut_range_lo_1_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_1_time_bin3");
-  TH1* hmkpisb_pos_cut_range_lo_2_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_2_time_bin3");
-  TH1* hmkpisb_pos_cut_range_lo_3_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_3_time_bin3");
-  TH1* hmkpisb_pos_cut_range_lo_4_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_4_time_bin3");
-  TH1* hmkpisb_pos_cut_range_lo_5_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_5_time_bin3");
-  TH1* hmkpisb_pos_cut_range_lo_6_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_6_time_bin3");
-
-    TH1* hmkpisb_pos_cut_range_hi_1_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_1_time_bin4");
-  TH1* hmkpisb_pos_cut_range_hi_2_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_2_time_bin4");
-  TH1* hmkpisb_pos_cut_range_hi_3_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_3_time_bin4");
-  TH1* hmkpisb_pos_cut_range_hi_4_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_4_time_bin4");
-  TH1* hmkpisb_pos_cut_range_hi_5_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_5_time_bin4");
-  TH1* hmkpisb_pos_cut_range_hi_6_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_6_time_bin4");
-  
-  TH1* hmkpisb_pos_cut_range_lo_1_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_1_time_bin4");
-  TH1* hmkpisb_pos_cut_range_lo_2_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_2_time_bin4");
-  TH1* hmkpisb_pos_cut_range_lo_3_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_3_time_bin4");
-  TH1* hmkpisb_pos_cut_range_lo_4_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_4_time_bin4");
-  TH1* hmkpisb_pos_cut_range_lo_5_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_5_time_bin4");
-  TH1* hmkpisb_pos_cut_range_lo_6_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_6_time_bin4");
-
-    TH1* hmkpisb_pos_cut_range_hi_1_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_1_time_bin5");
-  TH1* hmkpisb_pos_cut_range_hi_2_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_2_time_bin5");
-  TH1* hmkpisb_pos_cut_range_hi_3_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_3_time_bin5");
-  TH1* hmkpisb_pos_cut_range_hi_4_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_4_time_bin5");
-  TH1* hmkpisb_pos_cut_range_hi_5_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_5_time_bin5");
-  TH1* hmkpisb_pos_cut_range_hi_6_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_hi_6_time_bin5");
-  
-  TH1* hmkpisb_pos_cut_range_lo_1_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_1_time_bin5");
-  TH1* hmkpisb_pos_cut_range_lo_2_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_2_time_bin5");
-  TH1* hmkpisb_pos_cut_range_lo_3_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_3_time_bin5");
-  TH1* hmkpisb_pos_cut_range_lo_4_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_4_time_bin5");
-  TH1* hmkpisb_pos_cut_range_lo_5_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_5_time_bin5");
-  TH1* hmkpisb_pos_cut_range_lo_6_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_pos_cut_range_lo_6_time_bin5");
-  //negative
-    TH1* hmkpisb_neg_cut_range_hi_1_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_1_time_bin1");
-  TH1* hmkpisb_neg_cut_range_hi_2_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_2_time_bin1");
-  TH1* hmkpisb_neg_cut_range_hi_3_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_3_time_bin1");
-  TH1* hmkpisb_neg_cut_range_hi_4_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_4_time_bin1");
-  TH1* hmkpisb_neg_cut_range_hi_5_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_5_time_bin1");
-  TH1* hmkpisb_neg_cut_range_hi_6_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_6_time_bin1");
-  
-  TH1* hmkpisb_neg_cut_range_lo_1_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_1_time_bin1");
-  TH1* hmkpisb_neg_cut_range_lo_2_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_2_time_bin1");
-  TH1* hmkpisb_neg_cut_range_lo_3_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_3_time_bin1");
-  TH1* hmkpisb_neg_cut_range_lo_4_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_4_time_bin1");
-  TH1* hmkpisb_neg_cut_range_lo_5_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_5_time_bin1");
-  TH1* hmkpisb_neg_cut_range_lo_6_time_bin1_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_6_time_bin1");
-
-    TH1* hmkpisb_neg_cut_range_hi_1_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_1_time_bin2");
-  TH1* hmkpisb_neg_cut_range_hi_2_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_2_time_bin2");
-  TH1* hmkpisb_neg_cut_range_hi_3_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_3_time_bin2");
-  TH1* hmkpisb_neg_cut_range_hi_4_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_4_time_bin2");
-  TH1* hmkpisb_neg_cut_range_hi_5_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_5_time_bin2");
-  TH1* hmkpisb_neg_cut_range_hi_6_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_6_time_bin2");
-  
-  TH1* hmkpisb_neg_cut_range_lo_1_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_1_time_bin2");
-  TH1* hmkpisb_neg_cut_range_lo_2_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_2_time_bin2");
-  TH1* hmkpisb_neg_cut_range_lo_3_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_3_time_bin2");
-  TH1* hmkpisb_neg_cut_range_lo_4_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_4_time_bin2");
-  TH1* hmkpisb_neg_cut_range_lo_5_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_5_time_bin2");
-  TH1* hmkpisb_neg_cut_range_lo_6_time_bin2_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_6_time_bin2");
-
-    TH1* hmkpisb_neg_cut_range_hi_1_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_1_time_bin3");
-  TH1* hmkpisb_neg_cut_range_hi_2_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_2_time_bin3");
-  TH1* hmkpisb_neg_cut_range_hi_3_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_3_time_bin3");
-  TH1* hmkpisb_neg_cut_range_hi_4_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_4_time_bin3");
-  TH1* hmkpisb_neg_cut_range_hi_5_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_5_time_bin3");
-  TH1* hmkpisb_neg_cut_range_hi_6_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_6_time_bin3");
-  
-  TH1* hmkpisb_neg_cut_range_lo_1_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_1_time_bin3");
-  TH1* hmkpisb_neg_cut_range_lo_2_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_2_time_bin3");
-  TH1* hmkpisb_neg_cut_range_lo_3_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_3_time_bin3");
-  TH1* hmkpisb_neg_cut_range_lo_4_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_4_time_bin3");
-  TH1* hmkpisb_neg_cut_range_lo_5_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_5_time_bin3");
-  TH1* hmkpisb_neg_cut_range_lo_6_time_bin3_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_6_time_bin3");
-
-    TH1* hmkpisb_neg_cut_range_hi_1_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_1_time_bin4");
-  TH1* hmkpisb_neg_cut_range_hi_2_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_2_time_bin4");
-  TH1* hmkpisb_neg_cut_range_hi_3_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_3_time_bin4");
-  TH1* hmkpisb_neg_cut_range_hi_4_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_4_time_bin4");
-  TH1* hmkpisb_neg_cut_range_hi_5_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_5_time_bin4");
-  TH1* hmkpisb_neg_cut_range_hi_6_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_6_time_bin4");
-  
-  TH1* hmkpisb_neg_cut_range_lo_1_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_1_time_bin4");
-  TH1* hmkpisb_neg_cut_range_lo_2_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_2_time_bin4");
-  TH1* hmkpisb_neg_cut_range_lo_3_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_3_time_bin4");
-  TH1* hmkpisb_neg_cut_range_lo_4_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_4_time_bin4");
-  TH1* hmkpisb_neg_cut_range_lo_5_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_5_time_bin4");
-  TH1* hmkpisb_neg_cut_range_lo_6_time_bin4_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_6_time_bin4");
-
-    TH1* hmkpisb_neg_cut_range_hi_1_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_1_time_bin5");
-  TH1* hmkpisb_neg_cut_range_hi_2_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_2_time_bin5");
-  TH1* hmkpisb_neg_cut_range_hi_3_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_3_time_bin5");
-  TH1* hmkpisb_neg_cut_range_hi_4_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_4_time_bin5");
-  TH1* hmkpisb_neg_cut_range_hi_5_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_5_time_bin5");
-  TH1* hmkpisb_neg_cut_range_hi_6_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_hi_6_time_bin5");
-  
-  TH1* hmkpisb_neg_cut_range_lo_1_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_1_time_bin5");
-  TH1* hmkpisb_neg_cut_range_lo_2_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_2_time_bin5");
-  TH1* hmkpisb_neg_cut_range_lo_3_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_3_time_bin5");
-  TH1* hmkpisb_neg_cut_range_lo_4_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_4_time_bin5");
-  TH1* hmkpisb_neg_cut_range_lo_5_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_5_time_bin5");
-  TH1* hmkpisb_neg_cut_range_lo_6_time_bin5_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmkpisb_neg_cut_range_lo_6_time_bin5");
-
- 
-  //end time bins
   TH1* hmD0_pik_sig_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik_sig");
   TH1* hmD0_pik_sb_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik_sb");
   TH1* hmD0_pik_tot_bkg=(TH1*)fbkg->Get(m_name_ss+"_hmD0_pik");
@@ -1234,13 +478,14 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   h2k_probnne_dstar_sideband_high->Add(h2k_probnne_dstar_sideband_high_bkg,-1);
   h2k_probnne_dstar_sideband_low->Add(h2k_probnne_dstar_sideband_low_bkg,-1);
   */
+  cout<<"adding backgrounds"<<endl;
   hmsig->Add(hmsig_bkg,-1);
   hmkpisb->Add(hmkpisb_bkg,-1);
   hmkksb->Add(hmkksb_bkg,-1);
   hmpipisb->Add(hmpipisb_bkg,-1);
   hmpiksb->Add(hmpiksb_bkg,-1);
   hmrob->Add(hmrob_bkg,-1);
-
+  cout<<"starting the sidebands"<<endl;
   hmkpisb_cut_range->Add(hmkpisb_cut_range_bkg,-1);
   hmkpisb_cut_range_hi->Add(hmkpisb_cut_range_hi_bkg,-1);
   hmkpisb_cut_range_lo->Add(hmkpisb_cut_range_lo_bkg,-1);
@@ -1257,226 +502,37 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   hmkpisb_cut_range_lo_4->Add(hmkpisb_cut_range_lo_4_bkg,-1);
   hmkpisb_cut_range_lo_5->Add(hmkpisb_cut_range_lo_5_bkg,-1);
   hmkpisb_cut_range_lo_6->Add(hmkpisb_cut_range_lo_6_bkg,-1);
-
-
-  //time bins
+  cout<<"starting the sidebands,positive"<<endl;
+  //charged
+  hmkpisb_pos_cut_range_hi_1->Add(hmkpisb_pos_cut_range_hi_1_bkg,-1);
+  hmkpisb_pos_cut_range_hi_2->Add(hmkpisb_pos_cut_range_hi_2_bkg,-1);
+  hmkpisb_pos_cut_range_hi_3->Add(hmkpisb_pos_cut_range_hi_3_bkg,-1);
+  hmkpisb_pos_cut_range_hi_4->Add(hmkpisb_pos_cut_range_hi_4_bkg,-1);
+  hmkpisb_pos_cut_range_hi_5->Add(hmkpisb_pos_cut_range_hi_5_bkg,-1);
+  hmkpisb_pos_cut_range_hi_6->Add(hmkpisb_pos_cut_range_hi_6_bkg,-1);
   
-  hmkpisb_cut_range_hi_1_time_bin1->Add(hmkpisb_cut_range_hi_1_time_bin1_bkg,-1);
-  hmkpisb_cut_range_hi_2_time_bin1->Add(hmkpisb_cut_range_hi_2_time_bin1_bkg,-1);
-  hmkpisb_cut_range_hi_3_time_bin1->Add(hmkpisb_cut_range_hi_3_time_bin1_bkg,-1);
-  hmkpisb_cut_range_hi_4_time_bin1->Add(hmkpisb_cut_range_hi_4_time_bin1_bkg,-1);
-  hmkpisb_cut_range_hi_5_time_bin1->Add(hmkpisb_cut_range_hi_5_time_bin1_bkg,-1);
-  hmkpisb_cut_range_hi_6_time_bin1->Add(hmkpisb_cut_range_hi_6_time_bin1_bkg,-1);
+  hmkpisb_pos_cut_range_lo_1->Add(hmkpisb_pos_cut_range_lo_1_bkg,-1);
+  hmkpisb_pos_cut_range_lo_2->Add(hmkpisb_pos_cut_range_lo_2_bkg,-1);
+  hmkpisb_pos_cut_range_lo_3->Add(hmkpisb_pos_cut_range_lo_3_bkg,-1);
+  hmkpisb_pos_cut_range_lo_4->Add(hmkpisb_pos_cut_range_lo_4_bkg,-1);
+  hmkpisb_pos_cut_range_lo_5->Add(hmkpisb_pos_cut_range_lo_5_bkg,-1);
+  hmkpisb_pos_cut_range_lo_6->Add(hmkpisb_pos_cut_range_lo_6_bkg,-1);
+  cout<<"starting the sidebands,negative"<<endl;
+  hmkpisb_neg_cut_range_hi_1->Add(hmkpisb_neg_cut_range_hi_1_bkg,-1);
+  hmkpisb_neg_cut_range_hi_2->Add(hmkpisb_neg_cut_range_hi_2_bkg,-1);
+  hmkpisb_neg_cut_range_hi_3->Add(hmkpisb_neg_cut_range_hi_3_bkg,-1);
+  hmkpisb_neg_cut_range_hi_4->Add(hmkpisb_neg_cut_range_hi_4_bkg,-1);
+  hmkpisb_neg_cut_range_hi_5->Add(hmkpisb_neg_cut_range_hi_5_bkg,-1);
+  hmkpisb_neg_cut_range_hi_6->Add(hmkpisb_neg_cut_range_hi_6_bkg,-1);
   
-  hmkpisb_cut_range_lo_1_time_bin1->Add(hmkpisb_cut_range_lo_1_time_bin1_bkg,-1);
-  hmkpisb_cut_range_lo_2_time_bin1->Add(hmkpisb_cut_range_lo_2_time_bin1_bkg,-1);
-  hmkpisb_cut_range_lo_3_time_bin1->Add(hmkpisb_cut_range_lo_3_time_bin1_bkg,-1);
-  hmkpisb_cut_range_lo_4_time_bin1->Add(hmkpisb_cut_range_lo_4_time_bin1_bkg,-1);
-  hmkpisb_cut_range_lo_5_time_bin1->Add(hmkpisb_cut_range_lo_5_time_bin1_bkg,-1);
-  hmkpisb_cut_range_lo_6_time_bin1->Add(hmkpisb_cut_range_lo_6_time_bin1_bkg,-1);
+  hmkpisb_neg_cut_range_lo_1->Add(hmkpisb_neg_cut_range_lo_1_bkg,-1);
+  hmkpisb_neg_cut_range_lo_2->Add(hmkpisb_neg_cut_range_lo_2_bkg,-1);
+  hmkpisb_neg_cut_range_lo_3->Add(hmkpisb_neg_cut_range_lo_3_bkg,-1);
+  hmkpisb_neg_cut_range_lo_4->Add(hmkpisb_neg_cut_range_lo_4_bkg,-1);
+  hmkpisb_neg_cut_range_lo_5->Add(hmkpisb_neg_cut_range_lo_5_bkg,-1);
+  hmkpisb_neg_cut_range_lo_6->Add(hmkpisb_neg_cut_range_lo_6_bkg,-1);
 
-    hmkpisb_cut_range_hi_1_time_bin2->Add(hmkpisb_cut_range_hi_1_time_bin2_bkg,-1);
-  hmkpisb_cut_range_hi_2_time_bin2->Add(hmkpisb_cut_range_hi_2_time_bin2_bkg,-1);
-  hmkpisb_cut_range_hi_3_time_bin2->Add(hmkpisb_cut_range_hi_3_time_bin2_bkg,-1);
-  hmkpisb_cut_range_hi_4_time_bin2->Add(hmkpisb_cut_range_hi_4_time_bin2_bkg,-1);
-  hmkpisb_cut_range_hi_5_time_bin2->Add(hmkpisb_cut_range_hi_5_time_bin2_bkg,-1);
-  hmkpisb_cut_range_hi_6_time_bin2->Add(hmkpisb_cut_range_hi_6_time_bin2_bkg,-1);
-  
-  hmkpisb_cut_range_lo_1_time_bin2->Add(hmkpisb_cut_range_lo_1_time_bin2_bkg,-1);
-  hmkpisb_cut_range_lo_2_time_bin2->Add(hmkpisb_cut_range_lo_2_time_bin2_bkg,-1);
-  hmkpisb_cut_range_lo_3_time_bin2->Add(hmkpisb_cut_range_lo_3_time_bin2_bkg,-1);
-  hmkpisb_cut_range_lo_4_time_bin2->Add(hmkpisb_cut_range_lo_4_time_bin2_bkg,-1);
-  hmkpisb_cut_range_lo_5_time_bin2->Add(hmkpisb_cut_range_lo_5_time_bin2_bkg,-1);
-  hmkpisb_cut_range_lo_6_time_bin2->Add(hmkpisb_cut_range_lo_6_time_bin2_bkg,-1);
-
-    hmkpisb_cut_range_hi_1_time_bin3->Add(hmkpisb_cut_range_hi_1_time_bin3_bkg,-1);
-  hmkpisb_cut_range_hi_2_time_bin3->Add(hmkpisb_cut_range_hi_2_time_bin3_bkg,-1);
-  hmkpisb_cut_range_hi_3_time_bin3->Add(hmkpisb_cut_range_hi_3_time_bin3_bkg,-1);
-  hmkpisb_cut_range_hi_4_time_bin3->Add(hmkpisb_cut_range_hi_4_time_bin3_bkg,-1);
-  hmkpisb_cut_range_hi_5_time_bin3->Add(hmkpisb_cut_range_hi_5_time_bin3_bkg,-1);
-  hmkpisb_cut_range_hi_6_time_bin3->Add(hmkpisb_cut_range_hi_6_time_bin3_bkg,-1);
-  
-  hmkpisb_cut_range_lo_1_time_bin3->Add(hmkpisb_cut_range_lo_1_time_bin3_bkg,-1);
-  hmkpisb_cut_range_lo_2_time_bin3->Add(hmkpisb_cut_range_lo_2_time_bin3_bkg,-1);
-  hmkpisb_cut_range_lo_3_time_bin3->Add(hmkpisb_cut_range_lo_3_time_bin3_bkg,-1);
-  hmkpisb_cut_range_lo_4_time_bin3->Add(hmkpisb_cut_range_lo_4_time_bin3_bkg,-1);
-  hmkpisb_cut_range_lo_5_time_bin3->Add(hmkpisb_cut_range_lo_5_time_bin3_bkg,-1);
-  hmkpisb_cut_range_lo_6_time_bin3->Add(hmkpisb_cut_range_lo_6_time_bin3_bkg,-1);
-
-    hmkpisb_cut_range_hi_1_time_bin4->Add(hmkpisb_cut_range_hi_1_time_bin4_bkg,-1);
-  hmkpisb_cut_range_hi_2_time_bin4->Add(hmkpisb_cut_range_hi_2_time_bin4_bkg,-1);
-  hmkpisb_cut_range_hi_3_time_bin4->Add(hmkpisb_cut_range_hi_3_time_bin4_bkg,-1);
-  hmkpisb_cut_range_hi_4_time_bin4->Add(hmkpisb_cut_range_hi_4_time_bin4_bkg,-1);
-  hmkpisb_cut_range_hi_5_time_bin4->Add(hmkpisb_cut_range_hi_5_time_bin4_bkg,-1);
-  hmkpisb_cut_range_hi_6_time_bin4->Add(hmkpisb_cut_range_hi_6_time_bin4_bkg,-1);
-  
-  hmkpisb_cut_range_lo_1_time_bin4->Add(hmkpisb_cut_range_lo_1_time_bin4_bkg,-1);
-  hmkpisb_cut_range_lo_2_time_bin4->Add(hmkpisb_cut_range_lo_2_time_bin4_bkg,-1);
-  hmkpisb_cut_range_lo_3_time_bin4->Add(hmkpisb_cut_range_lo_3_time_bin4_bkg,-1);
-  hmkpisb_cut_range_lo_4_time_bin4->Add(hmkpisb_cut_range_lo_4_time_bin4_bkg,-1);
-  hmkpisb_cut_range_lo_5_time_bin4->Add(hmkpisb_cut_range_lo_5_time_bin4_bkg,-1);
-  hmkpisb_cut_range_lo_6_time_bin4->Add(hmkpisb_cut_range_lo_6_time_bin4_bkg,-1);
-
-    hmkpisb_cut_range_hi_1_time_bin5->Add(hmkpisb_cut_range_hi_1_time_bin5_bkg,-1);
-  hmkpisb_cut_range_hi_2_time_bin5->Add(hmkpisb_cut_range_hi_2_time_bin5_bkg,-1);
-  hmkpisb_cut_range_hi_3_time_bin5->Add(hmkpisb_cut_range_hi_3_time_bin5_bkg,-1);
-  hmkpisb_cut_range_hi_4_time_bin5->Add(hmkpisb_cut_range_hi_4_time_bin5_bkg,-1);
-  hmkpisb_cut_range_hi_5_time_bin5->Add(hmkpisb_cut_range_hi_5_time_bin5_bkg,-1);
-  hmkpisb_cut_range_hi_6_time_bin5->Add(hmkpisb_cut_range_hi_6_time_bin5_bkg,-1);
-  
-  hmkpisb_cut_range_lo_1_time_bin5->Add(hmkpisb_cut_range_lo_1_time_bin5_bkg,-1);
-  hmkpisb_cut_range_lo_2_time_bin5->Add(hmkpisb_cut_range_lo_2_time_bin5_bkg,-1);
-  hmkpisb_cut_range_lo_3_time_bin5->Add(hmkpisb_cut_range_lo_3_time_bin5_bkg,-1);
-  hmkpisb_cut_range_lo_4_time_bin5->Add(hmkpisb_cut_range_lo_4_time_bin5_bkg,-1);
-  hmkpisb_cut_range_lo_5_time_bin5->Add(hmkpisb_cut_range_lo_5_time_bin5_bkg,-1);
-  hmkpisb_cut_range_lo_6_time_bin5->Add(hmkpisb_cut_range_lo_6_time_bin5_bkg,-1);
-
-  //positive
-  
-  hmkpisb_pos_cut_range_hi_1_time_bin1->Add(hmkpisb_pos_cut_range_hi_1_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_hi_2_time_bin1->Add(hmkpisb_pos_cut_range_hi_2_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_hi_3_time_bin1->Add(hmkpisb_pos_cut_range_hi_3_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_hi_4_time_bin1->Add(hmkpisb_pos_cut_range_hi_4_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_hi_5_time_bin1->Add(hmkpisb_pos_cut_range_hi_5_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_hi_6_time_bin1->Add(hmkpisb_pos_cut_range_hi_6_time_bin1_bkg,-1);
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin1->Add(hmkpisb_pos_cut_range_lo_1_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_lo_2_time_bin1->Add(hmkpisb_pos_cut_range_lo_2_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_lo_3_time_bin1->Add(hmkpisb_pos_cut_range_lo_3_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_lo_4_time_bin1->Add(hmkpisb_pos_cut_range_lo_4_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_lo_5_time_bin1->Add(hmkpisb_pos_cut_range_lo_5_time_bin1_bkg,-1);
-  hmkpisb_pos_cut_range_lo_6_time_bin1->Add(hmkpisb_pos_cut_range_lo_6_time_bin1_bkg,-1);
-
-    hmkpisb_pos_cut_range_hi_1_time_bin2->Add(hmkpisb_pos_cut_range_hi_1_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_hi_2_time_bin2->Add(hmkpisb_pos_cut_range_hi_2_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_hi_3_time_bin2->Add(hmkpisb_pos_cut_range_hi_3_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_hi_4_time_bin2->Add(hmkpisb_pos_cut_range_hi_4_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_hi_5_time_bin2->Add(hmkpisb_pos_cut_range_hi_5_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_hi_6_time_bin2->Add(hmkpisb_pos_cut_range_hi_6_time_bin2_bkg,-1);
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin2->Add(hmkpisb_pos_cut_range_lo_1_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_lo_2_time_bin2->Add(hmkpisb_pos_cut_range_lo_2_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_lo_3_time_bin2->Add(hmkpisb_pos_cut_range_lo_3_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_lo_4_time_bin2->Add(hmkpisb_pos_cut_range_lo_4_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_lo_5_time_bin2->Add(hmkpisb_pos_cut_range_lo_5_time_bin2_bkg,-1);
-  hmkpisb_pos_cut_range_lo_6_time_bin2->Add(hmkpisb_pos_cut_range_lo_6_time_bin2_bkg,-1);
-
-    hmkpisb_pos_cut_range_hi_1_time_bin3->Add(hmkpisb_pos_cut_range_hi_1_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_hi_2_time_bin3->Add(hmkpisb_pos_cut_range_hi_2_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_hi_3_time_bin3->Add(hmkpisb_pos_cut_range_hi_3_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_hi_4_time_bin3->Add(hmkpisb_pos_cut_range_hi_4_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_hi_5_time_bin3->Add(hmkpisb_pos_cut_range_hi_5_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_hi_6_time_bin3->Add(hmkpisb_pos_cut_range_hi_6_time_bin3_bkg,-1);
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin3->Add(hmkpisb_pos_cut_range_lo_1_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_lo_2_time_bin3->Add(hmkpisb_pos_cut_range_lo_2_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_lo_3_time_bin3->Add(hmkpisb_pos_cut_range_lo_3_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_lo_4_time_bin3->Add(hmkpisb_pos_cut_range_lo_4_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_lo_5_time_bin3->Add(hmkpisb_pos_cut_range_lo_5_time_bin3_bkg,-1);
-  hmkpisb_pos_cut_range_lo_6_time_bin3->Add(hmkpisb_pos_cut_range_lo_6_time_bin3_bkg,-1);
-
-    hmkpisb_pos_cut_range_hi_1_time_bin4->Add(hmkpisb_pos_cut_range_hi_1_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_hi_2_time_bin4->Add(hmkpisb_pos_cut_range_hi_2_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_hi_3_time_bin4->Add(hmkpisb_pos_cut_range_hi_3_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_hi_4_time_bin4->Add(hmkpisb_pos_cut_range_hi_4_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_hi_5_time_bin4->Add(hmkpisb_pos_cut_range_hi_5_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_hi_6_time_bin4->Add(hmkpisb_pos_cut_range_hi_6_time_bin4_bkg,-1);
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin4->Add(hmkpisb_pos_cut_range_lo_1_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_lo_2_time_bin4->Add(hmkpisb_pos_cut_range_lo_2_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_lo_3_time_bin4->Add(hmkpisb_pos_cut_range_lo_3_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_lo_4_time_bin4->Add(hmkpisb_pos_cut_range_lo_4_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_lo_5_time_bin4->Add(hmkpisb_pos_cut_range_lo_5_time_bin4_bkg,-1);
-  hmkpisb_pos_cut_range_lo_6_time_bin4->Add(hmkpisb_pos_cut_range_lo_6_time_bin4_bkg,-1);
-
-    hmkpisb_pos_cut_range_hi_1_time_bin5->Add(hmkpisb_pos_cut_range_hi_1_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_hi_2_time_bin5->Add(hmkpisb_pos_cut_range_hi_2_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_hi_3_time_bin5->Add(hmkpisb_pos_cut_range_hi_3_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_hi_4_time_bin5->Add(hmkpisb_pos_cut_range_hi_4_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_hi_5_time_bin5->Add(hmkpisb_pos_cut_range_hi_5_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_hi_6_time_bin5->Add(hmkpisb_pos_cut_range_hi_6_time_bin5_bkg,-1);
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin5->Add(hmkpisb_pos_cut_range_lo_1_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_lo_2_time_bin5->Add(hmkpisb_pos_cut_range_lo_2_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_lo_3_time_bin5->Add(hmkpisb_pos_cut_range_lo_3_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_lo_4_time_bin5->Add(hmkpisb_pos_cut_range_lo_4_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_lo_5_time_bin5->Add(hmkpisb_pos_cut_range_lo_5_time_bin5_bkg,-1);
-  hmkpisb_pos_cut_range_lo_6_time_bin5->Add(hmkpisb_pos_cut_range_lo_6_time_bin5_bkg,-1);
-
-
-  //negative
-  
-  hmkpisb_neg_cut_range_hi_1_time_bin1->Add(hmkpisb_neg_cut_range_hi_1_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_hi_2_time_bin1->Add(hmkpisb_neg_cut_range_hi_2_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_hi_3_time_bin1->Add(hmkpisb_neg_cut_range_hi_3_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_hi_4_time_bin1->Add(hmkpisb_neg_cut_range_hi_4_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_hi_5_time_bin1->Add(hmkpisb_neg_cut_range_hi_5_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_hi_6_time_bin1->Add(hmkpisb_neg_cut_range_hi_6_time_bin1_bkg,-1);
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin1->Add(hmkpisb_neg_cut_range_lo_1_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_lo_2_time_bin1->Add(hmkpisb_neg_cut_range_lo_2_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_lo_3_time_bin1->Add(hmkpisb_neg_cut_range_lo_3_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_lo_4_time_bin1->Add(hmkpisb_neg_cut_range_lo_4_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_lo_5_time_bin1->Add(hmkpisb_neg_cut_range_lo_5_time_bin1_bkg,-1);
-  hmkpisb_neg_cut_range_lo_6_time_bin1->Add(hmkpisb_neg_cut_range_lo_6_time_bin1_bkg,-1);
-
-    hmkpisb_neg_cut_range_hi_1_time_bin2->Add(hmkpisb_neg_cut_range_hi_1_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_hi_2_time_bin2->Add(hmkpisb_neg_cut_range_hi_2_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_hi_3_time_bin2->Add(hmkpisb_neg_cut_range_hi_3_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_hi_4_time_bin2->Add(hmkpisb_neg_cut_range_hi_4_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_hi_5_time_bin2->Add(hmkpisb_neg_cut_range_hi_5_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_hi_6_time_bin2->Add(hmkpisb_neg_cut_range_hi_6_time_bin2_bkg,-1);
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin2->Add(hmkpisb_neg_cut_range_lo_1_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_lo_2_time_bin2->Add(hmkpisb_neg_cut_range_lo_2_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_lo_3_time_bin2->Add(hmkpisb_neg_cut_range_lo_3_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_lo_4_time_bin2->Add(hmkpisb_neg_cut_range_lo_4_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_lo_5_time_bin2->Add(hmkpisb_neg_cut_range_lo_5_time_bin2_bkg,-1);
-  hmkpisb_neg_cut_range_lo_6_time_bin2->Add(hmkpisb_neg_cut_range_lo_6_time_bin2_bkg,-1);
-
-    hmkpisb_neg_cut_range_hi_1_time_bin3->Add(hmkpisb_neg_cut_range_hi_1_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_hi_2_time_bin3->Add(hmkpisb_neg_cut_range_hi_2_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_hi_3_time_bin3->Add(hmkpisb_neg_cut_range_hi_3_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_hi_4_time_bin3->Add(hmkpisb_neg_cut_range_hi_4_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_hi_5_time_bin3->Add(hmkpisb_neg_cut_range_hi_5_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_hi_6_time_bin3->Add(hmkpisb_neg_cut_range_hi_6_time_bin3_bkg,-1);
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin3->Add(hmkpisb_neg_cut_range_lo_1_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_lo_2_time_bin3->Add(hmkpisb_neg_cut_range_lo_2_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_lo_3_time_bin3->Add(hmkpisb_neg_cut_range_lo_3_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_lo_4_time_bin3->Add(hmkpisb_neg_cut_range_lo_4_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_lo_5_time_bin3->Add(hmkpisb_neg_cut_range_lo_5_time_bin3_bkg,-1);
-  hmkpisb_neg_cut_range_lo_6_time_bin3->Add(hmkpisb_neg_cut_range_lo_6_time_bin3_bkg,-1);
-
-    hmkpisb_neg_cut_range_hi_1_time_bin4->Add(hmkpisb_neg_cut_range_hi_1_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_hi_2_time_bin4->Add(hmkpisb_neg_cut_range_hi_2_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_hi_3_time_bin4->Add(hmkpisb_neg_cut_range_hi_3_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_hi_4_time_bin4->Add(hmkpisb_neg_cut_range_hi_4_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_hi_5_time_bin4->Add(hmkpisb_neg_cut_range_hi_5_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_hi_6_time_bin4->Add(hmkpisb_neg_cut_range_hi_6_time_bin4_bkg,-1);
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin4->Add(hmkpisb_neg_cut_range_lo_1_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_lo_2_time_bin4->Add(hmkpisb_neg_cut_range_lo_2_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_lo_3_time_bin4->Add(hmkpisb_neg_cut_range_lo_3_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_lo_4_time_bin4->Add(hmkpisb_neg_cut_range_lo_4_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_lo_5_time_bin4->Add(hmkpisb_neg_cut_range_lo_5_time_bin4_bkg,-1);
-  hmkpisb_neg_cut_range_lo_6_time_bin4->Add(hmkpisb_neg_cut_range_lo_6_time_bin4_bkg,-1);
-
-    hmkpisb_neg_cut_range_hi_1_time_bin5->Add(hmkpisb_neg_cut_range_hi_1_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_hi_2_time_bin5->Add(hmkpisb_neg_cut_range_hi_2_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_hi_3_time_bin5->Add(hmkpisb_neg_cut_range_hi_3_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_hi_4_time_bin5->Add(hmkpisb_neg_cut_range_hi_4_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_hi_5_time_bin5->Add(hmkpisb_neg_cut_range_hi_5_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_hi_6_time_bin5->Add(hmkpisb_neg_cut_range_hi_6_time_bin5_bkg,-1);
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin5->Add(hmkpisb_neg_cut_range_lo_1_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_lo_2_time_bin5->Add(hmkpisb_neg_cut_range_lo_2_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_lo_3_time_bin5->Add(hmkpisb_neg_cut_range_lo_3_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_lo_4_time_bin5->Add(hmkpisb_neg_cut_range_lo_4_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_lo_5_time_bin5->Add(hmkpisb_neg_cut_range_lo_5_time_bin5_bkg,-1);
-  hmkpisb_neg_cut_range_lo_6_time_bin5->Add(hmkpisb_neg_cut_range_lo_6_time_bin5_bkg,-1);
-
-  //end time bins
+  cout<<"done with the sidebands"<<endl;
   
   hmD0_pik_sig->Add(hmD0_pik_sig_bkg,-1);
   hmD0_pik_sb->Add(hmD0_pik_sb_bkg,-1);
@@ -1496,6 +552,77 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   double_misid_dmass_dst_sideband_region_bin3->Add(double_misid_dmass_dst_sideband_region_bin3_bkg,-1);
   double_misid_dmass_dst_sideband_region_bin4->Add(double_misid_dmass_dst_sideband_region_bin4_bkg,-1);
   double_misid_dmass_dst_sideband_region_bin5->Add(double_misid_dmass_dst_sideband_region_bin5_bkg,-1);
+  //clean up the pointers
+  delete  hmsig_bkg;
+  delete  hmkpisb_bkg;
+  delete  hmkksb_bkg;
+  delete  hmpipisb_bkg;
+  delete  hmpiksb_bkg;
+  delete  hmrob_bkg;
+
+  delete  hmkpisb_cut_range_bkg;
+  delete  hmkpisb_cut_range_hi_bkg;
+  delete  hmkpisb_cut_range_lo_bkg;
+  delete  hmkpisb_cut_range_hi_1_bkg;
+  delete  hmkpisb_cut_range_hi_2_bkg;
+  delete  hmkpisb_cut_range_hi_3_bkg;
+  delete  hmkpisb_cut_range_hi_4_bkg;
+  delete  hmkpisb_cut_range_hi_5_bkg;
+  delete  hmkpisb_cut_range_hi_6_bkg;
+  
+  delete  hmkpisb_cut_range_lo_1_bkg;
+  delete  hmkpisb_cut_range_lo_2_bkg;
+  delete  hmkpisb_cut_range_lo_3_bkg;
+  delete  hmkpisb_cut_range_lo_4_bkg;
+  delete  hmkpisb_cut_range_lo_5_bkg;
+  delete  hmkpisb_cut_range_lo_6_bkg;
+  //split charge
+  delete  hmkpisb_pos_cut_range_hi_1_bkg;
+  delete  hmkpisb_pos_cut_range_hi_2_bkg;
+  delete  hmkpisb_pos_cut_range_hi_3_bkg;
+  delete  hmkpisb_pos_cut_range_hi_4_bkg;
+  delete  hmkpisb_pos_cut_range_hi_5_bkg;
+  delete  hmkpisb_pos_cut_range_hi_6_bkg;
+  
+  delete  hmkpisb_pos_cut_range_lo_1_bkg;
+  delete  hmkpisb_pos_cut_range_lo_2_bkg;
+  delete  hmkpisb_pos_cut_range_lo_3_bkg;
+  delete  hmkpisb_pos_cut_range_lo_4_bkg;
+  delete  hmkpisb_pos_cut_range_lo_5_bkg;
+  delete  hmkpisb_pos_cut_range_lo_6_bkg;
+
+  delete  hmkpisb_neg_cut_range_hi_1_bkg;
+  delete  hmkpisb_neg_cut_range_hi_2_bkg;
+  delete  hmkpisb_neg_cut_range_hi_3_bkg;
+  delete  hmkpisb_neg_cut_range_hi_4_bkg;
+  delete  hmkpisb_neg_cut_range_hi_5_bkg;
+  delete  hmkpisb_neg_cut_range_hi_6_bkg;
+  
+  delete  hmkpisb_neg_cut_range_lo_1_bkg;
+  delete  hmkpisb_neg_cut_range_lo_2_bkg;
+  delete  hmkpisb_neg_cut_range_lo_3_bkg;
+  delete  hmkpisb_neg_cut_range_lo_4_bkg;
+  delete  hmkpisb_neg_cut_range_lo_5_bkg;
+  delete  hmkpisb_neg_cut_range_lo_6_bkg;
+  //time bins
+  delete  hmD0_pik_sig_bkg;
+  delete  hmD0_pik_sb_bkg;
+  delete  hmD0_pik_tot_bkg;
+
+  delete  double_misid_dmass_dst_sig_region_bkg;
+  delete  double_misid_dmass_dst_sideband_region_bkg;
+
+  delete  double_misid_dmass_dst_sig_region_bin1_bkg;
+  delete  double_misid_dmass_dst_sig_region_bin2_bkg;
+  delete  double_misid_dmass_dst_sig_region_bin3_bkg;
+  delete  double_misid_dmass_dst_sig_region_bin4_bkg;
+  delete  double_misid_dmass_dst_sig_region_bin5_bkg;
+
+  delete  double_misid_dmass_dst_sideband_region_bin1_bkg;
+  delete  double_misid_dmass_dst_sideband_region_bin2_bkg;
+  delete  double_misid_dmass_dst_sideband_region_bin3_bkg;
+  delete  double_misid_dmass_dst_sideband_region_bin4_bkg;
+  delete  double_misid_dmass_dst_sideband_region_bin5_bkg;
 }
 //=============================================================================
 // Destructor
@@ -1542,204 +669,33 @@ betastar_plot::~betastar_plot() {
   delete hmkpisb_cut_range_lo_4 ;
   delete hmkpisb_cut_range_lo_5 ;
   delete hmkpisb_cut_range_lo_6 ;
-  //time bins
-  delete hmkpisb_cut_range_hi_1_time_bin1;
-  delete hmkpisb_cut_range_hi_2_time_bin1;
-  delete hmkpisb_cut_range_hi_3_time_bin1;
-  delete hmkpisb_cut_range_hi_4_time_bin1;
-  delete hmkpisb_cut_range_hi_5_time_bin1;
-  delete hmkpisb_cut_range_hi_6_time_bin1;
-  delete hmkpisb_cut_range_lo_1_time_bin1;
-  delete hmkpisb_cut_range_lo_2_time_bin1;
-  delete hmkpisb_cut_range_lo_3_time_bin1;
-  delete hmkpisb_cut_range_lo_4_time_bin1;
-  delete hmkpisb_cut_range_lo_5_time_bin1;
-  delete hmkpisb_cut_range_lo_6_time_bin1;
 
-    delete hmkpisb_cut_range_hi_1_time_bin2;
-  delete hmkpisb_cut_range_hi_2_time_bin2;
-  delete hmkpisb_cut_range_hi_3_time_bin2;
-  delete hmkpisb_cut_range_hi_4_time_bin2;
-  delete hmkpisb_cut_range_hi_5_time_bin2;
-  delete hmkpisb_cut_range_hi_6_time_bin2;
-  delete hmkpisb_cut_range_lo_1_time_bin2;
-  delete hmkpisb_cut_range_lo_2_time_bin2;
-  delete hmkpisb_cut_range_lo_3_time_bin2;
-  delete hmkpisb_cut_range_lo_4_time_bin2;
-  delete hmkpisb_cut_range_lo_5_time_bin2;
-  delete hmkpisb_cut_range_lo_6_time_bin2;
+    delete hmkpisb_pos_cut_range_hi_1 ;
+  delete hmkpisb_pos_cut_range_hi_2 ;
+  delete hmkpisb_pos_cut_range_hi_3 ;
+  delete hmkpisb_pos_cut_range_hi_4 ;
+  delete hmkpisb_pos_cut_range_hi_5 ;
+  delete hmkpisb_pos_cut_range_hi_6 ;
+  delete hmkpisb_pos_cut_range_lo_1 ;
+  delete hmkpisb_pos_cut_range_lo_2 ;
+  delete hmkpisb_pos_cut_range_lo_3 ;
+  delete hmkpisb_pos_cut_range_lo_4 ;
+  delete hmkpisb_pos_cut_range_lo_5 ;
+  delete hmkpisb_pos_cut_range_lo_6 ;
 
-    delete hmkpisb_cut_range_hi_1_time_bin3;
-  delete hmkpisb_cut_range_hi_2_time_bin3;
-  delete hmkpisb_cut_range_hi_3_time_bin3;
-  delete hmkpisb_cut_range_hi_4_time_bin3;
-  delete hmkpisb_cut_range_hi_5_time_bin3;
-  delete hmkpisb_cut_range_hi_6_time_bin3;
-  delete hmkpisb_cut_range_lo_1_time_bin3;
-  delete hmkpisb_cut_range_lo_2_time_bin3;
-  delete hmkpisb_cut_range_lo_3_time_bin3;
-  delete hmkpisb_cut_range_lo_4_time_bin3;
-  delete hmkpisb_cut_range_lo_5_time_bin3;
-  delete hmkpisb_cut_range_lo_6_time_bin3;
+    delete hmkpisb_neg_cut_range_hi_1 ;
+  delete hmkpisb_neg_cut_range_hi_2 ;
+  delete hmkpisb_neg_cut_range_hi_3 ;
+  delete hmkpisb_neg_cut_range_hi_4 ;
+  delete hmkpisb_neg_cut_range_hi_5 ;
+  delete hmkpisb_neg_cut_range_hi_6 ;
+  delete hmkpisb_neg_cut_range_lo_1 ;
+  delete hmkpisb_neg_cut_range_lo_2 ;
+  delete hmkpisb_neg_cut_range_lo_3 ;
+  delete hmkpisb_neg_cut_range_lo_4 ;
+  delete hmkpisb_neg_cut_range_lo_5 ;
+  delete hmkpisb_neg_cut_range_lo_6 ;
 
-    delete hmkpisb_cut_range_hi_1_time_bin4;
-  delete hmkpisb_cut_range_hi_2_time_bin4;
-  delete hmkpisb_cut_range_hi_3_time_bin4;
-  delete hmkpisb_cut_range_hi_4_time_bin4;
-  delete hmkpisb_cut_range_hi_5_time_bin4;
-  delete hmkpisb_cut_range_hi_6_time_bin4;
-  delete hmkpisb_cut_range_lo_1_time_bin4;
-  delete hmkpisb_cut_range_lo_2_time_bin4;
-  delete hmkpisb_cut_range_lo_3_time_bin4;
-  delete hmkpisb_cut_range_lo_4_time_bin4;
-  delete hmkpisb_cut_range_lo_5_time_bin4;
-  delete hmkpisb_cut_range_lo_6_time_bin4;
-
-    delete hmkpisb_cut_range_hi_1_time_bin5;
-  delete hmkpisb_cut_range_hi_2_time_bin5;
-  delete hmkpisb_cut_range_hi_3_time_bin5;
-  delete hmkpisb_cut_range_hi_4_time_bin5;
-  delete hmkpisb_cut_range_hi_5_time_bin5;
-  delete hmkpisb_cut_range_hi_6_time_bin5;
-  delete hmkpisb_cut_range_lo_1_time_bin5;
-  delete hmkpisb_cut_range_lo_2_time_bin5;
-  delete hmkpisb_cut_range_lo_3_time_bin5;
-  delete hmkpisb_cut_range_lo_4_time_bin5;
-  delete hmkpisb_cut_range_lo_5_time_bin5;
-  delete hmkpisb_cut_range_lo_6_time_bin5;
-  //positive
-    delete hmkpisb_pos_cut_range_hi_1_time_bin1;
-  delete hmkpisb_pos_cut_range_hi_2_time_bin1;
-  delete hmkpisb_pos_cut_range_hi_3_time_bin1;
-  delete hmkpisb_pos_cut_range_hi_4_time_bin1;
-  delete hmkpisb_pos_cut_range_hi_5_time_bin1;
-  delete hmkpisb_pos_cut_range_hi_6_time_bin1;
-  delete hmkpisb_pos_cut_range_lo_1_time_bin1;
-  delete hmkpisb_pos_cut_range_lo_2_time_bin1;
-  delete hmkpisb_pos_cut_range_lo_3_time_bin1;
-  delete hmkpisb_pos_cut_range_lo_4_time_bin1;
-  delete hmkpisb_pos_cut_range_lo_5_time_bin1;
-  delete hmkpisb_pos_cut_range_lo_6_time_bin1;
-
-    delete hmkpisb_pos_cut_range_hi_1_time_bin2;
-  delete hmkpisb_pos_cut_range_hi_2_time_bin2;
-  delete hmkpisb_pos_cut_range_hi_3_time_bin2;
-  delete hmkpisb_pos_cut_range_hi_4_time_bin2;
-  delete hmkpisb_pos_cut_range_hi_5_time_bin2;
-  delete hmkpisb_pos_cut_range_hi_6_time_bin2;
-  delete hmkpisb_pos_cut_range_lo_1_time_bin2;
-  delete hmkpisb_pos_cut_range_lo_2_time_bin2;
-  delete hmkpisb_pos_cut_range_lo_3_time_bin2;
-  delete hmkpisb_pos_cut_range_lo_4_time_bin2;
-  delete hmkpisb_pos_cut_range_lo_5_time_bin2;
-  delete hmkpisb_pos_cut_range_lo_6_time_bin2;
-
-    delete hmkpisb_pos_cut_range_hi_1_time_bin3;
-  delete hmkpisb_pos_cut_range_hi_2_time_bin3;
-  delete hmkpisb_pos_cut_range_hi_3_time_bin3;
-  delete hmkpisb_pos_cut_range_hi_4_time_bin3;
-  delete hmkpisb_pos_cut_range_hi_5_time_bin3;
-  delete hmkpisb_pos_cut_range_hi_6_time_bin3;
-  delete hmkpisb_pos_cut_range_lo_1_time_bin3;
-  delete hmkpisb_pos_cut_range_lo_2_time_bin3;
-  delete hmkpisb_pos_cut_range_lo_3_time_bin3;
-  delete hmkpisb_pos_cut_range_lo_4_time_bin3;
-  delete hmkpisb_pos_cut_range_lo_5_time_bin3;
-  delete hmkpisb_pos_cut_range_lo_6_time_bin3;
-
-    delete hmkpisb_pos_cut_range_hi_1_time_bin4;
-  delete hmkpisb_pos_cut_range_hi_2_time_bin4;
-  delete hmkpisb_pos_cut_range_hi_3_time_bin4;
-  delete hmkpisb_pos_cut_range_hi_4_time_bin4;
-  delete hmkpisb_pos_cut_range_hi_5_time_bin4;
-  delete hmkpisb_pos_cut_range_hi_6_time_bin4;
-  delete hmkpisb_pos_cut_range_lo_1_time_bin4;
-  delete hmkpisb_pos_cut_range_lo_2_time_bin4;
-  delete hmkpisb_pos_cut_range_lo_3_time_bin4;
-  delete hmkpisb_pos_cut_range_lo_4_time_bin4;
-  delete hmkpisb_pos_cut_range_lo_5_time_bin4;
-  delete hmkpisb_pos_cut_range_lo_6_time_bin4;
-
-    delete hmkpisb_pos_cut_range_hi_1_time_bin5;
-  delete hmkpisb_pos_cut_range_hi_2_time_bin5;
-  delete hmkpisb_pos_cut_range_hi_3_time_bin5;
-  delete hmkpisb_pos_cut_range_hi_4_time_bin5;
-  delete hmkpisb_pos_cut_range_hi_5_time_bin5;
-  delete hmkpisb_pos_cut_range_hi_6_time_bin5;
-  delete hmkpisb_pos_cut_range_lo_1_time_bin5;
-  delete hmkpisb_pos_cut_range_lo_2_time_bin5;
-  delete hmkpisb_pos_cut_range_lo_3_time_bin5;
-  delete hmkpisb_pos_cut_range_lo_4_time_bin5;
-  delete hmkpisb_pos_cut_range_lo_5_time_bin5;
-  delete hmkpisb_pos_cut_range_lo_6_time_bin5;
-
-  //negative
-    delete hmkpisb_neg_cut_range_hi_1_time_bin1;
-  delete hmkpisb_neg_cut_range_hi_2_time_bin1;
-  delete hmkpisb_neg_cut_range_hi_3_time_bin1;
-  delete hmkpisb_neg_cut_range_hi_4_time_bin1;
-  delete hmkpisb_neg_cut_range_hi_5_time_bin1;
-  delete hmkpisb_neg_cut_range_hi_6_time_bin1;
-  delete hmkpisb_neg_cut_range_lo_1_time_bin1;
-  delete hmkpisb_neg_cut_range_lo_2_time_bin1;
-  delete hmkpisb_neg_cut_range_lo_3_time_bin1;
-  delete hmkpisb_neg_cut_range_lo_4_time_bin1;
-  delete hmkpisb_neg_cut_range_lo_5_time_bin1;
-  delete hmkpisb_neg_cut_range_lo_6_time_bin1;
-
-    delete hmkpisb_neg_cut_range_hi_1_time_bin2;
-  delete hmkpisb_neg_cut_range_hi_2_time_bin2;
-  delete hmkpisb_neg_cut_range_hi_3_time_bin2;
-  delete hmkpisb_neg_cut_range_hi_4_time_bin2;
-  delete hmkpisb_neg_cut_range_hi_5_time_bin2;
-  delete hmkpisb_neg_cut_range_hi_6_time_bin2;
-  delete hmkpisb_neg_cut_range_lo_1_time_bin2;
-  delete hmkpisb_neg_cut_range_lo_2_time_bin2;
-  delete hmkpisb_neg_cut_range_lo_3_time_bin2;
-  delete hmkpisb_neg_cut_range_lo_4_time_bin2;
-  delete hmkpisb_neg_cut_range_lo_5_time_bin2;
-  delete hmkpisb_neg_cut_range_lo_6_time_bin2;
-
-    delete hmkpisb_neg_cut_range_hi_1_time_bin3;
-  delete hmkpisb_neg_cut_range_hi_2_time_bin3;
-  delete hmkpisb_neg_cut_range_hi_3_time_bin3;
-  delete hmkpisb_neg_cut_range_hi_4_time_bin3;
-  delete hmkpisb_neg_cut_range_hi_5_time_bin3;
-  delete hmkpisb_neg_cut_range_hi_6_time_bin3;
-  delete hmkpisb_neg_cut_range_lo_1_time_bin3;
-  delete hmkpisb_neg_cut_range_lo_2_time_bin3;
-  delete hmkpisb_neg_cut_range_lo_3_time_bin3;
-  delete hmkpisb_neg_cut_range_lo_4_time_bin3;
-  delete hmkpisb_neg_cut_range_lo_5_time_bin3;
-  delete hmkpisb_neg_cut_range_lo_6_time_bin3;
-
-    delete hmkpisb_neg_cut_range_hi_1_time_bin4;
-  delete hmkpisb_neg_cut_range_hi_2_time_bin4;
-  delete hmkpisb_neg_cut_range_hi_3_time_bin4;
-  delete hmkpisb_neg_cut_range_hi_4_time_bin4;
-  delete hmkpisb_neg_cut_range_hi_5_time_bin4;
-  delete hmkpisb_neg_cut_range_hi_6_time_bin4;
-  delete hmkpisb_neg_cut_range_lo_1_time_bin4;
-  delete hmkpisb_neg_cut_range_lo_2_time_bin4;
-  delete hmkpisb_neg_cut_range_lo_3_time_bin4;
-  delete hmkpisb_neg_cut_range_lo_4_time_bin4;
-  delete hmkpisb_neg_cut_range_lo_5_time_bin4;
-  delete hmkpisb_neg_cut_range_lo_6_time_bin4;
-
-    delete hmkpisb_neg_cut_range_hi_1_time_bin5;
-  delete hmkpisb_neg_cut_range_hi_2_time_bin5;
-  delete hmkpisb_neg_cut_range_hi_3_time_bin5;
-  delete hmkpisb_neg_cut_range_hi_4_time_bin5;
-  delete hmkpisb_neg_cut_range_hi_5_time_bin5;
-  delete hmkpisb_neg_cut_range_hi_6_time_bin5;
-  delete hmkpisb_neg_cut_range_lo_1_time_bin5;
-  delete hmkpisb_neg_cut_range_lo_2_time_bin5;
-  delete hmkpisb_neg_cut_range_lo_3_time_bin5;
-  delete hmkpisb_neg_cut_range_lo_4_time_bin5;
-  delete hmkpisb_neg_cut_range_lo_5_time_bin5;
-  delete hmkpisb_neg_cut_range_lo_6_time_bin5;
-
-  //end time bins
   delete hmD0_pik_sig ;
   delete hmD0_pik_sb ;
   delete hmD0_pik_tot ;
@@ -2337,217 +1293,34 @@ void betastar_plot::SavePlots(){
   hmkpisb_cut_range_lo_4->Write();
   hmkpisb_cut_range_lo_5->Write();
   hmkpisb_cut_range_lo_6->Write();
-  //time bins
-  hmkpisb_cut_range_hi_1_time_bin1->Write();
-  hmkpisb_cut_range_hi_2_time_bin1->Write();
-  hmkpisb_cut_range_hi_3_time_bin1->Write();
-  hmkpisb_cut_range_hi_4_time_bin1->Write();
-  hmkpisb_cut_range_hi_5_time_bin1->Write();
-  hmkpisb_cut_range_hi_6_time_bin1->Write();
+  //charge split
+  hmkpisb_pos_cut_range_hi_1->Write();
+  hmkpisb_pos_cut_range_hi_2->Write();
+  hmkpisb_pos_cut_range_hi_3->Write();
+  hmkpisb_pos_cut_range_hi_4->Write();
+  hmkpisb_pos_cut_range_hi_5->Write();
+  hmkpisb_pos_cut_range_hi_6->Write();
   
-  hmkpisb_cut_range_lo_1_time_bin1->Write();
-  hmkpisb_cut_range_lo_2_time_bin1->Write();
-  hmkpisb_cut_range_lo_3_time_bin1->Write();
-  hmkpisb_cut_range_lo_4_time_bin1->Write();
-  hmkpisb_cut_range_lo_5_time_bin1->Write();
-  hmkpisb_cut_range_lo_6_time_bin1->Write();
+  hmkpisb_pos_cut_range_lo_1->Write();
+  hmkpisb_pos_cut_range_lo_2->Write();
+  hmkpisb_pos_cut_range_lo_3->Write();
+  hmkpisb_pos_cut_range_lo_4->Write();
+  hmkpisb_pos_cut_range_lo_5->Write();
+  hmkpisb_pos_cut_range_lo_6->Write();
 
-  hmkpisb_cut_range_hi_1_time_bin2->Write();
-  hmkpisb_cut_range_hi_2_time_bin2->Write();
-  hmkpisb_cut_range_hi_3_time_bin2->Write();
-  hmkpisb_cut_range_hi_4_time_bin2->Write();
-  hmkpisb_cut_range_hi_5_time_bin2->Write();
-  hmkpisb_cut_range_hi_6_time_bin2->Write();
+  hmkpisb_neg_cut_range_hi_1->Write();
+  hmkpisb_neg_cut_range_hi_2->Write();
+  hmkpisb_neg_cut_range_hi_3->Write();
+  hmkpisb_neg_cut_range_hi_4->Write();
+  hmkpisb_neg_cut_range_hi_5->Write();
+  hmkpisb_neg_cut_range_hi_6->Write();
   
-  hmkpisb_cut_range_lo_1_time_bin2->Write();
-  hmkpisb_cut_range_lo_2_time_bin2->Write();
-  hmkpisb_cut_range_lo_3_time_bin2->Write();
-  hmkpisb_cut_range_lo_4_time_bin2->Write();
-  hmkpisb_cut_range_lo_5_time_bin2->Write();
-  hmkpisb_cut_range_lo_6_time_bin2->Write();
-
-    hmkpisb_cut_range_hi_1_time_bin3->Write();
-  hmkpisb_cut_range_hi_2_time_bin3->Write();
-  hmkpisb_cut_range_hi_3_time_bin3->Write();
-  hmkpisb_cut_range_hi_4_time_bin3->Write();
-  hmkpisb_cut_range_hi_5_time_bin3->Write();
-  hmkpisb_cut_range_hi_6_time_bin3->Write();
-  
-  hmkpisb_cut_range_lo_1_time_bin3->Write();
-  hmkpisb_cut_range_lo_2_time_bin3->Write();
-  hmkpisb_cut_range_lo_3_time_bin3->Write();
-  hmkpisb_cut_range_lo_4_time_bin3->Write();
-  hmkpisb_cut_range_lo_5_time_bin3->Write();
-  hmkpisb_cut_range_lo_6_time_bin3->Write();
-
-    hmkpisb_cut_range_hi_1_time_bin4->Write();
-  hmkpisb_cut_range_hi_2_time_bin4->Write();
-  hmkpisb_cut_range_hi_3_time_bin4->Write();
-  hmkpisb_cut_range_hi_4_time_bin4->Write();
-  hmkpisb_cut_range_hi_5_time_bin4->Write();
-  hmkpisb_cut_range_hi_6_time_bin4->Write();
-  
-  hmkpisb_cut_range_lo_1_time_bin4->Write();
-  hmkpisb_cut_range_lo_2_time_bin4->Write();
-  hmkpisb_cut_range_lo_3_time_bin4->Write();
-  hmkpisb_cut_range_lo_4_time_bin4->Write();
-  hmkpisb_cut_range_lo_5_time_bin4->Write();
-  hmkpisb_cut_range_lo_6_time_bin4->Write();
-
-    hmkpisb_cut_range_hi_1_time_bin5->Write();
-  hmkpisb_cut_range_hi_2_time_bin5->Write();
-  hmkpisb_cut_range_hi_3_time_bin5->Write();
-  hmkpisb_cut_range_hi_4_time_bin5->Write();
-  hmkpisb_cut_range_hi_5_time_bin5->Write();
-  hmkpisb_cut_range_hi_6_time_bin5->Write();
-  
-  hmkpisb_cut_range_lo_1_time_bin5->Write();
-  hmkpisb_cut_range_lo_2_time_bin5->Write();
-  hmkpisb_cut_range_lo_3_time_bin5->Write();
-  hmkpisb_cut_range_lo_4_time_bin5->Write();
-  hmkpisb_cut_range_lo_5_time_bin5->Write();
-  hmkpisb_cut_range_lo_6_time_bin5->Write();
-  //positive
-    hmkpisb_pos_cut_range_hi_1_time_bin1->Write();
-  hmkpisb_pos_cut_range_hi_2_time_bin1->Write();
-  hmkpisb_pos_cut_range_hi_3_time_bin1->Write();
-  hmkpisb_pos_cut_range_hi_4_time_bin1->Write();
-  hmkpisb_pos_cut_range_hi_5_time_bin1->Write();
-  hmkpisb_pos_cut_range_hi_6_time_bin1->Write();
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin1->Write();
-  hmkpisb_pos_cut_range_lo_2_time_bin1->Write();
-  hmkpisb_pos_cut_range_lo_3_time_bin1->Write();
-  hmkpisb_pos_cut_range_lo_4_time_bin1->Write();
-  hmkpisb_pos_cut_range_lo_5_time_bin1->Write();
-  hmkpisb_pos_cut_range_lo_6_time_bin1->Write();
-
-  hmkpisb_pos_cut_range_hi_1_time_bin2->Write();
-  hmkpisb_pos_cut_range_hi_2_time_bin2->Write();
-  hmkpisb_pos_cut_range_hi_3_time_bin2->Write();
-  hmkpisb_pos_cut_range_hi_4_time_bin2->Write();
-  hmkpisb_pos_cut_range_hi_5_time_bin2->Write();
-  hmkpisb_pos_cut_range_hi_6_time_bin2->Write();
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin2->Write();
-  hmkpisb_pos_cut_range_lo_2_time_bin2->Write();
-  hmkpisb_pos_cut_range_lo_3_time_bin2->Write();
-  hmkpisb_pos_cut_range_lo_4_time_bin2->Write();
-  hmkpisb_pos_cut_range_lo_5_time_bin2->Write();
-  hmkpisb_pos_cut_range_lo_6_time_bin2->Write();
-
-    hmkpisb_pos_cut_range_hi_1_time_bin3->Write();
-  hmkpisb_pos_cut_range_hi_2_time_bin3->Write();
-  hmkpisb_pos_cut_range_hi_3_time_bin3->Write();
-  hmkpisb_pos_cut_range_hi_4_time_bin3->Write();
-  hmkpisb_pos_cut_range_hi_5_time_bin3->Write();
-  hmkpisb_pos_cut_range_hi_6_time_bin3->Write();
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin3->Write();
-  hmkpisb_pos_cut_range_lo_2_time_bin3->Write();
-  hmkpisb_pos_cut_range_lo_3_time_bin3->Write();
-  hmkpisb_pos_cut_range_lo_4_time_bin3->Write();
-  hmkpisb_pos_cut_range_lo_5_time_bin3->Write();
-  hmkpisb_pos_cut_range_lo_6_time_bin3->Write();
-
-    hmkpisb_pos_cut_range_hi_1_time_bin4->Write();
-  hmkpisb_pos_cut_range_hi_2_time_bin4->Write();
-  hmkpisb_pos_cut_range_hi_3_time_bin4->Write();
-  hmkpisb_pos_cut_range_hi_4_time_bin4->Write();
-  hmkpisb_pos_cut_range_hi_5_time_bin4->Write();
-  hmkpisb_pos_cut_range_hi_6_time_bin4->Write();
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin4->Write();
-  hmkpisb_pos_cut_range_lo_2_time_bin4->Write();
-  hmkpisb_pos_cut_range_lo_3_time_bin4->Write();
-  hmkpisb_pos_cut_range_lo_4_time_bin4->Write();
-  hmkpisb_pos_cut_range_lo_5_time_bin4->Write();
-  hmkpisb_pos_cut_range_lo_6_time_bin4->Write();
-
-    hmkpisb_pos_cut_range_hi_1_time_bin5->Write();
-  hmkpisb_pos_cut_range_hi_2_time_bin5->Write();
-  hmkpisb_pos_cut_range_hi_3_time_bin5->Write();
-  hmkpisb_pos_cut_range_hi_4_time_bin5->Write();
-  hmkpisb_pos_cut_range_hi_5_time_bin5->Write();
-  hmkpisb_pos_cut_range_hi_6_time_bin5->Write();
-  
-  hmkpisb_pos_cut_range_lo_1_time_bin5->Write();
-  hmkpisb_pos_cut_range_lo_2_time_bin5->Write();
-  hmkpisb_pos_cut_range_lo_3_time_bin5->Write();
-  hmkpisb_pos_cut_range_lo_4_time_bin5->Write();
-  hmkpisb_pos_cut_range_lo_5_time_bin5->Write();
-  hmkpisb_pos_cut_range_lo_6_time_bin5->Write();
-  //negative
-    hmkpisb_neg_cut_range_hi_1_time_bin1->Write();
-  hmkpisb_neg_cut_range_hi_2_time_bin1->Write();
-  hmkpisb_neg_cut_range_hi_3_time_bin1->Write();
-  hmkpisb_neg_cut_range_hi_4_time_bin1->Write();
-  hmkpisb_neg_cut_range_hi_5_time_bin1->Write();
-  hmkpisb_neg_cut_range_hi_6_time_bin1->Write();
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin1->Write();
-  hmkpisb_neg_cut_range_lo_2_time_bin1->Write();
-  hmkpisb_neg_cut_range_lo_3_time_bin1->Write();
-  hmkpisb_neg_cut_range_lo_4_time_bin1->Write();
-  hmkpisb_neg_cut_range_lo_5_time_bin1->Write();
-  hmkpisb_neg_cut_range_lo_6_time_bin1->Write();
-
-  hmkpisb_neg_cut_range_hi_1_time_bin2->Write();
-  hmkpisb_neg_cut_range_hi_2_time_bin2->Write();
-  hmkpisb_neg_cut_range_hi_3_time_bin2->Write();
-  hmkpisb_neg_cut_range_hi_4_time_bin2->Write();
-  hmkpisb_neg_cut_range_hi_5_time_bin2->Write();
-  hmkpisb_neg_cut_range_hi_6_time_bin2->Write();
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin2->Write();
-  hmkpisb_neg_cut_range_lo_2_time_bin2->Write();
-  hmkpisb_neg_cut_range_lo_3_time_bin2->Write();
-  hmkpisb_neg_cut_range_lo_4_time_bin2->Write();
-  hmkpisb_neg_cut_range_lo_5_time_bin2->Write();
-  hmkpisb_neg_cut_range_lo_6_time_bin2->Write();
-
-    hmkpisb_neg_cut_range_hi_1_time_bin3->Write();
-  hmkpisb_neg_cut_range_hi_2_time_bin3->Write();
-  hmkpisb_neg_cut_range_hi_3_time_bin3->Write();
-  hmkpisb_neg_cut_range_hi_4_time_bin3->Write();
-  hmkpisb_neg_cut_range_hi_5_time_bin3->Write();
-  hmkpisb_neg_cut_range_hi_6_time_bin3->Write();
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin3->Write();
-  hmkpisb_neg_cut_range_lo_2_time_bin3->Write();
-  hmkpisb_neg_cut_range_lo_3_time_bin3->Write();
-  hmkpisb_neg_cut_range_lo_4_time_bin3->Write();
-  hmkpisb_neg_cut_range_lo_5_time_bin3->Write();
-  hmkpisb_neg_cut_range_lo_6_time_bin3->Write();
-
-    hmkpisb_neg_cut_range_hi_1_time_bin4->Write();
-  hmkpisb_neg_cut_range_hi_2_time_bin4->Write();
-  hmkpisb_neg_cut_range_hi_3_time_bin4->Write();
-  hmkpisb_neg_cut_range_hi_4_time_bin4->Write();
-  hmkpisb_neg_cut_range_hi_5_time_bin4->Write();
-  hmkpisb_neg_cut_range_hi_6_time_bin4->Write();
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin4->Write();
-  hmkpisb_neg_cut_range_lo_2_time_bin4->Write();
-  hmkpisb_neg_cut_range_lo_3_time_bin4->Write();
-  hmkpisb_neg_cut_range_lo_4_time_bin4->Write();
-  hmkpisb_neg_cut_range_lo_5_time_bin4->Write();
-  hmkpisb_neg_cut_range_lo_6_time_bin4->Write();
-
-    hmkpisb_neg_cut_range_hi_1_time_bin5->Write();
-  hmkpisb_neg_cut_range_hi_2_time_bin5->Write();
-  hmkpisb_neg_cut_range_hi_3_time_bin5->Write();
-  hmkpisb_neg_cut_range_hi_4_time_bin5->Write();
-  hmkpisb_neg_cut_range_hi_5_time_bin5->Write();
-  hmkpisb_neg_cut_range_hi_6_time_bin5->Write();
-  
-  hmkpisb_neg_cut_range_lo_1_time_bin5->Write();
-  hmkpisb_neg_cut_range_lo_2_time_bin5->Write();
-  hmkpisb_neg_cut_range_lo_3_time_bin5->Write();
-  hmkpisb_neg_cut_range_lo_4_time_bin5->Write();
-  hmkpisb_neg_cut_range_lo_5_time_bin5->Write();
-  hmkpisb_neg_cut_range_lo_6_time_bin5->Write();
-  //end time bins
+  hmkpisb_neg_cut_range_lo_1->Write();
+  hmkpisb_neg_cut_range_lo_2->Write();
+  hmkpisb_neg_cut_range_lo_3->Write();
+  hmkpisb_neg_cut_range_lo_4->Write();
+  hmkpisb_neg_cut_range_lo_5->Write();
+  hmkpisb_neg_cut_range_lo_6->Write();
   hmD0_pik_sig->Write();
   hmD0_pik_sb->Write();
   hmD0_pik_tot->Write();

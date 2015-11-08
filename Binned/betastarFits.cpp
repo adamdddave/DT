@@ -3,6 +3,7 @@
 //c++
 #include <iostream>
 #include <cmath>
+#include <fstream>
 //root
 
 #include <TH1.h>
@@ -59,7 +60,8 @@
 using namespace std;
  // Include files
 //supporting method
-
+double err_div(double a, double sa, double b, double sb);//assuming 100% correlation
+double err_mult(double a, double sa, double b, double sb);
 std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists,std::vector<TH1*>hi_hists,RooWorkspace* w_tmp, TString nameForFit, betastar_plot *b,array<double,4>initPars);
 
 int main(int argc, char* const argv[]){
@@ -114,7 +116,7 @@ int main(int argc, char* const argv[]){
   
   betastar_plot b(f1,f2,nameForFit);
     
-  cout<<"check after tertiary constructor, name for low bin 1 time bin 1 = "<<b.hmkpisb_cut_range_lo_1_time_bin1->GetName()<<endl;
+  //cout<<"check after tertiary constructor, name for low bin 1 time bin 1 = "<<b.hmkpisb_cut_range_lo_1_time_bin1->GetName()<<endl;
   RooWorkspace * w = (RooWorkspace*)f3->Get(channelFromFile);
   b.set_local_workspace(w);
   
@@ -134,8 +136,15 @@ int main(int argc, char* const argv[]){
   //shift to an independent class.
   //at the end of the day, all we want out is the number of signal in the signal region and error
   
-  std::vector<TH1*>lo_hists,lo_hists_bkg;
-  std::vector<TH1*>hi_hists,hi_hists_bkg;
+  std::vector<TH1*>lo_hists;
+  std::vector<TH1*>hi_hists;
+  //
+  std::vector<TH1*>lo_hists_pos;
+  std::vector<TH1*>hi_hists_pos;
+  //
+  std::vector<TH1*>lo_hists_neg;
+  std::vector<TH1*>hi_hists_neg;
+
   //mean vals extracted from histogram.
   
   //double sigYield[6];
@@ -153,271 +162,48 @@ int main(int argc, char* const argv[]){
   hi_hists.push_back(b.hmkpisb_cut_range_hi_4);
   hi_hists.push_back(b.hmkpisb_cut_range_hi_5);
   hi_hists.push_back(b.hmkpisb_cut_range_hi_6);
-  //time bins here
-  std::vector<TH1*>lo_hists_time_bin1,lo_hists_time_bin2,lo_hists_time_bin3,lo_hists_time_bin4,lo_hists_time_bin5;
-  std::vector<TH1*>hi_hists_time_bin1,hi_hists_time_bin2,hi_hists_time_bin3,hi_hists_time_bin4,hi_hists_time_bin5;
-  // //positive
-  // std::vector<TH1*>lo_hists_pos_time_bin1,lo_hists_pos_time_bin2,lo_hists_pos_time_bin3,lo_hists_pos_time_bin4,lo_hists_pos_time_bin5;
-  // std::vector<TH1*>hi_hists_pos_time_bin1,hi_hists_pos_time_bin2,hi_hists_pos_time_bin3,hi_hists_pos_time_bin4,hi_hists_pos_time_bin5;
-  // //negative
-  // std::vector<TH1*>lo_hists_neg_time_bin1,lo_hists_neg_time_bin2,lo_hists_neg_time_bin3,lo_hists_neg_time_bin4,lo_hists_neg_time_bin5;
-  // std::vector<TH1*>hi_hists_neg_time_bin1,hi_hists_neg_time_bin2,hi_hists_neg_time_bin3,hi_hists_neg_time_bin4,hi_hists_neg_time_bin5;
-  //mean vals extracted from histogram.
-
-  //double sigYield[6];
-  //double sigYieldErr[6];
-  lo_hists_time_bin1.push_back(b.hmkpisb_cut_range_lo_1_time_bin1);
-  lo_hists_time_bin1.push_back(b.hmkpisb_cut_range_lo_2_time_bin1);
-  lo_hists_time_bin1.push_back(b.hmkpisb_cut_range_lo_3_time_bin1);
-  lo_hists_time_bin1.push_back(b.hmkpisb_cut_range_lo_4_time_bin1);
-  lo_hists_time_bin1.push_back(b.hmkpisb_cut_range_lo_5_time_bin1);
-  lo_hists_time_bin1.push_back(b.hmkpisb_cut_range_lo_6_time_bin1);
-
-  hi_hists_time_bin1.push_back(b.hmkpisb_cut_range_hi_1_time_bin1);
-  hi_hists_time_bin1.push_back(b.hmkpisb_cut_range_hi_2_time_bin1);
-  hi_hists_time_bin1.push_back(b.hmkpisb_cut_range_hi_3_time_bin1);
-  hi_hists_time_bin1.push_back(b.hmkpisb_cut_range_hi_4_time_bin1);
-  hi_hists_time_bin1.push_back(b.hmkpisb_cut_range_hi_5_time_bin1);
-  hi_hists_time_bin1.push_back(b.hmkpisb_cut_range_hi_6_time_bin1);
   //
-  lo_hists_time_bin2.push_back(b.hmkpisb_cut_range_lo_1_time_bin2);
-  lo_hists_time_bin2.push_back(b.hmkpisb_cut_range_lo_2_time_bin2);
-  lo_hists_time_bin2.push_back(b.hmkpisb_cut_range_lo_3_time_bin2);
-  lo_hists_time_bin2.push_back(b.hmkpisb_cut_range_lo_4_time_bin2);
-  lo_hists_time_bin2.push_back(b.hmkpisb_cut_range_lo_5_time_bin2);
-  lo_hists_time_bin2.push_back(b.hmkpisb_cut_range_lo_6_time_bin2);
+  lo_hists_pos.push_back(b.hmkpisb_pos_cut_range_lo_1);
+  lo_hists_pos.push_back(b.hmkpisb_pos_cut_range_lo_2);
+  lo_hists_pos.push_back(b.hmkpisb_pos_cut_range_lo_3);
+  lo_hists_pos.push_back(b.hmkpisb_pos_cut_range_lo_4);
+  lo_hists_pos.push_back(b.hmkpisb_pos_cut_range_lo_5);
+  lo_hists_pos.push_back(b.hmkpisb_pos_cut_range_lo_6);
 
-  hi_hists_time_bin2.push_back(b.hmkpisb_cut_range_hi_1_time_bin2);
-  hi_hists_time_bin2.push_back(b.hmkpisb_cut_range_hi_2_time_bin2);
-  hi_hists_time_bin2.push_back(b.hmkpisb_cut_range_hi_3_time_bin2);
-  hi_hists_time_bin2.push_back(b.hmkpisb_cut_range_hi_4_time_bin2);
-  hi_hists_time_bin2.push_back(b.hmkpisb_cut_range_hi_5_time_bin2);
-  hi_hists_time_bin2.push_back(b.hmkpisb_cut_range_hi_6_time_bin2);
+  hi_hists_pos.push_back(b.hmkpisb_pos_cut_range_hi_1);
+  hi_hists_pos.push_back(b.hmkpisb_pos_cut_range_hi_2);
+  hi_hists_pos.push_back(b.hmkpisb_pos_cut_range_hi_3);
+  hi_hists_pos.push_back(b.hmkpisb_pos_cut_range_hi_4);
+  hi_hists_pos.push_back(b.hmkpisb_pos_cut_range_hi_5);
+  hi_hists_pos.push_back(b.hmkpisb_pos_cut_range_hi_6);
   //
-  lo_hists_time_bin3.push_back(b.hmkpisb_cut_range_lo_1_time_bin3);
-  lo_hists_time_bin3.push_back(b.hmkpisb_cut_range_lo_2_time_bin3);
-  lo_hists_time_bin3.push_back(b.hmkpisb_cut_range_lo_3_time_bin3);
-  lo_hists_time_bin3.push_back(b.hmkpisb_cut_range_lo_4_time_bin3);
-  lo_hists_time_bin3.push_back(b.hmkpisb_cut_range_lo_5_time_bin3);
-  lo_hists_time_bin3.push_back(b.hmkpisb_cut_range_lo_6_time_bin3);
+  
+  lo_hists_neg.push_back(b.hmkpisb_neg_cut_range_lo_1);
+  lo_hists_neg.push_back(b.hmkpisb_neg_cut_range_lo_2);
+  lo_hists_neg.push_back(b.hmkpisb_neg_cut_range_lo_3);
+  lo_hists_neg.push_back(b.hmkpisb_neg_cut_range_lo_4);
+  lo_hists_neg.push_back(b.hmkpisb_neg_cut_range_lo_5);
+  lo_hists_neg.push_back(b.hmkpisb_neg_cut_range_lo_6);
 
-  hi_hists_time_bin3.push_back(b.hmkpisb_cut_range_hi_1_time_bin3);
-  hi_hists_time_bin3.push_back(b.hmkpisb_cut_range_hi_2_time_bin3);
-  hi_hists_time_bin3.push_back(b.hmkpisb_cut_range_hi_3_time_bin3);
-  hi_hists_time_bin3.push_back(b.hmkpisb_cut_range_hi_4_time_bin3);
-  hi_hists_time_bin3.push_back(b.hmkpisb_cut_range_hi_5_time_bin3);
-  hi_hists_time_bin3.push_back(b.hmkpisb_cut_range_hi_6_time_bin3);
-  //
-  lo_hists_time_bin4.push_back(b.hmkpisb_cut_range_lo_1_time_bin4);
-  lo_hists_time_bin4.push_back(b.hmkpisb_cut_range_lo_2_time_bin4);
-  lo_hists_time_bin4.push_back(b.hmkpisb_cut_range_lo_3_time_bin4);
-  lo_hists_time_bin4.push_back(b.hmkpisb_cut_range_lo_4_time_bin4);
-  lo_hists_time_bin4.push_back(b.hmkpisb_cut_range_lo_5_time_bin4);
-  lo_hists_time_bin4.push_back(b.hmkpisb_cut_range_lo_6_time_bin4);
+  hi_hists_neg.push_back(b.hmkpisb_neg_cut_range_hi_1);
+  hi_hists_neg.push_back(b.hmkpisb_neg_cut_range_hi_2);
+  hi_hists_neg.push_back(b.hmkpisb_neg_cut_range_hi_3);
+  hi_hists_neg.push_back(b.hmkpisb_neg_cut_range_hi_4);
+  hi_hists_neg.push_back(b.hmkpisb_neg_cut_range_hi_5);
+  hi_hists_neg.push_back(b.hmkpisb_neg_cut_range_hi_6);
 
-  hi_hists_time_bin4.push_back(b.hmkpisb_cut_range_hi_1_time_bin4);
-  hi_hists_time_bin4.push_back(b.hmkpisb_cut_range_hi_2_time_bin4);
-  hi_hists_time_bin4.push_back(b.hmkpisb_cut_range_hi_3_time_bin4);
-  hi_hists_time_bin4.push_back(b.hmkpisb_cut_range_hi_4_time_bin4);
-  hi_hists_time_bin4.push_back(b.hmkpisb_cut_range_hi_5_time_bin4);
-  hi_hists_time_bin4.push_back(b.hmkpisb_cut_range_hi_6_time_bin4);
-  //
-  lo_hists_time_bin5.push_back(b.hmkpisb_cut_range_lo_1_time_bin5);
-  lo_hists_time_bin5.push_back(b.hmkpisb_cut_range_lo_2_time_bin5);
-  lo_hists_time_bin5.push_back(b.hmkpisb_cut_range_lo_3_time_bin5);
-  lo_hists_time_bin5.push_back(b.hmkpisb_cut_range_lo_4_time_bin5);
-  lo_hists_time_bin5.push_back(b.hmkpisb_cut_range_lo_5_time_bin5);
-  lo_hists_time_bin5.push_back(b.hmkpisb_cut_range_lo_6_time_bin5);
-
-  hi_hists_time_bin5.push_back(b.hmkpisb_cut_range_hi_1_time_bin5);
-  hi_hists_time_bin5.push_back(b.hmkpisb_cut_range_hi_2_time_bin5);
-  hi_hists_time_bin5.push_back(b.hmkpisb_cut_range_hi_3_time_bin5);
-  hi_hists_time_bin5.push_back(b.hmkpisb_cut_range_hi_4_time_bin5);
-  hi_hists_time_bin5.push_back(b.hmkpisb_cut_range_hi_5_time_bin5);
-  hi_hists_time_bin5.push_back(b.hmkpisb_cut_range_hi_6_time_bin5);
-  // //positive
-  // lo_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_lo_1_time_bin1);
-  // lo_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_lo_2_time_bin1);
-  // lo_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_lo_3_time_bin1);
-  // lo_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_lo_4_time_bin1);
-  // lo_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_lo_5_time_bin1);
-  // lo_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_lo_6_time_bin1);
-
-  // hi_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_hi_1_time_bin1);
-  // hi_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_hi_2_time_bin1);
-  // hi_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_hi_3_time_bin1);
-  // hi_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_hi_4_time_bin1);
-  // hi_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_hi_5_time_bin1);
-  // hi_hists_pos_time_bin1.push_back(b.hmkpisb_pos_cut_range_hi_6_time_bin1);
-  // //
-  // lo_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_lo_1_time_bin2);
-  // lo_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_lo_2_time_bin2);
-  // lo_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_lo_3_time_bin2);
-  // lo_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_lo_4_time_bin2);
-  // lo_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_lo_5_time_bin2);
-  // lo_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_lo_6_time_bin2);
-
-  // hi_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_hi_1_time_bin2);
-  // hi_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_hi_2_time_bin2);
-  // hi_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_hi_3_time_bin2);
-  // hi_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_hi_4_time_bin2);
-  // hi_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_hi_5_time_bin2);
-  // hi_hists_pos_time_bin2.push_back(b.hmkpisb_pos_cut_range_hi_6_time_bin2);
-  // //
-  // lo_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_lo_1_time_bin3);
-  // lo_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_lo_2_time_bin3);
-  // lo_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_lo_3_time_bin3);
-  // lo_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_lo_4_time_bin3);
-  // lo_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_lo_5_time_bin3);
-  // lo_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_lo_6_time_bin3);
-
-  // hi_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_hi_1_time_bin3);
-  // hi_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_hi_2_time_bin3);
-  // hi_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_hi_3_time_bin3);
-  // hi_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_hi_4_time_bin3);
-  // hi_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_hi_5_time_bin3);
-  // hi_hists_pos_time_bin3.push_back(b.hmkpisb_pos_cut_range_hi_6_time_bin3);
-  // //
-  // lo_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_lo_1_time_bin4);
-  // lo_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_lo_2_time_bin4);
-  // lo_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_lo_3_time_bin4);
-  // lo_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_lo_4_time_bin4);
-  // lo_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_lo_5_time_bin4);
-  // lo_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_lo_6_time_bin4);
-
-  // hi_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_hi_1_time_bin4);
-  // hi_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_hi_2_time_bin4);
-  // hi_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_hi_3_time_bin4);
-  // hi_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_hi_4_time_bin4);
-  // hi_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_hi_5_time_bin4);
-  // hi_hists_pos_time_bin4.push_back(b.hmkpisb_pos_cut_range_hi_6_time_bin4);
-  // //
-  // lo_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_lo_1_time_bin5);
-  // lo_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_lo_2_time_bin5);
-  // lo_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_lo_3_time_bin5);
-  // lo_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_lo_4_time_bin5);
-  // lo_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_lo_5_time_bin5);
-  // lo_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_lo_6_time_bin5);
-
-  // hi_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_hi_1_time_bin5);
-  // hi_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_hi_2_time_bin5);
-  // hi_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_hi_3_time_bin5);
-  // hi_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_hi_4_time_bin5);
-  // hi_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_hi_5_time_bin5);
-  // hi_hists_pos_time_bin5.push_back(b.hmkpisb_pos_cut_range_hi_6_time_bin5);
-
-  // //negative
-  // lo_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_lo_1_time_bin1);
-  // lo_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_lo_2_time_bin1);
-  // lo_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_lo_3_time_bin1);
-  // lo_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_lo_4_time_bin1);
-  // lo_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_lo_5_time_bin1);
-  // lo_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_lo_6_time_bin1);
-
-  // hi_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_hi_1_time_bin1);
-  // hi_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_hi_2_time_bin1);
-  // hi_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_hi_3_time_bin1);
-  // hi_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_hi_4_time_bin1);
-  // hi_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_hi_5_time_bin1);
-  // hi_hists_neg_time_bin1.push_back(b.hmkpisb_neg_cut_range_hi_6_time_bin1);
-  // //
-  // lo_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_lo_1_time_bin2);
-  // lo_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_lo_2_time_bin2);
-  // lo_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_lo_3_time_bin2);
-  // lo_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_lo_4_time_bin2);
-  // lo_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_lo_5_time_bin2);
-  // lo_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_lo_6_time_bin2);
-
-  // hi_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_hi_1_time_bin2);
-  // hi_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_hi_2_time_bin2);
-  // hi_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_hi_3_time_bin2);
-  // hi_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_hi_4_time_bin2);
-  // hi_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_hi_5_time_bin2);
-  // hi_hists_neg_time_bin2.push_back(b.hmkpisb_neg_cut_range_hi_6_time_bin2);
-  // //
-  // lo_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_lo_1_time_bin3);
-  // lo_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_lo_2_time_bin3);
-  // lo_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_lo_3_time_bin3);
-  // lo_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_lo_4_time_bin3);
-  // lo_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_lo_5_time_bin3);
-  // lo_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_lo_6_time_bin3);
-
-  // hi_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_hi_1_time_bin3);
-  // hi_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_hi_2_time_bin3);
-  // hi_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_hi_3_time_bin3);
-  // hi_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_hi_4_time_bin3);
-  // hi_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_hi_5_time_bin3);
-  // hi_hists_neg_time_bin3.push_back(b.hmkpisb_neg_cut_range_hi_6_time_bin3);
-  // //
-  // lo_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_lo_1_time_bin4);
-  // lo_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_lo_2_time_bin4);
-  // lo_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_lo_3_time_bin4);
-  // lo_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_lo_4_time_bin4);
-  // lo_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_lo_5_time_bin4);
-  // lo_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_lo_6_time_bin4);
-
-  // hi_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_hi_1_time_bin4);
-  // hi_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_hi_2_time_bin4);
-  // hi_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_hi_3_time_bin4);
-  // hi_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_hi_4_time_bin4);
-  // hi_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_hi_5_time_bin4);
-  // hi_hists_neg_time_bin4.push_back(b.hmkpisb_neg_cut_range_hi_6_time_bin4);
-  // //
-  // lo_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_lo_1_time_bin5);
-  // lo_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_lo_2_time_bin5);
-  // lo_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_lo_3_time_bin5);
-  // lo_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_lo_4_time_bin5);
-  // lo_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_lo_5_time_bin5);
-  // lo_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_lo_6_time_bin5);
-
-  // hi_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_hi_1_time_bin5);
-  // hi_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_hi_2_time_bin5);
-  // hi_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_hi_3_time_bin5);
-  // hi_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_hi_4_time_bin5);
-  // hi_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_hi_5_time_bin5);
-  // hi_hists_neg_time_bin5.push_back(b.hmkpisb_neg_cut_range_hi_6_time_bin5);
   //now the fits
-  cout<<"testing low hist 0 name from betastarplot, name = "<<b.hmkpisb_cut_range_lo_1_time_bin1->GetName()<<endl;
-  cout<<"testing lo_hists_time_bins, bin1->GetName() = "<<lo_hists_time_bin1[0]->GetName()<<endl;
-    //try rebinning the histograms
+  
+  //try rebinning the histograms
   for(auto hist: lo_hists){hist->Rebin();}
   for(auto hist: hi_hists){hist->Rebin();}
-  //time bins
-  for(auto hist: lo_hists_time_bin1){hist->Rebin();}
-  for(auto hist: lo_hists_time_bin2){hist->Rebin();}
-  for(auto hist: lo_hists_time_bin3){hist->Rebin();}
-  for(auto hist: lo_hists_time_bin4){hist->Rebin();}
-  for(auto hist: lo_hists_time_bin5){hist->Rebin();}
+  //
+  for(auto hist: lo_hists_pos){hist->Rebin();}
+  for(auto hist: hi_hists_pos){hist->Rebin();}
+  //
+  for(auto hist: lo_hists_neg){hist->Rebin();}
+  for(auto hist: hi_hists_neg){hist->Rebin();}
   
-  for(auto hist: hi_hists_time_bin1){hist->Rebin();}
-  for(auto hist: hi_hists_time_bin2){hist->Rebin();}
-  for(auto hist: hi_hists_time_bin3){hist->Rebin();}
-  for(auto hist: hi_hists_time_bin4){hist->Rebin();}
-  for(auto hist: hi_hists_time_bin5){hist->Rebin();}
-  // //positive
-  // for(auto hist: lo_hists_pos_time_bin1){hist->Rebin();}
-  // for(auto hist: lo_hists_pos_time_bin2){hist->Rebin();}
-  // for(auto hist: lo_hists_pos_time_bin3){hist->Rebin();}
-  // for(auto hist: lo_hists_pos_time_bin4){hist->Rebin();}
-  // for(auto hist: lo_hists_pos_time_bin5){hist->Rebin();}
-  
-  // for(auto hist: hi_hists_pos_time_bin1){hist->Rebin();}
-  // for(auto hist: hi_hists_pos_time_bin2){hist->Rebin();}
-  // for(auto hist: hi_hists_pos_time_bin3){hist->Rebin();}
-  // for(auto hist: hi_hists_pos_time_bin4){hist->Rebin();}
-  // for(auto hist: hi_hists_pos_time_bin5){hist->Rebin();}
-  // //negative
-  // for(auto hist: lo_hists_neg_time_bin1){hist->Rebin();}
-  // for(auto hist: lo_hists_neg_time_bin2){hist->Rebin();}
-  // for(auto hist: lo_hists_neg_time_bin3){hist->Rebin();}
-  // for(auto hist: lo_hists_neg_time_bin4){hist->Rebin();}
-  // for(auto hist: lo_hists_neg_time_bin5){hist->Rebin();}
-  
-  // for(auto hist: hi_hists_neg_time_bin1){hist->Rebin();}
-  // for(auto hist: hi_hists_neg_time_bin2){hist->Rebin();}
-  // for(auto hist: hi_hists_neg_time_bin3){hist->Rebin();}
-  // for(auto hist: hi_hists_neg_time_bin4){hist->Rebin();}
-  // for(auto hist: hi_hists_neg_time_bin5){hist->Rebin();}
   //try making a massFit with a single gaussian+bkg to the combined sample.
   TH1D* tot_histo = (TH1D*)lo_hists[0]->Clone("tot_pkg_bkg");
   for(int i=1; i<6;++i){
@@ -445,62 +231,146 @@ int main(int argc, char* const argv[]){
       (w_tmp->var("nbkg")->getVal()),
       (w_tmp->var("nsig")->getVal())};
   std::vector<double> tot_result_of_sb_fit = PeakingBkgFromSidebands(lo_hists,hi_hists,w_tmp,nameForFit,&b,thePars);
+  //positive
+  std::vector<double> tot_result_of_sb_fit_pos = PeakingBkgFromSidebands(lo_hists_pos,hi_hists_pos,w_tmp,nameForFit+"_pos",&b,thePars);
+  //negative
+  std::vector<double> tot_result_of_sb_fit_neg = PeakingBkgFromSidebands(lo_hists_neg,hi_hists_neg,w_tmp,nameForFit+"_neg",&b,thePars);
   //now do time dependence.
   //as from mike.The idea is that the original code which just split everything into bins of decay time is going to be hopeless
   //since there will not be enough statistics. What we can do, however, is take the time integrated Peaking Bkg / RS as a scaling
   //factor and then multiply RS yield in each bin by this scaling factor to extract the expected result. This is dependent
   //on the assumption that the RS/RS ratio is time independent (which it kind of is)
-
+  
   //get the time bins yields from a file.
-  
-  
-  return 0;//for now, stop here
-  //  std::vector< std::vector<double> > res_sb_time_dependence;
-  //  std::vector< std::vector<double> > res_sb_time_dependence_pos;
-  //std::vector< std::vector<double> > res_sb_time_dependence_neg;
+  cout<<"Now getting from file the RS + and - contributions"<<endl;
+  //do both of them
+  TString theFilePos= "SavedFits/rs_yields_in_bins_pos.txt";
+  TString theFileNeg= "SavedFits/rs_yields_in_bins_neg.txt";
 
+  ifstream rsFilePos(theFilePos.Data());
+  string line;
+  std::vector<double> RS_vals_pos,RS_errs_pos;
+  std::vector<double> RS_vals_neg,RS_errs_neg;
+  cout<<"positive"<<endl;
+  if (rsFilePos.is_open()){
+    getline(rsFilePos,line);//the header
+    int bin;
+    double val,err;
+    while (rsFilePos>>bin>>val>>err){
+      cout<<"bin = "<<bin<<"val = "<<val<<" err = "<<err<<endl;
+      RS_vals_pos.push_back(val);
+      RS_errs_pos.push_back(err);
+    }
+    rsFilePos.close();
+  }
+  cout<<"negative"<<endl;
+  ifstream rsFileNeg(theFileNeg.Data());
+  if (rsFileNeg.is_open()){
+    getline(rsFileNeg,line);//the header
+    int bin;
+    double val,err;
+    while (rsFileNeg>>bin>>val>>err){
+      cout<<"bin = "<<bin<<"val = "<<val<<" err = "<<err<<endl;
+      RS_vals_neg.push_back(val);
+      RS_errs_neg.push_back(err);
+    }
+    rsFileNeg.close();
+  }
+
+  //divide the peaking background number by the total number of RS in the positive or negative sample.
+  double tot_RS_sig =0;
+  double tot_RS_sig_pos =0;
+  double tot_RS_sig_neg =0;
+  for(auto val:RS_vals_pos){
+    tot_RS_sig+=val;
+    tot_RS_sig_pos+=val;
+  }
+  for(auto val:RS_vals_neg){
+    tot_RS_sig+=val;
+    tot_RS_sig_neg +=val;
+  }
+  double tot_rs_err = 0;
+  double tot_rs_err_pos = 0;
+  double tot_rs_err_neg = 0;
+  for(auto val: RS_errs_pos){
+    tot_rs_err+=TMath::Power(val,2);
+    tot_rs_err_pos+=TMath::Power(val,2);
+  }
+  for(auto val: RS_errs_neg){
+    tot_rs_err+=TMath::Power(val,2);
+    tot_rs_err_neg+=TMath::Power(val,2);
+  }
+  tot_rs_err = TMath::Sqrt(tot_rs_err);
+  tot_rs_err_pos = TMath::Sqrt(tot_rs_err_pos);
+  tot_rs_err_neg = TMath::Sqrt(tot_rs_err_neg);
+  //now we have the total yields. Make the previous result a fraction
+  std::vector<double>peaking_frac(tot_result_of_sb_fit);
+  std::vector<double>peaking_frac_pos(tot_result_of_sb_fit_pos);
+  std::vector<double>peaking_frac_neg(tot_result_of_sb_fit_neg);
+  peaking_frac[0]/=tot_RS_sig;
+  peaking_frac[2]/=tot_RS_sig;
+
+  peaking_frac_pos[0]/=tot_RS_sig_pos;
+  peaking_frac_pos[2]/=tot_RS_sig_pos;
+
+  peaking_frac_neg[0]/=tot_RS_sig_neg;
+  peaking_frac_neg[2]/=tot_RS_sig_neg;
   
-  // res_sb_time_dependence.push_back(PeakingBkgFromSidebands(lo_hists_time_bin1,hi_hists_time_bin1,w_tmp,nameForFit+"_time_bin1",&b,thePars));
-  // res_sb_time_dependence.push_back(PeakingBkgFromSidebands(lo_hists_time_bin2,hi_hists_time_bin2,w_tmp,nameForFit+"_time_bin2",&b,thePars));
-  // res_sb_time_dependence.push_back(PeakingBkgFromSidebands(lo_hists_time_bin3,hi_hists_time_bin3,w_tmp,nameForFit+"_time_bin3",&b,thePars));
-  //res_sb_time_dependence.push_back(PeakingBkgFromSidebands(lo_hists_time_bin4,hi_hists_time_bin4,w_tmp,nameForFit+"_time_bin4",&b,thePars));
-  //res_sb_time_dependence.push_back(PeakingBkgFromSidebands(lo_hists_time_bin5,hi_hists_time_bin5,w_tmp,nameForFit+"_time_bin5",&b,thePars));
-  //positive
-  // res_sb_time_dependence_pos.push_back(PeakingBkgFromSidebands(lo_hists_pos_time_bin1,hi_hists_pos_time_bin1,w_tmp,nameForFit+"_time_bin1",&b,thePars));
-  // res_sb_time_dependence_pos.push_back(PeakingBkgFromSidebands(lo_hists_pos_time_bin2,hi_hists_pos_time_bin2,w_tmp,nameForFit+"_time_bin2",&b,thePars));
-  // res_sb_time_dependence_pos.push_back(PeakingBkgFromSidebands(lo_hists_pos_time_bin3,hi_hists_pos_time_bin3,w_tmp,nameForFit+"_time_bin3",&b,thePars));
-  // res_sb_time_dependence_pos.push_back(PeakingBkgFromSidebands(lo_hists_pos_time_bin4,hi_hists_pos_time_bin4,w_tmp,nameForFit+"_time_bin4",&b,thePars));
-  // res_sb_time_dependence_pos.push_back(PeakingBkgFromSidebands(lo_hists_pos_time_bin5,hi_hists_pos_time_bin5,w_tmp,nameForFit+"_time_bin5",&b,thePars));
-  // //negative
-  // res_sb_time_dependence_neg.push_back(PeakingBkgFromSidebands(lo_hists_neg_time_bin1,hi_hists_neg_time_bin1,w_tmp,nameForFit+"_time_bin1",&b,thePars));
-  // res_sb_time_dependence_neg.push_back(PeakingBkgFromSidebands(lo_hists_neg_time_bin2,hi_hists_neg_time_bin2,w_tmp,nameForFit+"_time_bin2",&b,thePars));
-  // res_sb_time_dependence_neg.push_back(PeakingBkgFromSidebands(lo_hists_neg_time_bin3,hi_hists_neg_time_bin3,w_tmp,nameForFit+"_time_bin3",&b,thePars));
-  // res_sb_time_dependence_neg.push_back(PeakingBkgFromSidebands(lo_hists_neg_time_bin4,hi_hists_neg_time_bin4,w_tmp,nameForFit+"_time_bin4",&b,thePars));
-  // res_sb_time_dependence_neg.push_back(PeakingBkgFromSidebands(lo_hists_neg_time_bin5,hi_hists_neg_time_bin5,w_tmp,nameForFit+"_time_bin5",&b,thePars));
-  //std::vector<double> res_sb_time_dependence = PeakingBkgFromSidebands(lo_hists_time_bin1,hi_hists_time_bin1,w_tmp,nameForFit+"_time_bin1",&b);
+  //now write the new file with the points.
+
+  peaking_frac[1] = err_div(tot_result_of_sb_fit[0],tot_result_of_sb_fit[1],tot_RS_sig,tot_rs_err);
+  cout<<"checking peaking fraction error:"<<endl;
+  cout<<"a = "<<tot_result_of_sb_fit[0]<<" +/- "<<tot_result_of_sb_fit[1]<<", b = "<<tot_RS_sig<<" +/- "<<tot_rs_err<<endl;
+  cout<<"peaking background error associated to this is "<<peaking_frac[1]<<endl;
+
+  peaking_frac[3] = err_div(tot_result_of_sb_fit[2],tot_result_of_sb_fit[3],tot_RS_sig,tot_rs_err);
+
+  //pos
+  peaking_frac_pos[1] = err_div(tot_result_of_sb_fit_pos[0],tot_result_of_sb_fit_pos[1],tot_RS_sig_pos,tot_rs_err_pos);
+  peaking_frac_pos[3] = err_div(tot_result_of_sb_fit_pos[2],tot_result_of_sb_fit_pos[3],tot_RS_sig_pos,tot_rs_err_pos);
+  //neg
+  peaking_frac_neg[1] = err_div(tot_result_of_sb_fit_neg[0],tot_result_of_sb_fit_neg[1],tot_RS_sig_neg,tot_rs_err_neg);
+  peaking_frac_neg[3] = err_div(tot_result_of_sb_fit_neg[2],tot_result_of_sb_fit_neg[3],tot_RS_sig_neg,tot_rs_err_neg);
+  //return 0;//for now, stop here
+  //  cout<<"Checking the peaking background fraction:"<<endl;
+  //  cout<<" integrated linear = "<<peaking_frac[0]<<" +/- "<<peaking_frac[1]<<endl;
+  //  cout<<" integrated parabolic = "<<peaking_frac[2]<<" +/- "<<peaking_frac[3]<<endl;
   //now we have all the information, print out a prettly little table.
-  //
-  // cout<<"- - - - - - - - - - - - - - - - - - -  -"<<endl;
-  // cout<<"Linear fit"<<endl;
-  // cout<<"- - - - - - - - - - - - - - - - - - -  -"<<endl;
-  // cout<<"Time bin"<<setw(25)<<"Extracted PeakingBkg"<<setw(25)<<"error"<<endl;
-  // int counter = 0;
-  // for(auto res:res_sb_time_dependence){
-  //   counter++;
-  //   cout<<counter<<setw(25)<<res[0]<<setw(25)<<res[1]<<endl;
-  // }
-  // cout<<"- - - - - - - - - - - - - - - - - - -  -"<<endl;
-  // cout<<"Parabolic fit"<<endl;
-  // cout<<"- - - - - - - - - - - - - - - - - - -  -"<<endl;
-  // cout<<"Time bin"<<setw(25)<<"Extracted PeakingBkg"<<setw(25)<<"error"<<endl;
-  // counter = 0;
-  // for(auto res:res_sb_time_dependence){
-  //   counter++;
-  //   cout<<counter<<setw(25)<<res[2]<<setw(25)<<res[3]<<endl;
+  std::vector<double> final_result_pos,final_result_pos_err;
+  std::vector<double> final_result_neg,final_result_neg_err;
+  cout<<"- - - - - - - - - - - - - - - - - - -  -"<<endl;
+  cout<<"Linear fit"<<endl;
+  cout<<"- - - - - - - - - - - - - - - - - - -  -"<<endl;
+  cout<<"Time bin"<<setw(25)<<"+ PeakingBkg"<<setw(25)<<"error"<<setw(25)<<"- PeakingBkg"<<setw(25)<<"error"<<endl;
+  for(int i=0; i<5;++i){
+    double the_err_pos = err_mult(RS_vals_pos[i],RS_errs_pos[i], peaking_frac_pos[0],peaking_frac_pos[1]);
+    double the_err_neg = err_mult(RS_vals_neg[i],RS_errs_neg[i], peaking_frac_neg[0],peaking_frac_neg[1]);
+    cout<<i+1<<setw(25)<<RS_vals_pos[i]*peaking_frac_pos[0]<<setw(25)<<the_err_pos<<setw(25)<<RS_vals_neg[i]*peaking_frac_neg[0]<<setw(25)<<the_err_neg<<endl;
+    final_result_pos.push_back(RS_vals_pos[i]*peaking_frac_pos[0]);
+    final_result_pos_err.push_back(the_err_pos);
+    final_result_neg.push_back(RS_vals_neg[i]*peaking_frac_neg[0]);
+    final_result_neg_err.push_back(the_err_neg);
+  }
+  cout<<"- - - - - - - - - - - - - - - - - - -  -"<<endl;
+  cout<<"Parabolic fit"<<endl;
+  cout<<"- - - - - - - - - - - - - - - - - - -  -"<<endl;
+  //  cout<<"Time bin"<<setw(25)<<"Positive Extracted PeakingBkg"<<setw(25)<<"error"<<setw(25)<<"Negative Extracted PeakingBkg"<<setw(25)<<"error"<<endl;
+  cout<<"Time bin"<<setw(25)<<"+ PeakingBkg"<<setw(25)<<"error"<<setw(25)<<"- PeakingBkg"<<setw(25)<<"error"<<endl;
+  for(int i=0; i<5;++i){
+    double the_err_pos = err_mult(RS_vals_pos[i],RS_errs_pos[i], peaking_frac_pos[2],peaking_frac_pos[3]);
+    double the_err_neg = err_mult(RS_vals_neg[i],RS_errs_neg[i], peaking_frac_neg[2],peaking_frac_neg[3]);
 
-  //print the positive and negative results
+    cout<<i+1<<setw(25)<<RS_vals_pos[i]*peaking_frac_pos[2]<<setw(25)<<the_err_pos<<setw(25)<<RS_vals_neg[i]*peaking_frac_neg[2]<<setw(25)<<the_err_neg<<endl;
+  }
+
   f_tmp->Close();
-  
+  //todo: think about how to get the correct number for each bin.
+  // std::ofstream outfile;
+  // outfile.open("SavedFits/betastar/double_misid_vs_rs_yield.txt");
+  // outfile<<"Bin \t N(DMID)/N(RS)+ \t error(N(DMID)/N(RS)+)\n";
+  // for(int i=0; i<5;++i){
+  //   outfile<<i+1<<"\t"<<final_result_pos[i]/
+  // }
   return 0;
 }
 
@@ -724,4 +594,13 @@ std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists, std::vect
   ret.push_back(tot_sb_sig*sig_reg_integral/sb_integral);//parabolic central value
   ret.push_back(errNsig_sigreg);//error on parab.
   return ret;
+}
+
+
+double err_div(double a, double sa, double b, double sb){
+  return a/b*sqrt((sa/a)*(sa/a) + (sb/b)*(sb/b) - 2* (sa*sb)/(a*b));
+}
+
+double err_mult(double a, double sa, double b, double sb){
+  return a*b*sqrt((sa/a)*(sa/a) + (sb/b)*(sb/b) + 2 *(sa*sb)/(a*b));
 }

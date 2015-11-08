@@ -125,7 +125,7 @@ int main(int argc, char* const argv[]){
   for(int i=0;i<nbins;++i){
     theFitspos = new massFit(Form("RS_dst_mass_pos_bin%d",i+1),"j3g",w,"TimeDependentSystematics");
     theFitspos->setData(pos_bins[i]);
-    theFitspos->FloatMeanWidth();
+    //theFitspos->FloatMeanWidth();
     theFitspos->fit();
     theFitspos->savePlots(true,Form("RS_dst_mass_pos_bin%d",i+1));
     the_sig_pos[i]=theFitspos->getNsig()*2;//prescale
@@ -141,7 +141,7 @@ int main(int argc, char* const argv[]){
   for(int i=0;i<nbins;++i){
     theFitsneg = new massFit(Form("RS_dst_mass_neg_bin%d",i+1),"j3g",w,"TimeDependentSystematics");
     theFitsneg->setData(neg_bins[i]);
-    theFitsneg->FloatMeanWidth();
+    //    theFitsneg->FloatMeanWidth();
     theFitsneg->fit();
     theFitsneg->savePlots(true,Form("RS_dst_mass_neg_bin%d",i+1));
     the_sig_neg[i]=theFitsneg->getNsig()*2;//prescale
