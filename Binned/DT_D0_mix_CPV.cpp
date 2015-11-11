@@ -55,10 +55,15 @@ void DT_D0_mix_CPV::Loop()
 	 //  ||(K_PIDK>kpidk_cut&&Pd_PIDK<2 && Pd_PIDK>=-5)//tight loose
 	 //  ||(K_PIDK>2.&&K_PIDK<=8.&&Pd_PIDK<pi_dau_pidk_cut)//loose tight
 	 //  )&&
+	 //take2
+	 // ((K_PIDK>kpidk_cut&&Pd_PIDK<pi_dau_pidk_cut)//tight tight
+	 //  ||(K_PIDK>kpidk_cut&&Pd_PIDK<-2 && Pd_PIDK>=-5)//tight loose
+	 //  ||(K_PIDK>5.&&K_PIDK<=8.&&Pd_PIDK<pi_dau_pidk_cut)//loose tight
+	 //  )&&
 	 K_PIDK>kpidk_cut&&//tight K
-	 //K_PIDK>2.&&K_PIDK<=8.&&//loose K
+	 //K_PIDK>5.&&K_PIDK<=8.&&//loose K, changed from 2
 	 Pd_PIDK<pi_dau_pidk_cut &&//tight pi
-	 //Pd_PIDK<2 && Pd_PIDK>=-5 &&//loose pi
+	 //Pd_PIDK<-2 && Pd_PIDK>=-5 &&//loose pi//changed from +2
 	 
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
@@ -73,7 +78,7 @@ void DT_D0_mix_CPV::Loop()
          !Ps_isMuon &&
 	 Ps_MC12TuneV2_ProbNNghost< pis_ghost_prob_cut &&
 	 //TMath::Log(Mu_IPCHI2_OWNPV)>mu_log_ip_chi2_cut &&
-	 Mu_IPCHI2_OWNPV>mu_ip_chi2_cut&&
+	 //Mu_IPCHI2_OWNPV>mu_ip_chi2_cut&&
 	 B_VFit_chi2[0]/B_VFit_nDOF[0]<dtf_chi2_ndf_cut
 	 //B_FDCHI2_OWNPV > b_fd_cut
 	 //&& Ps_PT > pis_pt_cut

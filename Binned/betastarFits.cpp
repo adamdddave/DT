@@ -230,11 +230,23 @@ int main(int argc, char* const argv[]){
       (w_tmp->var("n")->getVal()),
       (w_tmp->var("nbkg")->getVal()),
       (w_tmp->var("nsig")->getVal())};
+  cout<<"**************************************"<<endl;
+  cout<<"fitting total sample"<<endl;
+  cout<<"**************************************"<<endl;
   std::vector<double> tot_result_of_sb_fit = PeakingBkgFromSidebands(lo_hists,hi_hists,w_tmp,nameForFit,&b,thePars);
   //positive
+  cout<<"++++++++++++++++++++++++++++++++++++++++"<<endl;
+  cout<<"fitting positive sample"<<endl;
+  cout<<"++++++++++++++++++++++++++++++++++++++++"<<endl;
   std::vector<double> tot_result_of_sb_fit_pos = PeakingBkgFromSidebands(lo_hists_pos,hi_hists_pos,w_tmp,nameForFit+"_pos",&b,thePars);
   //negative
+  cout<<"----------------------------------------"<<endl;
+  cout<<"fitting negative sample"<<endl;
+  cout<<"----------------------------------------"<<endl;
   std::vector<double> tot_result_of_sb_fit_neg = PeakingBkgFromSidebands(lo_hists_neg,hi_hists_neg,w_tmp,nameForFit+"_neg",&b,thePars);
+  cout<<"*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-"<<endl;
+  cout<<"processing results"<<endl;
+  cout<<"*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-*+-"<<endl;
   //now do time dependence.
   //as from mike.The idea is that the original code which just split everything into bins of decay time is going to be hopeless
   //since there will not be enough statistics. What we can do, however, is take the time integrated Peaking Bkg / RS as a scaling
@@ -324,17 +336,29 @@ int main(int argc, char* const argv[]){
   cout<<"peaking background error associated to this is "<<peaking_frac[1]<<endl;
 
   peaking_frac[3] = err_div(tot_result_of_sb_fit[2],tot_result_of_sb_fit[3],tot_RS_sig,tot_rs_err);
-
   //pos
   peaking_frac_pos[1] = err_div(tot_result_of_sb_fit_pos[0],tot_result_of_sb_fit_pos[1],tot_RS_sig_pos,tot_rs_err_pos);
   peaking_frac_pos[3] = err_div(tot_result_of_sb_fit_pos[2],tot_result_of_sb_fit_pos[3],tot_RS_sig_pos,tot_rs_err_pos);
   //neg
   peaking_frac_neg[1] = err_div(tot_result_of_sb_fit_neg[0],tot_result_of_sb_fit_neg[1],tot_RS_sig_neg,tot_rs_err_neg);
   peaking_frac_neg[3] = err_div(tot_result_of_sb_fit_neg[2],tot_result_of_sb_fit_neg[3],tot_RS_sig_neg,tot_rs_err_neg);
-  //return 0;//for now, stop here
-  //  cout<<"Checking the peaking background fraction:"<<endl;
-  //  cout<<" integrated linear = "<<peaking_frac[0]<<" +/- "<<peaking_frac[1]<<endl;
-  //  cout<<" integrated parabolic = "<<peaking_frac[2]<<" +/- "<<peaking_frac[3]<<endl;
+  
+  cout<<"Checking the peaking background fraction:"<<endl;
+  cout<<" integrated linear = "<<peaking_frac[0]<<" +/- "<<peaking_frac[1]<<endl;
+  cout<<" integrated parabolic = "<<peaking_frac[2]<<" +/- "<<peaking_frac[3]<<endl;
+  //positive
+  cout<<"split into positive:"<<endl;
+  cout<<" integrated linear = "<<peaking_frac_pos[0]<<" +/- "<<peaking_frac_pos[1]<<endl;
+  cout<<" integrated parabolic = "<<peaking_frac_pos[2]<<" +/- "<<peaking_frac_pos[3]<<endl;
+
+  //negative
+  cout<<"and negative:"<<endl;
+  cout<<" integrated linear = "<<peaking_frac_neg[0]<<" +/- "<<peaking_frac_neg[1]<<endl;
+  cout<<" integrated parabolic = "<<peaking_frac_neg[2]<<" +/- "<<peaking_frac_neg[3]<<endl;
+
+
+  
+
   //now we have all the information, print out a prettly little table.
   std::vector<double> final_result_pos,final_result_pos_err;
   std::vector<double> final_result_neg,final_result_neg_err;
@@ -364,13 +388,18 @@ int main(int argc, char* const argv[]){
   }
 
   f_tmp->Close();
-  //todo: think about how to get the correct number for each bin.
-  // std::ofstream outfile;
-  // outfile.open("SavedFits/betastar/double_misid_vs_rs_yield.txt");
-  // outfile<<"Bin \t N(DMID)/N(RS)+ \t error(N(DMID)/N(RS)+)\n";
-  // for(int i=0; i<5;++i){
-  //   outfile<<i+1<<"\t"<<final_result_pos[i]/
-  // }
+  
+  std::ofstream outfile;
+  outfile.open("SavedFits/betastar/double_misid_vs_rs_yield.txt");
+  outfile<<"Bin \t N(DMID)+ \t error(N(DMID)+)\n";
+  for(int i=0; i<5;++i){
+    outfile<<i+1<<"\t"<<final_result_pos[i]<<"\t"<<final_result_pos_err[i]<<"\n";
+  }
+  outfile<<"Bin \t N(DMID)- \t error(N(DMID)-)\n";
+  for(int i=0; i<5;++i){
+    outfile<<i+1<<"\t"<<final_result_neg[i]<<"\t"<<final_result_neg_err[i]<<"\n";
+  }
+  outfile.close();
   return 0;
 }
 
@@ -598,9 +627,9 @@ std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists, std::vect
 
 
 double err_div(double a, double sa, double b, double sb){
-  return a/b*sqrt((sa/a)*(sa/a) + (sb/b)*(sb/b) - 2* (sa*sb)/(a*b));
+  return a/b*sqrt((sa/a)*(sa/a) + (sb/b)*(sb/b)/* - 2* (sa*sb)/(a*b)*/);
 }
 
 double err_mult(double a, double sa, double b, double sb){
-  return a*b*sqrt((sa/a)*(sa/a) + (sb/b)*(sb/b) + 2 *(sa*sb)/(a*b));
+  return a*b*sqrt((sa/a)*(sa/a) + (sb/b)*(sb/b) /*+ 2 *(sa*sb)/(a*b)*/);
 }

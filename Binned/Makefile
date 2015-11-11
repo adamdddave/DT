@@ -29,7 +29,7 @@ OUTLIB	      = ./lib/
 
 #----------------------------------------------------#
 
-all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin time_dep_systs matchRS_WS PiSgpStudy doRStimeDep
+all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin time_dep_systs matchRS_WS PiSgpStudy doRStimeDep testTimeDepLinearity
 
 mass_fits_compiled: analysis.cpp 
 	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp massFit.cpp betastar_plot.cpp WrongB.cpp -o DTAnalysis  $(GLIBS) $<
@@ -50,6 +50,8 @@ PiSgpStudy: doSlowPionStudy.cpp
 	$(CXX) $(CXXFLAGS) slowPionStudy.cpp massFit.cpp -o doTheSlowPionStudy $(GLIBS) $<
 doRStimeDep: extractDT_RS_Time_Dependence.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o extractRSTimeDep $(GLIBS) $<
+testTimeDepLinearity: TimeDependentChi2Fit.cpp
+	$(CXX) $(CXXFLAGS) -o testTimeDepLinFit $(GLIBS) $<
 clean:
 	rm -f DTAnalysis
 	rm -f testMassFit
@@ -60,4 +62,5 @@ clean:
 	rm -f doWSRSmatch
 	rm -f doTheSlowPionStudy
 	rm -f extractRSTimeDep
+	rm -rf testTimeDepLinFit
 #	rm -rf *dSYM
