@@ -8,8 +8,56 @@
 #include <TMath.h>
 #include <TLorentzVector.h>
 #include <iostream>
+#include <fstream>
 #include <TLeaf.h>
+
 using namespace std;
+
+bool DT_D0_mix_CPV::foundMatch(matchelement_t el){
+  bool res = false;
+  for(auto val : matchedToPrompt){
+    if(res == true)continue;
+    res = matchElement(el,val);
+  }
+  return res;
+}
+
+void DT_D0_mix_CPV::setRejectionFile(TString path_to_file){
+  //read a file from the path, then set the rejection vector accordingly.
+  matchelement_t elem;
+  ifstream infile(path_to_file.Data());
+  std::string line;
+  if(infile.is_open()){
+    std::cout<<"reading file "<<path_to_file<<std::endl;
+    getline(infile,line);//skip the header
+    double kpx,kpy,kpz,pipx,pipy,pipz,pispx,pispy,pispz;
+    UInt_t runNum;
+    ULong64_t evNum;
+    std::cout<<"Testing read"<<std::endl;
+    while(infile>>evNum>>runNum>>kpx>>kpy>>kpz>>pipx>>pipy>>pipz>>pispx>>pispy>>pispz){
+      elem.eventNumber = evNum;
+      elem.runNumber =runNum;
+      elem.kpx = kpx;
+      elem.kpy = kpy;
+      elem.kpz = kpz;
+      elem.pipx = pipx;
+      elem.pipy = pipy;
+      elem.pipz = pipz;
+      elem.pispx = pispx;
+      elem.pispy = pispy;
+      elem.pispz = pispz;
+      matchedToPrompt.push_back(elem);
+    }
+    //now sort by event number    
+    cout<<"done reading file, length of matchedToPrompt = "<<matchedToPrompt.size()<<endl;
+    
+  }
+  else{
+    std::cout<<"Cannot read the input file! This will fail!"<<std::endl;
+    //assert(0);
+  }
+  return;
+}
 
 void DT_D0_mix_CPV::Loop()
 {

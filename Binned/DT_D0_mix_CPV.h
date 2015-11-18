@@ -21,6 +21,14 @@
 #include <TFile.h>
 //other classes
 #include "betastar_plot.h"
+//struct for removing the prompt/DT matched candidates
+struct matchelement_t{
+  UInt_t          runNumber;
+  ULong64_t       eventNumber;
+  Double_t kpx,kpy,kpz,pipx,pipy,pipz,pispx,pispy,pispz;
+};
+
+
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -1779,7 +1787,7 @@ public :
   virtual void     Loop();
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
-  
+  void setRejectionFile(TString path_to_file);
 private:
   TLorentzVector k_daughter;
   TLorentzVector pi_daughter;
@@ -1900,7 +1908,23 @@ private:
 
   const double pis_gp_pf_vals[10] = {0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5};
   const double d0_pdg_ct = 0.1229;//mm
-  
+  //for matching
+  std::vector<matchelement_t> matchedToPrompt;
+  inline bool matchElement (matchelement_t i, matchelement_t j) {
+  return ((i.eventNumber==j.eventNumber)&&
+	  (i.runNumber==j.runNumber)&&
+	  (i.kpx==j.kpx)&&
+	  (i.kpy==j.kpy)&&
+	  (i.kpz==j.kpz)&&
+	  (i.pipx==j.pipx)&&
+	  (i.pipy==j.pipy)&&
+	  (i.pipz==j.pipz)&&	  
+	  (i.pispx==j.pispx)&&
+	  (i.pispy==j.pispy)&&
+	  (i.pispz==j.pispz));}
+
+  bool foundMatch(matchelement_t el);
+  inline bool sorter(matchelement_t i, matchelement_t j){return i.eventNumber<j.eventNumber;}
 };
 
 #endif
@@ -2521,11 +2545,10 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    muon_vs_slow_pion_OWNPV_Y = new TH2D(name+"_mu_vs_slow_pion_ownpvY",";#pi_{S} Own PV Y; #mu Own PV Y",400,-2,2,400,-2,2);
    muon_vs_slow_pion_OWNPV_Z = new TH2D(name+"_mu_vs_slow_pion_ownpvZ",";#pi_{S} Own PV Z; #mu Own PV Z",1000,-500,500,1000,-500,500);
    cos_muon_d0_angle = new TH1D(name+"_cos_muon_d0_angle","cos(#theta_{D^{0}#mu});cos(#theta_{D^{0}#mu});Entries / 0.05",40,-1,1);
-
+   
    b_fd_chi2 = new TH1D(name+"_b_fd_chi2", ";B #chi^{2}_{FD}; Entries / 0.5",1000,0,500);
    //HERE
-
-   
+   //read in the file of matched events
    //b_fd = new TH1D(name+"_b_fd","; B Flight Distance[mm]; Entries / ")
 }
 
@@ -3377,4 +3400,5 @@ Int_t DT_D0_mix_CPV::passCuts(){
      TMath::Abs((k_aspi+pi_aspi).M()*1e3-pdg_d0_m)>40)theval = 1;
   return theval;
 }
+
 #endif // #ifdef DT_D0_mix_CPV_cxx
