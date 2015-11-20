@@ -134,7 +134,6 @@ int main(int argc, char* const argv[]){
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2012.txt");
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2011.txt");
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2011.txt");
-  return 0;
   rs_looper.Loop();
   //
   rs_looper.bs_plot->SavePlots();

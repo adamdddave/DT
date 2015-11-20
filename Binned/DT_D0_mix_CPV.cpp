@@ -84,8 +84,7 @@ void DT_D0_mix_CPV::setRejectionFile(TString path_to_file){
       elem.pispz = pispz;
       elem.toBeRemoved = false;
       matchedToPrompt.push_back(elem);
-    }
-    
+    }    
     //now sort by event number    
     cout<<"done reading file, length of matchedToPrompt = "<<matchedToPrompt.size()<<endl;
     //sort by event number.
