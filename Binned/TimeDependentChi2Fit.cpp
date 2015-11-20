@@ -35,7 +35,7 @@ TimeDependentChi2Fit::TimeDependentChi2Fit(TString name){
   amax = 1.1;
   astep = 0.001;
   minuit->DefineParameter(0,"a",astart,astep,amin,amax);
-  ndf = 5-1;
+  ndf = /*5*/ 15-1;
   minuit->SetFCN(my_fcn);
 }
 
@@ -48,8 +48,9 @@ void TimeDependentChi2Fit::fit(){
   cout<<"Prob = "<<TMath::Prob(chi2_val_glob,ndf)<<endl;
 }
 
-void TimeDependentChi2Fit::SetData(TGraphAsymmErrors theGraph){
-  for(int i=0; i<5;++i){
+void TimeDependentChi2Fit::SetData(TGraphAsymmErrors theGraph, TGraphAsymmErrors g2, TGraphAsymmErrors g3){
+
+  for(int i=0; i<5;++i){//first file
     double dummy;
     theGraph.GetPoint(i,dummy,central_val[i]);
     error[i] = theGraph.GetErrorYlow(i);
@@ -58,18 +59,40 @@ void TimeDependentChi2Fit::SetData(TGraphAsymmErrors theGraph){
     cout<<"point "<<i<<" getting central val"<<central_val[i]<<" and error "<<error[i]<<endl;
   }
 
+  for(int i=0; i<5;++i){//second file
+    double dummy;
+    g2.GetPoint(i,dummy,central_val[i+5]);
+    error[i+5] = g2.GetErrorYlow(i);
+    central_val_global[i+5]=central_val[i+5];
+    error_global[i+5] = error[i+5];
+    cout<<"point "<<i<<" getting central val"<<central_val[i+5]<<" and error "<<error[i+5]<<endl;
+  }
+
+  for(int i=0; i<5;++i){//third file
+    double dummy;
+    g3.GetPoint(i,dummy,central_val[i+10]);
+    error[i+10] = g3.GetErrorYlow(i);
+    central_val_global[i+10]=central_val[i+10];
+    error_global[i+10] = error[i+10];
+    cout<<"point "<<i<<" getting central val"<<central_val[i+10]<<" and error "<<error[i+10]<<endl;
+  }
+
 }
 
 int main(int argc, char* const argv[]){
-  if(argc<2){
+  if(argc<4){
     cout<<"no datafile to process!!"<<endl;
     return 0;
   }
   cout<<"computing chi2 for a flat line from "<<argv[1]<<endl;
   TFile* f1 = TFile::Open(argv[1]);
+  TFile* f2 = TFile::Open(argv[2]);
+  TFile* f3 = TFile::Open(argv[3]);
   TGraphAsymmErrors* gr = (TGraphAsymmErrors*)f1->Get("rs_over_rs_ratio");
+  TGraphAsymmErrors* gr2 = (TGraphAsymmErrors*)f2->Get("rs_over_rs_ratio");
+  TGraphAsymmErrors* gr3 = (TGraphAsymmErrors*)f3->Get("rs_over_rs_ratio");
   TimeDependentChi2Fit fit("fit");
-  fit.SetData(*gr);
+  fit.SetData(*gr,*gr2,*gr3);
   fit.fit();
   return 0;
 }

@@ -26,8 +26,8 @@ struct matchelement_t{
   UInt_t          runNumber;
   ULong64_t       eventNumber;
   Double_t kpx,kpy,kpz,pipx,pipy,pipz,pispx,pispy,pispz;
+  bool toBeRemoved;//ok to delete?
 };
-
 
 // Header file for the classes stored in the TTree if any.
 
@@ -1788,6 +1788,7 @@ public :
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
   void setRejectionFile(TString path_to_file);
+  bool foundMatch(matchelement_t el);
 private:
   TLorentzVector k_daughter;
   TLorentzVector pi_daughter;
@@ -1910,21 +1911,11 @@ private:
   const double d0_pdg_ct = 0.1229;//mm
   //for matching
   std::vector<matchelement_t> matchedToPrompt;
-  inline bool matchElement (matchelement_t i, matchelement_t j) {
-  return ((i.eventNumber==j.eventNumber)&&
-	  (i.runNumber==j.runNumber)&&
-	  (i.kpx==j.kpx)&&
-	  (i.kpy==j.kpy)&&
-	  (i.kpz==j.kpz)&&
-	  (i.pipx==j.pipx)&&
-	  (i.pipy==j.pipy)&&
-	  (i.pipz==j.pipz)&&	  
-	  (i.pispx==j.pispx)&&
-	  (i.pispy==j.pispy)&&
-	  (i.pispz==j.pispz));}
+  bool matchElement (matchelement_t i, matchelement_t j); 
 
-  bool foundMatch(matchelement_t el);
-  inline bool sorter(matchelement_t i, matchelement_t j){return i.eventNumber<j.eventNumber;}
+
+  inline static bool sorter(matchelement_t i, matchelement_t j){return i.eventNumber<j.eventNumber;}
+
 };
 
 #endif

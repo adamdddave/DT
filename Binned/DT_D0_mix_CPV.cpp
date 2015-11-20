@@ -10,14 +10,50 @@
 #include <iostream>
 #include <fstream>
 #include <TLeaf.h>
+#include <algorithm>
 
 using namespace std;
+bool DT_D0_mix_CPV::matchElement (matchelement_t i, matchelement_t j) {
+  double tol =0.1;
+  bool ret=
+    ((i.eventNumber==j.eventNumber)&&
+     (i.runNumber==j.runNumber)&&
+     (i.kpx==j.kpx)&&
+     (i.kpy==j.kpy)&&
+     (i.kpz==j.kpz)&&
+     (i.pipx==j.pipx)&&
+     (i.pipy==j.pipy)&&
+     fabs((i.pipz-j.pipz))<tol&&
+     fabs((i.pispx-j.pispx))<tol&&
+     fabs((i.pispy-j.pispy))<tol&&
+     fabs((i.pispz-j.pispz))<tol
+     );
+  
+  // if(ret==true){
+  //   cout<<"testing the remaining fields"<<endl;
+  //   cout<<"d pi pz = "<<i.pipz-j.pipz<<endl;
+  // }
+  return ret;
+}
+
 
 bool DT_D0_mix_CPV::foundMatch(matchelement_t el){
   bool res = false;
-  for(auto val : matchedToPrompt){
+  //for(auto val : matchedToPrompt){
+  for( std::vector<matchelement_t>::iterator it = matchedToPrompt.begin(); it!= matchedToPrompt.end();++it){
+    matchelement_t val = (*it);//want the iterator to erase after.
     if(res == true)continue;
     res = matchElement(el,val);
+    if(res==true){
+      //cout<<"matched to"<<endl;
+      //cout<<"\t"<<val.eventNumber<<"\t"<<val.runNumber<<"\t"<<val.kpx<<"\t"<<val.kpy<<"\t"<<val.kpz<<"\t"<<val.pipx<<"\t"<<val.pipy<<"\t"<<val.pipz<<"\t"<<val.pispx<<"\t"<<val.pispy<<"\t"<<val.pispz<<endl;
+      //cout<<"before, val.toBeRemoved = "<<val.toBeRemoved<<endl;
+      val.toBeRemoved = 1;
+      //cout<<"set val.toBeRemoved to "<<val.toBeRemoved<<endl;
+      //erase the element
+      matchedToPrompt.erase(it);
+    }
+    
   }
   return res;
 }
@@ -46,11 +82,14 @@ void DT_D0_mix_CPV::setRejectionFile(TString path_to_file){
       elem.pispx = pispx;
       elem.pispy = pispy;
       elem.pispz = pispz;
+      elem.toBeRemoved = false;
       matchedToPrompt.push_back(elem);
     }
+    
     //now sort by event number    
     cout<<"done reading file, length of matchedToPrompt = "<<matchedToPrompt.size()<<endl;
-    
+    //sort by event number.
+    std::sort(matchedToPrompt.begin(),matchedToPrompt.end(),sorter);
   }
   else{
     std::cout<<"Cannot read the input file! This will fail!"<<std::endl;
@@ -87,13 +126,32 @@ void DT_D0_mix_CPV::Loop()
   if (fChain == 0) return;
 
   Long64_t nentries = fChain->GetEntriesFast();
-
+  matchelement_t currElem;
   Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     if(jentry%100000==0)std::cout<<"processed "<<jentry<<" events"<<std::endl;
+    
+    //make the match for prompt sample
+    currElem.eventNumber = eventNumber;
+    currElem.runNumber = runNumber;
+    currElem.kpx = K_PX;
+    currElem.kpy = K_PY;
+    currElem.kpz = K_PZ;
+    currElem.pipx =Pd_PX;
+    currElem.pipy =Pd_PY;
+    currElem.pipz =Pd_PZ;
+    currElem.pispx =Ps_PX;
+    currElem.pispy =Ps_PY;
+    currElem.pispz =Ps_PZ;
+    
+    if(foundMatch(currElem)){
+      //cout<<"new vector length = "<<matchedToPrompt.size()<<endl;
+      cout<<"removing prompt event"<<endl;
+      continue;
+    }
     
     //cuts
     if(!(

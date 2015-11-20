@@ -31,7 +31,7 @@ class TimeDependentChi2Fit {
  public:
   TimeDependentChi2Fit(TString name);
   ~TimeDependentChi2Fit(){ delete minuit;};
-  void SetData(TGraphAsymmErrors theGraph);
+  void SetData(TGraphAsymmErrors theGraph, TGraphAsymmErrors g2, TGraphAsymmErrors g3);
   void fit();
   //void initParams();
   double pValue();
@@ -43,22 +43,22 @@ class TimeDependentChi2Fit {
   TString m_name;
   //void my_fcn(int& npar, double* deriv, double& func, double param[], int flag);
   TMinuit *minuit;
-  double central_val[5];
-  double error[5];
+  double central_val[/*5*/ 15];
+  double error[/*5*/ 15];
   double astart,amin,amax,astep;
   double chi2_val;
   int ndf;
 };
 
 #endif // COMPLETE_ANALYSIS_TIMEDEPENDENTCHI2FIT_H
-double central_val_global[5];
-double error_global[5];
+double central_val_global[/*5*/ 15];
+double error_global[/*5*/ 15];
 double chi2_val_glob;
 void my_fcn(int& npar, double* deriv, double& func, double param[], int flag){
   //chi2 fit to a flat line
   double a = param[0];
   double ret = 0;
-  for(int i=0; i<5;++i){//loop over bins
+  for(int i=0; i</*5*/ 15;++i){//loop over bins
     double exp = a;
     double obs = central_val_global[i];
     double err = error_global[i];
