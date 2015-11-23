@@ -906,9 +906,10 @@ void betastar_plot::DrawPlots(){
     hmpipisb->SetLineColor(kBlue);
     hmpiksb->SetLineColor(kMagenta);*/
     //setcanvas();
+    
     TCanvas *cc_bg = new TCanvas();
     gStyle->SetOptStat(00);
-    gStyle->SetTitleOffset(1.4,"y");
+    //gStyle->SetTitleOffset(1.4,"y");
     h2tot->SetTitle(";#beta*; m(#pi#pi)[GeV]");
     h2tot->Draw("colz");
     cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_tot_colz.pdf");
@@ -923,6 +924,7 @@ void betastar_plot::DrawPlots(){
     cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_ss_bkg_tot_colz_logz.pdf");
     cc_bg->SetLogz(false);
     cc_bg->Clear();
+    PlottingTools::setLHCbcanvas();
     /*
     h2sig_bkg->Draw();
     h2rob_bkg->Draw("same");
@@ -939,7 +941,7 @@ void betastar_plot::DrawPlots(){
     cc_bg->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_bkg_indiv_sb.C");*/
     delete cc_bg;
     gStyle->SetOptStat(00);
-    gStyle->SetTitleOffset(1.4,"y");
+    //gStyle->SetTitleOffset(1.4,"y");
     TCanvas *cv = new TCanvas("cv", "", 1200, 400*3);
     cv->Divide(2,3);
     cv->cd(1);
@@ -979,6 +981,7 @@ void betastar_plot::DrawPlots(){
     
     //
 
+    cv->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_figure.png");
     cv->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_figure.pdf");
     cv->SaveAs("./SavedFits/betastar/"+m_name+"_betastar_figure.C");
     
@@ -1079,6 +1082,7 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, TH1* h2){
   frame->Draw();
 
   TPaveText *txt = new TPaveText(0.7, 0.7, 0.98, 0.98, "ndc");
+  txt->SetFillColor(kWhite);
   txt->SetTextAlign(12);
   txt->AddText(TString::Format("N_{sig}: %d #pm %d", (int)nsig->getVal(), (int)nsig->getError()));
   txt->AddText(TString::Format("N_{peak}: %d #pm %d", (int)nsig2.getVal(), (int)nsig2.getError()));
@@ -1132,6 +1136,7 @@ void betastar_plot::makefitplot(RooWorkspace*w, TH1* h1, int addpol){
   frame->GetYaxis()->SetRangeUser(h1->GetMinimum(),h1->GetMaximum()*1.5);
   frame->Draw();
   TPaveText *txt = new TPaveText(0.7, 0.8, 0.98, 0.98, "ndc");
+  txt->SetFillColor(kWhite);
   txt->SetTextAlign(12);
   txt->AddText(TString::Format("N_{peak}: %d #pm %d", (int)(nsig->getVal()+nbkg2.getVal()), 
                                (int)sqrt(nsig->getError()*nsig->getError()+nbkg2.getError()*nbkg2.getError())));

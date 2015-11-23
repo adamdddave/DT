@@ -185,6 +185,7 @@ void DT_D0_mix_CPV::Loop()
 	 //TMath::Log(Mu_IPCHI2_OWNPV)>mu_log_ip_chi2_cut &&
 	 //Mu_IPCHI2_OWNPV>mu_ip_chi2_cut&&
 	 B_VFit_chi2[0]/B_VFit_nDOF[0]<dtf_chi2_ndf_cut
+	 
 	 //B_FDCHI2_OWNPV > b_fd_cut
 	 //&& Ps_PT > pis_pt_cut
 	 //&&Ps_MC12TuneV2_ProbNNp<pis_probnnp_cut
@@ -287,7 +288,8 @@ void DT_D0_mix_CPV::Loop()
 		       B_VFit_muminus_PZ[0]/1e3,
 		       105.6583715/1e3);
     //cout<<"pi_daugter.E ="<<pi_daughter.E()<<endl;
-    
+    //cut on dstar pt
+    //if((d0_vector+slow_pion_vec).Pt()/*GeV*/<1/*GeV*/)continue;
     Double_t dstm = (d0_vector+slow_pion_vec).M()*1e3;
     Double_t Pis_CHARGE = Ps_ID/211.;
     Double_t Pi_CHARGE = Pd_ID/211.;

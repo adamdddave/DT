@@ -56,7 +56,7 @@
 #include <RooWorkspace.h>
 // local
 #include "massFit.h"
-//#include "PlottingTools.h"
+#include "PlottingTools.h"
 using namespace std;
  // Include files
 //supporting method
@@ -65,6 +65,7 @@ double err_mult(double a, double sa, double b, double sb);
 std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists,std::vector<TH1*>hi_hists,RooWorkspace* w_tmp, TString nameForFit, betastar_plot *b,array<double,4>initPars);
 
 int main(int argc, char* const argv[]){
+  //PlottingTools::setLHCbcanvas();
   cout<<"Testing Mass Fit on External Data"<<endl;
   bool hasWorkspace=  false;
   if(argc<4){
