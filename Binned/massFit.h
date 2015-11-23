@@ -75,6 +75,7 @@ public:
   //getters
   //RooWorkspace* getFinalFit();///so we can fit the RS model once, then reuse the fit.
   void saveFinalFit();
+  void saveUpdatedFinalFit();
   TString getFitModel(){return modelName;}
   void savePlots(bool doPullPlots = false,TString extraName = "");
   void saveSignalRegionZoom();

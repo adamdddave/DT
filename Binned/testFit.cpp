@@ -48,14 +48,16 @@
 #include <RooWorkspace.h>
 // local
 #include "massFit.h"
-//#include "PlottingTools.h"
+#include "PlottingTools.h"
 using namespace std;
  // Include files 
 
 
 int main(int argc, char* const argv[]){
+  PlottingTools::setLHCbcanvas();
   cout<<"Testing Mass Fit on External Data"<<endl;
   bool hasWorkspace=  false;
+  bool floatstuff = false;
   if(argc<2){
     cout<<"*************************************"<<endl;
     cout<<"Expecting an external file to process"<<endl;
@@ -63,10 +65,17 @@ int main(int argc, char* const argv[]){
     cout<<"*************************************"<<endl;
     return 0;
   }
-  if(argc==3){
+  if(argc>=3){
     cout<<"argv[1]="<<argv[1]<<", argv[2] = "<<argv[2]<<endl;
     hasWorkspace = true;
     //return 0;
+  }
+  if(argc==4){
+    cout<<"floating mean and width"<<endl;
+    cout<<"is that ok?"<<endl;
+    char blah;
+    cin>>blah;
+    floatstuff = true;
   }
   bool isWS = false;
   TString fitName = argv[1];
@@ -135,10 +144,12 @@ int main(int argc, char* const argv[]){
     //return 0;
     //fit.initModelValues();
     fit.setData(hist);
+    if(floatstuff){fit.FloatMeanWidth();}
     fit.fit();
     
     fit.savePlots(true,channelFromFile+"workspaceFit");
     fit.saveSignalRegionZoom();
+    if(floatstuff){fit.saveUpdatedFinalFit();}
   }
   return 0;
 }

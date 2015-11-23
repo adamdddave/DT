@@ -642,6 +642,17 @@ void massFit::saveFinalFit(){
   new_fit->writeToFile("./SavedFits/"+theLocalDir+"/"+channel+"_"+modelName+"fitModel.root");
 }
 
+void massFit::saveUpdatedFinalFit(){
+  cout<<"updating final fit!"<<endl;
+  dmean->setConstant(1);
+  rsigma->setConstant(1);
+  new_fit = new RooWorkspace(channel+"w",channel+"Updatedworkspace");
+  new_fit->import(*model);
+  new_fit->saveSnapshot(channel+modelName+"Snapshot",* (model->getParameters(*mass)),kTRUE);
+  new_fit->writeToFile("./SavedFits/"+theLocalDir+"/"+channel+"_"+modelName+"UpdatedfitModel.root");
+}
+
+
 void massFit::savePlots(bool doPullPlots, TString extraName){
   TCanvas *cc = new TCanvas();
   RooPlot* frame = mass->frame();
@@ -704,7 +715,7 @@ void massFit::savePlots(bool doPullPlots, TString extraName){
    }
    //frame->GetYaxis()->SetRangeUser(0,250);
    frame->Draw();
-   frame->GetYaxis()->SetTitleOffset(1.4);
+   //frame->GetYaxis()->SetTitleOffset(1.4);
    TPaveText *txt;
    if(addSigBox){
      txt = new TPaveText(0.7, 0.8, 0.98, 0.98, "ndc");
