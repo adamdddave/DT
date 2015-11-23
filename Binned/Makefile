@@ -29,7 +29,7 @@ OUTLIB	      = ./lib/
 
 #----------------------------------------------------#
 
-all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin time_dep_systs matchRS_WS PiSgpStudy doRStimeDep testTimeDepLinearity
+all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin time_dep_systs matchRS_WS PiSgpStudy doRStimeDep testTimeDepLinearity loose_time_int_systs
 
 mass_fits_compiled: analysis.cpp 
 	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp massFit.cpp betastar_plot.cpp WrongB.cpp -o DTAnalysis  $(GLIBS) $<
@@ -40,6 +40,8 @@ bs_fits: betastarFits.cpp
 	$(CXX) $(CXXFLAGS) betastar_plot.cpp massFit.cpp -o doBetastarFits $(GLIBS) $<
 time_int_systs: TimeIntegratedSystematics.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp TimeIntegratedSystematicsClass.cpp -o doTimeIntegratedSystematics $(GLIBS) $<
+loose_time_int_systs: TimeIntegratedSystematicsLooseBins.cpp
+	$(CXX) $(CXXFLAGS) massFit.cpp TimeIntegratedSystematicsClass.cpp -o doLooseTimeIntegratedSystematics $(GLIBS) $<
 test_single_bin: TestSingleBinFit.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o SingleBinFit $(GLIBS) $<
 time_dep_systs: TimeDependentSystematics.cpp
