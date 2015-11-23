@@ -56,6 +56,7 @@ using namespace PlottingTools;
 
 int main(int argc, char* const argv[]){
   //int nSysts = 5;
+  PlottingTools::setLHCbcanvas();
   cout<<"**************"<<endl;
   cout<<"Code for processing mike's time integrated systematics"<<endl;
   cout<<"**************"<<endl;
@@ -67,17 +68,26 @@ int main(int argc, char* const argv[]){
     cout<<"please also pass a saved fit model!"<<endl;
     return 0;
   }
+  // bool doPIDstudies = true;
+  // if(argc==4){
+  //   cout<<argv[3]<<endl;
+  //   cout<<"turning off PID K studies"<<endl;
+  // }
 
   cout<<"Now processing "<<argv[1]<<endl;
   TFile * f1 = TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
   //  f2->ls();
   TString channelFromFile = argv[2];
-  channelFromFile.ReplaceAll("SavedFits","");
-  channelFromFile.ReplaceAll("fitModel.root","");
-  channelFromFile.ReplaceAll("/","");
-  channelFromFile.ReplaceAll("j3g","");
-  channelFromFile.ReplaceAll("_","");
+  channelFromFile.ToLower();
+  // channelFromFile.ReplaceAll("SavedFits","");
+  // channelFromFile.ReplaceAll("fitModel.root","");
+  // channelFromFile.ReplaceAll("/","");
+  // channelFromFile.ReplaceAll("j3g","");
+  // channelFromFile.ReplaceAll("_","");
+  if(channelFromFile.Contains("rs")){
+    channelFromFile="rs";
+  }
   channelFromFile+="w";
   cout<<"channel from file = "<<channelFromFile<<endl;  
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
@@ -91,7 +101,7 @@ int main(int argc, char* const argv[]){
   //binned twice  
   int bins_pi_pidk[]  ={1,150,165,176,185,((TH1D*)f1->Get("RS_dst_mass_vs_pi_pidk"))->GetNbinsX()};  
   int bins_k_pidk[]  ={1,11,19,26,37,((TH1D*)f1->Get("RS_dst_mass_vs_k_pidk"))->GetNbinsX()};
-
+  
   TimeIntegratedSystematicsClass pi_pidk_vs_kpidk_bin1("pi_pidk_vs_kpidk_bin1",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin1_k_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin1_k_pid_k_bin",bins_pi_pidk,5,thePars);
   std::vector<double>point_pi_pidk_vs_kpidk_bin1 (pi_pidk_vs_kpidk_bin1.GetSignalPoint());
 
@@ -205,7 +215,7 @@ int main(int argc, char* const argv[]){
   tot_mass->Add((TH1D*)f1->Get("RS_ss_dt_hist_dstar_m"),-1);
   tot_validation.setData(tot_mass);
   tot_validation.fit();
-  TH1D* the_final_comp = new TH1D("the_final_comp","; ;N Signal (D^*)",9,0.5,9.5);
+  TH1D* the_final_comp = new TH1D("the_final_comp","; ;N Signal (D*)",9,0.5,9.5);
   TLine *centr_val = new TLine(the_final_comp->GetXaxis()->GetXmin(),tot_validation.getNsig(),the_final_comp->GetXaxis()->GetXmax(),tot_validation.getNsig());
   centr_val->SetLineColor(kGreen+2);
 

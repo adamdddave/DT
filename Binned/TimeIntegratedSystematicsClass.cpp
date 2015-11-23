@@ -58,7 +58,8 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
 							       TString histoForBins,TString histoForBinsBkg,
 							       int binRanges[6],
 							       int nbins,
-							       array<double,4> initVals){
+							       array<double,4> initVals,
+							       bool reBin){
   mName = name;
   nBins = nbins;
   //fin->ls();
@@ -105,6 +106,9 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
     sigHistBins[i]->Add(bkgHistBins[i],-1);    
     cout<<"Double check, "<<histoForBins+Form("%d",i+1)<<"->Integral()="<<sigHistBins[i]->Integral()<<endl;
     //massFit *theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",wLocal,"TimeIntegratedSystematics");
+    if(reBin){
+      sigHistBins[i]->Rebin();
+    }
     theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",wLocal,"TimeIntegratedSystematics");
     if(initVals[0]!=0.&& initVals[1]!=0.){
       cout<<"Initializing variables"<<endl;

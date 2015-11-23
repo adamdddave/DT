@@ -51,7 +51,7 @@ using namespace std;
 
 class TimeIntegratedSystematicsClass {
  public:
-  TimeIntegratedSystematicsClass(TString name,TFile *fin,RooWorkspace* w,TString var2Test,TString var2subtr,TString histoForBins,TString histoForBinsBkg,int binRanges[6],int nbins=5,array<double,4> initVals={0.,0.,0.,0.,});//constructor
+  TimeIntegratedSystematicsClass(TString name,TFile *fin,RooWorkspace* w,TString var2Test,TString var2subtr,TString histoForBins,TString histoForBinsBkg,int binRanges[6],int nbins=5,array<double,4> initVals={0.,0.,0.,0.,},bool reBin = false);//constructor
   virtual ~TimeIntegratedSystematicsClass(){delete theFit;};
   //void doFit;
   inline std::vector<double>GetSignalPoint(){return SigAndErr;}
