@@ -40,20 +40,24 @@ bool DT_D0_mix_CPV::matchElement (matchelement_t i, matchelement_t j) {
 bool DT_D0_mix_CPV::foundMatch(matchelement_t el){
   bool res = false;
   //for(auto val : matchedToPrompt){
+  
   for( std::vector<matchelement_t>::iterator it = matchedToPrompt.begin(); it!= matchedToPrompt.end();++it){
     matchelement_t val = (*it);//want the iterator to erase after.
-    if(res == true)continue;
-    res = matchElement(el,val);
+    if(res == true)return 1;
+    res = matchElement(el,val/*(*it)*/);
     if(res==true){
-      //cout<<"matched to"<<endl;
+      //      cout<<"matched to"<<endl;
       //cout<<"\t"<<val.eventNumber<<"\t"<<val.runNumber<<"\t"<<val.kpx<<"\t"<<val.kpy<<"\t"<<val.kpz<<"\t"<<val.pipx<<"\t"<<val.pipy<<"\t"<<val.pipz<<"\t"<<val.pispx<<"\t"<<val.pispy<<"\t"<<val.pispz<<endl;
+      //      cout<<"orig was"<<endl;
+      //      cout<<"\t"<<el.eventNumber<<"\t"<<el.runNumber<<"\t"<<el.kpx<<"\t"<<el.kpy<<"\t"<<el.kpz<<"\t"<<el.pipx<<"\t"<<el.pipy<<"\t"<<el.pipz<<"\t"<<el.pispx<<"\t"<<el.pispy<<"\t"<<el.pispz<<endl;
       //cout<<"before, val.toBeRemoved = "<<val.toBeRemoved<<endl;
       val.toBeRemoved = 1;
       //cout<<"set val.toBeRemoved to "<<val.toBeRemoved<<endl;
       //erase the element
       matchedToPrompt.erase(it);
+      //cout<<"matchedToPrompt.size() = "<<matchedToPrompt.size()<<endl;
     }
-    
+   
   }
   return res;
 }
@@ -145,7 +149,7 @@ void DT_D0_mix_CPV::Loop()
     currElem.pispx =Ps_PX;
     currElem.pispy =Ps_PY;
     currElem.pispz =Ps_PZ;
-    
+    //cout<<"testing "<<currElem.eventNumber<<endl;
     if(foundMatch(currElem)){
       //cout<<"new vector length = "<<matchedToPrompt.size()<<endl;
       cout<<"removing prompt event"<<endl;
@@ -296,6 +300,11 @@ void DT_D0_mix_CPV::Loop()
     Double_t beta = Pis_CHARGE*Pi_CHARGE*(pi_daughter.P()-k_daughter_as_pi.P())/(k_daughter_as_pi.P()+pi_daughter.P());
     //fill the d0 mass plot without any cuts on delta M to show the cut range
     d0_mass_plot->Fill((k_daughter+pi_daughter).M()*1e3);
+    //fill this cutting on dstar M!
+    if(fabs(dstm-pdg_dstar_m)<dstar_mass_cut){
+      d0_mass_plot_sig_rej->Fill((k_daughter+pi_daughter).M()*1e3);
+    }
+    
     //add the d mass cuts too for the b mass plots.
     if(TMath::Abs((k_daughter + pi_daughter).M()*1e3 - pdg_d0_m)<24 &&
        TMath::Abs((pi_daughter_as_k+k_daughter).M()*1e3-pdg_d0_m)>40 &&

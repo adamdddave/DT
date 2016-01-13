@@ -150,6 +150,10 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV ws_looper(ws_tree);
   ws_looper.isMC = usingMC;
   ws_looper.isPromptMC = usingPromptMC;
+  ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2012WS.txt");
+  ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2012WS.txt");
+  ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2011WS.txt");
+  ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2011WS.txt");
   ws_looper.Loop();
   ws_looper.bs_plot->SavePlots();
 
@@ -167,6 +171,7 @@ int main(int argc, char* const argv[]){
   fout->cd();
   rs_looper.dstar_mass_plot->Write();
   rs_looper.d0_mass_plot->Write();
+  rs_looper.d0_mass_plot_sig_rej->Write();
   rs_looper.b_mass_plot->Write();
   rs_looper.b_mass_plot_time_bin1->Write();
   rs_looper.b_mass_plot_time_bin2->Write();
@@ -321,6 +326,7 @@ int main(int argc, char* const argv[]){
   
   rs_ss_looper.dstar_mass_plot->Write();
   rs_ss_looper.d0_mass_plot->Write();
+  rs_ss_looper.d0_mass_plot_sig_rej->Write();
   rs_ss_looper.b_mass_plot->Write();
   rs_ss_looper.b_mass_plot_time_bin1->Write();
   rs_ss_looper.b_mass_plot_time_bin2->Write();
@@ -469,6 +475,7 @@ int main(int argc, char* const argv[]){
   fout2->cd();
   ws_looper.dstar_mass_plot->Write();
   ws_looper.d0_mass_plot->Write();
+  ws_looper.d0_mass_plot_sig_rej->Write();
   ws_looper.b_mass_plot->Write();
   ws_looper.b_mass_plot_time_bin1->Write();
   ws_looper.b_mass_plot_time_bin2->Write();
@@ -607,6 +614,7 @@ int main(int argc, char* const argv[]){
   //ss
   ws_ss_looper.dstar_mass_plot->Write();
   ws_ss_looper.d0_mass_plot->Write();
+  ws_ss_looper.d0_mass_plot_sig_rej->Write();
   ws_ss_looper.b_mass_plot->Write();
   ws_ss_looper.b_mass_plot_time_bin1->Write();
   ws_ss_looper.b_mass_plot_time_bin2->Write();
