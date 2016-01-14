@@ -255,6 +255,17 @@ int main(int argc, char* const argv[]){
 
   
   rs_looper.decay_time_distr->Write();
+  rs_looper.decay_time_distr_pos->Write();
+  rs_looper.decay_time_distr_neg->Write();
+  for(auto hist: rs_looper.timesquared_histos){
+    hist->Write();
+  }
+  for(auto hist: rs_looper.timesquared_histos_pos){
+    hist->Write();
+  }
+  for(auto hist: rs_looper.timesquared_histos_neg){
+    hist->Write();
+  }
   //switch to a loop on bins.
   for(auto hist: rs_looper.dstar_pt_bins){
     hist->Write();
@@ -334,6 +345,18 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.b_mass_plot_time_bin4->Write();
   rs_ss_looper.b_mass_plot_time_bin5->Write();
   rs_ss_looper.decay_time_distr->Write();
+  rs_ss_looper.decay_time_distr_pos->Write();
+  rs_ss_looper.decay_time_distr_neg->Write();
+  for(auto hist: rs_ss_looper.timesquared_histos){
+    hist->Write();
+  }
+  for(auto hist: rs_ss_looper.timesquared_histos_pos){
+    hist->Write();
+  }
+  for(auto hist: rs_ss_looper.timesquared_histos_neg){
+    hist->Write();
+  }
+
   rs_looper.dstar_mass_vs_muIPchi2->Write();
   rs_ss_looper.dstar_mass_vs_muIPchi2->Write();
   rs_ss_looper.dstar_pt->Write();
@@ -556,7 +579,9 @@ int main(int argc, char* const argv[]){
   ws_looper.dst_mass_vs_kpidk->Write();
   ws_looper.dst_mass_vs_pipidk->Write();
   ws_looper.decay_time_distr->Write();
-
+  ws_looper.decay_time_distr_pos->Write();
+  ws_looper.decay_time_distr_neg->Write();
+  
   for(auto hist: ws_looper.dstar_pt_bins){
     hist->Write();
   }
@@ -622,6 +647,8 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.b_mass_plot_time_bin4->Write();
   ws_ss_looper.b_mass_plot_time_bin5->Write();
   ws_ss_looper.decay_time_distr->Write();
+  ws_ss_looper.decay_time_distr_pos->Write();
+  ws_ss_looper.decay_time_distr_neg->Write();
   ws_ss_looper.dstar_mass_vs_muIPchi2->Write();
   ws_ss_looper.dstar_mass_vs_muIPchi2->Write();
   ws_ss_looper.dstar_pt->Write();

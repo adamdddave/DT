@@ -29,7 +29,7 @@ OUTLIB	      = ./lib/
 
 #----------------------------------------------------#
 
-all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin time_dep_systs matchRS_WS PiSgpStudy doRStimeDep testTimeDepLinearity loose_time_int_systs doD0massFits FindAl0
+all:  mass_fits_compiled test_mass_fits bs_fits time_int_systs test_single_bin time_dep_systs matchRS_WS PiSgpStudy doRStimeDep testTimeDepLinearity loose_time_int_systs doD0massFits FindAl0 doTotTimeDep
 
 mass_fits_compiled: analysis.cpp 
 	$(CXX) $(CXXFLAGS) DT_D0_mix_CPV.cpp massFit.cpp betastar_plot.cpp WrongB.cpp -o DTAnalysis  $(GLIBS) $<
@@ -58,6 +58,8 @@ doD0massFits: fitD0mass.cpp
 	$(CXX) $(CXXFLAGS) -o D0massFit $(GLIBS) $<
 FindAl0: getL0efficiency.cpp
 	$(CXX) $(CXXFLAGS) massFit.cpp -o FindAl0muon $(GLIBS) $<
+doTotTimeDep: extractTimeDependence.cpp
+	$(CXX) $(CXXFLAGS) massFit.cpp -o extractTotTimeDep $(GLIBS) $<
 clean:
 	rm -f DTAnalysis
 	rm -f testMassFit
@@ -71,4 +73,5 @@ clean:
 	rm -rf testTimeDepLinFit
 	rm -f D0massFit
 	rm -f FindAl0muon
+	rm -f extractTotTimeDep
 #	rm -rf *dSYM

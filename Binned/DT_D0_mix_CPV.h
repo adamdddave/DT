@@ -1762,7 +1762,27 @@ public :
   TH1D* b_fd;
   TH1D* d0_log_ip_chi2;
   
-  
+  //histogram to get <t^2> from
+  std::vector<TH1D*> timesquared_histos;
+  std::vector<TH1D*> timesquared_histos_pos;
+  std::vector<TH1D*> timesquared_histos_neg;
+  TH1D* decay_time_squared_distr_bin1;
+  TH1D* decay_time_squared_distr_bin2;
+  TH1D* decay_time_squared_distr_bin3;
+  TH1D* decay_time_squared_distr_bin4;
+  TH1D* decay_time_squared_distr_bin5;
+
+  TH1D* decay_time_squared_distr_pos_bin1;
+  TH1D* decay_time_squared_distr_pos_bin2;
+  TH1D* decay_time_squared_distr_pos_bin3;
+  TH1D* decay_time_squared_distr_pos_bin4;
+  TH1D* decay_time_squared_distr_pos_bin5;
+
+  TH1D* decay_time_squared_distr_neg_bin1;
+  TH1D* decay_time_squared_distr_neg_bin2;
+  TH1D* decay_time_squared_distr_neg_bin3;
+  TH1D* decay_time_squared_distr_neg_bin4;
+  TH1D* decay_time_squared_distr_neg_bin5;
   //TH1D* kaon_pidk_plot;
   //TH1D* daughter_pi_pid_k_plot;
   //no need for these two, as we only want the ranges of PID from the original cpv analysis and the new.
@@ -1776,6 +1796,8 @@ public :
   TH2D* dstar_mass_vs_muIPchi2;
   TH2D* bmass_vs_muIPchi2;
   TH1D* decay_time_distr;
+  TH1D* decay_time_distr_pos;
+  TH1D* decay_time_distr_neg;
   betastar_plot *bs_plot;
 
   virtual Int_t passCuts();
@@ -1965,6 +1987,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   pis_match_chi2= new TH1D(name+"_slow_pion_match_chi2","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
   pis_match_chi2_pos= new TH1D(name+"_slow_pion_match_chi2_pos","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
   pis_match_chi2_neg= new TH1D(name+"_slow_pion_match_chi2_neg","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
+
   //dstar p and pt bins
   dstar_mass_pt_bin1 = new TH1D(name+"_dt_hist_dstar_m_pt_bin1","", 500, 2000,2025);
   dstar_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin1->GetBinWidth(1)));
@@ -2217,11 +2240,11 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   //here
   b_mass_plot = new TH1D(name+"_dt_hist_b_m","", 400, 2500,6500);
   b_mass_plot->SetTitle(Form("m(D^{*+}#mu^{-}); m(D^{*+}#mu^{-})[MeV]; Entries / %.2f",b_mass_plot->GetBinWidth(1)));
-  b_mass_plot_time_bin1 = (TH1D*)b_mass_plot->Clone("_time_bin1");
-  b_mass_plot_time_bin2 = (TH1D*)b_mass_plot->Clone("_time_bin2");
-  b_mass_plot_time_bin3 = (TH1D*)b_mass_plot->Clone("_time_bin3");
-  b_mass_plot_time_bin4 = (TH1D*)b_mass_plot->Clone("_time_bin4");
-  b_mass_plot_time_bin5 = (TH1D*)b_mass_plot->Clone("_time_bin5");
+  b_mass_plot_time_bin1 = (TH1D*)b_mass_plot->Clone(name+"bmass_time_bin1");
+  b_mass_plot_time_bin2 = (TH1D*)b_mass_plot->Clone(name+"bmass_time_bin2");
+  b_mass_plot_time_bin3 = (TH1D*)b_mass_plot->Clone(name+"bmass_time_bin3");
+  b_mass_plot_time_bin4 = (TH1D*)b_mass_plot->Clone(name+"bmass_time_bin4");
+  b_mass_plot_time_bin5 = (TH1D*)b_mass_plot->Clone(name+"bmass_time_bin5");
   
   bs_plot = new betastar_plot(tree->GetName());
 
@@ -2236,6 +2259,53 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   decay_time_distr = new TH1D(name+"_dt_d0_decay_time_distr","",150,-5.,10.);
   decay_time_distr->SetTitle(Form("; D^{0} t/#tau; Entries / %.2f",decay_time_distr->GetBinWidth(1)));
 
+
+  decay_time_distr_pos = new TH1D(name+"_dt_d0_decay_time_distr_pos","",150,-5.,10.);
+  decay_time_distr_pos->SetTitle(Form("; D^{0} t/#tau; Entries / %.2f",decay_time_distr_pos->GetBinWidth(1)));
+
+  decay_time_distr_neg = new TH1D(name+"_dt_d0_decay_time_distr_neg","",150,-5.,10.);
+  decay_time_distr_neg->SetTitle(Form("; D^{0} t/#tau; Entries / %.2f",decay_time_distr_neg->GetBinWidth(1)));
+
+//squared decay time distr.
+  decay_time_squared_distr_bin1 = new TH1D(name+"_dt_d0_decay_time_squared_distr_bin1","",4000,0,400);
+  decay_time_squared_distr_bin1->SetTitle(Form("; D^{0} (t/#tau)^{2}; Entries / %.2f",decay_time_squared_distr_bin1->GetBinWidth(1)));
+  decay_time_squared_distr_bin2 = (TH1D*)decay_time_squared_distr_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_bin2");
+  decay_time_squared_distr_bin3 = (TH1D*)decay_time_squared_distr_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_bin3");
+  decay_time_squared_distr_bin4 = (TH1D*)decay_time_squared_distr_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_bin4");
+  decay_time_squared_distr_bin5 = (TH1D*)decay_time_squared_distr_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_bin5");
+  timesquared_histos.push_back(decay_time_squared_distr_bin1);
+  timesquared_histos.push_back(decay_time_squared_distr_bin2);
+  timesquared_histos.push_back(decay_time_squared_distr_bin3);
+  timesquared_histos.push_back(decay_time_squared_distr_bin4);
+  timesquared_histos.push_back(decay_time_squared_distr_bin5);
+
+
+  decay_time_squared_distr_pos_bin1 = new TH1D(name+"_dt_d0_decay_time_squared_distr_pos_bin1","",4000,0,400);
+  decay_time_squared_distr_pos_bin1->SetTitle(Form("; D^{0} (t/#tau)^{2}; Entries / %.2f",decay_time_squared_distr_pos_bin1->GetBinWidth(1)));
+  decay_time_squared_distr_pos_bin2 = (TH1D*)decay_time_squared_distr_pos_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_pos_bin2");
+  decay_time_squared_distr_pos_bin3 = (TH1D*)decay_time_squared_distr_pos_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_pos_bin3");
+  decay_time_squared_distr_pos_bin4 = (TH1D*)decay_time_squared_distr_pos_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_pos_bin4");
+  decay_time_squared_distr_pos_bin5 = (TH1D*)decay_time_squared_distr_pos_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_pos_bin5");
+  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin1);
+  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin2);
+  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin3);
+  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin4);
+  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin5);
+
+  
+  decay_time_squared_distr_neg_bin1 = new TH1D(name+"_dt_d0_decay_time_squared_distr_neg_bin1","",4000,0,400);
+  decay_time_squared_distr_neg_bin1->SetTitle(Form("; D^{0} (t/#tau)^{2}; Entries / %.2f",decay_time_squared_distr_neg_bin1->GetBinWidth(1)));
+  decay_time_squared_distr_neg_bin2 = (TH1D*)decay_time_squared_distr_neg_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_neg_bin2");
+  decay_time_squared_distr_neg_bin3 = (TH1D*)decay_time_squared_distr_neg_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_neg_bin3");
+  decay_time_squared_distr_neg_bin4 = (TH1D*)decay_time_squared_distr_neg_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_neg_bin4");
+  decay_time_squared_distr_neg_bin5 = (TH1D*)decay_time_squared_distr_neg_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_neg_bin5");
+  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin1);
+  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin2);
+  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin3);
+  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin4);
+  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin5);
+
+  //end sq time
   mu_pt = new TH1D(name+"_mu_pt","",1000,0,20000);
   mu_pt->SetTitle(Form("p_{T}(#mu);p_{T}(#mu)[MeV];Entries / %.2f MeV",mu_pt->GetBinWidth(1)));
   mu_p = new TH1D(name+"_mu_p","",1000,0,200000);
