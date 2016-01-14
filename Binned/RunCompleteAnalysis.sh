@@ -22,7 +22,7 @@ echo $CURRDIR
 #-1. Make sure that directories for betastar exist
 if [ ! -d "$CURRDIR/SavedFits/betastar" ]; then
     echo 'making betastar directory';
-    #mkdir $CURRDIR/SavedFits/betastar
+    mkdir $CURRDIR/SavedFits/betastar
 fi
 
 if [ "$FITEXISTS" -ne "1" ]; then
