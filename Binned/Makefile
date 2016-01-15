@@ -13,6 +13,7 @@ NGLIBS         = $(ROOTGLIBS)
 NGLIBS        += -lMinuit
 NGLIBS        += -lRooFit
 NGLIBS        += -lRooFitCore
+NGLIBS        += -lTreePlayer
 NGLIBS        += -L$(MYPLOTTOOLS) -lPlottingTools
 NGLIBS        += -L$(MYROOFITMODELS) -lRooJohnson -L$(MYROOFITMODELS) -lRooJohnsonSU -L$(MYROOFITMODELS) -lRooRBW
 NGLIBS        += -L$(MYROOFITMODELS) -lRooCarolP3

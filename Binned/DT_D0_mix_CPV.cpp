@@ -11,7 +11,7 @@
 #include <fstream>
 #include <TLeaf.h>
 #include <algorithm>
-
+#include <TTreeFormula.h>
 using namespace std;
 bool DT_D0_mix_CPV::matchElement (matchelement_t i, matchelement_t j) {
   double tol =0.1;
@@ -103,6 +103,7 @@ void DT_D0_mix_CPV::setRejectionFile(TString path_to_file){
 
 void DT_D0_mix_CPV::Loop()
 {
+  cout<<"using extra cut "<<ExtraCut<<endl;
   //   In a ROOT session, you can do:
   //      Root > .L DT_D0_mix_CPV.C
   //      Root > DT_D0_mix_CPV t
@@ -128,6 +129,12 @@ void DT_D0_mix_CPV::Loop()
   //by  b_branchname->GetEntry(ientry); //read only this branch
   if (fChain == 0) return;
 
+  
+  
+  TTreeFormula extraCutFormula("extra_cut",ExtraCut.Data(),fChain);
+  extraCutFormula.GetNdata();
+  fChain->SetNotify(&extraCutFormula);//let the chain know about the formula.
+
   Long64_t nentries = fChain->GetEntriesFast();
   matchelement_t currElem;
   Long64_t nbytes = 0, nb = 0;
@@ -136,7 +143,7 @@ void DT_D0_mix_CPV::Loop()
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     if(jentry%100000==0)std::cout<<"processed "<<jentry<<" events"<<std::endl;
-    
+
     //make the match for prompt sample
     currElem.eventNumber = eventNumber;
     currElem.runNumber = runNumber;
@@ -197,6 +204,9 @@ void DT_D0_mix_CPV::Loop()
          //&&Mu_MC12TuneV3_ProbNNmu > mu_probnnmu_cut
          
          )) continue;
+    if(!extraCutFormula.EvalInstance()){//add extra cut from command line
+      continue;
+    }
     //decay time cut
     if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<d0_td0_bin_boundary1 )continue;
     //now do a truthmatching

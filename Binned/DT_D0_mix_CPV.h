@@ -53,7 +53,9 @@ class DT_D0_mix_CPV {
 public :
   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
   Int_t           fCurrent; //!current Tree number in a TChain
-
+  //Extra cut for systematic purposes
+  TString         ExtraCut;
+  TTreeFormula*   extraCutFormula;
   // Declaration of leaf types
   Double_t        B_ENDVERTEX_X;
   Double_t        B_ENDVERTEX_Y;
@@ -1812,6 +1814,7 @@ public :
   virtual void     Show(Long64_t entry = -1);
   void setRejectionFile(TString path_to_file);
   bool foundMatch(matchelement_t el);
+  
 private:
   TLorentzVector k_daughter;
   TLorentzVector pi_daughter;
@@ -1959,6 +1962,8 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
     dir->GetObject("DecayTree",tree);
     
   }
+  ExtraCut="1";
+  
   Init(tree);
   TString name = tree->GetName();
   name.ReplaceAll("/DecayTree","");
@@ -3465,5 +3470,6 @@ Int_t DT_D0_mix_CPV::passCuts(){
      TMath::Abs((k_aspi+pi_aspi).M()*1e3-pdg_d0_m)>40)theval = 1;
   return theval;
 }
+
 
 #endif // #ifdef DT_D0_mix_CPV_cxx

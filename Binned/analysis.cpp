@@ -87,17 +87,50 @@ int main(int argc, char* const argv[]){
     cout<<"*************************************"<<endl;
     cout<<"Expecting a file or files to process"<<endl;
     cout<<"*************************************"<<endl;
+    cout<<"Note, you can now add extra cuts by using"<<endl;
+    cout<<"  the construction"<<endl;
+    cout<<"--extraCuts=cuts"<<endl;
     return 0;
   }
   cout<<"Starting analysis for file "<<argv[1]<<endl;
+  //parse some options for systematic studies.
+  string searcher="--extraCuts=";
+  std::vector<string> mycuts;
+  std::vector<char*> rootfiles;
+  for(int i=1; i<argc;++i){//skip the first one
+    rootfiles.push_back(argv[i]);
+    string arg(argv[i]);
+    //cout<<"argv["<<i<<"] = "<<arg<<endl;
+    if(arg.find(searcher)!=std::string::npos){
+      //cout<<"now parsing extra options "<<arg<<" and removing from list"<<endl;
+      string::size_type sz = arg.find(searcher);
+      arg.erase(sz,searcher.size());
+      mycuts.push_back(arg);
+      rootfiles.pop_back();
+    }
+  }
+  cout<<"now processing rootfiles"<<endl;
+  for(auto rf: rootfiles){cout<<rf<<endl;}
+  cout<<"and cuts"<<endl;
+  TString theExtraCut ="";
+  for(auto cut: mycuts){
+    //bug only one cut at a time.
+    theExtraCut+=cut;
+    cout<<cut<<endl;
+  }
+  
+  cout<<"theExtraCut = "<<theExtraCut<<endl;
+  //return 0;
+  //end parsing
   TChain* rs_tree = new TChain("RS/DecayTree");
   TChain* rs_ss_tree = new TChain("RS_ss/DecayTree");
   TChain* ws_tree = new TChain("WS/DecayTree");
   TChain* ws_ss_tree = new TChain("WS_ss/DecayTree");
   TChain* lumi_tree = new TChain("GetIntegratedLuminosity/LumiTuple");
   TString  rootfname[argc];
-  for(int i=0; i< argc-1; ++i){
-    rootfname[i]=argv[i+1];
+  //for(int i=0; i< argc-1; ++i){
+  for(unsigned int i=0; i<rootfiles.size();++i){
+    rootfname[i]=rootfiles[i];//argv[i+1];
     rs_tree->Add(rootfname[i]);
     rs_ss_tree->Add(rootfname[i]);
     ws_tree->Add(rootfname[i]);
@@ -130,6 +163,7 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV rs_looper(rs_tree);
   rs_looper.isMC = usingMC;
   rs_looper.isPromptMC = usingPromptMC;
+  rs_looper.ExtraCut = theExtraCut;
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2012.txt");
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2012.txt");
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2011.txt");
@@ -143,6 +177,7 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV rs_ss_looper(rs_ss_tree);
   rs_ss_looper.isMC = usingMC;
   rs_ss_looper.isPromptMC = usingPromptMC;
+  rs_ss_looper.ExtraCut = theExtraCut;
   rs_ss_looper.Loop();
   rs_ss_looper.bs_plot->SavePlots();
 
@@ -150,6 +185,7 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV ws_looper(ws_tree);
   ws_looper.isMC = usingMC;
   ws_looper.isPromptMC = usingPromptMC;
+  ws_looper.ExtraCut = theExtraCut;
   ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2012WS.txt");
   ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2012WS.txt");
   ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2011WS.txt");
@@ -162,6 +198,7 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV ws_ss_looper(ws_ss_tree);
   ws_ss_looper.isMC = usingMC;
   ws_ss_looper.isPromptMC = usingPromptMC;
+  ws_ss_looper.ExtraCut = theExtraCut;
   ws_ss_looper.Loop();
   ws_ss_looper.bs_plot->SavePlots();
 
