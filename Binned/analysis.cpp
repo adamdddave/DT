@@ -113,13 +113,13 @@ int main(int argc, char* const argv[]){
   for(auto rf: rootfiles){cout<<rf<<endl;}
   cout<<"and cuts"<<endl;
   TString theExtraCut ="";
+  cout<<"mycuts.size() = "<<mycuts.size()<<endl;
   for(auto cut: mycuts){
     //bug only one cut at a time.
     theExtraCut+=cut;
     cout<<cut<<endl;
   }
-  
-  cout<<"theExtraCut = "<<theExtraCut<<endl;
+
   //return 0;
   //end parsing
   TChain* rs_tree = new TChain("RS/DecayTree");
@@ -163,7 +163,7 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV rs_looper(rs_tree);
   rs_looper.isMC = usingMC;
   rs_looper.isPromptMC = usingPromptMC;
-  rs_looper.ExtraCut = theExtraCut;
+  if(mycuts.size()!=0)rs_looper.ExtraCut = theExtraCut;
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2012.txt");
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2012.txt");
   rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2011.txt");
@@ -177,7 +177,7 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV rs_ss_looper(rs_ss_tree);
   rs_ss_looper.isMC = usingMC;
   rs_ss_looper.isPromptMC = usingPromptMC;
-  rs_ss_looper.ExtraCut = theExtraCut;
+  if(mycuts.size()!=0)rs_ss_looper.ExtraCut = theExtraCut;
   rs_ss_looper.Loop();
   rs_ss_looper.bs_plot->SavePlots();
 
@@ -185,7 +185,7 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV ws_looper(ws_tree);
   ws_looper.isMC = usingMC;
   ws_looper.isPromptMC = usingPromptMC;
-  ws_looper.ExtraCut = theExtraCut;
+  if(mycuts.size()!=0)ws_looper.ExtraCut = theExtraCut;
   ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2012WS.txt");
   ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2012WS.txt");
   ws_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2011WS.txt");
@@ -198,7 +198,7 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV ws_ss_looper(ws_ss_tree);
   ws_ss_looper.isMC = usingMC;
   ws_ss_looper.isPromptMC = usingPromptMC;
-  ws_ss_looper.ExtraCut = theExtraCut;
+  if(mycuts.size()!=0)ws_ss_looper.ExtraCut = theExtraCut;
   ws_ss_looper.Loop();
   ws_ss_looper.bs_plot->SavePlots();
 

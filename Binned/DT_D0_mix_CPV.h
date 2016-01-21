@@ -1963,6 +1963,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
     
   }
   ExtraCut="1";
+  std::cout<<"ExtraCut initialized to "<<ExtraCut<<std::endl;
   
   Init(tree);
   TString name = tree->GetName();

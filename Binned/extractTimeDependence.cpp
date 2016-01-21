@@ -242,8 +242,8 @@ int main(int argc, char* const argv[]){
     //theFitsposWS->FloatMeanWidth();
     theFitsposWS->fit();
     theFitsposWS->savePlots(true,Form("WS_dst_mass_pos_bin%d",i+1));
-    the_sig_posWS[i]=theFitsposWS->getNsig()*2;//prescale
-    the_sig_posWS_err[i]=theFitsposWS->getNsigErr()*2;//prescale
+    the_sig_posWS[i]=theFitsposWS->getNsig();
+    the_sig_posWS_err[i]=theFitsposWS->getNsigErr();
     theFitsposWS->Reset();
   }
 
@@ -259,8 +259,8 @@ int main(int argc, char* const argv[]){
     //    theFitsnegWS->FloatMeanWidth();
     theFitsnegWS->fit();
     theFitsnegWS->savePlots(true,Form("WS_dst_mass_neg_bin%d",i+1));
-    the_sig_negWS[i]=theFitsnegWS->getNsig()*2;//prescale
-    the_sig_negWS_err[i]=theFitsnegWS->getNsigErr()*2;//prescale
+    the_sig_negWS[i]=theFitsnegWS->getNsig();
+    the_sig_negWS_err[i]=theFitsnegWS->getNsigErr();
 
     theFitsnegWS->Reset();
   }
@@ -277,27 +277,36 @@ int main(int argc, char* const argv[]){
   std::ofstream outfile;
   std::cout<<"writing the files"<<endl;
   outfile.open("./SavedFits/final_yields_in_bins_pos.txt");
-  outfile<<"Bin"<<std::setw(15)<<" <t>"<<std::setw(15)<<"<t^2>"<<std::setw(15)<<"N_RS"<<std::setw(15)<<"error_N_RS"<<"\n";
+  outfile<<"Bin"<<std::setw(15)<<" <t>"<<std::setw(15)<<"<t^2>"<<std::setw(15)<<"N_RS"<<std::setw(15)<<"error_N_RS"<<std::setw(15)<<"N_WS"<<std::setw(15)<<"error_N_WS\n";
   for(int i=0; i<nbins;++i){
-    outfile<<i+1<<std::setw(15)<<mean_t_pos[i]<<std::setw(15)<<mean_t2_pos[i]<<std::setw(15)
-	   <<the_sig_pos[i]<<std::setw(15)<<the_sig_pos_err[i]
-	   <<the_sig_posWS[i]<<std::setw(15)<<the_sig_posWS_err[i]
+    outfile<<i+1<<std::setw(15)
+	   <<mean_t_pos[i]<<std::setw(15)
+	   <<mean_t2_pos[i]<<std::setw(15)
+	   <<the_sig_pos[i]<<std::setw(15)
+	   <<the_sig_pos_err[i]<<std::setw(15)
+	   <<the_sig_posWS[i]<<std::setw(15)
+	   <<the_sig_posWS_err[i]
 	   <<"\n";
   }
   outfile.close();
   outfile.open("./SavedFits/final_yields_in_bins_neg.txt");
   //outfile<<"\n\n";
-  outfile<<"Bin \t <t> \t <t^2>\t N_RS \t error_N_RS \n";
+  outfile<<"Bin"<<std::setw(15)<<" <t>"<<std::setw(15)<<"<t^2>"<<std::setw(15)<<"N_RS"<<std::setw(15)<<"error_N_RS"<<std::setw(15)<<"N_WS"<<std::setw(15)<<"error_N_WS\n";
 
   for(int i=0; i<nbins;++i){
-    outfile<<i+1<<std::setw(15)<<mean_t_neg[i]<<std::setw(15)<<mean_t2_neg[i]<<std::setw(15)
-	   <<the_sig_neg[i]<<std::setw(15)<<the_sig_neg_err[i]
-	   <<the_sig_negWS[i]<<std::setw(15)<<the_sig_negWS_err[i]
+    outfile<<i+1<<std::setw(15)
+	   <<mean_t_neg[i]<<std::setw(15)
+	   <<mean_t2_neg[i]<<std::setw(15)
+	   <<the_sig_neg[i]<<std::setw(15)
+	   <<the_sig_neg_err[i]<<std::setw(15)
+	   <<the_sig_negWS[i]<<std::setw(15)
+	   <<the_sig_negWS_err[i]
 	   <<"\n";
   }
   outfile.close();
   //  //change the permissions to do all the shiz
-  //  system("chmod u=rw ./SavedFits/final_yields_in_bins_pos.txt");  
+  //system("chmod u=rw ./SavedFits/final_yields_in_bins_pos.txt");
+  
 
   delete theFitspos;
   delete theFitsneg;

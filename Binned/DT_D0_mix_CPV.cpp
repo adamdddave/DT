@@ -129,9 +129,7 @@ void DT_D0_mix_CPV::Loop()
   //by  b_branchname->GetEntry(ientry); //read only this branch
   if (fChain == 0) return;
 
-  
-  
-  TTreeFormula extraCutFormula("extra_cut",ExtraCut.Data(),fChain);
+  TTreeFormula extraCutFormula(Form("%s_extra_cut",fChain->GetName()),ExtraCut,fChain);
   extraCutFormula.GetNdata();
   fChain->SetNotify(&extraCutFormula);//let the chain know about the formula.
 
