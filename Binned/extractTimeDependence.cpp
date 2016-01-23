@@ -30,6 +30,7 @@
 #include <TVector3.h>
 #include <TText.h>
 #include <TLine.h>
+#include <TRandom3.h>
 //roofit
 #ifndef __CINT__
 #include "RooGlobalFunc.h"
@@ -57,11 +58,73 @@
 #include "TimeDependent2D.h"
 using namespace std;
 using namespace PlottingTools;
+//some supporting shiz from toy mc
+double theBlindingFunctionPos(double tval, double tsqval, double nRS,
+			      double yPrimePlus,double xPrimePlus,double r_sub_d,
+			      double rdblind, double yprimePblind,double xp2Pblind){
+  //this is the code which returns the value to be added to the WS + yields
+  //you pass the blinded values.
+  //also pass the generated values to ease coverage tests
+  double r_sub_d_prime = r_sub_d+rdblind;
+  double yPrimePlus_prime = yPrimePlus+yprimePblind;
+  double xPrime2_prime= pow(xPrimePlus,2)+xp2Pblind;
+  
+  //generate the value
+  double Rblind = r_sub_d_prime
+    + sqrt(r_sub_d_prime)*tval*yPrimePlus_prime
+    + 0.25*(xPrime2_prime+pow(yPrimePlus_prime,2))*tsqval;
+  double Rreg = r_sub_d
+    + sqrt(r_sub_d)*tval*yPrimePlus
+    + 0.25*(pow(xPrimePlus,2)+pow(yPrimePlus,2))*tsqval;
+  double diff = nRS*(Rblind-Rreg);
+  return diff;
+}
+double theBlindingFunctionNeg(double tval, double tsqval, double nRS,
+			      double yPrimeMins,double xPrimeMins,double r_d_bar,
+			      double rdbarblind, double yprimeMblind,double xp2Mblind){
+  //this is the code which returns the value to be added to the WS + yields
+  //you pass the blinded values.
+  //copied from above
+  //end copying
+  double r_d_bar_prime = r_d_bar+rdbarblind;
+  double yPrimeMins_prime = yPrimeMins+yprimeMblind;
+  double xPrime2_prime= pow(xPrimeMins,2)+xp2Mblind;
+  
+  //generate the value
+  double Rblind = r_d_bar_prime
+    + sqrt(r_d_bar_prime)*tval*yPrimeMins_prime
+    + 0.25*(xPrime2_prime+pow(yPrimeMins_prime,2))*tsqval;
+  double Rreg = r_d_bar
+    + sqrt(r_d_bar)*tval*yPrimeMins
+    + 0.25*(pow(xPrimeMins,2)+pow(yPrimeMins,2))*tsqval;
+  double diff = nRS*(Rblind-Rreg);
+  return diff;
+}
 
+//and the main
 
 int main(int argc, char* const argv[]){
   setLHCbcanvas();
   bool blind=true;
+  // New 1-23-16. Use the blinding on the dataset instead of the fitter. Read Augusto's seed here.
+  int _BlindingSeed;
+  system("chmod u+r /path_to/WSFitter-1.2/augusto_seed.txt");
+  std::ifstream file("/path_to/WSFitter-1.2/augusto_seed.txt");
+  while ( file>>_BlindingSeed ){std::cout<<"reading augusto's seed"<<std::endl;}
+  system("chmod u-r /path_to/WSFitter-1.2/augusto_seed.txt");
+  TRandom3 donram(_BlindingSeed);
+  double xp2_plus_blind = donram.Gaus(0.,0.00038);
+  double xp2_mins_blind = donram.Gaus(0.,0.00038);
+  double yp_plus_blind = donram.Gaus(0.,0.0015);
+  double yp_mins_blind = donram.Gaus(0.,0.0015);
+  double rd_plus_blind = donram.Gaus(0.,0.0005);
+  double rd_mins_blind = donram.Gaus(0.,0.0005);
+  double yPrimePlus = 0.00478;
+  double yPrimeMins = 0.00483;
+  double xPrimePlus = 0.007;
+  double xPrimeMins = 0.00774;
+  double r_sub_d = 3.545e-03;
+  double r_d_bar = 3.591e-03;
   cout<<"Extracting RS and WS time dependece and writing to file"<<endl;
   if(argc<4){
     cout<<"********************************************"<<endl;
@@ -191,6 +254,9 @@ int main(int argc, char* const argv[]){
   double the_sig_posWS[nbins],the_sig_posWS_err[nbins];
   double the_sig_negWS[nbins],the_sig_negWS_err[nbins];
 
+  double the_sig_posWSBlind[nbins],the_sig_posWSBlind_err[nbins];
+  double the_sig_negWSBlind[nbins],the_sig_negWSBlind_err[nbins];
+
   for(int i=0;i<nbins;++i){
     theFitspos = new massFit(Form("RS_dst_mass_pos_bin%d",i+1),"j3g",w,"FinalExtraction");
     theFitspos->setData(pos_bins[i]);
@@ -264,6 +330,20 @@ int main(int argc, char* const argv[]){
 
     theFitsnegWS->Reset();
   }
+
+  //now blind the shiz
+  for(int i=0; i<nbins;++i){
+    the_sig_posWSBlind[i] = the_sig_posWS[i]+theBlindingFunctionPos(mean_t_pos[i],mean_t2_pos[i],
+								    the_sig_pos[i],
+								    yPrimePlus,xPrimePlus,r_sub_d,
+								    rd_plus_blind,yp_plus_blind,xp2_plus_blind);
+    the_sig_negWSBlind[i] = the_sig_negWS[i]+theBlindingFunctionNeg(mean_t_neg[i],mean_t2_neg[i],
+								    the_sig_neg[i],
+								    yPrimeMins,xPrimeMins,r_d_bar,
+								    rd_mins_blind,yp_mins_blind,xp2_mins_blind);
+    the_sig_posWSBlind_err[i] = the_sig_posWS_err[i];
+    the_sig_negWSBlind_err[i] = the_sig_negWS_err[i];
+  }
   
   if(blind){//end blinding
     fclose(stdout);
@@ -304,6 +384,40 @@ int main(int argc, char* const argv[]){
 	   <<"\n";
   }
   outfile.close();
+  //now do the same with the blinded file
+  
+  //print the file.
+  
+  std::cout<<"writing the files"<<endl;
+  outfile.open("./SavedFits/final_blinded_yields_in_bins_pos.txt");
+  outfile<<"Bin"<<std::setw(15)<<" <t>"<<std::setw(15)<<"<t^2>"<<std::setw(15)<<"N_RS"<<std::setw(15)<<"error_N_RS"<<std::setw(15)<<"N_WS"<<std::setw(15)<<"error_N_WS\n";
+  for(int i=0; i<nbins;++i){
+    outfile<<i+1<<std::setw(15)
+	   <<mean_t_pos[i]<<std::setw(15)
+	   <<mean_t2_pos[i]<<std::setw(15)
+	   <<the_sig_pos[i]<<std::setw(15)
+	   <<the_sig_pos_err[i]<<std::setw(15)
+	   <<the_sig_posWSBlind[i]<<std::setw(15)
+	   <<the_sig_posWSBlind_err[i]
+	   <<"\n";
+  }
+  outfile.close();
+  outfile.open("./SavedFits/final_blinded_yields_in_bins_neg.txt");
+  //outfile<<"\n\n";
+  outfile<<"Bin"<<std::setw(15)<<" <t>"<<std::setw(15)<<"<t^2>"<<std::setw(15)<<"N_RS"<<std::setw(15)<<"error_N_RS"<<std::setw(15)<<"N_WS"<<std::setw(15)<<"error_N_WS\n";
+
+  for(int i=0; i<nbins;++i){
+    outfile<<i+1<<std::setw(15)
+	   <<mean_t_neg[i]<<std::setw(15)
+	   <<mean_t2_neg[i]<<std::setw(15)
+	   <<the_sig_neg[i]<<std::setw(15)
+	   <<the_sig_neg_err[i]<<std::setw(15)
+	   <<the_sig_negWSBlind[i]<<std::setw(15)
+	   <<the_sig_negWSBlind_err[i]
+	   <<"\n";
+  }
+  outfile.close();
+
   //  //change the permissions to do all the shiz
   //system("chmod u=rw ./SavedFits/final_yields_in_bins_pos.txt");
   
