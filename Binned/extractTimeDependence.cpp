@@ -58,7 +58,19 @@
 #include "TimeDependent2D.h"
 using namespace std;
 using namespace PlottingTools;
+
+//get the second moment of the binned time histogram
+double secondMoment(TH1* hist, int lowBin, int highBin){
+  double ret = 0;
+  for(int i=lowBin; i<=highBin;++i){
+    ret+= hist->GetBinContent(i)*hist->GetBinCenter(i)*hist->GetBinCenter(i);
+  }
+  ret/=hist->Integral(lowBin,highBin);
+  return ret;
+}
+
 //some supporting shiz from toy mc
+
 double theBlindingFunctionPos(double tval, double tsqval, double nRS,
 			      double yPrimePlus,double xPrimePlus,double r_sub_d,
 			      double rdblind, double yprimePblind,double xp2Pblind){
@@ -108,10 +120,10 @@ int main(int argc, char* const argv[]){
   bool blind=true;
   // New 1-23-16. Use the blinding on the dataset instead of the fitter. Read Augusto's seed here.
   int _BlindingSeed;
-  system("chmod u+r /path_to/WSFitter-1.2/augusto_seed.txt");
-  std::ifstream file("/path_to/WSFitter-1.2/augusto_seed.txt");
+  system("chmod u+r /home/davis3a4/private/analysis/WSFitter-1.2/augusto_seed.txt");
+  std::ifstream file("/home/davis3a4/private/analysis/WSFitter-1.2/augusto_seed.txt");
   while ( file>>_BlindingSeed ){std::cout<<"reading augusto's seed"<<std::endl;}
-  system("chmod u-r /path_to/WSFitter-1.2/augusto_seed.txt");
+  system("chmod u-r /home/davis3a4/private/analysis/WSFitter-1.2/augusto_seed.txt");
   TRandom3 donram(_BlindingSeed);
   double xp2_plus_blind = donram.Gaus(0.,0.00038);
   double xp2_mins_blind = donram.Gaus(0.,0.00038);
@@ -167,50 +179,23 @@ int main(int argc, char* const argv[]){
   rs_time_histo_neg->Sumw2();
   rs_ss_time_histo_neg->Sumw2();
   rs_time_histo_neg->Add(rs_ss_time_histo_neg,-1);
-
-  std::vector<TH1D*> rs_timesq_histo_pos;
-  rs_timesq_histo_pos.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_pos_bin1"));
-  rs_timesq_histo_pos.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_pos_bin2"));
-  rs_timesq_histo_pos.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_pos_bin3"));
-  rs_timesq_histo_pos.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_pos_bin4"));
-  rs_timesq_histo_pos.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_pos_bin5"));
-  for(auto hist: rs_timesq_histo_pos){
-    hist->Sumw2();
-  }
-  rs_timesq_histo_pos[0]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_pos_bin1"),-1);
-  rs_timesq_histo_pos[1]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_pos_bin2"),-1);
-  rs_timesq_histo_pos[2]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_pos_bin3"),-1);
-  rs_timesq_histo_pos[3]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_pos_bin4"),-1);
-  rs_timesq_histo_pos[4]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_pos_bin5"),-1);
-  std::vector<TH1D*> rs_timesq_histo_neg;
-  rs_timesq_histo_neg.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_neg_bin1"));
-  rs_timesq_histo_neg.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_neg_bin2"));
-  rs_timesq_histo_neg.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_neg_bin3"));
-  rs_timesq_histo_neg.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_neg_bin4"));
-  rs_timesq_histo_neg.push_back((TH1D*)f1->Get("RS_dt_d0_decay_time_squared_distr_neg_bin5"));
-  for(auto hist: rs_timesq_histo_neg){
-    hist->Sumw2();
-  }
-  rs_timesq_histo_neg[0]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_neg_bin1"),-1);
-  rs_timesq_histo_neg[1]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_neg_bin2"),-1);
-  rs_timesq_histo_neg[2]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_neg_bin3"),-1);
-  rs_timesq_histo_neg[3]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_neg_bin4"),-1);
-  rs_timesq_histo_neg[4]->Add((TH1D*)f1->Get("RS_ss_dt_d0_decay_time_squared_distr_neg_bin5"),-1);
   std::vector<double> mean_t_pos, mean_t2_pos, mean_t_neg,mean_t2_neg;
-  int bins_td []= {46,53,56,60,66,rs_time_histo_pos->GetNbinsX()};//bin boundaries
+  //the time squared calculation is not what we want. We want the second moment of t.
+  int bins_td []= {460,530,560,600,660,rs_time_histo_pos->GetNbinsX()};//bin boundaries
   for(int i=0;i<5;++i){
-    rs_time_histo_pos->GetXaxis()->SetRange(bins_td[i],bins_td[i+1]);
+    rs_time_histo_pos->GetXaxis()->SetRange(bins_td[i],bins_td[i+1]-1);//no overlap!!
     mean_t_pos.push_back( rs_time_histo_pos->GetMean());
+    mean_t2_pos.push_back(secondMoment(rs_time_histo_pos,bins_td[i],bins_td[i+1]-1));
     rs_time_histo_pos->GetXaxis()->SetRange();
 
-    rs_time_histo_neg->GetXaxis()->SetRange(bins_td[i],bins_td[i+1]);
+			 
+    rs_time_histo_neg->GetXaxis()->SetRange(bins_td[i],bins_td[i+1]-1);//no overlap!!
     mean_t_neg.push_back( rs_time_histo_neg->GetMean());
+    mean_t2_neg.push_back(secondMoment(rs_time_histo_neg,bins_td[i],bins_td[i+1]-1));
     rs_time_histo_neg->GetXaxis()->SetRange();
+
   }  
-  for(int i=0; i<5;++i){
-    mean_t2_pos.push_back(rs_timesq_histo_pos[i]->GetMean());
-    mean_t2_neg.push_back(rs_timesq_histo_neg[i]->GetMean());
-  }
+
   std::vector<TH1D*>pos_bins,neg_bins;
   std::vector<TH1D*>pos_binsWS,neg_binsWS;
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
@@ -419,7 +404,7 @@ int main(int argc, char* const argv[]){
   outfile.close();
 
   //  //change the permissions to do all the shiz
-  //system("chmod u=rw ./SavedFits/final_yields_in_bins_pos.txt");
+  system("chmod -rx ./SavedFits/final_yields_in_bins_*.txt");
   
 
   delete theFitspos;

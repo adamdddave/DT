@@ -228,6 +228,7 @@ int main(int argc, char* const argv[]){
   rs_looper.pis_match_chi2_neg->Write();
   rs_looper.pis_match_chi2_vs_dstm->Write();
   rs_looper.pis_match_chi2_vs_td0->Write();
+  //  rs_looper.deltaBmass->Write();
   rs_looper.dst_mass_vs_kpidk->Write();
   rs_looper.dst_mass_vs_pipidk->Write();
   rs_looper.dstar_mass_plot_pos->Write();
@@ -294,15 +295,7 @@ int main(int argc, char* const argv[]){
   rs_looper.decay_time_distr->Write();
   rs_looper.decay_time_distr_pos->Write();
   rs_looper.decay_time_distr_neg->Write();
-  for(auto hist: rs_looper.timesquared_histos){
-    hist->Write();
-  }
-  for(auto hist: rs_looper.timesquared_histos_pos){
-    hist->Write();
-  }
-  for(auto hist: rs_looper.timesquared_histos_neg){
-    hist->Write();
-  }
+
   //switch to a loop on bins.
   for(auto hist: rs_looper.dstar_pt_bins){
     hist->Write();
@@ -384,15 +377,6 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.decay_time_distr->Write();
   rs_ss_looper.decay_time_distr_pos->Write();
   rs_ss_looper.decay_time_distr_neg->Write();
-  for(auto hist: rs_ss_looper.timesquared_histos){
-    hist->Write();
-  }
-  for(auto hist: rs_ss_looper.timesquared_histos_pos){
-    hist->Write();
-  }
-  for(auto hist: rs_ss_looper.timesquared_histos_neg){
-    hist->Write();
-  }
 
   rs_looper.dstar_mass_vs_muIPchi2->Write();
   rs_ss_looper.dstar_mass_vs_muIPchi2->Write();
@@ -409,6 +393,7 @@ int main(int argc, char* const argv[]){
   rs_ss_looper.pis_match_chi2_neg->Write();
   rs_ss_looper.pis_match_chi2_vs_dstm->Write();
   rs_ss_looper.pis_match_chi2_vs_td0->Write();
+  //  rs_ss_looper.deltaBmass->Write();
   rs_ss_looper.dst_mass_vs_kpidk->Write();
   rs_ss_looper.dst_mass_vs_pipidk->Write();
   rs_ss_looper.dstar_mass_plot_pos->Write();
@@ -555,6 +540,7 @@ int main(int argc, char* const argv[]){
   ws_looper.pis_match_chi2_neg->Write();
   ws_looper.pis_match_chi2_vs_dstm->Write();
   ws_looper.pis_match_chi2_vs_td0->Write();
+  //  ws_looper.deltaBmass->Write();
   ws_looper.dstar_mass_plot_pos->Write();
   ws_looper.dstar_mass_plot_neg->Write();
   ws_looper.b_flight_dist->Write();
@@ -701,6 +687,7 @@ int main(int argc, char* const argv[]){
   ws_ss_looper.pis_match_chi2_neg->Write();
   ws_ss_looper.pis_match_chi2_vs_dstm->Write();
   ws_ss_looper.pis_match_chi2_vs_td0->Write();
+  //  ws_ss_looper.deltaBmass->Write();
   ws_ss_looper.dst_mass_vs_kpidk->Write();
   ws_ss_looper.dst_mass_vs_pipidk->Write();
   ws_ss_looper.dstar_mass_plot_pos->Write();

@@ -1510,6 +1510,8 @@ public :
   TH1D* pis_match_chi2_pos;
   TH1D* pis_match_chi2_neg;
 
+
+  //TH1D* deltaBmass;
   //for time integrated systematic studies.
   //there are so many binned things, make a vector out of them instead. makes it easier in analysis.cpp to write things
   TH1D* dstar_mass_pt_bin1;
@@ -1764,27 +1766,7 @@ public :
   TH1D* b_fd;
   TH1D* d0_log_ip_chi2;
   
-  //histogram to get <t^2> from
-  std::vector<TH1D*> timesquared_histos;
-  std::vector<TH1D*> timesquared_histos_pos;
-  std::vector<TH1D*> timesquared_histos_neg;
-  TH1D* decay_time_squared_distr_bin1;
-  TH1D* decay_time_squared_distr_bin2;
-  TH1D* decay_time_squared_distr_bin3;
-  TH1D* decay_time_squared_distr_bin4;
-  TH1D* decay_time_squared_distr_bin5;
 
-  TH1D* decay_time_squared_distr_pos_bin1;
-  TH1D* decay_time_squared_distr_pos_bin2;
-  TH1D* decay_time_squared_distr_pos_bin3;
-  TH1D* decay_time_squared_distr_pos_bin4;
-  TH1D* decay_time_squared_distr_pos_bin5;
-
-  TH1D* decay_time_squared_distr_neg_bin1;
-  TH1D* decay_time_squared_distr_neg_bin2;
-  TH1D* decay_time_squared_distr_neg_bin3;
-  TH1D* decay_time_squared_distr_neg_bin4;
-  TH1D* decay_time_squared_distr_neg_bin5;
   //TH1D* kaon_pidk_plot;
   //TH1D* daughter_pi_pid_k_plot;
   //no need for these two, as we only want the ranges of PID from the original cpv analysis and the new.
@@ -1898,14 +1880,14 @@ private:
   //change if we want more bins
   const double d0_td0_bin_boundary1 = -0.5;
   const double d0_td0_bin_boundary1a = 0.10;
-  const double d0_td0_bin_boundary2 = 0.25;
+  const double d0_td0_bin_boundary2 = 0.2;
   const double d0_td0_bin_boundary2a = 0.40;
-  const double d0_td0_bin_boundary3 = 0.55;
+  const double d0_td0_bin_boundary3 = 0.5;
   const double d0_td0_bin_boundary3a = 0.70;
-  const double d0_td0_bin_boundary4 = 0.95;
-  const double d0_td0_bin_boundary4a = 1.25;
-  const double d0_td0_bin_boundary5 = 1.55;//all for t/tau.
-  const double d0_td0_bin_boundary5a = 5.75;
+  const double d0_td0_bin_boundary4 = 0.9;
+  const double d0_td0_bin_boundary4a = 1.2;
+  const double d0_td0_bin_boundary5 = 1.5;//all for t/tau.
+  const double d0_td0_bin_boundary5a = 5.7;
   //just split all these in half, not necessarily the best way to do it, but whatever
   //did this so that the first bin in still encompassing some positive decay time.
   
@@ -1994,6 +1976,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   pis_match_chi2_pos= new TH1D(name+"_slow_pion_match_chi2_pos","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
   pis_match_chi2_neg= new TH1D(name+"_slow_pion_match_chi2_neg","#;chi^{2}_\text{Match}(#pi_{S}); Entries /0.1",1000,0,100);
 
+  //deltaBmass = new TH1D(name+"deltaBmass",";m(#mu D*)-m( D*)[GeV]",1000,0,5);
   //dstar p and pt bins
   dstar_mass_pt_bin1 = new TH1D(name+"_dt_hist_dstar_m_pt_bin1","", 500, 2000,2025);
   dstar_mass_pt_bin1->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_pt_bin1->GetBinWidth(1)));
@@ -2262,56 +2245,17 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   dstar_p = new TH1D(name+"_dstar_p","",1000,0., 200000);
   dstar_p->SetTitle(Form("p(D*);p(D*)[MeV];Entries / %.2f MeV",dstar_p->GetBinWidth(1)));
 
-  decay_time_distr = new TH1D(name+"_dt_d0_decay_time_distr","",150,-5.,10.);
+  decay_time_distr = new TH1D(name+"_dt_d0_decay_time_distr","",1500,-5.,10.);
   decay_time_distr->SetTitle(Form("; D^{0} t/#tau; Entries / %.2f",decay_time_distr->GetBinWidth(1)));
 
 
-  decay_time_distr_pos = new TH1D(name+"_dt_d0_decay_time_distr_pos","",150,-5.,10.);
+  decay_time_distr_pos = new TH1D(name+"_dt_d0_decay_time_distr_pos","",1500,-5.,10.);
   decay_time_distr_pos->SetTitle(Form("; D^{0} t/#tau; Entries / %.2f",decay_time_distr_pos->GetBinWidth(1)));
 
-  decay_time_distr_neg = new TH1D(name+"_dt_d0_decay_time_distr_neg","",150,-5.,10.);
+  decay_time_distr_neg = new TH1D(name+"_dt_d0_decay_time_distr_neg","",1500,-5.,10.);
   decay_time_distr_neg->SetTitle(Form("; D^{0} t/#tau; Entries / %.2f",decay_time_distr_neg->GetBinWidth(1)));
 
-//squared decay time distr.
-  decay_time_squared_distr_bin1 = new TH1D(name+"_dt_d0_decay_time_squared_distr_bin1","",4000,0,400);
-  decay_time_squared_distr_bin1->SetTitle(Form("; D^{0} (t/#tau)^{2}; Entries / %.2f",decay_time_squared_distr_bin1->GetBinWidth(1)));
-  decay_time_squared_distr_bin2 = (TH1D*)decay_time_squared_distr_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_bin2");
-  decay_time_squared_distr_bin3 = (TH1D*)decay_time_squared_distr_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_bin3");
-  decay_time_squared_distr_bin4 = (TH1D*)decay_time_squared_distr_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_bin4");
-  decay_time_squared_distr_bin5 = (TH1D*)decay_time_squared_distr_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_bin5");
-  timesquared_histos.push_back(decay_time_squared_distr_bin1);
-  timesquared_histos.push_back(decay_time_squared_distr_bin2);
-  timesquared_histos.push_back(decay_time_squared_distr_bin3);
-  timesquared_histos.push_back(decay_time_squared_distr_bin4);
-  timesquared_histos.push_back(decay_time_squared_distr_bin5);
 
-
-  decay_time_squared_distr_pos_bin1 = new TH1D(name+"_dt_d0_decay_time_squared_distr_pos_bin1","",4000,0,400);
-  decay_time_squared_distr_pos_bin1->SetTitle(Form("; D^{0} (t/#tau)^{2}; Entries / %.2f",decay_time_squared_distr_pos_bin1->GetBinWidth(1)));
-  decay_time_squared_distr_pos_bin2 = (TH1D*)decay_time_squared_distr_pos_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_pos_bin2");
-  decay_time_squared_distr_pos_bin3 = (TH1D*)decay_time_squared_distr_pos_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_pos_bin3");
-  decay_time_squared_distr_pos_bin4 = (TH1D*)decay_time_squared_distr_pos_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_pos_bin4");
-  decay_time_squared_distr_pos_bin5 = (TH1D*)decay_time_squared_distr_pos_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_pos_bin5");
-  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin1);
-  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin2);
-  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin3);
-  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin4);
-  timesquared_histos_pos.push_back(decay_time_squared_distr_pos_bin5);
-
-  
-  decay_time_squared_distr_neg_bin1 = new TH1D(name+"_dt_d0_decay_time_squared_distr_neg_bin1","",4000,0,400);
-  decay_time_squared_distr_neg_bin1->SetTitle(Form("; D^{0} (t/#tau)^{2}; Entries / %.2f",decay_time_squared_distr_neg_bin1->GetBinWidth(1)));
-  decay_time_squared_distr_neg_bin2 = (TH1D*)decay_time_squared_distr_neg_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_neg_bin2");
-  decay_time_squared_distr_neg_bin3 = (TH1D*)decay_time_squared_distr_neg_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_neg_bin3");
-  decay_time_squared_distr_neg_bin4 = (TH1D*)decay_time_squared_distr_neg_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_neg_bin4");
-  decay_time_squared_distr_neg_bin5 = (TH1D*)decay_time_squared_distr_neg_bin1->Clone(name+"_dt_d0_decay_time_squared_distr_neg_bin5");
-  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin1);
-  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin2);
-  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin3);
-  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin4);
-  timesquared_histos_neg.push_back(decay_time_squared_distr_neg_bin5);
-
-  //end sq time
   mu_pt = new TH1D(name+"_mu_pt","",1000,0,20000);
   mu_pt->SetTitle(Form("p_{T}(#mu);p_{T}(#mu)[MeV];Entries / %.2f MeV",mu_pt->GetBinWidth(1)));
   mu_p = new TH1D(name+"_mu_p","",1000,0,200000);
@@ -2548,24 +2492,24 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    b_endvertex_chi2_vs_dstm = new TH2D(name+"_b_endvertex_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];B endvertex #chi_{2}",500,2000,2025,100,0,50);
    b_fd_chi2_vs_dstm = new TH2D(name+"_b_fd_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
 
-   pis_match_chi2_vs_td0 = new TH2D(name+"_pis_match_chi2_vs_td0",";D^{0}t/#tau;#pi_{S} #chi^{2}_{Match}",150,-5,10,1000,0,100);
-   b_flight_dist_vs_td0=new TH2D(name+"_b_flight_distance_vs_td0",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
-   b_corr_mass_vs_td0= new TH2D(name+"_b_corr_mass_vs_td0",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
-   dtf_chi2_vs_td0=new TH2D(name+"_dtf_chi2_vs_td0",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
-   muIPchi2_vs_td0=new TH2D(name+"_mu_ipchi2_vs_td0",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,5000,0,50000);
-   muIPchi2_vs_td0_zoom=new TH2D(name+"_mu_ipchi2_vs_td0_zoom",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,500,0,150);
-   logmuIPchi2_vs_td0=new TH2D(name+"_log_mu_ipchi2_vs_td0",";D^{0}t/#tau;#mu log(IP #chi^{2})",150,-5,10,150,0,15);
-   b_endvertex_chi2_vs_td0=new TH2D(name+"_b_endvertex_chi2_vs_td0",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
-   b_fd_chi2_vs_td0=new TH2D(name+"_b_fd_chi2_vs_td0",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);;
+   pis_match_chi2_vs_td0 = new TH2D(name+"_pis_match_chi2_vs_td0",";D^{0}t/#tau;#pi_{S} #chi^{2}_{Match}",1500,-5,10,1000,0,100);
+   b_flight_dist_vs_td0=new TH2D(name+"_b_flight_distance_vs_td0",";D^{0}t/#tau;B Flight Distance[mm]",1500,-5,10,1000,0,1000);
+   b_corr_mass_vs_td0= new TH2D(name+"_b_corr_mass_vs_td0",";D^{0}t/#tau;B Corrected Mass [MeV]",1500,-5,10,650,2000,8500);
+   dtf_chi2_vs_td0=new TH2D(name+"_dtf_chi2_vs_td0",";D^{0}t/#tau;DTF #chi^{2}",1500,-5,10,50,0,25);;
+   muIPchi2_vs_td0=new TH2D(name+"_mu_ipchi2_vs_td0",";D^{0}t/#tau;#mu IP #chi^{2}",1500,-5,10,5000,0,50000);
+   muIPchi2_vs_td0_zoom=new TH2D(name+"_mu_ipchi2_vs_td0_zoom",";D^{0}t/#tau;#mu IP #chi^{2}",1500,-5,10,500,0,150);
+   logmuIPchi2_vs_td0=new TH2D(name+"_log_mu_ipchi2_vs_td0",";D^{0}t/#tau;#mu log(IP #chi^{2})",1500,-5,10,150,0,15);
+   b_endvertex_chi2_vs_td0=new TH2D(name+"_b_endvertex_chi2_vs_td0",";D^{0}t/#tau;B endvertex #chi_{2}",1500,-5,10,100,0,50);
+   b_fd_chi2_vs_td0=new TH2D(name+"_b_fd_chi2_vs_td0",";D^{0}t/#tau;B FlightDistance #chi^{2}",1500,-5,10,1000,0,100);;
 
 
    d_logIPchi2_vs_dstm = new TH2D(name+"_d_log_ip_chi2_vs_dstm",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",500,2000,2025,400,-20,20);
    d_logIPchi2_vs_dstm_pos = new TH2D(name+"_d_log_ip_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",500,2000,2025,400,-20,20);
    d_logIPchi2_vs_dstm_neg = new TH2D(name+"_d_log_ip_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",500,2000,2025,400,-20,20);
 
-   d_logIPchi2_vs_td0 = new TH2D(name+"_d_log_ip_chi2_vs_td0",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",150,-5,10,400,-20,20);
-   d_logIPchi2_vs_td0_pos = new TH2D(name+"_d_log_ip_chi2_vs_td0_pos",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",150,-5,10,400,-20,20);
-   d_logIPchi2_vs_td0_neg = new TH2D(name+"_d_log_ip_chi2_vs_td0_neg",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",150,-5,10,400,-20,20);
+   d_logIPchi2_vs_td0 = new TH2D(name+"_d_log_ip_chi2_vs_td0",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",1500,-5,10,400,-20,20);
+   d_logIPchi2_vs_td0_pos = new TH2D(name+"_d_log_ip_chi2_vs_td0_pos",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",1500,-5,10,400,-20,20);
+   d_logIPchi2_vs_td0_neg = new TH2D(name+"_d_log_ip_chi2_vs_td0_neg",";m(D^{0}#pi_{S})[MeV];log(#chi^{2}_\text{IP}(D^{0})",1500,-5,10,400,-20,20);
 
    //pos
    //b_flight_dist_pos= new TH1D(name+"_b_flight_distance_pos",";B Flight Distance [mm]",1000,0,1000);
@@ -2579,14 +2523,14 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    b_fd_chi2_vs_dstm_pos= new TH2D(name+"_b_fd_chi2_vs_dstm_pos",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
 
 
-   b_flight_dist_vs_td0_pos=new TH2D(name+"_b_flight_distance_vs_td0_pos",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
-   b_corr_mass_vs_td0_pos= new TH2D(name+"_b_corr_mass_vs_td0_pos",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
-   dtf_chi2_vs_td0_pos=new TH2D(name+"_dtf_chi2_vs_td0_pos",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
-   muIPchi2_vs_td0_pos=new TH2D(name+"_mu_ipchi2_vs_td0_pos",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,5000,0,50000);
-   muIPchi2_vs_td0_zoom_pos=new TH2D(name+"_mu_ipchi2_vs_td0_zoom_pos",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,500,0,150);
-   logmuIPchi2_vs_td0_pos=new TH2D(name+"_log_mu_ipchi2_vs_td0_pos",";D^{0}t/#tau;#mu log(IP #chi^{2})",150,-5,10,150,0,15);
-   b_endvertex_chi2_vs_td0_pos=new TH2D(name+"_b_endvertex_chi2_vs_td0_pos",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
-   b_fd_chi2_vs_td0_pos=new TH2D(name+"_b_fd_chi2_vs_td0_pos",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);
+   b_flight_dist_vs_td0_pos=new TH2D(name+"_b_flight_distance_vs_td0_pos",";D^{0}t/#tau;B Flight Distance[mm]",1500,-5,10,1000,0,1000);
+   b_corr_mass_vs_td0_pos= new TH2D(name+"_b_corr_mass_vs_td0_pos",";D^{0}t/#tau;B Corrected Mass [MeV]",1500,-5,10,650,2000,8500);
+   dtf_chi2_vs_td0_pos=new TH2D(name+"_dtf_chi2_vs_td0_pos",";D^{0}t/#tau;DTF #chi^{2}",1500,-5,10,50,0,25);;
+   muIPchi2_vs_td0_pos=new TH2D(name+"_mu_ipchi2_vs_td0_pos",";D^{0}t/#tau;#mu IP #chi^{2}",1500,-5,10,5000,0,50000);
+   muIPchi2_vs_td0_zoom_pos=new TH2D(name+"_mu_ipchi2_vs_td0_zoom_pos",";D^{0}t/#tau;#mu IP #chi^{2}",1500,-5,10,500,0,150);
+   logmuIPchi2_vs_td0_pos=new TH2D(name+"_log_mu_ipchi2_vs_td0_pos",";D^{0}t/#tau;#mu log(IP #chi^{2})",1500,-5,10,150,0,15);
+   b_endvertex_chi2_vs_td0_pos=new TH2D(name+"_b_endvertex_chi2_vs_td0_pos",";D^{0}t/#tau;B endvertex #chi_{2}",1500,-5,10,100,0,50);
+   b_fd_chi2_vs_td0_pos=new TH2D(name+"_b_fd_chi2_vs_td0_pos",";D^{0}t/#tau;B FlightDistance #chi^{2}",1500,-5,10,1000,0,100);
 
    //neg
    //b_flight_dist_neg= new TH1D(name+"_b_flight_distance_neg",";B Flight Distance [mm]",1000,0,1000);
@@ -2601,14 +2545,14 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    b_fd_chi2_vs_dstm_neg= new TH2D(name+"_b_fd_chi2_vs_dstm_neg",";m(D^{0}#pi_{S})[MeV];B FlightDistance #chi^{2}",500,2000,2025,1000,0,100);
 
 
-   b_flight_dist_vs_td0_neg=new TH2D(name+"_b_flight_distance_vs_td0_neg",";D^{0}t/#tau;B Flight Distance[mm]",150,-5,10,1000,0,1000);
-   b_corr_mass_vs_td0_neg= new TH2D(name+"_b_corr_mass_vs_td0_neg",";D^{0}t/#tau;B Corrected Mass [MeV]",150,-5,10,650,2000,8500);
-   dtf_chi2_vs_td0_neg=new TH2D(name+"_dtf_chi2_vs_td0_neg",";D^{0}t/#tau;DTF #chi^{2}",150,-5,10,50,0,25);;
-   muIPchi2_vs_td0_neg=new TH2D(name+"_mu_ipchi2_vs_td0_neg",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,5000,0,50000);
-   muIPchi2_vs_td0_zoom_neg=new TH2D(name+"_mu_ipchi2_vs_td0_zoom_neg",";D^{0}t/#tau;#mu IP #chi^{2}",150,-5,10,500,0,150);
-   logmuIPchi2_vs_td0_neg=new TH2D(name+"_log_mu_ipchi2_vs_td0_neg",";D^{0}t/#tau;#mu log(IP #chi^{2})",150,-5,10,150,0,15);
-   b_endvertex_chi2_vs_td0_neg=new TH2D(name+"_b_endvertex_chi2_vs_td0_neg",";D^{0}t/#tau;B endvertex #chi_{2}",150,-5,10,100,0,50);
-   b_fd_chi2_vs_td0_neg=new TH2D(name+"_b_fd_chi2_vs_td0_neg",";D^{0}t/#tau;B FlightDistance #chi^{2}",150,-5,10,1000,0,100);
+   b_flight_dist_vs_td0_neg=new TH2D(name+"_b_flight_distance_vs_td0_neg",";D^{0}t/#tau;B Flight Distance[mm]",1500,-5,10,1000,0,1000);
+   b_corr_mass_vs_td0_neg= new TH2D(name+"_b_corr_mass_vs_td0_neg",";D^{0}t/#tau;B Corrected Mass [MeV]",1500,-5,10,650,2000,8500);
+   dtf_chi2_vs_td0_neg=new TH2D(name+"_dtf_chi2_vs_td0_neg",";D^{0}t/#tau;DTF #chi^{2}",1500,-5,10,50,0,25);;
+   muIPchi2_vs_td0_neg=new TH2D(name+"_mu_ipchi2_vs_td0_neg",";D^{0}t/#tau;#mu IP #chi^{2}",1500,-5,10,5000,0,50000);
+   muIPchi2_vs_td0_zoom_neg=new TH2D(name+"_mu_ipchi2_vs_td0_zoom_neg",";D^{0}t/#tau;#mu IP #chi^{2}",1500,-5,10,500,0,150);
+   logmuIPchi2_vs_td0_neg=new TH2D(name+"_log_mu_ipchi2_vs_td0_neg",";D^{0}t/#tau;#mu log(IP #chi^{2})",1500,-5,10,150,0,15);
+   b_endvertex_chi2_vs_td0_neg=new TH2D(name+"_b_endvertex_chi2_vs_td0_neg",";D^{0}t/#tau;B endvertex #chi_{2}",1500,-5,10,100,0,50);
+   b_fd_chi2_vs_td0_neg=new TH2D(name+"_b_fd_chi2_vs_td0_neg",";D^{0}t/#tau;B FlightDistance #chi^{2}",1500,-5,10,1000,0,100);
 
 
    //finally, the pv positions of the pi_S and the mu

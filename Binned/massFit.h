@@ -78,6 +78,7 @@ public:
   void saveUpdatedFinalFit();
   TString getFitModel(){return modelName;}
   void savePlots(bool doPullPlots = false,TString extraName = "");
+  //void saveNormalizedPlots(bool doPullPlots = false,TString extraName = "");
   void saveSignalRegionZoom();
   void initValsByHand(array<double,4> thepars);
   inline void printModelParams(){model->getParameters(*mass)->Print("s") ;}

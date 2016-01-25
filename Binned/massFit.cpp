@@ -628,7 +628,17 @@ void massFit::fit(){
   
   RooFitResult* res = model->fitTo(*data,Save(),Minos(1),Extended(1),NumCPU(20));
   res->Print("v");
-  
+  /*
+  cout<<"res->covQual() = "<<res->covQual()<<endl;
+  cout<<"res->status() = "<<res->status()<<endl;
+  cout<<"number of statuses to check = "<<res->numStatusHistory()<<endl;
+  for(int i=0; i<res->numStatusHistory();++i){
+    cout<<"for step "<<i<<", "<<res->statusLabelHistory(i)<<" returns "<<res->statusCodeHistory(i)<<endl;
+    if(!res->statusCodeHistory(i)==0){
+      //assert(0);
+    };//make sure things have returned normally
+  }
+  */
   
   //ensure convergence and good covariance matrix.
   
@@ -788,3 +798,6 @@ NO.   NAME      VALUE            ERROR       STEP SIZE       VALUE
   rsigma->setVal(0.);
 
 }
+
+
+

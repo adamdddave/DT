@@ -176,8 +176,8 @@ void DT_D0_mix_CPV::Loop()
 	 //  )&&
 	 K_PIDK>kpidk_cut&&//tight K
 	 //K_PIDK>5.&&K_PIDK<=8.&&//loose K, changed from 2
-	 Pd_PIDK<pi_dau_pidk_cut &&//tight pi
-	 //Pd_PIDK<-2 && Pd_PIDK>=-5 &&//loose pi//changed from +2
+	 //Pd_PIDK<pi_dau_pidk_cut &&//tight pi
+	 Pd_PIDK<-2 && Pd_PIDK>=-5 &&//loose pi//changed from +2
 	 
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
@@ -320,6 +320,7 @@ void DT_D0_mix_CPV::Loop()
     {
       
       b_mass_plot->Fill(B_VFit_M[0]);
+      //deltaBmass->Fill((mu_from_b+slow_pion_vec+d0_vector).M()-(slow_pion_vec+d0_vector).M());
       //decay times.
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){b_mass_plot_time_bin1->Fill(B_VFit_M[0]);}
       else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){b_mass_plot_time_bin2->Fill(B_VFit_M[0]);}
@@ -656,34 +657,16 @@ void DT_D0_mix_CPV::Loop()
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
       td0_bin1->Fill(dstm);
-      decay_time_squared_distr_bin1->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));
-      if(Pis_CHARGE>0){decay_time_squared_distr_pos_bin1->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
-      else{decay_time_squared_distr_neg_bin1->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
     }
-    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){
-      td0_bin2->Fill(dstm);
-      decay_time_squared_distr_bin2->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));
-      if(Pis_CHARGE>0){decay_time_squared_distr_pos_bin2->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
-      else{decay_time_squared_distr_neg_bin2->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_bin2->Fill(dstm);
     }
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
       td0_bin3->Fill(dstm);
-      decay_time_squared_distr_bin3->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));
-      if(Pis_CHARGE>0){decay_time_squared_distr_pos_bin3->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
-      else{decay_time_squared_distr_neg_bin3->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
     }
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
       td0_bin4->Fill(dstm);
-      decay_time_squared_distr_bin4->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));
-      if(Pis_CHARGE>0){decay_time_squared_distr_pos_bin4->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
-      else{decay_time_squared_distr_neg_bin4->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
     }
-    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){
-      td0_bin5->Fill(dstm);
-      decay_time_squared_distr_bin5->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));
-      if(Pis_CHARGE>0){decay_time_squared_distr_pos_bin5->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
-      else{decay_time_squared_distr_neg_bin5->Fill(TMath::Power((B_VFit_D0_ctau[0]/ d0_pdg_ct),2));}
-    }
+    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_bin5->Fill(dstm);}
     //check with more bins
     /*if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.75){ td0_bin_neg10_to_neg075->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
