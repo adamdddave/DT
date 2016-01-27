@@ -9,7 +9,7 @@
 
 class WSFitter {
 public:
-	WSFitter(int n_time=13);
+  WSFitter(int n_time=13, int cpvType=2);
 	~WSFitter();
 
 	TFitter      *Fitter() const;
@@ -33,29 +33,29 @@ public:
 	void          SetDetectorAsymmetries(double a, double a_err, bool tos);
 	void          SetSecondaryFractions(double *fb, double *fb_err, bool tos);
 	void          SetPeakingFractions(double *fp, double *fp_err, bool tos);
+	
+
+	//AD
+	void          UseDTData(bool use){_useDT = use;}
+	void          UsePromptData(bool use){_usePrompt=use;}
+	
+	void          Set_DT_DetectorAsymmetries(double a, double a_err);
+	void          Set_DT_PromptFractions(double *fb, double *fb_err);
+	void          Set_DT_PeakingFractions(double fp, double fp_err );
+	bool          Read_DT_Data(const char *filename, int charge, bool verbose=false);
+	
+	//end AD
 
 	std::ostream &Print(std::ostream &out=std::cout, bool verbose=false);
 	std::ostream &PrintResults(std::ostream &out=std::cout, bool verbose=false);
 	void          WriteResults(const char *filename, bool verbose=true);
 
 	TGraph       *Contour  (int par1, int par2, double cl=0.6827, int npoints=50);
-	//AD Added
-	void          SetBlinding(bool blind);
-	bool          ReadDTData(const char *filename, int charge, bool verbose=false);//AD
-	void          ClearDTData(){ _points_pos_tt_DT.clear(); _points_neg_tt_DT.clear();}//AD
-	void          SetDTDetectorAsymmetries(double a, double a_err);//AD
-	void          SetDTPromptFractions(double *fb, double *fb_err);//AD
-	void          SetDTPeakingFractions(double fp, double fp_err);//AD
-	void          UsePromptData(bool use){_usePromptData=use;}
-	void          UseDTData(bool use){_useDTData=use;}
-	//Add methods to set the fit type
-	void          SetCPVFitType(int fitType);
-	int           GetCPVFitType(){return _fitType;}
-	//end AD
+	
 	// This global function needs access to private members
 	friend void   FitFCN(int& , double* , double& , double* , int );
-	friend void   FitMixFCN(int& , double* , double& , double* , int );
-	friend void   FitNDCPVFCN(int& , double* , double& , double* , int );
+	friend void   FitFCN_noDCPV(int& , double* , double& , double* , int );
+	friend void   FitFCN_mixing(int& , double* , double& , double* , int );
 
 private:
 	void          ComputeChi2(int& , double* , double& , double* , int );
@@ -76,25 +76,15 @@ protected:
 	int          _ndf;
 	int          _printlevel;
 	//AD
-	bool         _isBlind;
-	int          _BlindingSeed;
-	unsigned int _n_time_binsDT;
-	double       _Aeps_tt_DT, _Aeps_err_tt_DT;//Detector Asymmetry
-	double       _Fp_tt_DT, _Fp_err_tt_DT;//Fraction of peaking background events from beta*
-	TArrayD      _Fb_tt_DT, _Fb_err_tt_DT;//prompt background
-	DataPoints   _points_pos_tt_DT, _points_neg_tt_DT;
-	bool         _usePromptData;
-	bool         _useDTData;
-	//blinding
-	double       xp2_plus_blind;
-	double       xp2_mins_blind;
-	double       yp_plus_blind;
-	double       yp_mins_blind;
-	double       rd_plus_blind;
-	double       rd_mins_blind;
-	//fit type
-	int          _fitType;
-	//end AD
+	DataPoints   _points_pos_DT, _points_neg_DT;
+	unsigned int _n_time_bins_DT;
+	double       _Aeps_DT, _Aeps_err_DT;
+	TArrayD      _Fb_DT, _Fb_err_DT;//fraction of feedthrough from propmt
+	double       _Fp_DT, _Fp_err_DT;//fraction of peaking background, only one number from DT
+
+	int          _CPVtype;
+	bool         _usePrompt;
+	bool         _useDT;
 };
 
 class ThisFitter {
@@ -111,7 +101,7 @@ protected:
 	TFitter       *_fitter;
 };
 
-void FitFCN(int& , double* , double& , double* , int );
-void FitMixFCN(int& , double* , double& , double* , int );
-void FitNDCPVFCN(int& , double* , double& , double* , int );
+void        FitFCN(int& , double* , double& , double* , int );
+void FitFCN_noDCPV(int& , double* , double& , double* , int );
+void FitFCN_mixing(int& , double* , double& , double* , int );
 #endif

@@ -5,12 +5,6 @@
 #include "WSFitter.h"
 #include "TMarker.h"
 
-//AD for blinding
-#include <unistd.h>
-#include <stdarg.h>
-#include <fcntl.h>
-//end AD
-
 const int nbins(13);
 
 //*** tos nuisance pars
@@ -28,33 +22,26 @@ double Fp_ntos[] = {1.50816e-05, 8.9216e-06, 1.38685e-05, 1.20544e-05, 1.2649e-0
 double Fp_err_ntos[] = {1.4416e-05, 6.79537e-06, 6.67624e-06, 7.52942e-06, 7.82098e-06, 6.12179e-06, 7.52621e-06, 8.04489e-06, 8.20814e-06, 8.08355e-06, 7.4548e-06, 1.12302e-05, 1.42233e-05};
 //double Aeps_ntos(1.13e-2), Aeps_err_ntos(0.16e-2);
 double Aeps_ntos(0.83e-2), Aeps_err_ntos(0.22e-2);
-//DT nuisance parameters
-double Fp_DT_tt(3.611e-5);
-double Fp_err_DT_tt(2.260e-5);
-double Fb_DT_tt[]={0.,0.,0.,0.,0.};
-double Fb_err_DT_tt[]={1.,1.,1.,1.,1.};
-double Aeps_tt(0.96e-2),Aeps_err_tt(0.11e-2);
-void mixing_fit_data(int cpvType=2,bool plot=false, bool minos=false, /*AD*/ bool blind = false,
-		     TString saveName="nominalAllCPVfitoutput.txt",
-		     TString dtPath ="./dtfitdata/",TString promptPath ="./fitdata/")
+
+void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt",int cpvType=2)
 {
-  std::cout<<"using dt path"<<dtPath<<endl;
 	// init fitter
-	WSFitter *fitter = new WSFitter(nbins);
-	fitter->SetPrintLevel(-1);//AD
-	fitter->UseDTData(true);
-	fitter->UsePromptData(false);
-	fitter->SetCPVFitType(cpvType);
+  WSFitter *fitter = new WSFitter(nbins,cpvType);
+
 	// read tos data
-	if (!fitter->ReadData((promptPath+"yield_vs_time_pos_2011_tos.txt").Data(),+1,true)) return;
-	if (!fitter->ReadData((promptPath+"/yield_vs_time_neg_2011_tos.txt").Data(),-1,true)) return;
-	if (!fitter->ReadData((promptPath+"/yield_vs_time_pos_2012_tos.txt").Data(),+1,true)) return;
-	if (!fitter->ReadData((promptPath+"/yield_vs_time_neg_2012_tos.txt").Data(),-1,true)) return;
+	if (!fitter->ReadData("./fitdata/yield_vs_time_pos_2011_tos.txt",+1,true)) return;
+	if (!fitter->ReadData("./fitdata/yield_vs_time_neg_2011_tos.txt",-1,true)) return;
+	if (!fitter->ReadData("./fitdata/yield_vs_time_pos_2012_tos.txt",+1,true)) return;
+	if (!fitter->ReadData("./fitdata/yield_vs_time_neg_2012_tos.txt",-1,true)) return;
 	// read !tos data
-	if (!fitter->ReadData((promptPath+"/yield_vs_time_pos_2011_ntos.txt").Data(),+1,false)) return;
-	if (!fitter->ReadData((promptPath+"/yield_vs_time_neg_2011_ntos.txt").Data(),-1,false)) return;
-	if (!fitter->ReadData((promptPath+"/yield_vs_time_pos_2012_ntos.txt").Data(),+1,false)) return;
-	if (!fitter->ReadData((promptPath+"/yield_vs_time_neg_2012_ntos.txt").Data(),-1,false)) return;
+	if (!fitter->ReadData("./fitdata/yield_vs_time_pos_2011_ntos.txt",+1,false)) return;
+	if (!fitter->ReadData("./fitdata/yield_vs_time_neg_2011_ntos.txt",-1,false)) return;
+	if (!fitter->ReadData("./fitdata/yield_vs_time_pos_2012_ntos.txt",+1,false)) return;
+	if (!fitter->ReadData("./fitdata/yield_vs_time_neg_2012_ntos.txt",-1,false)) return;
+
+	// read DT data
+	if (!fitter->Read_DT_Data("./dtfitdata/DT_unblinded_data_for_testing_pos.txt",+1)) return;
+	if (!fitter->Read_DT_Data("./dtfitdata/DT_unblinded_data_for_testing_neg.txt",-1)) return;
 
 	fitter->SetDetectorAsymmetries(Aeps_tos,Aeps_err_tos,true);
 	fitter->SetDetectorAsymmetries(Aeps_ntos,Aeps_err_ntos,false);
@@ -64,75 +51,19 @@ void mixing_fit_data(int cpvType=2,bool plot=false, bool minos=false, /*AD*/ boo
 
 	fitter->SetPeakingFractions(Fp_tos,Fp_err_tos,true);
 	fitter->SetPeakingFractions(Fp_ntos,Fp_err_ntos,false);
-
-	//DT data addition
-	//TString fpos="./dtfitdata/DT_data_for_testing_pos.txt";
-	//TString fneg="./dtfitdata/DT_data_for_testing_neg.txt";
-	system(("chmod u+r "+dtPath+"final_yields_in_bins_pos.txt").Data());
-	system(("chmod u+r "+dtPath+"final_yields_in_bins_neg.txt").Data());
-	TString fpos=dtPath+"final_yields_in_bins_pos.txt";
-	TString fneg=dtPath+"final_yields_in_bins_neg.txt";
-	std::cout<<"Using "<<fpos<<" & "<<fneg<<" as input DT files"<<endl;
-	if (!fitter->ReadDTData(fpos,+1,false)) return;
-	if (!fitter->ReadDTData(fneg,-1,false)) return;
 	
-	system(("chmod u-r "+dtPath+"final_yields_in_bins_pos.txt").Data());
-	system(("chmod u-r "+dtPath+"final_yields_in_bins_neg.txt").Data());
+	//DT
+	fitter->Set_DT_DetectorAsymmetries(0.96e-2,0.11e-2);
+	fitter->Set_DT_PeakingFractions(3.611e-5,2.260e-5);
 	
-	fitter->SetDTDetectorAsymmetries(Aeps_tt,Aeps_err_tt);
-	fitter->SetDTPromptFractions(Fb_DT_tt,Fb_err_DT_tt);
-	fitter->SetDTPeakingFractions(Fp_DT_tt,Fp_err_DT_tt);
-	if(blind){fitter->SetBlinding(1);}	
-	//for(int i=60;i<67;++i){fitter->FixParameter(i,fitter->Parameter(i));}//fix DT sample
-	for(int i=6;i<60;++i){fitter->FixParameter(i,fitter->Parameter(i));}//fix prompt sample
-	
+	fitter->UsePromptData(true);
+	fitter->UseDTData(false);
 	// fitting
-	//AD. Redirect output
-	int fd1,fd2;
-	if(blind){
-	  //freopen("stuff.out", "w", stdout);//mac
-	  //linux
-	  fflush(stdout);
-	  fd1 = open("stuff.out", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	  if (fd1 < 0)
-	    return;
-	    //return err_report("Failed to open %s for writing\n", file);
-	  fd2 = dup(STDOUT_FILENO);
-	  if (fd2 < 0)
-	    return;
-	    //return err_report("Failed to duplicate standard output\n");
-	  if (dup2(fd1, STDOUT_FILENO) < 0)
-	    return;// err_report("Failed to duplicate %s to standard output\n", file);
-	  close(fd1);
-	  
-	}
-	
 	fitter->Reset();
-	if(cpvType==0){//mixing
-	  fitter->FixParameter(3,0.);
-	  fitter->FixParameter(4,0.);
-	  fitter->FixParameter(5,0.);
-	}
-	else if(cpvType==1){
-	   fitter->FixParameter(3,0.);
-	}
 	fitter->Print();
-	if (fitter->Fit(minos) !=0){
-	  std::cout<<"Problem with minos fit!"<<std::endl;
-	  exit(0);
-	  std::remove("stuff.out");
-	}
-	if(blind){
-	  fflush(stdout);
-	  if (dup2(fd2, STDOUT_FILENO) < 0)
-	    return;	  
-	  close(fd2);
-	  std::remove("stuff.out");
-	}
-
-	fitter->PrintResults();
-	fitter->WriteResults(saveName.Data(),false);
-	cout<<"Done!"<<endl;
+	
+	if (fitter->Fit(minos) !=0) return;
+	fitter->WriteResults(name.Data());
 //	// plotting
 //	if (!plot) return;
 //
@@ -150,5 +81,4 @@ void mixing_fit_data(int cpvType=2,bool plot=false, bool minos=false, /*AD*/ boo
 //
 //	p->PlotCPVContours();
 //	m->Draw("same");
-
 }
