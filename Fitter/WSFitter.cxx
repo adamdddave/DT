@@ -533,105 +533,59 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	}//usePrompt
 	if(_useDT){
 	  // constraint on detector asymmetries
-	  _chi2 += (p[6]-_Aeps_tos)*(p[6]-_Aeps_tos)/(_Aeps_err_tos*_Aeps_err_tos);
-	  _ndf++;
-	  _chi2 += (p[7]-_Aeps_ntos)*(p[7]-_Aeps_ntos)/(_Aeps_err_ntos*_Aeps_err_ntos);
+	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
 	  
-	  for (int i=0; i<_n_time_bins; ++i) {
+	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
-	    
-	    // constraint on secondary fraction
-	    res = (_Fb_tos[i]-p[8+i])/_Fb_err_tos[i];
+	    // constraint on prompt fraction
+	    res = (_Fb_DT[i]-p[61+i])/_Fb_err_DT[i];
 	    _chi2 += res*res;
-	    res = (_Fb_ntos[i]-p[8+_n_time_bins+i])/_Fb_err_ntos[i];
-	    _chi2 += res*res;
-	    
-	    // constraint on peaking fraction
-	    res = (_Fp_tos[i]-p[8+2*_n_time_bins+i])/_Fp_err_tos[i];
-	    _chi2 += res*res;
-	    res = (_Fp_ntos[i]-p[8+3*_n_time_bins+i])/_Fp_err_ntos[i];
-	    _chi2 += res*res;
+	    _ndf++;
+	    	    
 	  }
-	  _ndf+=4*_n_time_bins;
+
+	  // constraint on peaking fraction
+	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
+	  _ndf++;
 	  
-	  // compute chi2 on tos data
-	  double eps_tos = (1.+p[6])/(1.-p[6]);
-	  for (DataPoints::iterator it = _points_pos_tos.begin(); it!=_points_pos_tos.end(); ++it)
+	  // compute chi2 on positive DT data
+	  double eps_DT = (1.+p[60])/(1.-p[60]);
+	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[8+i];
-	      double fp    = p[8+2*_n_time_bins+i];
-	      error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+
 	      if (error!=0) {
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_tos*R*(1.-deltaB)+fp;
+		double func   = eps_DT*R*(1.-deltaB)+fp;
 		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	  for (DataPoints::iterator it = _points_neg_tos.begin(); it!=_points_neg_tos.end(); ++it)
+	  //chi2 on negative DT data
+	  for (DataPoints::iterator it = _points_neg_DT.begin(); it!=_points_neg_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[8+i];
-	      double fp    = p[8+2*_n_time_bins+i];
-	      error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
 	      if (error!=0) {
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_tos+fp;
-		
-		double res = (ratio-func)/error;
-		_chi2 += res*res;
-		_ndf++;
-	      }
-	    }
-	  
-	  // compute chi2 on ntos data
-	  double eps_ntos = (1.+p[7])/(1.-p[7]);
-	  for (DataPoints::iterator it = _points_pos_ntos.begin(); it!=_points_pos_ntos.end(); ++it)
-	    {
-	      int    i     = (*it).i;
-	      double t     = (*it).t;
-	      double t2    = (*it).t2;
-	      double ratio = (*it).r();
-	      double error = (*it).sr();
-	      double fb    = p[8+_n_time_bins+i];
-	      double fp    = p[8+3*_n_time_bins+i];
-	      if (error!=0) {
-		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
-		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_ntos*R*(1.-deltaB)+fp;
-		
-		double res = (ratio-func)/error;
-		_chi2 += res*res;
-		_ndf++;
-	      }
-	    }
-	  for (DataPoints::iterator it = _points_neg_ntos.begin(); it!=_points_neg_ntos.end(); ++it)
-	    {
-	      int    i     = (*it).i;
-	      double t     = (*it).t;
-	      double t2    = (*it).t2;
-	      double ratio = (*it).r();
-	      double error = (*it).sr();
-	      double fb    = p[8+_n_time_bins+i];
-	      double fp    = p[8+3*_n_time_bins+i];
-	      if (error!=0) {
-		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
-		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_ntos+fp;
+		double func   = R*(1.-deltaB)/eps_DT+fp;
 		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
@@ -799,106 +753,59 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 	    }
 	}//use Prompt
 	if(_useDT){
-	  // constraint on detector asymmetries
-	  _chi2 += (p[6]-_Aeps_tos)*(p[6]-_Aeps_tos)/(_Aeps_err_tos*_Aeps_err_tos);
-	  _ndf++;
-	  _chi2 += (p[7]-_Aeps_ntos)*(p[7]-_Aeps_ntos)/(_Aeps_err_ntos*_Aeps_err_ntos);
+	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
 	  
-	  for (int i=0; i<_n_time_bins; ++i) {
+	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
-	    
-	    // constraint on secondary fraction
-	    res = (_Fb_tos[i]-p[8+i])/_Fb_err_tos[i];
+	    // constraint on prompt fraction
+	    res = (_Fb_DT[i]-p[61+i])/_Fb_err_DT[i];
 	    _chi2 += res*res;
-	    res = (_Fb_ntos[i]-p[8+_n_time_bins+i])/_Fb_err_ntos[i];
-	    _chi2 += res*res;
-	    
-	    // constraint on peaking fraction
-	    res = (_Fp_tos[i]-p[8+2*_n_time_bins+i])/_Fp_err_tos[i];
-	    _chi2 += res*res;
-	    res = (_Fp_ntos[i]-p[8+3*_n_time_bins+i])/_Fp_err_ntos[i];
-	    _chi2 += res*res;
+	    _ndf++;
+	    	    
 	  }
-	  _ndf+=4*_n_time_bins;
+
+	  // constraint on peaking fraction
+	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
+	  _ndf++;
 	  
-	  // compute chi2 on tos data
-	  double eps_tos = (1.+p[6])/(1.-p[6]);
-	  for (DataPoints::iterator it = _points_pos_tos.begin(); it!=_points_pos_tos.end(); ++it)
+	  // compute chi2 on positive DT data
+	  double eps_DT = (1.+p[60])/(1.-p[60]);
+	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[8+i];
-	      double fp    = p[8+2*_n_time_bins+i];
-	      error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+
 	      if (error!=0) {
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_tos*R*(1.-deltaB)+fp;
+		double func   = eps_DT*R*(1.-deltaB)+fp;
 		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	  for (DataPoints::iterator it = _points_neg_tos.begin(); it!=_points_neg_tos.end(); ++it)
+	  //chi2 on negative DT data
+	  for (DataPoints::iterator it = _points_neg_DT.begin(); it!=_points_neg_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[8+i];
-	      double fp    = p[8+2*_n_time_bins+i];
-	      error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
 	      if (error!=0) {
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_tos+fp;
-		
-		double res = (ratio-func)/error;
-		_chi2 += res*res;
-		_ndf++;
-	      }
-	    }
-	  
-	  // compute chi2 on ntos data
-	  double eps_ntos = (1.+p[7])/(1.-p[7]);
-	  for (DataPoints::iterator it = _points_pos_ntos.begin(); it!=_points_pos_ntos.end(); ++it)
-	    {
-	      int    i     = (*it).i;
-	      double t     = (*it).t;
-	      double t2    = (*it).t2;
-	      double ratio = (*it).r();
-	      double error = (*it).sr();
-	      double fb    = p[8+_n_time_bins+i];
-	      double fp    = p[8+3*_n_time_bins+i];
-	      if (error!=0) {
-		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
-		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_ntos*R*(1.-deltaB)+fp;
-		
-		double res = (ratio-func)/error;
-		_chi2 += res*res;
-		_ndf++;
-	      }
-	    }
-	  for (DataPoints::iterator it = _points_neg_ntos.begin(); it!=_points_neg_ntos.end(); ++it)
-	    {
-	      int    i     = (*it).i;
-	      double t     = (*it).t;
-	      double t2    = (*it).t2;
-	      double ratio = (*it).r();
-	      double error = (*it).sr();
-	      double fb    = p[8+_n_time_bins+i];
-	      double fp    = p[8+3*_n_time_bins+i];
-	      if (error!=0) {
-		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
-		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_ntos+fp;
+		double func   = R*(1.-deltaB)/eps_DT+fp;
 		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
@@ -1033,106 +940,59 @@ void WSFitter::ComputeNoDCPVChi2(int & /*npars*/, double * /*gin*/, double &resu
 	    }
 	}//usePrompt
 	if(_useDT){
-	  // constraint on detector asymmetries
-	  _chi2 += (p[6]-_Aeps_tos)*(p[6]-_Aeps_tos)/(_Aeps_err_tos*_Aeps_err_tos);
-	  _ndf++;
-	  _chi2 += (p[7]-_Aeps_ntos)*(p[7]-_Aeps_ntos)/(_Aeps_err_ntos*_Aeps_err_ntos);
+_chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
 	  
-	  for (int i=0; i<_n_time_bins; ++i) {
+	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
-	    
-	    // constraint on secondary fraction
-	    res = (_Fb_tos[i]-p[8+i])/_Fb_err_tos[i];
+	    // constraint on prompt fraction
+	    res = (_Fb_DT[i]-p[61+i])/_Fb_err_DT[i];
 	    _chi2 += res*res;
-	    res = (_Fb_ntos[i]-p[8+_n_time_bins+i])/_Fb_err_ntos[i];
-	    _chi2 += res*res;
-	    
-	    // constraint on peaking fraction
-	    res = (_Fp_tos[i]-p[8+2*_n_time_bins+i])/_Fp_err_tos[i];
-	    _chi2 += res*res;
-	    res = (_Fp_ntos[i]-p[8+3*_n_time_bins+i])/_Fp_err_ntos[i];
-	    _chi2 += res*res;
+	    _ndf++;
+	    	    
 	  }
-	  _ndf+=4*_n_time_bins;
+
+	  // constraint on peaking fraction
+	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
+	  _ndf++;
 	  
-	  // compute chi2 on tos data
-	  double eps_tos = (1.+p[6])/(1.-p[6]);
-	  for (DataPoints::iterator it = _points_pos_tos.begin(); it!=_points_pos_tos.end(); ++it)
+	  // compute chi2 on positive DT data
+	  double eps_DT = (1.+p[60])/(1.-p[60]);
+	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[8+i];
-	      double fp    = p[8+2*_n_time_bins+i];
-	      error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+
 	      if (error!=0) {
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_tos*R*(1.-deltaB)+fp;
+		double func   = eps_DT*R*(1.-deltaB)+fp;
 		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	  for (DataPoints::iterator it = _points_neg_tos.begin(); it!=_points_neg_tos.end(); ++it)
+	  //chi2 on negative DT data
+	  for (DataPoints::iterator it = _points_neg_DT.begin(); it!=_points_neg_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[8+i];
-	      double fp    = p[8+2*_n_time_bins+i];
-	      error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
 	      if (error!=0) {
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_tos+fp;
-		
-		double res = (ratio-func)/error;
-		_chi2 += res*res;
-		_ndf++;
-	      }
-	    }
-	  
-	  // compute chi2 on ntos data
-	  double eps_ntos = (1.+p[7])/(1.-p[7]);
-	  for (DataPoints::iterator it = _points_pos_ntos.begin(); it!=_points_pos_ntos.end(); ++it)
-	    {
-	      int    i     = (*it).i;
-	      double t     = (*it).t;
-	      double t2    = (*it).t2;
-	      double ratio = (*it).r();
-	      double error = (*it).sr();
-	      double fb    = p[8+_n_time_bins+i];
-	      double fp    = p[8+3*_n_time_bins+i];
-	      if (error!=0) {
-		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
-		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_ntos*R*(1.-deltaB)+fp;
-		
-		double res = (ratio-func)/error;
-		_chi2 += res*res;
-		_ndf++;
-	      }
-	    }
-	  for (DataPoints::iterator it = _points_neg_ntos.begin(); it!=_points_neg_ntos.end(); ++it)
-	    {
-	      int    i     = (*it).i;
-	      double t     = (*it).t;
-	      double t2    = (*it).t2;
-	      double ratio = (*it).r();
-	      double error = (*it).sr();
-	      double fb    = p[8+_n_time_bins+i];
-	      double fp    = p[8+3*_n_time_bins+i];
-	      if (error!=0) {
-		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
-		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_ntos+fp;
+		double func   = R*(1.-deltaB)/eps_DT+fp;
 		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
