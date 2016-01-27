@@ -189,6 +189,18 @@ void WSFitter::Reset(bool print)
 	    Fitter()->FixParameter(i);
 	  }
 	}
+
+	//unfix parameters which may have been fixed before
+	if(_usePrompt==true){
+	  for(int i=6; i<60;++i){
+	    Fitter()->ReleaseParameter(i);
+	  }
+	}
+	if(_useDT==true){
+	  for(int i=60;i<67;++i){
+	    Fitter()->ReleaseParameter(i);
+	  }
+	}
 	//endAD
 }
 
@@ -201,7 +213,7 @@ int WSFitter::Fit(bool minos)
 		Fitter()->ExecuteCommand("SET PRI",arglist,1);
 	}
 
-	arglist[0] = 5000.;
+	arglist[0] = 500000.;
 	arglist[1] = .0001;
 	int status = _status = Fitter()->ExecuteCommand("MIGRAD",arglist,2);
 	std::cout << "migrad status = " << status << std::endl;
@@ -533,6 +545,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	}//usePrompt
 	if(_useDT){
 	  // constraint on detector asymmetries
+	  /*
 	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
 	  
@@ -550,6 +563,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	  _ndf++;
 	  
 	  // compute chi2 on positive DT data
+	  */
 	  double eps_DT = (1.+p[60])/(1.-p[60]);
 	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)
 	    {
@@ -571,6 +585,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 		_ndf++;
 	      }
 	    }
+	  
 	  //chi2 on negative DT data
 	  for (DataPoints::iterator it = _points_neg_DT.begin(); it!=_points_neg_DT.end(); ++it)
 	    {
@@ -753,6 +768,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 	    }
 	}//use Prompt
 	if(_useDT){
+	  /*
 	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
 	  
@@ -768,7 +784,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 	  // constraint on peaking fraction
 	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
 	  _ndf++;
-	  
+	  */
 	  // compute chi2 on positive DT data
 	  double eps_DT = (1.+p[60])/(1.-p[60]);
 	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)

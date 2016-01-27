@@ -53,15 +53,19 @@ void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt
 	fitter->SetPeakingFractions(Fp_ntos,Fp_err_ntos,false);
 	
 	//DT
-	fitter->Set_DT_DetectorAsymmetries(0.96e-2,0.11e-2);
-	fitter->Set_DT_PeakingFractions(3.611e-5,2.260e-5);
-	
-	fitter->UsePromptData(true);
-	fitter->UseDTData(false);
+	double dtPrFrac[]={0.,0.,0.,0.,0.};
+	double dtPrFracErr[]={1.,1.,1.,1.,1.,};
+	//fitter->Set_DT_DetectorAsymmetries(0.96e-2,0.11e-2);
+	fitter->Set_DT_DetectorAsymmetries(0.,1.);
+	fitter->Set_DT_PromptFractions(dtPrFrac,dtPrFracErr);
+	//fitter->Set_DT_PeakingFractions(3.611e-5,2.260e-5);
+	fitter->Set_DT_PeakingFractions(0.,1.);
+	fitter->UsePromptData(false);
+	fitter->UseDTData(true);
 	// fitting
 	fitter->Reset();
 	fitter->Print();
-	
+		for(int i=60;i<67;++i){fitter->FixParameter(i,0);}
 	if (fitter->Fit(minos) !=0) return;
 	fitter->WriteResults(name.Data());
 //	// plotting
