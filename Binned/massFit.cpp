@@ -663,7 +663,7 @@ void massFit::saveUpdatedFinalFit(){
 }
 
 
-void massFit::savePlots(bool doPullPlots, TString extraName){
+void massFit::savePlots(bool doPullPlots, TString extraName, bool normalized){
   TCanvas *cc = new TCanvas();
   RooPlot* frame = mass->frame();
   mass->setRange("r1",xmin,xmax);
@@ -744,8 +744,8 @@ void massFit::savePlots(bool doPullPlots, TString extraName){
    if(doPullPlots){
      
      TString liang_save_name = "./SavedFits/"+theLocalDir+"/RS_fit_pulls"+extraName+channel;
-     PlottingTools::makeResidualPlotsLiang(frame,*mass,*data, model,liang_save_name.Data(),2000./*pion_mass_pdg+d0_mass_pdg*/,2025
-					   // ,cc->GetWindowWidth(),1.3*cc->GetWindowHeight()
+     PlottingTools::makeResidualPlotsLiang(frame,*mass,*data, model,liang_save_name.Data(),2000./*pion_mass_pdg+d0_mass_pdg*/,2025,normalized
+					   
 					   );
      //TString nameforshow = "./SavedFits/"+theLocalDir+"/"+extraName+channel+modelName+"pulls_other_method";
      //PlottingTools::showPlot(*mass,*data,model,nameforshow.Data(),"m(D^{0}#pi_{S}");

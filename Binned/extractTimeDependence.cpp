@@ -63,12 +63,24 @@ using namespace PlottingTools;
 double secondMoment(TH1* hist, int lowBin, int highBin){
   double ret = 0;
   for(int i=lowBin; i<=highBin;++i){
+    //sum_i PDF_i *t^2_i = sum_i BinContent_i *t^2 / integral(over bins in i)
     ret+= hist->GetBinContent(i)*hist->GetBinCenter(i)*hist->GetBinCenter(i);
   }
   ret/=hist->Integral(lowBin,highBin);
+  cout<<"using second moment "<<ret<<endl;
   return ret;
 }
 
+double mymean(TH1* hist, int lowBin, int highBin){
+  double ret = 0;
+  for(int i=lowBin; i<=highBin;++i){
+    //sum_i PDF_i *t^2_i = sum_i BinContent_i *t^2 / integral(over bins in i)
+    ret+= hist->GetBinContent(i)*hist->GetBinCenter(i);
+  }
+  ret/=hist->Integral(lowBin,highBin);
+  cout<<"using second moment "<<ret<<endl;
+  return ret;
+}
 //some supporting shiz from toy mc
 
 double theBlindingFunctionPos(double tval, double tsqval, double nRS,
@@ -125,12 +137,19 @@ int main(int argc, char* const argv[]){
   while ( file>>_BlindingSeed ){std::cout<<"reading augusto's seed"<<std::endl;}
   system("chmod u-r /home/davis3a4/private/analysis/WSFitter-1.2/augusto_seed.txt");
   TRandom3 donram(_BlindingSeed);
-  double xp2_plus_blind = donram.Gaus(0.,0.00038);
+  /*  double xp2_plus_blind = donram.Gaus(0.,0.00038);
   double xp2_mins_blind = donram.Gaus(0.,0.00038);
   double yp_plus_blind = donram.Gaus(0.,0.0015);
   double yp_mins_blind = donram.Gaus(0.,0.0015);
   double rd_plus_blind = donram.Gaus(0.,0.0005);
-  double rd_mins_blind = donram.Gaus(0.,0.0005);
+  double rd_mins_blind = donram.Gaus(0.,0.0005);*/
+  //blinding went unphysical. Fall back to what we had before.
+  double xp2_plus_blind = donram.Gaus(0.,0.00008);
+  double xp2_mins_blind = donram.Gaus(0.,0.00008);
+  double yp_plus_blind = donram.Gaus(0.,0.00015);
+  double yp_mins_blind = donram.Gaus(0.,0.00015);
+  double rd_plus_blind = donram.Gaus(0.,0.00035);
+  double rd_mins_blind = donram.Gaus(0.,0.00035);
   double yPrimePlus = 0.00478;
   double yPrimeMins = 0.00483;
   double xPrimePlus = 0.007;
@@ -181,16 +200,20 @@ int main(int argc, char* const argv[]){
   rs_time_histo_neg->Add(rs_ss_time_histo_neg,-1);
   std::vector<double> mean_t_pos, mean_t2_pos, mean_t_neg,mean_t2_neg;
   //the time squared calculation is not what we want. We want the second moment of t.
-  int bins_td []= {460,530,560,600,660,rs_time_histo_pos->GetNbinsX()};//bin boundaries
+  int bins_td []= {451,521,551,591,651,rs_time_histo_pos->GetNbinsX()};//bin boundaries
   for(int i=0;i<5;++i){
     rs_time_histo_pos->GetXaxis()->SetRange(bins_td[i],bins_td[i+1]-1);//no overlap!!
     mean_t_pos.push_back( rs_time_histo_pos->GetMean());
+    cout<<"using mean "<<rs_time_histo_pos->GetMean()<<endl;
+    cout<<"checking with my mean "<<mymean(rs_time_histo_pos,bins_td[i],bins_td[i+1]-1)<<endl;
     mean_t2_pos.push_back(secondMoment(rs_time_histo_pos,bins_td[i],bins_td[i+1]-1));
     rs_time_histo_pos->GetXaxis()->SetRange();
 
 			 
     rs_time_histo_neg->GetXaxis()->SetRange(bins_td[i],bins_td[i+1]-1);//no overlap!!
     mean_t_neg.push_back( rs_time_histo_neg->GetMean());
+    cout<<"using mean "<<rs_time_histo_neg->GetMean()<<endl;
+    cout<<"checking with my mean "<<mymean(rs_time_histo_neg,bins_td[i],bins_td[i+1]-1)<<endl;
     mean_t2_neg.push_back(secondMoment(rs_time_histo_neg,bins_td[i],bins_td[i+1]-1));
     rs_time_histo_neg->GetXaxis()->SetRange();
 
@@ -292,7 +315,7 @@ int main(int argc, char* const argv[]){
     theFitsposWS->initValsByHand(thePars);
     //theFitsposWS->FloatMeanWidth();
     theFitsposWS->fit();
-    theFitsposWS->savePlots(true,Form("WS_dst_mass_pos_bin%d",i+1));
+    theFitsposWS->savePlots(true,Form("WS_dst_mass_pos_bin%d",i+1),true);
     the_sig_posWS[i]=theFitsposWS->getNsig();
     the_sig_posWS_err[i]=theFitsposWS->getNsigErr();
     theFitsposWS->Reset();
@@ -309,7 +332,7 @@ int main(int argc, char* const argv[]){
     theFitsnegWS->initValsByHand(thePars);
     //    theFitsnegWS->FloatMeanWidth();
     theFitsnegWS->fit();
-    theFitsnegWS->savePlots(true,Form("WS_dst_mass_neg_bin%d",i+1));
+    theFitsnegWS->savePlots(true,Form("WS_dst_mass_neg_bin%d",i+1),true);
     the_sig_negWS[i]=theFitsnegWS->getNsig();
     the_sig_negWS_err[i]=theFitsnegWS->getNsigErr();
 
@@ -356,7 +379,7 @@ int main(int argc, char* const argv[]){
   outfile.close();
   outfile.open("./SavedFits/final_yields_in_bins_neg.txt");
   //outfile<<"\n\n";
-  outfile<<"Bin"<<std::setw(15)<<" <t>"<<std::setw(15)<<"<t^2>"<<std::setw(15)<<"N_RS"<<std::setw(15)<<"error_N_RS"<<std::setw(15)<<"N_WS"<<std::setw(15)<<"error_N_WS\n";
+  outfile<<"Bin"<<std::setw(15)<<"<t>"<<std::setw(15)<<"<t^2>"<<std::setw(15)<<"N_RS"<<std::setw(15)<<"error_N_RS"<<std::setw(15)<<"N_WS"<<std::setw(15)<<"error_N_WS\n";
 
   for(int i=0; i<nbins;++i){
     outfile<<i+1<<std::setw(15)

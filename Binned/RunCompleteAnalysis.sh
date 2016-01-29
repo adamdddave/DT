@@ -25,7 +25,11 @@ FITEXISTS=0
 while getopts "hf:x:m:" arg; do
     case "${arg}" in
 	h)
-	    echo "write some help!"
+	    echo "This script runs the entire analysis of the B->mu D* X WS mixing/CPV"
+	    echo "The optional arguments are"
+	    echo "-m PATH/fitmodel.root provides the path to the RS fit model to use"
+	    echo "-x CUTS is a cutstring for using extra cuts"
+	    echo "-f ROOTFILES is the files to process in the very first step of the analysis."
 	    exit 1
 	    ;;
 	f)
@@ -38,6 +42,7 @@ while getopts "hf:x:m:" arg; do
 	    ;;
 	m)
 	    FITNAME="${OPTARG}"
+	    FITEXISTS=1
 	    echo 'set fit name to' ${FITNAME}
 	    ;;
     esac
@@ -60,18 +65,18 @@ if [ ! -d "$CURRDIR/SavedFits/betastar" ]; then
     mkdir -p $CURRDIR/SavedFits/betastar
 fi
 
-# if [ "$FITEXISTS" -ne "1" ]; then
-#     #0. Run the ntuple maker for the jobs
-#     echo 'starting from scratch'
-#     if [[ -z "$EXTRACUTS" ]]; then 
-# 	$SCRIPTDIR/DTAnalysis $ROOTFILES | tee $CURRDIR/ana.out;
-#     else
-# 	$SCRIPTDIR/DTAnalysis $ROOTFILES --extraCuts="${EXTRACUTS}"| tee $CURRDIR/ana.out;
-#     fi
-#     #1. Run the mass fit for the RS sample to generate the fit model
-#     echo 'no fit model';
-#     $SCRIPTDIR/testMassFit $CURRDIR/SavedFits/rs_mass.root | tee $CURRDIR/rs_fit.out;
-# fi
+if [ "$FITEXISTS" -ne "1" ]; then
+    #0. Run the ntuple maker for the jobs
+    echo 'starting from scratch'
+    if [[ -z "$EXTRACUTS" ]]; then #no extra cuts exist
+	$SCRIPTDIR/DTAnalysis $ROOTFILES | tee $CURRDIR/ana.out;
+    else
+	$SCRIPTDIR/DTAnalysis $ROOTFILES --extraCuts="${EXTRACUTS}"| tee $CURRDIR/ana.out;
+    fi
+    #1. Run the mass fit for the RS sample to generate the fit model
+    echo 'no fit model';
+    $SCRIPTDIR/testMassFit $CURRDIR/SavedFits/rs_mass.root | tee $CURRDIR/rs_fit.out;
+fi
 # #do the validation
 $SCRIPTDIR/testMassFit $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/rs_validation_fit.out
 #2. Run the WS fit time independent

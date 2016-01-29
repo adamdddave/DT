@@ -77,7 +77,7 @@ public:
   void saveFinalFit();
   void saveUpdatedFinalFit();
   TString getFitModel(){return modelName;}
-  void savePlots(bool doPullPlots = false,TString extraName = "");
+  void savePlots(bool doPullPlots = false,TString extraName = "",bool normalized=false);
   //void saveNormalizedPlots(bool doPullPlots = false,TString extraName = "");
   void saveSignalRegionZoom();
   void initValsByHand(array<double,4> thepars);

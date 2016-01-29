@@ -563,47 +563,47 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   delete  hmkpisb_cut_range_bkg;
   delete  hmkpisb_cut_range_hi_bkg;
   delete  hmkpisb_cut_range_lo_bkg;
-  delete  hmkpisb_cut_range_hi_1_bkg;
-  delete  hmkpisb_cut_range_hi_2_bkg;
-  delete  hmkpisb_cut_range_hi_3_bkg;
-  delete  hmkpisb_cut_range_hi_4_bkg;
-  delete  hmkpisb_cut_range_hi_5_bkg;
-  delete  hmkpisb_cut_range_hi_6_bkg;
+  // delete  hmkpisb_cut_range_hi_1_bkg;
+  // delete  hmkpisb_cut_range_hi_2_bkg;
+  // delete  hmkpisb_cut_range_hi_3_bkg;
+  // delete  hmkpisb_cut_range_hi_4_bkg;
+  // delete  hmkpisb_cut_range_hi_5_bkg;
+  // delete  hmkpisb_cut_range_hi_6_bkg;
   
-  delete  hmkpisb_cut_range_lo_1_bkg;
-  delete  hmkpisb_cut_range_lo_2_bkg;
-  delete  hmkpisb_cut_range_lo_3_bkg;
-  delete  hmkpisb_cut_range_lo_4_bkg;
-  delete  hmkpisb_cut_range_lo_5_bkg;
-  delete  hmkpisb_cut_range_lo_6_bkg;
-  //split charge
-  delete  hmkpisb_pos_cut_range_hi_1_bkg;
-  delete  hmkpisb_pos_cut_range_hi_2_bkg;
-  delete  hmkpisb_pos_cut_range_hi_3_bkg;
-  delete  hmkpisb_pos_cut_range_hi_4_bkg;
-  delete  hmkpisb_pos_cut_range_hi_5_bkg;
-  delete  hmkpisb_pos_cut_range_hi_6_bkg;
+  // delete  hmkpisb_cut_range_lo_1_bkg;
+  // delete  hmkpisb_cut_range_lo_2_bkg;
+  // delete  hmkpisb_cut_range_lo_3_bkg;
+  // delete  hmkpisb_cut_range_lo_4_bkg;
+  // delete  hmkpisb_cut_range_lo_5_bkg;
+  // delete  hmkpisb_cut_range_lo_6_bkg;
+  // //split charge
+  // delete  hmkpisb_pos_cut_range_hi_1_bkg;
+  // delete  hmkpisb_pos_cut_range_hi_2_bkg;
+  // delete  hmkpisb_pos_cut_range_hi_3_bkg;
+  // delete  hmkpisb_pos_cut_range_hi_4_bkg;
+  // delete  hmkpisb_pos_cut_range_hi_5_bkg;
+  // delete  hmkpisb_pos_cut_range_hi_6_bkg;
   
-  delete  hmkpisb_pos_cut_range_lo_1_bkg;
-  delete  hmkpisb_pos_cut_range_lo_2_bkg;
-  delete  hmkpisb_pos_cut_range_lo_3_bkg;
-  delete  hmkpisb_pos_cut_range_lo_4_bkg;
-  delete  hmkpisb_pos_cut_range_lo_5_bkg;
-  delete  hmkpisb_pos_cut_range_lo_6_bkg;
+  // delete  hmkpisb_pos_cut_range_lo_1_bkg;
+  // delete  hmkpisb_pos_cut_range_lo_2_bkg;
+  // delete  hmkpisb_pos_cut_range_lo_3_bkg;
+  // delete  hmkpisb_pos_cut_range_lo_4_bkg;
+  // delete  hmkpisb_pos_cut_range_lo_5_bkg;
+  // delete  hmkpisb_pos_cut_range_lo_6_bkg;
 
-  delete  hmkpisb_neg_cut_range_hi_1_bkg;
-  delete  hmkpisb_neg_cut_range_hi_2_bkg;
-  delete  hmkpisb_neg_cut_range_hi_3_bkg;
-  delete  hmkpisb_neg_cut_range_hi_4_bkg;
-  delete  hmkpisb_neg_cut_range_hi_5_bkg;
-  delete  hmkpisb_neg_cut_range_hi_6_bkg;
+  // delete  hmkpisb_neg_cut_range_hi_1_bkg;
+  // delete  hmkpisb_neg_cut_range_hi_2_bkg;
+  // delete  hmkpisb_neg_cut_range_hi_3_bkg;
+  // delete  hmkpisb_neg_cut_range_hi_4_bkg;
+  // delete  hmkpisb_neg_cut_range_hi_5_bkg;
+  // delete  hmkpisb_neg_cut_range_hi_6_bkg;
   
-  delete  hmkpisb_neg_cut_range_lo_1_bkg;
-  delete  hmkpisb_neg_cut_range_lo_2_bkg;
-  delete  hmkpisb_neg_cut_range_lo_3_bkg;
-  delete  hmkpisb_neg_cut_range_lo_4_bkg;
-  delete  hmkpisb_neg_cut_range_lo_5_bkg;
-  delete  hmkpisb_neg_cut_range_lo_6_bkg;
+  // delete  hmkpisb_neg_cut_range_lo_1_bkg;
+  // delete  hmkpisb_neg_cut_range_lo_2_bkg;
+  // delete  hmkpisb_neg_cut_range_lo_3_bkg;
+  // delete  hmkpisb_neg_cut_range_lo_4_bkg;
+  // delete  hmkpisb_neg_cut_range_lo_5_bkg;
+  // delete  hmkpisb_neg_cut_range_lo_6_bkg;
   //time bins
   delete  hmD0_pik_sig_bkg;
   delete  hmD0_pik_sb_bkg;

@@ -32,7 +32,7 @@ class TimeDependent2D{
  private:
   TString mName;
   TString mSaveName;
-  const int td0_bin_boundaries[6]={460,530,560,600,660,1500};//finer time binning!
+  const int td0_bin_boundaries[6]={451,521,551,591,651,1500};//finer time binning!
   int theSliceBins[6];
   TH2D* theHist_vs_time;
   TH2D* theHist_vs_mass;

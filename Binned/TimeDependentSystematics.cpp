@@ -170,7 +170,7 @@ int main(int argc, char* const argv[]){
   the_td_distr->Sumw2();
   the_td_distr_ss->Sumw2();
   the_td_distr->Add(the_td_distr_ss,-1);
-  int bins_td []= {460,530,560,600,660,the_td_distr->GetNbinsX()};
+  int bins_td []= {451,521,551,591,651,the_td_distr->GetNbinsX()};
   //int bins_td []= {46,52,53,55,56,58,60,63,66,108,the_td_distr->GetNbinsX()};
 
   double mean_td_pos[nbins];

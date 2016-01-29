@@ -176,8 +176,8 @@ void DT_D0_mix_CPV::Loop()
 	 //  )&&
 	 K_PIDK>kpidk_cut&&//tight K
 	 //K_PIDK>5.&&K_PIDK<=8.&&//loose K, changed from 2
-	 //Pd_PIDK<pi_dau_pidk_cut &&//tight pi
-	 Pd_PIDK<-2 && Pd_PIDK>=-5 &&//loose pi//changed from +2
+	 Pd_PIDK<pi_dau_pidk_cut &&//tight pi
+	 //Pd_PIDK<-2 && Pd_PIDK>=-5 &&//loose pi//changed from +2
 	 
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
@@ -203,6 +203,7 @@ void DT_D0_mix_CPV::Loop()
          
          )) continue;
     if(!extraCutFormula.EvalInstance()){//add extra cut from command line
+      //cout<<"didn't pass extra cut"<<endl;
       continue;
     }
     //decay time cut
@@ -652,7 +653,7 @@ void DT_D0_mix_CPV::Loop()
       }
     }
     //decay time distr
-    
+    {
     if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.75){ td0_bin_neg10_to_neg075->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
@@ -667,6 +668,7 @@ void DT_D0_mix_CPV::Loop()
       td0_bin4->Fill(dstm);
     }
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_bin5->Fill(dstm);}
+    }
     //check with more bins
     /*if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.75){ td0_bin_neg10_to_neg075->Fill(dstm);}
     else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
