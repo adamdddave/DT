@@ -3,7 +3,6 @@
 #include <Riostream.h>
 #include <vector>
 #include <cmath>
-
 using namespace std;
 // data point
 class DataPoint {

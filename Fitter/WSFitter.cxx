@@ -9,26 +9,29 @@
 #include <algorithm>
 #include <complex>
 #include "WSFitter.h"
-#include <unistd.h>
+using namespace std;
 ThisFitter *_fitter(0);
 
 //______________________________________________________________________________
-WSFitter::WSFitter(int n_time)
-  : _n_time_bins(n_time),
-    _Aeps_tos(0.), _Aeps_err_tos(1.), _Aeps_ntos(0.), _Aeps_err_ntos(1.),
-    _Fb_tos(n_time), _Fb_err_tos(n_time), _Fb_ntos(n_time), _Fb_err_ntos(n_time),
-    _Fp_tos(n_time), _Fp_err_tos(n_time), _Fp_ntos(n_time), _Fp_err_ntos(n_time),
-    _status(-1), _chi2(0.), _ndf(0), _printlevel(-1),//start AD
-    _n_time_binsDT(5),_Aeps_tt_DT(0.),_Aeps_err_tt_DT(1.), 
-    _Fp_tt_DT(0.),_Fp_err_tt_DT(1.),
-    _Fb_tt_DT(5),_Fb_err_tt_DT(5),
-    _isBlind(false), _BlindingSeed(1),_fitType(2)
-    //End AD
+WSFitter::WSFitter(int n_time,int cpvType)
+	: _n_time_bins(n_time),
+	  _Aeps_tos(0.), _Aeps_err_tos(1.), _Aeps_ntos(0.), _Aeps_err_ntos(1.),
+	  _Fb_tos(n_time), _Fb_err_tos(n_time), _Fb_ntos(n_time), _Fb_err_ntos(n_time),
+	  _Fp_tos(n_time), _Fp_err_tos(n_time), _Fp_ntos(n_time), _Fp_err_ntos(n_time),
+	  _status(-1), _chi2(0.), _ndf(0), _printlevel(-1),
+	  _n_time_bins_DT(5),
+	  _Aeps_DT(0.),_Aeps_err_DT(1.),
+	  _Fb_DT(5),_Fb_err_DT(5),
+	  _Fp_DT(0.),_Fp_err_DT(1.),
+
+	  _CPVtype(cpvType),
+	  _usePrompt(true),_useDT(false)
 {
 	TVirtualFitter::SetDefaultFitter("Minuit");
-	//_fitter = new ThisFitter(this,60);
-	_fitter = new ThisFitter(this,67);
-	Fitter()->SetFCN(FitFCN);
+	_fitter = new ThisFitter(this,60+7);//7 is the number of DT params we have now, this is Aeps, Fp and Fb x 5
+	if(_CPVtype==2){cout<<"All CPV Fit"<<endl;      Fitter()->SetFCN(FitFCN);}
+	else if(_CPVtype==1){cout<<"No DCPV Fit"<<endl; Fitter()->SetFCN(FitFCN_noDCPV);}
+	else{cout<<"Mixing Fit"<<endl;                  Fitter()->SetFCN(FitFCN_mixing);}
 
 	double arglist = _printlevel;
 	Fitter()->ExecuteCommand("SET PRI",&arglist,1);
@@ -121,39 +124,6 @@ bool WSFitter::ReadData(const char *filename, int d0flavor, bool tos, bool verbo
 	// read data
 	DataPoint point; unsigned int n(0);
 	while (point.Read(file)) {
-	  if (point.i>=_n_time_bins) continue;
-		data->push_back(point);
-		n++;
-		if (verbose) point.Print();
-	}
-	file.close();
-
-	std::sort(data->begin(), data->end(), CompareDataPoints);
-
-	return (n!=0);
-}
-//AD
-//______________________________________________________________________________
-bool WSFitter::ReadDTData(const char *filename, int d0flavor, bool verbose)
-{
-	std::ifstream file(filename);
-	if (!file) {
-		std::cout << "Unable to open " << filename << std::endl;
-		return false;
-	}
-	if (verbose) std::cout << "Reading " << filename << std::endl;
-	DataPoints *data;
-	
-	data=(d0flavor>=0)?&_points_pos_tt_DT : &_points_neg_tt_DT ;
-	std::cout<<"using tight tight sample"<<std::endl;
-	 
-	// remove header lines
-	char line[100];
-	file.get(line,99);
-	
-	// read data
-	DataPoint point; unsigned int n(0);
-	while (point.Read(file)) {
 		if (point.i>=_n_time_bins) continue;
 		data->push_back(point);
 		n++;
@@ -162,7 +132,7 @@ bool WSFitter::ReadDTData(const char *filename, int d0flavor, bool verbose)
 	file.close();
 
 	std::sort(data->begin(), data->end(), CompareDataPoints);
-	std::cout<<"read "<<n<<" datapoints"<<std::endl;
+
 	return (n!=0);
 }
 
@@ -188,13 +158,50 @@ void WSFitter::Reset(bool print)
 		Fitter()->SetParameter(34+i, Form("fp%d_tos",i),      _Fp_tos[i],1e-4,0.,0.);
 		Fitter()->SetParameter(47+i,Form("fp%d_ntos",i),     _Fp_ntos[i],1e-4,0.,0.);
 	}
-	//AD. DT data comes after. No worries about parameter definitions, as we can simply fix the above for DT only.
-	Fitter()->SetParameter(60, "a_tt_DT",_Aeps_tt_DT,1e-4,0.,0.);
-	Fitter()->SetParameter(61, "Fp_tt_DT",_Fp_tt_DT, 1e-4,0.,0.);
-	for (int i=0; i<_n_time_binsDT;++i){
-	  Fitter()->SetParameter(62+i, Form("Fb%d_tt_DT",i),_Fb_tt_DT[i],1e-4,0.,0.);
-	}
 	_status = -1;
+	//AD
+	//Add DT reset here
+	if(_CPVtype==1){Fitter()->FixParameter(3);}
+	if(_CPVtype==0){
+	  Fitter()->FixParameter(3);
+	  Fitter()->FixParameter(4);
+	  Fitter()->FixParameter(5);
+	}
+
+	Fitter()->SetParameter(60, "a_DT",_Aeps_DT,1e-4,0.,0.);
+	for(int i=0; i<_n_time_bins_DT;++i){
+	  Fitter()->SetParameter(61+i, Form("fb%d_DT",i),1e-2*_Fb_DT[i],1e-4,0.,0.);
+	}
+	Fitter()->SetParameter(66,"fp_DT",_Fp_DT,1e-4,0.,0.);
+	//fix the params if we're not using the DT dataset
+	if(_useDT==false){
+	  Fitter()->FixParameter(60);//aKpi
+	  Fitter()->FixParameter(61);//fb0
+	  Fitter()->FixParameter(62);//fb1
+	  Fitter()->FixParameter(63);//fb2
+	  Fitter()->FixParameter(64);//fb3
+	  Fitter()->FixParameter(65);//fb4
+	  Fitter()->FixParameter(66);//fp
+	}
+	//also implement fixing only the prompt params too
+	if(_usePrompt==false){
+	  for(int i=6;i<60;++i){
+	    Fitter()->FixParameter(i);
+	  }
+	}
+
+	//unfix parameters which may have been fixed before
+	if(_usePrompt==true){
+	  for(int i=6; i<60;++i){
+	    Fitter()->ReleaseParameter(i);
+	  }
+	}
+	if(_useDT==true){
+	  for(int i=60;i<67;++i){
+	    Fitter()->ReleaseParameter(i);
+	  }
+	}
+	//endAD
 }
 
 //______________________________________________________________________________
@@ -206,7 +213,7 @@ int WSFitter::Fit(bool minos)
 		Fitter()->ExecuteCommand("SET PRI",arglist,1);
 	}
 
-	arglist[0] = 5000.;
+	arglist[0] = 500000.;
 	arglist[1] = .0001;
 	int status = _status = Fitter()->ExecuteCommand("MIGRAD",arglist,2);
 	std::cout << "migrad status = " << status << std::endl;
@@ -284,30 +291,7 @@ void WSFitter::SetPeakingFractions(double *f, double *f_err, bool tos)
 		}
 	}
 }
-//AD
-//______________________________________________________________________________
-void WSFitter::SetDTDetectorAsymmetries(double a, double a_err)
-{
-    _Aeps_tt_DT = a;
-    _Aeps_err_tt_DT = a_err;
-}
-//AD
-//______________________________________________________________________________
-void WSFitter::SetDTPromptFractions(double *f, double *f_err)
-{
-  for(int i=0; i<_n_time_binsDT;++i){
-    _Fb_tt_DT[i] = f[i];
-    _Fb_err_tt_DT[i] = f_err[i];
-  }
-}
-//AD
 
-//______________________________________________________________________________
-void WSFitter::SetDTPeakingFractions(double f, double f_err)
-{
-  _Fp_tt_DT = f;
-  _Fp_err_tt_DT = f_err;
-}
 //______________________________________________________________________________
 std::ostream &WSFitter::Print(std::ostream &out, bool verbose)
 {
@@ -350,28 +334,6 @@ std::ostream &WSFitter::Print(std::ostream &out, bool verbose)
 	DataPoint::PrintTitle();
 	for (DataPoints::iterator it = _points_neg_ntos.begin(); it!=_points_neg_ntos.end(); ++it)
 		(*it).Print();
-	
-	out << " *** DT Dataset ***" << std::endl;
-	out << "*** N time bins: " << 5 << std::endl;
-
-	out << "*** Detector asymmetry TT: " << std::endl;
-	out << "A(Kpi) = " << _Aeps_tt_DT << " +/-" << _Aeps_err_tt_DT << std::endl;
-
-	out << "*** Prompt feedthrough fractions TT: " << std::endl;
-	for (unsigned int i=0; i<5; ++i)
-	  out << setw(2) << i << "\t" << setw(8) << _Fb_tt_DT[i] << " +/-" << setw(8) << _Fb_err_tt_DT[i] << std::endl;
-
-	out << "*** Peaking Background fractions TT: " << std::endl;	
-	out << setw(8) << _Fp_tt_DT << " +/-" << setw(8) << _Fp_err_tt_DT << std::endl;
-
-	// out << "*** N DT data points D0 TT: " << _points_pos_tt_DT.size() << std::endl;
-	// DataPoint::PrintTitle();
-	// for (DataPoints::iterator it = _points_pos_tt_DT.begin(); it!=_points_pos_tt_DT.end(); ++it)
-	// 	(*it).Print();
-	// out << "*** N DT data points D0bar TT: " << _points_neg_tt_DT.size() << std::endl;
-	// DataPoint::PrintTitle();
-	// for (DataPoints::iterator it = _points_neg_tt_DT.begin(); it!=_points_neg_tt_DT.end(); ++it)
-	// 	(*it).Print();
 
 	// print fit status
 	out << "Fit status = " << _status << std::endl;
@@ -473,34 +435,22 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	double RD_minus      = p[3]/1e3;
 	double yprime_minus  = p[4]/1e3;
 	double xprime2_minus = p[5]/1e3;
-
-	//AD. Add blinding.
-	//add blinding here
-	if(_isBlind){
-	  RD_plus +=rd_plus_blind;
-	  yprime_plus+=yp_plus_blind;
-	  xprime2_plus+=xp2_plus_blind;
-	  RD_minus+=rd_mins_blind;
-	  yprime_minus+=yp_mins_blind;
-	  xprime2_minus+=xp2_mins_blind;
-	}
-	//end AD
-	if(_usePromptData){
+	if(_usePrompt){
 	  // constraint on detector asymmetries
 	  _chi2 += (p[6]-_Aeps_tos)*(p[6]-_Aeps_tos)/(_Aeps_err_tos*_Aeps_err_tos);
 	  _ndf++;
 	  _chi2 += (p[7]-_Aeps_ntos)*(p[7]-_Aeps_ntos)/(_Aeps_err_ntos*_Aeps_err_ntos);
 	  _ndf++;
-	
+	  
 	  for (int i=0; i<_n_time_bins; ++i) {
 	    double res;
-		
+	    
 	    // constraint on secondary fraction
 	    res = (_Fb_tos[i]-p[8+i])/_Fb_err_tos[i];
 	    _chi2 += res*res;
 	    res = (_Fb_ntos[i]-p[8+_n_time_bins+i])/_Fb_err_ntos[i];
 	    _chi2 += res*res;
-		
+	    
 	    // constraint on peaking fraction
 	    res = (_Fp_tos[i]-p[8+2*_n_time_bins+i])/_Fp_err_tos[i];
 	    _chi2 += res*res;
@@ -508,7 +458,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	    _chi2 += res*res;
 	  }
 	  _ndf+=4*_n_time_bins;
-	
+	  
 	  // compute chi2 on tos data
 	  double eps_tos = (1.+p[6])/(1.-p[6]);
 	  for (DataPoints::iterator it = _points_pos_tos.begin(); it!=_points_pos_tos.end(); ++it)
@@ -525,7 +475,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
 		double func   = eps_tos*R*(1.-deltaB)+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
@@ -545,13 +495,13 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
 		double func   = R*(1.-deltaB)/eps_tos+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	
+	  
 	  // compute chi2 on ntos data
 	  double eps_ntos = (1.+p[7])/(1.-p[7]);
 	  for (DataPoints::iterator it = _points_pos_ntos.begin(); it!=_points_pos_ntos.end(); ++it)
@@ -567,7 +517,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
 		double func   = eps_ntos*R*(1.-deltaB)+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
@@ -586,76 +536,79 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
 		double func   = R*(1.-deltaB)/eps_ntos+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	}
-	//DT
-	if(_useDTData){
-	  //kpi asymmetry
-	  _chi2 += (p[60]-_Aeps_tt_DT)*(p[60]-_Aeps_tt_DT)/(_Aeps_err_tt_DT*_Aeps_err_tt_DT);
+	}//usePrompt
+	if(_useDT){
+	  // constraint on detector asymmetries
+	  /*
+	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
-	  //peaking fraction
-	  _chi2 += (_Fp_tt_DT-p[61])*(_Fp_tt_DT-p[61])/(_Fp_err_tt_DT*_Fp_err_tt_DT);
-	  _ndf++;
-	  for (int i=0; i<5; ++i) {
+	  
+	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
-	    // constraint on secondary fraction
-	    res = (_Fb_tt_DT[i]-p[62+i])/_Fb_err_tt_DT[i];
+	    // constraint on prompt fraction
+	    res = (_Fb_DT[i]-p[61+i])/_Fb_err_DT[i];
 	    _chi2 += res*res;
 	    _ndf++;
+	    	    
 	  }
-	    
-	  // compute chi2 on tight tight data
-	  double eps_tt = (1.+p[60])/(1.-p[60]);
-	  for (DataPoints::iterator it = _points_pos_tt_DT.begin(); it!=_points_pos_tt_DT.end(); ++it)
+
+	  // constraint on peaking fraction
+	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
+	  _ndf++;
+	  
+	  // compute chi2 on positive DT data
+	  */
+	  double eps_DT = (1.+p[60])/(1.-p[60]);
+	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[62+i];
-	      double fp    = p[61];
-	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+
 	      if (error!=0) {
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_tt*R*(1.-deltaB)+fp;
-		  
+		double func   = eps_DT*R*(1.-deltaB)+fp;
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	    
-	  for (DataPoints::iterator it = _points_neg_tt_DT.begin(); it!=_points_neg_tt_DT.end(); ++it)
+	  
+	  //chi2 on negative DT data
+	  for (DataPoints::iterator it = _points_neg_DT.begin(); it!=_points_neg_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[62+i];
-	      double fp    = p[61];
+	      double fb    = p[61+i];
+	      double fp    = p[66];
 	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
 	      if (error!=0) {
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_tt+fp;
-		  
+		double func   = R*(1.-deltaB)/eps_DT+fp;
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	}
-	//End DT
-	_ndf -= Fitter()->GetNumberFreeParameters();
-
+	}//useDT
+	_ndf -= Fitter()->GetNumberFreeParameters();	
 	result = _chi2;
 }
 
@@ -667,106 +620,61 @@ void FitFCN(int& npar, double* gin, double& f, double* par, int flag)
 		std::cout << "Invalid fit object encountered!" << std::endl;
 		return;
 	}
-	int cpvtype = fitter->GetCPVFitType();
-	if(cpvtype==0)
-	  fitter->ComputeMixingChi2(npar, gin, f, par, flag);
-	else if(cpvtype==1)
-	  fitter->ComputeNoDCPVChi2(npar, gin, f, par, flag);
-	else
-	  fitter->ComputeChi2(npar, gin, f, par, flag);
+	fitter->ComputeChi2(npar, gin, f, par, flag);
 }
-/*
-void FitMixFCN(int& npar, double* gin, double& f, double* par, int flag)
-{
-  WSFitter *fitter = dynamic_cast<WSFitter*>(_fitter->GetObject());
-  if (!fitter) {
-    std::cout << "Invalid fit object encountered!" << std::endl;
-    return;
-  }
-  fitter->ComputeMixingChi2(npar, gin, f, par, flag);
-}
-void FitNDCPVFCN(int& npar, double* gin, double& f, double* par, int flag)
-{
-  WSFitter *fitter = dynamic_cast<WSFitter*>(_fitter->GetObject());
-  if (!fitter) {
-    std::cout << "Invalid fit object encountered!" << std::endl;
-    return;
-  }
-  fitter->ComputeNoDCPVChi2(npar, gin, f, par, flag);
-}
-*/
+
 //AD
+
 //______________________________________________________________________________
-void WSFitter::SetBlinding(bool blind)
+void FitFCN_noDCPV(int& npar, double* gin, double& f, double* par, int flag)
 {
-  _isBlind = blind;
-  if(_isBlind){
-    //get blinding seed from augusto's file
-    system("chmod u+r ./augusto_seed.txt");
-    std::ifstream file("./augusto_seed.txt");
-    while ( file>>_BlindingSeed ){std::cout<<"reading augusto's seed"<<std::endl;}
-    system("chmod u-r ./augusto_seed.txt");
-    file.close();
-    TRandom3 donram(_BlindingSeed);
-    xp2_plus_blind = donram.Gaus(0.,0.00008);
-    xp2_mins_blind = donram.Gaus(0.,0.00008);
-    yp_plus_blind = donram.Gaus(0.,0.00015);
-    yp_mins_blind = donram.Gaus(0.,0.00015);
-    rd_plus_blind = donram.Gaus(0.,0.00025);
-    rd_mins_blind = donram.Gaus(0.,0.00025);
-  }
+	WSFitter *fitter = dynamic_cast<WSFitter*>(_fitter->GetObject());
+	if (!fitter) {
+		std::cout << "Invalid fit object encountered!" << std::endl;
+		return;
+	}
+	fitter->ComputeNoDCPVChi2(npar, gin, f, par, flag);
 }
-//AD
 //______________________________________________________________________________
-void WSFitter::SetCPVFitType(int fitType)
+void FitFCN_mixing(int& npar, double* gin, double& f, double* par, int flag)
 {
-  _fitType = fitType;
-  std::cout<<"using fit type"<<fitType<<std::endl
-	   <<"corresponds to (0)Mixing (1) no Direct CPV (2)All CPV"<<std::endl;
+	WSFitter *fitter = dynamic_cast<WSFitter*>(_fitter->GetObject());
+	if (!fitter) {
+		std::cout << "Invalid fit object encountered!" << std::endl;
+		return;
+	}
+	fitter->ComputeMixingChi2(npar, gin, f, par, flag);
 
 }
-//AD different chi2 calcs
+
 //______________________________________________________________________________
 void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &result, double *p, int /*flag*/)
 {
-  
 	_chi2 = 0.; _ndf = 0;
 
 	// physics parameters
 	double RD_plus       = p[0]/1e3;
 	double yprime_plus   = p[1]/1e3;
 	double xprime2_plus  = p[2]/1e3;
-	double RD_minus      = p[0]/1e3;
-	double yprime_minus  = p[1]/1e3;
-	double xprime2_minus = p[2]/1e3;
-
-	//AD. Add blinding.
-	//add blinding here
-	if(_isBlind){
-	  RD_plus +=rd_plus_blind;
-	  yprime_plus+=yp_plus_blind;
-	  xprime2_plus+=xp2_plus_blind;
-	  RD_minus+=rd_mins_blind;
-	  yprime_minus+=yp_mins_blind;
-	  xprime2_minus+=xp2_mins_blind;
-	}
-	//end AD
-	if(_usePromptData){
+	double RD_minus      = RD_plus;
+	double yprime_minus  = yprime_plus;
+	double xprime2_minus = xprime2_plus;
+	if(_usePrompt){
 	  // constraint on detector asymmetries
 	  _chi2 += (p[6]-_Aeps_tos)*(p[6]-_Aeps_tos)/(_Aeps_err_tos*_Aeps_err_tos);
 	  _ndf++;
 	  _chi2 += (p[7]-_Aeps_ntos)*(p[7]-_Aeps_ntos)/(_Aeps_err_ntos*_Aeps_err_ntos);
 	  _ndf++;
-	
+	  
 	  for (int i=0; i<_n_time_bins; ++i) {
 	    double res;
-		
+	    
 	    // constraint on secondary fraction
 	    res = (_Fb_tos[i]-p[8+i])/_Fb_err_tos[i];
 	    _chi2 += res*res;
 	    res = (_Fb_ntos[i]-p[8+_n_time_bins+i])/_Fb_err_ntos[i];
 	    _chi2 += res*res;
-		
+	    
 	    // constraint on peaking fraction
 	    res = (_Fp_tos[i]-p[8+2*_n_time_bins+i])/_Fp_err_tos[i];
 	    _chi2 += res*res;
@@ -774,7 +682,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 	    _chi2 += res*res;
 	  }
 	  _ndf+=4*_n_time_bins;
-	
+	  
 	  // compute chi2 on tos data
 	  double eps_tos = (1.+p[6])/(1.-p[6]);
 	  for (DataPoints::iterator it = _points_pos_tos.begin(); it!=_points_pos_tos.end(); ++it)
@@ -791,7 +699,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
 		double func   = eps_tos*R*(1.-deltaB)+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
@@ -811,13 +719,13 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
 		double func   = R*(1.-deltaB)/eps_tos+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	
+	  
 	  // compute chi2 on ntos data
 	  double eps_ntos = (1.+p[7])/(1.-p[7]);
 	  for (DataPoints::iterator it = _points_pos_ntos.begin(); it!=_points_pos_ntos.end(); ++it)
@@ -833,7 +741,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
 		double func   = eps_ntos*R*(1.-deltaB)+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
@@ -852,120 +760,109 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
 		double func   = R*(1.-deltaB)/eps_ntos+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	}
-	//DT
-	if(_useDTData){
-	  //kpi asymmetry
-	  _chi2 += (p[60]-_Aeps_tt_DT)*(p[60]-_Aeps_tt_DT)/(_Aeps_err_tt_DT*_Aeps_err_tt_DT);
+	}//use Prompt
+	if(_useDT){
+	  /*
+	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
-	  //peaking fraction
-	  _chi2 += (_Fp_tt_DT-p[61])*(_Fp_tt_DT-p[61])/(_Fp_err_tt_DT*_Fp_err_tt_DT);
-	  _ndf++;
-	  for (int i=0; i<5; ++i) {
+	  
+	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
-	    // constraint on secondary fraction
-	    res = (_Fb_tt_DT[i]-p[62+i])/_Fb_err_tt_DT[i];
+	    // constraint on prompt fraction
+	    res = (_Fb_DT[i]-p[61+i])/_Fb_err_DT[i];
 	    _chi2 += res*res;
 	    _ndf++;
+	    	    
 	  }
-	    
-	  // compute chi2 on tight tight data
-	  double eps_tt = (1.+p[60])/(1.-p[60]);
-	  for (DataPoints::iterator it = _points_pos_tt_DT.begin(); it!=_points_pos_tt_DT.end(); ++it)
+
+	  // constraint on peaking fraction
+	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
+	  _ndf++;
+	  */
+	  // compute chi2 on positive DT data
+	  double eps_DT = (1.+p[60])/(1.-p[60]);
+	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[62+i];
-	      double fp    = p[61];
-	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+
 	      if (error!=0) {
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_tt*R*(1.-deltaB)+fp;
-		  
+		double func   = eps_DT*R*(1.-deltaB)+fp;
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	    
-	  for (DataPoints::iterator it = _points_neg_tt_DT.begin(); it!=_points_neg_tt_DT.end(); ++it)
+	  //chi2 on negative DT data
+	  for (DataPoints::iterator it = _points_neg_DT.begin(); it!=_points_neg_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[62+i];
-	      double fp    = p[61];
+	      double fb    = p[61+i];
+	      double fp    = p[66];
 	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
 	      if (error!=0) {
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_tt+fp;
-		  
+		double func   = R*(1.-deltaB)/eps_DT+fp;
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	}
-	//End DT
+	}//use DT
 	_ndf -= Fitter()->GetNumberFreeParameters();
 
 	result = _chi2;
 }
-
+//
 //______________________________________________________________________________
 void WSFitter::ComputeNoDCPVChi2(int & /*npars*/, double * /*gin*/, double &result, double *p, int /*flag*/)
 {
-  
 	_chi2 = 0.; _ndf = 0;
 
 	// physics parameters
 	double RD_plus       = p[0]/1e3;
 	double yprime_plus   = p[1]/1e3;
 	double xprime2_plus  = p[2]/1e3;
-	double RD_minus      = p[0]/1e3;
+	double RD_minus      = RD_plus;
 	double yprime_minus  = p[4]/1e3;
 	double xprime2_minus = p[5]/1e3;
-
-	//AD. Add blinding.
-	//add blinding here
-	if(_isBlind){
-	  RD_plus +=rd_plus_blind;
-	  yprime_plus+=yp_plus_blind;
-	  xprime2_plus+=xp2_plus_blind;
-	  RD_minus+=rd_mins_blind;
-	  yprime_minus+=yp_mins_blind;
-	  xprime2_minus+=xp2_mins_blind;
-	}
-	//end AD
-	if(_usePromptData){
+	
+	if(_usePrompt){
 	  // constraint on detector asymmetries
 	  _chi2 += (p[6]-_Aeps_tos)*(p[6]-_Aeps_tos)/(_Aeps_err_tos*_Aeps_err_tos);
 	  _ndf++;
 	  _chi2 += (p[7]-_Aeps_ntos)*(p[7]-_Aeps_ntos)/(_Aeps_err_ntos*_Aeps_err_ntos);
 	  _ndf++;
-	
+	  
 	  for (int i=0; i<_n_time_bins; ++i) {
 	    double res;
-		
+	    
 	    // constraint on secondary fraction
 	    res = (_Fb_tos[i]-p[8+i])/_Fb_err_tos[i];
 	    _chi2 += res*res;
 	    res = (_Fb_ntos[i]-p[8+_n_time_bins+i])/_Fb_err_ntos[i];
 	    _chi2 += res*res;
-		
+	    
 	    // constraint on peaking fraction
 	    res = (_Fp_tos[i]-p[8+2*_n_time_bins+i])/_Fp_err_tos[i];
 	    _chi2 += res*res;
@@ -973,7 +870,7 @@ void WSFitter::ComputeNoDCPVChi2(int & /*npars*/, double * /*gin*/, double &resu
 	    _chi2 += res*res;
 	  }
 	  _ndf+=4*_n_time_bins;
-	
+	  
 	  // compute chi2 on tos data
 	  double eps_tos = (1.+p[6])/(1.-p[6]);
 	  for (DataPoints::iterator it = _points_pos_tos.begin(); it!=_points_pos_tos.end(); ++it)
@@ -990,7 +887,7 @@ void WSFitter::ComputeNoDCPVChi2(int & /*npars*/, double * /*gin*/, double &resu
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
 		double func   = eps_tos*R*(1.-deltaB)+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
@@ -1010,13 +907,13 @@ void WSFitter::ComputeNoDCPVChi2(int & /*npars*/, double * /*gin*/, double &resu
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
 		double func   = R*(1.-deltaB)/eps_tos+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	
+	  
 	  // compute chi2 on ntos data
 	  double eps_ntos = (1.+p[7])/(1.-p[7]);
 	  for (DataPoints::iterator it = _points_pos_ntos.begin(); it!=_points_pos_ntos.end(); ++it)
@@ -1032,7 +929,7 @@ void WSFitter::ComputeNoDCPVChi2(int & /*npars*/, double * /*gin*/, double &resu
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
 		double func   = eps_ntos*R*(1.-deltaB)+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
@@ -1051,77 +948,137 @@ void WSFitter::ComputeNoDCPVChi2(int & /*npars*/, double * /*gin*/, double &resu
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
 		double func   = R*(1.-deltaB)/eps_ntos+fp;
-			
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	}
-	//DT
-	if(_useDTData){
-	  //kpi asymmetry
-	  _chi2 += (p[60]-_Aeps_tt_DT)*(p[60]-_Aeps_tt_DT)/(_Aeps_err_tt_DT*_Aeps_err_tt_DT);
+	}//usePrompt
+	if(_useDT){
+_chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
-	  //peaking fraction
-	  _chi2 += (_Fp_tt_DT-p[61])*(_Fp_tt_DT-p[61])/(_Fp_err_tt_DT*_Fp_err_tt_DT);
-	  _ndf++;
-	  for (int i=0; i<5; ++i) {
+	  
+	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
-	    // constraint on secondary fraction
-	    res = (_Fb_tt_DT[i]-p[62+i])/_Fb_err_tt_DT[i];
+	    // constraint on prompt fraction
+	    res = (_Fb_DT[i]-p[61+i])/_Fb_err_DT[i];
 	    _chi2 += res*res;
 	    _ndf++;
+	    	    
 	  }
-	    
-	  // compute chi2 on tight tight data
-	  double eps_tt = (1.+p[60])/(1.-p[60]);
-	  for (DataPoints::iterator it = _points_pos_tt_DT.begin(); it!=_points_pos_tt_DT.end(); ++it)
+
+	  // constraint on peaking fraction
+	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
+	  _ndf++;
+	  
+	  // compute chi2 on positive DT data
+	  double eps_DT = (1.+p[60])/(1.-p[60]);
+	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[62+i];
-	      double fp    = p[61];
-	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
+	      double fb    = p[61+i];
+	      double fp    = p[66];
+
 	      if (error!=0) {
 		double R      = RD_plus+sqrt(RD_plus)*yprime_plus*t+(xprime2_plus+yprime_plus*yprime_plus)/4.*t2;
 		double deltaB = fb*(1.-RD_plus/R);
-		double func   = eps_tt*R*(1.-deltaB)+fp;
-		  
+		double func   = eps_DT*R*(1.-deltaB)+fp;
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	    
-	  for (DataPoints::iterator it = _points_neg_tt_DT.begin(); it!=_points_neg_tt_DT.end(); ++it)
+	  //chi2 on negative DT data
+	  for (DataPoints::iterator it = _points_neg_DT.begin(); it!=_points_neg_DT.end(); ++it)
 	    {
 	      int    i     = (*it).i;
 	      double t     = (*it).t;
 	      double t2    = (*it).t2;
 	      double ratio = (*it).r();
 	      double error = (*it).sr();
-	      double fb    = p[62+i];
-	      double fp    = p[61];
+	      double fb    = p[61+i];
+	      double fp    = p[66];
 	      //error = sqrt(17./12.)*error;//PDG-like scaling for up-down differences
 	      if (error!=0) {
 		double R      = RD_minus+sqrt(RD_minus)*yprime_minus*t+(xprime2_minus+yprime_minus*yprime_minus)/4.*t2;
 		double deltaB = fb*(1.-RD_minus/R);
-		double func   = R*(1.-deltaB)/eps_tt+fp;
-		  
+		double func   = R*(1.-deltaB)/eps_DT+fp;
+		
 		double res = (ratio-func)/error;
 		_chi2 += res*res;
 		_ndf++;
 	      }
 	    }
-	}
-	//End DT
+	}//useDT
 	_ndf -= Fitter()->GetNumberFreeParameters();
 
 	result = _chi2;
 }
+
+//AD                                                                                                                                                                                                                                                                                                                       
+//______________________________________________________________________________                                                                                                                                                                                                                                           
+bool WSFitter::Read_DT_Data(const char *filename, int d0flavor, bool verbose)
+{
+  std::ifstream file(filename);
+  if (!file) {
+    std::cout << "Unable to open " << filename << std::endl;
+    return false;
+  }
+  if (verbose) std::cout << "Reading " << filename << std::endl;
+  DataPoints *data;
+
+  data=(d0flavor>=0)?&_points_pos_DT : &_points_neg_DT ;
+  std::cout<<"using tight tight sample"<<std::endl;
+
+  // remove header lines                                                                                                                                                                                                                                                                                             
+  char line[150];
+  file.get(line,99);
+
+  // read data                                                                                                                                                                                                                                                                                                       
+  DataPoint point; unsigned int n(0);
+  while (point.Read(file)) {
+    if (point.i>=(int)_n_time_bins) continue;
+    data->push_back(point);
+    n++;
+    if (verbose) point.Print();
+  }
+  file.close();
+
+  std::sort(data->begin(), data->end(), CompareDataPoints);
+  std::cout<<"read "<<n<<" datapoints"<<std::endl;
+  return (n!=0);
+}
+
+
+//AD                                                                                                                                                                                                                                                                                                                       
+//______________________________________________________________________________                                                                                                                                                                                                                                           
+void WSFitter::Set_DT_DetectorAsymmetries(double a, double a_err)
+{
+  _Aeps_DT = a;
+  _Aeps_err_DT = a_err;
+}
+//AD                                                                            
+//______________________________________________________________________________                                                                                                                                                                                                                                           
+void WSFitter::Set_DT_PromptFractions(double *f, double *f_err)
+{
+  for(int i=0; i<(int)_n_time_bins_DT;++i){
+    _Fb_DT[i] = f[i];
+    _Fb_err_DT[i] = f_err[i];
+  }
+}
+//AD      
+//______________________________________________________________________________                                                                                                                                                                                                                                           
+void WSFitter::Set_DT_PeakingFractions(double f, double f_err)
+{
+  _Fp_DT = f;
+  _Fp_err_DT = f_err;
+}
+
 
 #endif
