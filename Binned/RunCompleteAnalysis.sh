@@ -20,9 +20,9 @@ ROOTFILES="${DATADIR}/*.root"
 #echo 'Do you already have a fit model? [1 or 0]'
 #read FITEXISTS
 FITEXISTS=0
-
+DOSYSTEMATICS=1
 #add parsing options for input data and cuts.
-while getopts "hf:x:m:" arg; do
+while getopts "hf:x:m:s:" arg; do
     case "${arg}" in
 	h)
 	    echo "This script runs the entire analysis of the B->mu D* X WS mixing/CPV"
@@ -30,6 +30,7 @@ while getopts "hf:x:m:" arg; do
 	    echo "-m PATH/fitmodel.root provides the path to the RS fit model to use"
 	    echo "-x CUTS is a cutstring for using extra cuts"
 	    echo "-f ROOTFILES is the files to process in the very first step of the analysis."
+	    echo "-s DOSYSTS, where DOSYSTS is 1 or 0, a boolean to do systematics"
 	    exit 1
 	    ;;
 	f)
@@ -44,6 +45,10 @@ while getopts "hf:x:m:" arg; do
 	    FITNAME="${OPTARG}"
 	    FITEXISTS=1
 	    echo 'set fit name to' ${FITNAME}
+	    ;;
+	s)
+	    DOSYSTEMATICS="${OPTARG}"
+	    echo "do systematics " ${DOSYSTEMATICS}
 	    ;;
     esac
     done
@@ -95,11 +100,12 @@ chmod go-rwx $CURRDIR/SavedFits/final_yields_in_bins_neg.txt
 chmod u-r $CURRDIR/SavedFits/final_yields_in_bins_pos.txt
 chmod u-r $CURRDIR/SavedFits/final_yields_in_bins_neg.txt
 #5. systematic uncertainties.
+if [ "$DOSYSTEMATICS" -ne "0" ]; then
 #time independent
-#$SCRIPTDIR/doTimeIntegratedSystematics $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/time_integrated_systematics.out
+    $SCRIPTDIR/doTimeIntegratedSystematics $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/time_integrated_systematics.out
 #time dependent
-$SCRIPTDIR/doTimeDepSysts $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/time_dependent_systematics.out
-
+    $SCRIPTDIR/doTimeDepSysts $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/time_dependent_systematics.out
+fi
 # #6. Compile all the results into the correct format
 
 unset EXTRACUTS
