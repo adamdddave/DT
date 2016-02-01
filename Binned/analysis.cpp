@@ -514,7 +514,7 @@ int main(int argc, char* const argv[]){
   WrongB wrongb("wrongb",rs_looper,rs_ss_looper);
   wrongb.MakeMassComparisons();
   wrongb.CompareIPchi2();
-
+  wrongb.WriteScaleFactor();
   //ws
   TFile *fout2 = new TFile("./SavedFits/ws_mass.root","RECREATE");
   fout2->cd();

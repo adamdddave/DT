@@ -71,6 +71,7 @@ class WrongB {
   ~WrongB();
   void MakeMassComparisons();
   void CompareIPchi2();
+  void WriteScaleFactor();
  protected:
   
  private:
@@ -83,6 +84,7 @@ class WrongB {
   TH2D* dstarm_ss_vs_muIPchi2;
   TH2D* bmass_vs_muIPchi2;
   TH2D* bmass_ss_vs_muIPChi2;
+  double the_scaling_factor;
 };
 
 #endif //COMPLETE_ANALYSIS_WRONGB_H

@@ -99,16 +99,12 @@ void WrongB::MakeMassComparisons(){
   cc->SaveAs("./SavedFits/"+m_name+"bmass_regions_ss_os_scaled_to_high_sideband_logy.pdf");
   cc->SetLogy(false);
   //find the scaling factor to make the SS the same as the OS.
-  double the_scaling_factor = rs_bmass->Integral(rs_bmass->FindBin(5600.),rs_bmass->FindBin(6000.))/rs_ss_bmass->Integral(rs_ss_bmass->FindBin(5600.),rs_ss_bmass->FindBin(6000.));
-  cout<<"Now writing the high sideband scaling factor,"<<the_scaling_factor<<" to file"<<endl;
-  std::ofstream outfile;
-  outfile.open("./theScalingFactor.txt");
-  outfile<<the_scaling_factor;
-  outfile.close();
+ 
   //now integrate in signal region.
   //the bin width is (6500-2500)/4000=10
   //the min bin that we want is 3100, so (3100-2500)/10 = 60
   //the max bin is 5100, so (5100-2500)/10=260.
+  the_scaling_factor = rs_bmass->Integral(rs_bmass->FindBin(5600.),rs_bmass->FindBin(6000.))/rs_ss_bmass->Integral(rs_ss_bmass->FindBin(5600.),rs_ss_bmass->FindBin(6000.));
   double rs_ss_int_sig = rs_ss_bmass->Integral(rs_ss_bmass->FindBin(3100),rs_ss_bmass->FindBin(5100));
   double rs_int_sig = rs_bmass->Integral(rs_bmass->FindBin(3100),rs_bmass->FindBin(5100));
   cout<<"integral of SS in signal region of bmass = "<<rs_ss_int_sig<<endl;
@@ -116,6 +112,14 @@ void WrongB::MakeMassComparisons(){
   cout<<"ratio of SS over OS two = "<<rs_ss_int_sig/rs_int_sig<<endl;
   cout<<"multiplying by scale factor = "<<rs_ss_int_sig*the_scaling_factor/rs_int_sig<<endl;
   
+}
+
+void WrongB::WriteScaleFactor(){
+  cout<<"Now writing the high sideband scaling factor,"<<the_scaling_factor<<" to file"<<endl;
+  std::ofstream outfile;
+  outfile.open("./theScalingFactor.txt");
+  outfile<<the_scaling_factor;
+  outfile.close();
 }
 
 void WrongB::CompareIPchi2(){
