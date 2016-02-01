@@ -258,11 +258,11 @@ int main(int argc, char* const argv[]){
     pos_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
     neg_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
   }//commented out to try raw asymmetry
-  massFit* theFitspos;
-  massFit* theFitsneg;
+  massFit* theFitspos[nbins];
+  massFit* theFitsneg[nbins];
 
-  massFit* theFitsposWS;
-  massFit* theFitsnegWS;
+  massFit* theFitsposWS[nbins];
+  massFit* theFitsnegWS[nbins];
   
   double the_sig_pos[nbins],the_sig_pos_err[nbins];
   double the_sig_neg[nbins],the_sig_neg_err[nbins];
@@ -274,36 +274,27 @@ int main(int argc, char* const argv[]){
   double the_sig_negWSBlind[nbins],the_sig_negWSBlind_err[nbins];
 
   for(int i=0;i<nbins;++i){
-    theFitspos = new massFit(Form("RS_dst_mass_pos_bin%d",i+1),"j3g",w,"FinalExtraction");
-    theFitspos->setData(pos_bins[i]);
-    // if(i==0){
-    //   theFitspos->FloatMeanWidth();
-    // }
-    theFitspos->initValsByHand(thePars);
-    //theFitspos->FloatMeanWidth();
-    theFitspos->fit();
-    theFitspos->savePlots(true,Form("RS_dst_mass_pos_bin%d",i+1));
-    the_sig_pos[i]=theFitspos->getNsig()*2;//prescale
-    the_sig_pos_err[i]=theFitspos->getNsigErr()*2;//prescale
-    theFitspos->Reset();
+    theFitspos[i] = new massFit(Form("RS_dst_mass_pos_bin%d",i+1),"j3g",w,"FinalExtraction");
+    theFitspos[i]->setData(pos_bins[i]);
+    theFitspos[i]->initValsByHand(thePars);
+    theFitspos[i]->fit();
+    theFitspos[i]->savePlots(true,Form("RS_dst_mass_pos_bin%d",i+1));
+    the_sig_pos[i]=theFitspos[i]->getNsig()*2;//prescale
+    the_sig_pos_err[i]=theFitspos[i]->getNsigErr()*2;//prescale
+    theFitspos[i]->Reset();
   }
 
   
   for(int i=0;i<nbins;++i){
-    theFitsneg = new massFit(Form("RS_dst_mass_neg_bin%d",i+1),"j3g",w,"FinalExtraction");
-    theFitsneg->setData(neg_bins[i]);
-    // if(i==0){
-    //   theFitsneg->FloatMeanWidth();
-    // }
+    theFitsneg[i] = new massFit(Form("RS_dst_mass_neg_bin%d",i+1),"j3g",w,"FinalExtraction");
+    theFitsneg[i]->setData(neg_bins[i]);
+    theFitsneg[i]->initValsByHand(thePars);
+    theFitsneg[i]->fit();
+    theFitsneg[i]->savePlots(true,Form("RS_dst_mass_neg_bin%d",i+1));
+    the_sig_neg[i]=theFitsneg[i]->getNsig()*2;//prescale
+    the_sig_neg_err[i]=theFitsneg[i]->getNsigErr()*2;//prescale
 
-    theFitsneg->initValsByHand(thePars);
-    //    theFitsneg->FloatMeanWidth();
-    theFitsneg->fit();
-    theFitsneg->savePlots(true,Form("RS_dst_mass_neg_bin%d",i+1));
-    the_sig_neg[i]=theFitsneg->getNsig()*2;//prescale
-    the_sig_neg_err[i]=theFitsneg->getNsigErr()*2;//prescale
-
-    theFitsneg->Reset();
+    theFitsneg[i]->Reset();
   }
 
   //WS
@@ -315,36 +306,27 @@ int main(int argc, char* const argv[]){
 
   
   for(int i=0;i<nbins;++i){
-    theFitsposWS = new massFit(Form("WS_dst_mass_pos_bin%d",i+1),"j3g",w,"FinalExtraction");
-    theFitsposWS->setData(pos_bins[i]);
-    // if(i==0){
-    //   theFitsposWS->FloatMeanWidth();
-    // }
-    theFitsposWS->initValsByHand(thePars);
-    //theFitsposWS->FloatMeanWidth();
-    theFitsposWS->fit();
-    theFitsposWS->savePlots(true,Form("WS_dst_mass_pos_bin%d",i+1),true);
-    the_sig_posWS[i]=theFitsposWS->getNsig();
-    the_sig_posWS_err[i]=theFitsposWS->getNsigErr();
+    theFitsposWS[i] = new massFit(Form("WS_dst_mass_pos_bin%d",i+1),"j3g",w,"FinalExtraction");
+    theFitsposWS[i]->setData(pos_binsWS[i]);
+    theFitsposWS[i]->initValsByHand(thePars);
+    theFitsposWS[i]->fit();
+    theFitsposWS[i]->savePlots(true,Form("WS_dst_mass_pos_bin%d",i+1),true);
+    the_sig_posWS[i]=theFitsposWS[i]->getNsig();
+    the_sig_posWS_err[i]=theFitsposWS[i]->getNsigErr();
     theFitsposWS->Reset();
   }
 
   
   for(int i=0;i<nbins;++i){
-    theFitsnegWS = new massFit(Form("WS_dst_mass_neg_bin%d",i+1),"j3g",w,"FinalExtraction");
-    theFitsnegWS->setData(neg_bins[i]);
-    // if(i==0){
-    //   theFitsnegWS->FloatMeanWidth();
-    // }
+    theFitsnegWS[i] = new massFit(Form("WS_dst_mass_neg_bin%d",i+1),"j3g",w,"FinalExtraction");
+    theFitsnegWS[i]->setData(neg_binsWS[i]);
+    theFitsnegWS[i]->initValsByHand(thePars);
+    theFitsnegWS[i]->fit();
+    theFitsnegWS[i]->savePlots(true,Form("WS_dst_mass_neg_bin%d",i+1),true);
+    the_sig_negWS[i]=theFitsnegWS[i]->getNsig();
+    the_sig_negWS_err[i]=theFitsnegWS[i]->getNsigErr();
 
-    theFitsnegWS->initValsByHand(thePars);
-    //    theFitsnegWS->FloatMeanWidth();
-    theFitsnegWS->fit();
-    theFitsnegWS->savePlots(true,Form("WS_dst_mass_neg_bin%d",i+1),true);
-    the_sig_negWS[i]=theFitsnegWS->getNsig();
-    the_sig_negWS_err[i]=theFitsnegWS->getNsigErr();
-
-    theFitsnegWS->Reset();
+    theFitsnegWS[i]->Reset();
   }
 
   //now blind the shiz
