@@ -2,7 +2,7 @@
 #include "TimeDependent2D.h"
 //c++
 #include <iostream>
-
+#include <fstream>
 #include <cmath>
 #include <string>
 
@@ -23,7 +23,7 @@ TimeDependent2D::TimeDependent2D(TString histName, TFile *f1, TString saveName, 
   std::ifstream sf_file("./theScalingFactor.txt");
   while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
   cout<<"read scaling factor "<<the_scaling_factor<<endl;
-  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
   sf_file.close();
 
   std::vector<int>slices_local = slices;

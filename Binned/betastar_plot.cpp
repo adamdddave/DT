@@ -60,7 +60,7 @@ betastar_plot::betastar_plot(TString name  ) {
   std::ifstream sf_file("./theScalingFactor.txt");
   while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
   cout<<"read scaling factor "<<the_scaling_factor<<endl;
-  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
   sf_file.close();
 
   m_name =name.ReplaceAll("/DecayTree","");
@@ -183,7 +183,7 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
   std::ifstream sf_file("./theScalingFactor.txt");
   while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
   cout<<"read scaling factor "<<the_scaling_factor<<endl;
-  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
   sf_file.close();
 
   m_name = name;
@@ -291,7 +291,7 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   std::ifstream sf_file("./theScalingFactor.txt");
   while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
   cout<<"read scaling factor "<<the_scaling_factor<<endl;
-  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
   sf_file.close();
 
   m_name = name;

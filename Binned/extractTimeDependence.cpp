@@ -313,7 +313,7 @@ int main(int argc, char* const argv[]){
     theFitsposWS[i]->savePlots(true,Form("WS_dst_mass_pos_bin%d",i+1),true);
     the_sig_posWS[i]=theFitsposWS[i]->getNsig();
     the_sig_posWS_err[i]=theFitsposWS[i]->getNsigErr();
-    theFitsposWS->Reset();
+    theFitsposWS[i]->Reset();
   }
 
   
@@ -420,10 +420,10 @@ int main(int argc, char* const argv[]){
   system("chmod -rx ./SavedFits/final_yields_in_bins_*.txt");
   
 
-  delete theFitspos;
-  delete theFitsneg;
-  delete theFitsposWS;
-  delete theFitsnegWS;
+  // delete theFitspos;
+  // delete theFitsneg;
+  // delete theFitsposWS;
+  // delete theFitsnegWS;
   return 0;
 
 }
