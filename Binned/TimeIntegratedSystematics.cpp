@@ -164,7 +164,14 @@ int main(int argc, char* const argv[]){
   TimeIntegratedSystematicsClass pi_pidk("pi_pidk",f1,w,"RS_dst_mass_vs_pi_pidk","RS_ss_dst_mass_vs_pi_pidk","RS_dt_hist_pi_pid_k_bin","RS_ss_dt_hist_pi_pid_k_bin",bins_pi_pidk,5,thePars);
   std::vector<double>point_pi_pidk ( pi_pidk.GetSignalPoint());
   
-    
+  //first thing, get the scaling factor from the file  
+  double the_scaling_factor;
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  sf_file.close();
+
   //return 0;
 
   //return 0;
@@ -173,11 +180,11 @@ int main(int argc, char* const argv[]){
   //easier just to do the two histograms by hand.
   TH1D* d0_hist = (TH1D*)f1->Get("RS_dt_hist_dstar_m_pos");
   d0_hist->Sumw2();
-  d0_hist->Add((TH1D*)f1->Get("RS_ss_dt_hist_dstar_m_pos"),-1);
+  d0_hist->Add((TH1D*)f1->Get("RS_ss_dt_hist_dstar_m_pos"),-the_scaling_factor);
 
   TH1D* d0bar_hist = (TH1D*)f1->Get("RS_dt_hist_dstar_m_neg");
   d0bar_hist->Sumw2();
-  d0bar_hist->Add((TH1D*)f1->Get("RS_ss_dt_hist_dstar_m_neg"),-1);
+  d0bar_hist->Add((TH1D*)f1->Get("RS_ss_dt_hist_dstar_m_neg"),-the_scaling_factor);
   massFit d0validation(channelFromFile+"d0_separated_validation","j3g",w,"TimeIntegratedSystematics");
   d0validation.setData(d0_hist);
   d0validation.FloatMeanWidth();
@@ -212,7 +219,7 @@ int main(int argc, char* const argv[]){
   massFit tot_validation(channelFromFile+"_validation_for_time_int","j3g",w);
   TH1D* tot_mass = (TH1D*)f1->Get("RS_dt_hist_dstar_m");
   tot_mass->Sumw2();
-  tot_mass->Add((TH1D*)f1->Get("RS_ss_dt_hist_dstar_m"),-1);
+  tot_mass->Add((TH1D*)f1->Get("RS_ss_dt_hist_dstar_m"),-the_scaling_factor);
   tot_validation.setData(tot_mass);
   tot_validation.fit();
   TH1D* the_final_comp = new TH1D("the_final_comp","; ;N Signal (D*)",9,0.5,9.5);

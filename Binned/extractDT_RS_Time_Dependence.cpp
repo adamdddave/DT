@@ -83,6 +83,14 @@ int main(int argc, char* const argv[]){
     return 0;
   }
   cout<<"getting channel "<<channelFromFile<<endl;
+  //first thing, get the scaling factor from the file  
+  double the_scaling_factor;//for scaling SS to OS
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  //add some code to possibly change this to be time dependent as well.
+  sf_file.close();
 
   std::vector<TH1D*>pos_bins,neg_bins;
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
@@ -103,8 +111,8 @@ int main(int argc, char* const argv[]){
   }
 
   for(int i=0; i<nbins;++i){
-    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-1);
-    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-1);
+    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
+    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
   }//commented out to try raw asymmetry
   massFit* theFitspos;
   massFit* theFitsneg;

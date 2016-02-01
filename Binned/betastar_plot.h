@@ -166,6 +166,7 @@ public:
 protected:
 
 private:
+  double the_scaling_factor;//for SS subtraction
   RooWorkspace *w_local;
   TString m_name;
   double intf(double x, double p[],int n);

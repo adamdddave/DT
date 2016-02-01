@@ -77,6 +77,14 @@ int main(int argc, char* const argv[]){
     cin>>blah;
     floatstuff = true;
   }
+  //first thing, get the scaling factor from the file  
+  double the_scaling_factor;//for scaling SS to OS
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  sf_file.close();
+
   bool isWS = false;
   TString fitName = argv[1];
   TString histName = "_dt_hist_dstar_m";
@@ -107,7 +115,7 @@ int main(int argc, char* const argv[]){
   TH1D* mass = (TH1D*)f1->Get(histName);
   TH1D* ss_mass = (TH1D*)f1->Get(histSSName);
   TH1D* hist = (TH1D*)mass->Clone("mass");
-  hist->Add(ss_mass,-1);//try to subtract the peaking bkg from the wrong b.
+  hist->Add(ss_mass,-the_scaling_factor);//try to subtract the peaking bkg from the wrong b.
   //f1->Close();
   
   if(!hist){

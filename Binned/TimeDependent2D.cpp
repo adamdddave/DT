@@ -18,7 +18,14 @@
 using namespace std;
 TimeDependent2D::TimeDependent2D(TString histName, TFile *f1, TString saveName, std::vector<int> slices){
   mName = histName;
-  
+  //first thing, get the scaling factor from the file  
+  double the_scaling_factor;//possibly make time dependent.
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  sf_file.close();
+
   std::vector<int>slices_local = slices;
   mSaveName = "./SavedFits/TimeDependentSystematics/"+saveName;
   //hist name tells us the 2d histogram from the file, so get it.
@@ -30,14 +37,14 @@ TimeDependent2D::TimeDependent2D(TString histName, TFile *f1, TString saveName, 
   theHist_vs_time->Sumw2();
   TH2D* time_subtr =(TH2D*)f1->Get("RS_ss_"+histName);
   time_subtr->Sumw2();
-  theHist_vs_time->Add(time_subtr,-1);
+  theHist_vs_time->Add(time_subtr,-the_scaling_factor);
   TString hist_name_v_mass = histName;
   hist_name_v_mass.ReplaceAll("td0","dstm");
   theHist_vs_mass = (TH2D*)f1->Get("RS_"+hist_name_v_mass);
   theHist_vs_mass->Sumw2();
   TH2D* mass_subtr =(TH2D*)f1->Get("RS_ss_"+hist_name_v_mass);
   mass_subtr->Sumw2();
-  theHist_vs_mass->Add(mass_subtr,-1);
+  theHist_vs_mass->Add(mass_subtr,-the_scaling_factor);
   //now, if slices are blank, calculate them myself as 5 bins of approximately equal population.
   if(slices_local.empty()){
     cout<<"calculating bin boundaries for stuff."<<endl;

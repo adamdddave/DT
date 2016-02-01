@@ -69,6 +69,7 @@ using namespace std;
 // Standard constructor, initializes variables
 //=============================================================================
 massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString localDir,bool addsigbox) {
+
   addSigBox = addsigbox;
   channel = Channel;
   setFitModel(modelname);

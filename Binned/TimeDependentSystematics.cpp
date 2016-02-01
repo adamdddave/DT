@@ -58,6 +58,14 @@ using namespace PlottingTools;
 
 
 int main(int argc, char* const argv[]){
+  //first thing, get the scaling factor from the file  
+  double the_scaling_factor;
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  sf_file.close();
+
   setLHCbcanvas();
   cout<<"Code for doing Time Dependent Systematics"<<endl;
   if(argc<3){
@@ -114,8 +122,8 @@ int main(int argc, char* const argv[]){
   }
 
   for(int i=0; i<nbins;++i){
-    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-1);
-    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-1);
+    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
+    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
   }//commented out to try raw asymmetry
   //now fit each one.
   massFit* theFitspos;
@@ -169,7 +177,7 @@ int main(int argc, char* const argv[]){
   TH1D* the_td_distr_ss  = (TH1D*)f1->Get("RS_ss_dt_d0_decay_time_distr");
   the_td_distr->Sumw2();
   the_td_distr_ss->Sumw2();
-  the_td_distr->Add(the_td_distr_ss,-1);
+  the_td_distr->Add(the_td_distr_ss,-the_scaling_factor);
   int bins_td []= {451,521,551,591,651,the_td_distr->GetNbinsX()};
   //int bins_td []= {46,52,53,55,56,58,60,63,66,108,the_td_distr->GetNbinsX()};
 

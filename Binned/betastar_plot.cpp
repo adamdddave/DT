@@ -56,6 +56,13 @@ using namespace RooFit ;
 // Standard constructor, initializes variables
 //=============================================================================
 betastar_plot::betastar_plot(TString name  ) {
+  //first thing, get the scaling factor from the file  
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  sf_file.close();
+
   m_name =name.ReplaceAll("/DecayTree","");
   std::cout<<"constructin betastar_plot with name "<<m_name<<std::endl;
   
@@ -172,6 +179,13 @@ betastar_plot::betastar_plot(TString name  ) {
 //=============================================================================
 
 betastar_plot::betastar_plot(TFile *file, TString name) {
+  //first thing, get the scaling factor from the file  
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  sf_file.close();
+
   m_name = name;
   std::cout<<"Looking for file "<<m_name<<"_h2sig"<<std::endl;
   h2sig=(TH2*)file->Get(m_name+"_h2sig");
@@ -273,6 +287,13 @@ betastar_plot::betastar_plot(TFile *file, TString name) {
 //=============================================================================
 
 betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
+  //first thing, get the scaling factor from the file  
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  sf_file.close();
+
   m_name = name;
   std::cout<<"Looking for file "<<m_name<<"_h2sig"<<std::endl;
   h2sig=(TH2*)f1->Get(m_name+"_h2sig");
@@ -457,101 +478,101 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   TH1* double_misid_dmass_dst_sideband_region_bin2_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region_bin2");
   TH1* double_misid_dmass_dst_sideband_region_bin3_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region_bin3");
   TH1* double_misid_dmass_dst_sideband_region_bin4_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region_bin4");
-  TH1* double_misid_dmass_dst_sideband_region_bin5_bkg= (TH1*)fbkg->Get(m_name+"_double_misid_dmass_dst_sideband_region_bin5");
+  TH1* double_misid_dmass_dst_sideband_region_bin5_bkg= (TH1*)fbkg->Get(m_name_ss+"_double_misid_dmass_dst_sideband_region_bin5");
   //do bkg subtraction
   /*
-  h2sig->Add(h2sig_bkg,-1);
-  h2kpisb->Add(h2kpisb_bkg,-1);
-  h2kpisb_hi->Add(h2kpisb_hi_bkg,-1);
-  h2kpisb_lo->Add(h2kpisb_lo_bkg,-1);
-  h2kksb->Add(h2kksb_bkg,-1);
-  h2pipisb->Add(h2pipisb_bkg,-1);
-  h2piksb->Add(h2piksb_bkg,-1);
-  h2rob->Add(h2rob_bkg,-1);
-  h2kpisb_cut_range->Add(h2kpisb_cut_range_bkg,-1);
-  h2pi_probnnmu_dstar_sideband_high->Add(h2pi_probnnmu_dstar_sideband_high_bkg,-1);
-  h2pi_probnnmu_dstar_sideband_low->Add(h2pi_probnnmu_dstar_sideband_low_bkg,-1);
-  h2k_probnnmu_dstar_sideband_high->Add(h2k_probnnmu_dstar_sideband_high_bkg,-1);
-  h2k_probnnmu_dstar_sideband_low->Add(h2k_probnnmu_dstar_sideband_low_bkg,-1);
-  h2pi_probnne_dstar_sideband_high->Add(h2pi_probnne_dstar_sideband_high_bkg,-1);
-  h2pi_probnne_dstar_sideband_low->Add(h2pi_probnne_dstar_sideband_low_bkg,-1);
-  h2k_probnne_dstar_sideband_high->Add(h2k_probnne_dstar_sideband_high_bkg,-1);
-  h2k_probnne_dstar_sideband_low->Add(h2k_probnne_dstar_sideband_low_bkg,-1);
+  h2sig->Add(h2sig_bkg,-the_scaling_factor);
+  h2kpisb->Add(h2kpisb_bkg,-the_scaling_factor);
+  h2kpisb_hi->Add(h2kpisb_hi_bkg,-the_scaling_factor);
+  h2kpisb_lo->Add(h2kpisb_lo_bkg,-the_scaling_factor);
+  h2kksb->Add(h2kksb_bkg,-the_scaling_factor);
+  h2pipisb->Add(h2pipisb_bkg,-the_scaling_factor);
+  h2piksb->Add(h2piksb_bkg,-the_scaling_factor);
+  h2rob->Add(h2rob_bkg,-the_scaling_factor);
+  h2kpisb_cut_range->Add(h2kpisb_cut_range_bkg,-the_scaling_factor);
+  h2pi_probnnmu_dstar_sideband_high->Add(h2pi_probnnmu_dstar_sideband_high_bkg,-the_scaling_factor);
+  h2pi_probnnmu_dstar_sideband_low->Add(h2pi_probnnmu_dstar_sideband_low_bkg,-the_scaling_factor);
+  h2k_probnnmu_dstar_sideband_high->Add(h2k_probnnmu_dstar_sideband_high_bkg,-the_scaling_factor);
+  h2k_probnnmu_dstar_sideband_low->Add(h2k_probnnmu_dstar_sideband_low_bkg,-the_scaling_factor);
+  h2pi_probnne_dstar_sideband_high->Add(h2pi_probnne_dstar_sideband_high_bkg,-the_scaling_factor);
+  h2pi_probnne_dstar_sideband_low->Add(h2pi_probnne_dstar_sideband_low_bkg,-the_scaling_factor);
+  h2k_probnne_dstar_sideband_high->Add(h2k_probnne_dstar_sideband_high_bkg,-the_scaling_factor);
+  h2k_probnne_dstar_sideband_low->Add(h2k_probnne_dstar_sideband_low_bkg,-the_scaling_factor);
   */
   cout<<"adding backgrounds"<<endl;
-  hmsig->Add(hmsig_bkg,-1);
-  hmkpisb->Add(hmkpisb_bkg,-1);
-  hmkksb->Add(hmkksb_bkg,-1);
-  hmpipisb->Add(hmpipisb_bkg,-1);
-  hmpiksb->Add(hmpiksb_bkg,-1);
-  hmrob->Add(hmrob_bkg,-1);
+  hmsig->Add(hmsig_bkg,-the_scaling_factor);
+  hmkpisb->Add(hmkpisb_bkg,-the_scaling_factor);
+  hmkksb->Add(hmkksb_bkg,-the_scaling_factor);
+  hmpipisb->Add(hmpipisb_bkg,-the_scaling_factor);
+  hmpiksb->Add(hmpiksb_bkg,-the_scaling_factor);
+  hmrob->Add(hmrob_bkg,-the_scaling_factor);
   cout<<"starting the sidebands"<<endl;
-  hmkpisb_cut_range->Add(hmkpisb_cut_range_bkg,-1);
-  hmkpisb_cut_range_hi->Add(hmkpisb_cut_range_hi_bkg,-1);
-  hmkpisb_cut_range_lo->Add(hmkpisb_cut_range_lo_bkg,-1);
-  hmkpisb_cut_range_hi_1->Add(hmkpisb_cut_range_hi_1_bkg,-1);
-  hmkpisb_cut_range_hi_2->Add(hmkpisb_cut_range_hi_2_bkg,-1);
-  hmkpisb_cut_range_hi_3->Add(hmkpisb_cut_range_hi_3_bkg,-1);
-  hmkpisb_cut_range_hi_4->Add(hmkpisb_cut_range_hi_4_bkg,-1);
-  hmkpisb_cut_range_hi_5->Add(hmkpisb_cut_range_hi_5_bkg,-1);
-  hmkpisb_cut_range_hi_6->Add(hmkpisb_cut_range_hi_6_bkg,-1);
+  hmkpisb_cut_range->Add(hmkpisb_cut_range_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_hi->Add(hmkpisb_cut_range_hi_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_lo->Add(hmkpisb_cut_range_lo_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_hi_1->Add(hmkpisb_cut_range_hi_1_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_hi_2->Add(hmkpisb_cut_range_hi_2_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_hi_3->Add(hmkpisb_cut_range_hi_3_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_hi_4->Add(hmkpisb_cut_range_hi_4_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_hi_5->Add(hmkpisb_cut_range_hi_5_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_hi_6->Add(hmkpisb_cut_range_hi_6_bkg,-the_scaling_factor);
   
-  hmkpisb_cut_range_lo_1->Add(hmkpisb_cut_range_lo_1_bkg,-1);
-  hmkpisb_cut_range_lo_2->Add(hmkpisb_cut_range_lo_2_bkg,-1);
-  hmkpisb_cut_range_lo_3->Add(hmkpisb_cut_range_lo_3_bkg,-1);
-  hmkpisb_cut_range_lo_4->Add(hmkpisb_cut_range_lo_4_bkg,-1);
-  hmkpisb_cut_range_lo_5->Add(hmkpisb_cut_range_lo_5_bkg,-1);
-  hmkpisb_cut_range_lo_6->Add(hmkpisb_cut_range_lo_6_bkg,-1);
+  hmkpisb_cut_range_lo_1->Add(hmkpisb_cut_range_lo_1_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_lo_2->Add(hmkpisb_cut_range_lo_2_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_lo_3->Add(hmkpisb_cut_range_lo_3_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_lo_4->Add(hmkpisb_cut_range_lo_4_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_lo_5->Add(hmkpisb_cut_range_lo_5_bkg,-the_scaling_factor);
+  hmkpisb_cut_range_lo_6->Add(hmkpisb_cut_range_lo_6_bkg,-the_scaling_factor);
   cout<<"starting the sidebands,positive"<<endl;
   //charged
-  hmkpisb_pos_cut_range_hi_1->Add(hmkpisb_pos_cut_range_hi_1_bkg,-1);
-  hmkpisb_pos_cut_range_hi_2->Add(hmkpisb_pos_cut_range_hi_2_bkg,-1);
-  hmkpisb_pos_cut_range_hi_3->Add(hmkpisb_pos_cut_range_hi_3_bkg,-1);
-  hmkpisb_pos_cut_range_hi_4->Add(hmkpisb_pos_cut_range_hi_4_bkg,-1);
-  hmkpisb_pos_cut_range_hi_5->Add(hmkpisb_pos_cut_range_hi_5_bkg,-1);
-  hmkpisb_pos_cut_range_hi_6->Add(hmkpisb_pos_cut_range_hi_6_bkg,-1);
+  hmkpisb_pos_cut_range_hi_1->Add(hmkpisb_pos_cut_range_hi_1_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_hi_2->Add(hmkpisb_pos_cut_range_hi_2_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_hi_3->Add(hmkpisb_pos_cut_range_hi_3_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_hi_4->Add(hmkpisb_pos_cut_range_hi_4_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_hi_5->Add(hmkpisb_pos_cut_range_hi_5_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_hi_6->Add(hmkpisb_pos_cut_range_hi_6_bkg,-the_scaling_factor);
   
-  hmkpisb_pos_cut_range_lo_1->Add(hmkpisb_pos_cut_range_lo_1_bkg,-1);
-  hmkpisb_pos_cut_range_lo_2->Add(hmkpisb_pos_cut_range_lo_2_bkg,-1);
-  hmkpisb_pos_cut_range_lo_3->Add(hmkpisb_pos_cut_range_lo_3_bkg,-1);
-  hmkpisb_pos_cut_range_lo_4->Add(hmkpisb_pos_cut_range_lo_4_bkg,-1);
-  hmkpisb_pos_cut_range_lo_5->Add(hmkpisb_pos_cut_range_lo_5_bkg,-1);
-  hmkpisb_pos_cut_range_lo_6->Add(hmkpisb_pos_cut_range_lo_6_bkg,-1);
+  hmkpisb_pos_cut_range_lo_1->Add(hmkpisb_pos_cut_range_lo_1_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_lo_2->Add(hmkpisb_pos_cut_range_lo_2_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_lo_3->Add(hmkpisb_pos_cut_range_lo_3_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_lo_4->Add(hmkpisb_pos_cut_range_lo_4_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_lo_5->Add(hmkpisb_pos_cut_range_lo_5_bkg,-the_scaling_factor);
+  hmkpisb_pos_cut_range_lo_6->Add(hmkpisb_pos_cut_range_lo_6_bkg,-the_scaling_factor);
   cout<<"starting the sidebands,negative"<<endl;
-  hmkpisb_neg_cut_range_hi_1->Add(hmkpisb_neg_cut_range_hi_1_bkg,-1);
-  hmkpisb_neg_cut_range_hi_2->Add(hmkpisb_neg_cut_range_hi_2_bkg,-1);
-  hmkpisb_neg_cut_range_hi_3->Add(hmkpisb_neg_cut_range_hi_3_bkg,-1);
-  hmkpisb_neg_cut_range_hi_4->Add(hmkpisb_neg_cut_range_hi_4_bkg,-1);
-  hmkpisb_neg_cut_range_hi_5->Add(hmkpisb_neg_cut_range_hi_5_bkg,-1);
-  hmkpisb_neg_cut_range_hi_6->Add(hmkpisb_neg_cut_range_hi_6_bkg,-1);
+  hmkpisb_neg_cut_range_hi_1->Add(hmkpisb_neg_cut_range_hi_1_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_hi_2->Add(hmkpisb_neg_cut_range_hi_2_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_hi_3->Add(hmkpisb_neg_cut_range_hi_3_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_hi_4->Add(hmkpisb_neg_cut_range_hi_4_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_hi_5->Add(hmkpisb_neg_cut_range_hi_5_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_hi_6->Add(hmkpisb_neg_cut_range_hi_6_bkg,-the_scaling_factor);
   
-  hmkpisb_neg_cut_range_lo_1->Add(hmkpisb_neg_cut_range_lo_1_bkg,-1);
-  hmkpisb_neg_cut_range_lo_2->Add(hmkpisb_neg_cut_range_lo_2_bkg,-1);
-  hmkpisb_neg_cut_range_lo_3->Add(hmkpisb_neg_cut_range_lo_3_bkg,-1);
-  hmkpisb_neg_cut_range_lo_4->Add(hmkpisb_neg_cut_range_lo_4_bkg,-1);
-  hmkpisb_neg_cut_range_lo_5->Add(hmkpisb_neg_cut_range_lo_5_bkg,-1);
-  hmkpisb_neg_cut_range_lo_6->Add(hmkpisb_neg_cut_range_lo_6_bkg,-1);
+  hmkpisb_neg_cut_range_lo_1->Add(hmkpisb_neg_cut_range_lo_1_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_lo_2->Add(hmkpisb_neg_cut_range_lo_2_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_lo_3->Add(hmkpisb_neg_cut_range_lo_3_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_lo_4->Add(hmkpisb_neg_cut_range_lo_4_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_lo_5->Add(hmkpisb_neg_cut_range_lo_5_bkg,-the_scaling_factor);
+  hmkpisb_neg_cut_range_lo_6->Add(hmkpisb_neg_cut_range_lo_6_bkg,-the_scaling_factor);
 
   cout<<"done with the sidebands"<<endl;
   
-  hmD0_pik_sig->Add(hmD0_pik_sig_bkg,-1);
-  hmD0_pik_sb->Add(hmD0_pik_sb_bkg,-1);
-  hmD0_pik_tot->Add(hmD0_pik_tot_bkg,-1);
+  hmD0_pik_sig->Add(hmD0_pik_sig_bkg,-the_scaling_factor);
+  hmD0_pik_sb->Add(hmD0_pik_sb_bkg,-the_scaling_factor);
+  hmD0_pik_tot->Add(hmD0_pik_tot_bkg,-the_scaling_factor);
 
-  double_misid_dmass_dst_sig_region->Add(double_misid_dmass_dst_sig_region_bkg,-1);
-  double_misid_dmass_dst_sideband_region->Add(double_misid_dmass_dst_sideband_region_bkg,-1);
+  double_misid_dmass_dst_sig_region->Add(double_misid_dmass_dst_sig_region_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sideband_region->Add(double_misid_dmass_dst_sideband_region_bkg,-the_scaling_factor);
 
-  double_misid_dmass_dst_sig_region_bin1->Add(double_misid_dmass_dst_sig_region_bin1_bkg,-1);
-  double_misid_dmass_dst_sig_region_bin2->Add(double_misid_dmass_dst_sig_region_bin2_bkg,-1);
-  double_misid_dmass_dst_sig_region_bin3->Add(double_misid_dmass_dst_sig_region_bin3_bkg,-1);
-  double_misid_dmass_dst_sig_region_bin4->Add(double_misid_dmass_dst_sig_region_bin4_bkg,-1);
-  double_misid_dmass_dst_sig_region_bin5->Add(double_misid_dmass_dst_sig_region_bin5_bkg,-1);
+  double_misid_dmass_dst_sig_region_bin1->Add(double_misid_dmass_dst_sig_region_bin1_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sig_region_bin2->Add(double_misid_dmass_dst_sig_region_bin2_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sig_region_bin3->Add(double_misid_dmass_dst_sig_region_bin3_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sig_region_bin4->Add(double_misid_dmass_dst_sig_region_bin4_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sig_region_bin5->Add(double_misid_dmass_dst_sig_region_bin5_bkg,-the_scaling_factor);
 
-  double_misid_dmass_dst_sideband_region_bin1->Add(double_misid_dmass_dst_sideband_region_bin1_bkg,-1);
-  double_misid_dmass_dst_sideband_region_bin2->Add(double_misid_dmass_dst_sideband_region_bin2_bkg,-1);
-  double_misid_dmass_dst_sideband_region_bin3->Add(double_misid_dmass_dst_sideband_region_bin3_bkg,-1);
-  double_misid_dmass_dst_sideband_region_bin4->Add(double_misid_dmass_dst_sideband_region_bin4_bkg,-1);
-  double_misid_dmass_dst_sideband_region_bin5->Add(double_misid_dmass_dst_sideband_region_bin5_bkg,-1);
+  double_misid_dmass_dst_sideband_region_bin1->Add(double_misid_dmass_dst_sideband_region_bin1_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sideband_region_bin2->Add(double_misid_dmass_dst_sideband_region_bin2_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sideband_region_bin3->Add(double_misid_dmass_dst_sideband_region_bin3_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sideband_region_bin4->Add(double_misid_dmass_dst_sideband_region_bin4_bkg,-the_scaling_factor);
+  double_misid_dmass_dst_sideband_region_bin5->Add(double_misid_dmass_dst_sideband_region_bin5_bkg,-the_scaling_factor);
   //clean up the pointers
   delete  hmsig_bkg;
   delete  hmkpisb_bkg;
@@ -612,17 +633,17 @@ betastar_plot::betastar_plot(TFile *f1, TFile* fbkg,TString name) {
   delete  double_misid_dmass_dst_sig_region_bkg;
   delete  double_misid_dmass_dst_sideband_region_bkg;
 
-  delete  double_misid_dmass_dst_sig_region_bin1_bkg;
-  delete  double_misid_dmass_dst_sig_region_bin2_bkg;
-  delete  double_misid_dmass_dst_sig_region_bin3_bkg;
-  delete  double_misid_dmass_dst_sig_region_bin4_bkg;
-  delete  double_misid_dmass_dst_sig_region_bin5_bkg;
+//   delete  double_misid_dmass_dst_sig_region_bin1_bkg;
+//   delete  double_misid_dmass_dst_sig_region_bin2_bkg;
+//   delete  double_misid_dmass_dst_sig_region_bin3_bkg;
+//   delete  double_misid_dmass_dst_sig_region_bin4_bkg;
+//   delete  double_misid_dmass_dst_sig_region_bin5_bkg;
 
-  delete  double_misid_dmass_dst_sideband_region_bin1_bkg;
-  delete  double_misid_dmass_dst_sideband_region_bin2_bkg;
-  delete  double_misid_dmass_dst_sideband_region_bin3_bkg;
-  delete  double_misid_dmass_dst_sideband_region_bin4_bkg;
-  delete  double_misid_dmass_dst_sideband_region_bin5_bkg;
+//   delete  double_misid_dmass_dst_sideband_region_bin1_bkg;
+//   delete  double_misid_dmass_dst_sideband_region_bin2_bkg;
+//   delete  double_misid_dmass_dst_sideband_region_bin3_bkg;
+//   delete  double_misid_dmass_dst_sideband_region_bin4_bkg;
+//   delete  double_misid_dmass_dst_sideband_region_bin5_bkg;
 }
 //=============================================================================
 // Destructor
@@ -657,44 +678,44 @@ betastar_plot::~betastar_plot() {
   delete hmkpisb_cut_range ;
   delete hmkpisb_cut_range_hi ;
   delete hmkpisb_cut_range_lo ;
-  delete hmkpisb_cut_range_hi_1 ;
-  delete hmkpisb_cut_range_hi_2 ;
-  delete hmkpisb_cut_range_hi_3 ;
-  delete hmkpisb_cut_range_hi_4 ;
-  delete hmkpisb_cut_range_hi_5 ;
-  delete hmkpisb_cut_range_hi_6 ;
-  delete hmkpisb_cut_range_lo_1 ;
-  delete hmkpisb_cut_range_lo_2 ;
-  delete hmkpisb_cut_range_lo_3 ;
-  delete hmkpisb_cut_range_lo_4 ;
-  delete hmkpisb_cut_range_lo_5 ;
-  delete hmkpisb_cut_range_lo_6 ;
+//   delete hmkpisb_cut_range_hi_1 ;
+//   delete hmkpisb_cut_range_hi_2 ;
+//   delete hmkpisb_cut_range_hi_3 ;
+//   delete hmkpisb_cut_range_hi_4 ;
+//   delete hmkpisb_cut_range_hi_5 ;
+//   delete hmkpisb_cut_range_hi_6 ;
+//   delete hmkpisb_cut_range_lo_1 ;
+//   delete hmkpisb_cut_range_lo_2 ;
+//   delete hmkpisb_cut_range_lo_3 ;
+//   delete hmkpisb_cut_range_lo_4 ;
+//   delete hmkpisb_cut_range_lo_5 ;
+//   delete hmkpisb_cut_range_lo_6 ;
 
-    delete hmkpisb_pos_cut_range_hi_1 ;
-  delete hmkpisb_pos_cut_range_hi_2 ;
-  delete hmkpisb_pos_cut_range_hi_3 ;
-  delete hmkpisb_pos_cut_range_hi_4 ;
-  delete hmkpisb_pos_cut_range_hi_5 ;
-  delete hmkpisb_pos_cut_range_hi_6 ;
-  delete hmkpisb_pos_cut_range_lo_1 ;
-  delete hmkpisb_pos_cut_range_lo_2 ;
-  delete hmkpisb_pos_cut_range_lo_3 ;
-  delete hmkpisb_pos_cut_range_lo_4 ;
-  delete hmkpisb_pos_cut_range_lo_5 ;
-  delete hmkpisb_pos_cut_range_lo_6 ;
+//     delete hmkpisb_pos_cut_range_hi_1 ;
+//   delete hmkpisb_pos_cut_range_hi_2 ;
+//   delete hmkpisb_pos_cut_range_hi_3 ;
+//   delete hmkpisb_pos_cut_range_hi_4 ;
+//   delete hmkpisb_pos_cut_range_hi_5 ;
+//   delete hmkpisb_pos_cut_range_hi_6 ;
+//   delete hmkpisb_pos_cut_range_lo_1 ;
+//   delete hmkpisb_pos_cut_range_lo_2 ;
+//   delete hmkpisb_pos_cut_range_lo_3 ;
+//   delete hmkpisb_pos_cut_range_lo_4 ;
+//   delete hmkpisb_pos_cut_range_lo_5 ;
+//   delete hmkpisb_pos_cut_range_lo_6 ;
 
-    delete hmkpisb_neg_cut_range_hi_1 ;
-  delete hmkpisb_neg_cut_range_hi_2 ;
-  delete hmkpisb_neg_cut_range_hi_3 ;
-  delete hmkpisb_neg_cut_range_hi_4 ;
-  delete hmkpisb_neg_cut_range_hi_5 ;
-  delete hmkpisb_neg_cut_range_hi_6 ;
-  delete hmkpisb_neg_cut_range_lo_1 ;
-  delete hmkpisb_neg_cut_range_lo_2 ;
-  delete hmkpisb_neg_cut_range_lo_3 ;
-  delete hmkpisb_neg_cut_range_lo_4 ;
-  delete hmkpisb_neg_cut_range_lo_5 ;
-  delete hmkpisb_neg_cut_range_lo_6 ;
+//     delete hmkpisb_neg_cut_range_hi_1 ;
+//   delete hmkpisb_neg_cut_range_hi_2 ;
+//   delete hmkpisb_neg_cut_range_hi_3 ;
+//   delete hmkpisb_neg_cut_range_hi_4 ;
+//   delete hmkpisb_neg_cut_range_hi_5 ;
+//   delete hmkpisb_neg_cut_range_hi_6 ;
+//   delete hmkpisb_neg_cut_range_lo_1 ;
+//   delete hmkpisb_neg_cut_range_lo_2 ;
+//   delete hmkpisb_neg_cut_range_lo_3 ;
+//   delete hmkpisb_neg_cut_range_lo_4 ;
+//   delete hmkpisb_neg_cut_range_lo_5 ;
+//   delete hmkpisb_neg_cut_range_lo_6 ;
 
   delete hmD0_pik_sig ;
   delete hmD0_pik_sb ;

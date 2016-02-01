@@ -128,6 +128,14 @@ double theBlindingFunctionNeg(double tval, double tsqval, double nRS,
 //and the main
 
 int main(int argc, char* const argv[]){
+  //first thing, get the scaling factor from the file  
+  double the_scaling_factor;
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
+  sf_file.close();
+
   setLHCbcanvas();
   bool blind=true;
   // New 1-23-16. Use the blinding on the dataset instead of the fitter. Read Augusto's seed here.
@@ -193,11 +201,11 @@ int main(int argc, char* const argv[]){
 
   rs_time_histo_pos->Sumw2();
   rs_ss_time_histo_pos->Sumw2();
-  rs_time_histo_pos->Add(rs_ss_time_histo_pos,-1);
+  rs_time_histo_pos->Add(rs_ss_time_histo_pos,-the_scaling_factor);
 
   rs_time_histo_neg->Sumw2();
   rs_ss_time_histo_neg->Sumw2();
-  rs_time_histo_neg->Add(rs_ss_time_histo_neg,-1);
+  rs_time_histo_neg->Add(rs_ss_time_histo_neg,-the_scaling_factor);
   std::vector<double> mean_t_pos, mean_t2_pos, mean_t_neg,mean_t2_neg;
   //the time squared calculation is not what we want. We want the second moment of t.
   int bins_td []= {451,521,551,591,651,rs_time_histo_pos->GetNbinsX()};//bin boundaries
@@ -244,11 +252,11 @@ int main(int argc, char* const argv[]){
   }
 
   for(int i=0; i<nbins;++i){
-    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-1);
-    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-1);
+    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
+    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
     //WS
-    pos_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_pos_bin%d",i+1)),-1);
-    neg_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_neg_bin%d",i+1)),-1);
+    pos_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
+    neg_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
   }//commented out to try raw asymmetry
   massFit* theFitspos;
   massFit* theFitsneg;
