@@ -180,7 +180,7 @@ void DT_D0_mix_CPV::Loop()
 	 //Pd_PIDK<-2 && Pd_PIDK>=-5 &&//loose pi//changed from +2
 	 
          Ps_PIDe<pi_slow_pide_cut &&
-         Ps_ProbNNghost<pi_slow_probnnghost_cut &&
+         //Ps_ProbNNghost<pi_slow_probnnghost_cut &&//bullshit leftovers
          Mu_L0MuonDecision_TOS==1&&
 	 //Mu_L0MuonDecision_TIS==1&&
          Mu_Hlt1TrackMuonDecision_TOS==1&&
@@ -324,10 +324,10 @@ void DT_D0_mix_CPV::Loop()
       //deltaBmass->Fill((mu_from_b+slow_pion_vec+d0_vector).M()-(slow_pion_vec+d0_vector).M());
       //decay times.
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){b_mass_plot_time_bin1->Fill(B_VFit_M[0]);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){b_mass_plot_time_bin2->Fill(B_VFit_M[0]);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){b_mass_plot_time_bin3->Fill(B_VFit_M[0]);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){b_mass_plot_time_bin4->Fill(B_VFit_M[0]);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){b_mass_plot_time_bin5->Fill(B_VFit_M[0]);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){b_mass_plot_time_bin2->Fill(B_VFit_M[0]);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){b_mass_plot_time_bin3->Fill(B_VFit_M[0]);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){b_mass_plot_time_bin4->Fill(B_VFit_M[0]);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){b_mass_plot_time_bin5->Fill(B_VFit_M[0]);}
     }
 
     //fill bmass cuts now, so that we have everything ok.
@@ -365,18 +365,18 @@ void DT_D0_mix_CPV::Loop()
       if(dstm>2015 && dstm <2025){//background region
 	bs_plot->double_misid_dmass_dst_sideband_region->Fill((k_daughter+pi_daughter).M()*1e3);
 	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){bs_plot->double_misid_dmass_dst_sideband_region_bin1->Fill((k_daughter+pi_daughter).M()*1e3);}
-	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){bs_plot->double_misid_dmass_dst_sideband_region_bin2->Fill((k_daughter+pi_daughter).M()*1e3);}
-	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){bs_plot->double_misid_dmass_dst_sideband_region_bin3->Fill((k_daughter+pi_daughter).M()*1e3);}
-	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sideband_region_bin4->Fill((k_daughter+pi_daughter).M()*1e3);}
-	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sideband_region_bin5->Fill((k_daughter+pi_daughter).M()*1e3);}
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){bs_plot->double_misid_dmass_dst_sideband_region_bin2->Fill((k_daughter+pi_daughter).M()*1e3);}
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){bs_plot->double_misid_dmass_dst_sideband_region_bin3->Fill((k_daughter+pi_daughter).M()*1e3);}
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sideband_region_bin4->Fill((k_daughter+pi_daughter).M()*1e3);}
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sideband_region_bin5->Fill((k_daughter+pi_daughter).M()*1e3);}
       }
-      else if(fabs(dstm - pdg_dstar_m)<dstar_mass_cut){
+      if(fabs(dstm - pdg_dstar_m)<dstar_mass_cut){
 	bs_plot->double_misid_dmass_dst_sig_region->Fill((k_daughter+pi_daughter).M()*1e3);
 		if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){bs_plot->double_misid_dmass_dst_sig_region_bin1->Fill((k_daughter+pi_daughter).M()*1e3);}
-	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){bs_plot->double_misid_dmass_dst_sig_region_bin2->Fill((k_daughter+pi_daughter).M()*1e3);}
-	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){bs_plot->double_misid_dmass_dst_sig_region_bin3->Fill((k_daughter+pi_daughter).M()*1e3);}
-	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sig_region_bin4->Fill((k_daughter+pi_daughter).M()*1e3);}
-	else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sig_region_bin5->Fill((k_daughter+pi_daughter).M()*1e3);}
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){bs_plot->double_misid_dmass_dst_sig_region_bin2->Fill((k_daughter+pi_daughter).M()*1e3);}
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){bs_plot->double_misid_dmass_dst_sig_region_bin3->Fill((k_daughter+pi_daughter).M()*1e3);}
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sig_region_bin4->Fill((k_daughter+pi_daughter).M()*1e3);}
+	if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){bs_plot->double_misid_dmass_dst_sig_region_bin5->Fill((k_daughter+pi_daughter).M()*1e3);}
       }
     }
     if(!(fabs((k_daughter + pi_daughter).M()*1e3-1864.84)<24 
@@ -427,32 +427,32 @@ void DT_D0_mix_CPV::Loop()
       if((k_daughter+pi_daughter).M()*1e3>1790 && (k_daughter+pi_daughter).M()*1e3<=1795.8){
 	bs_plot->hmkpisb_cut_range_lo_1->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_1->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_1->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_1->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1795.8 && (k_daughter+pi_daughter).M()*1e3<=1801.6){
+      if((k_daughter+pi_daughter).M()*1e3>1795.8 && (k_daughter+pi_daughter).M()*1e3<=1801.6){
 	bs_plot->hmkpisb_cut_range_lo_2->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_2->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_2->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_2->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1801.6 && (k_daughter+pi_daughter).M()*1e3<=1807.4){
+      if((k_daughter+pi_daughter).M()*1e3>1801.6 && (k_daughter+pi_daughter).M()*1e3<=1807.4){
 	bs_plot->hmkpisb_cut_range_lo_3->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_3->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_3->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_3->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1807.4 && (k_daughter+pi_daughter).M()*1e3<=1813.2){
+      if((k_daughter+pi_daughter).M()*1e3>1807.4 && (k_daughter+pi_daughter).M()*1e3<=1813.2){
 	bs_plot->hmkpisb_cut_range_lo_4->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_4->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_4->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_4->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1813.2 && (k_daughter+pi_daughter).M()*1e3<=1819.){
+      if((k_daughter+pi_daughter).M()*1e3>1813.2 && (k_daughter+pi_daughter).M()*1e3<=1819.){
 	bs_plot->hmkpisb_cut_range_lo_5->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_5->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_5->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_5->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1819. && (k_daughter+pi_daughter).M()*1e3<=(pdg_d0_m-40)){
+      if((k_daughter+pi_daughter).M()*1e3>1819. && (k_daughter+pi_daughter).M()*1e3<=(pdg_d0_m-40)){
 	bs_plot->hmkpisb_cut_range_lo_6->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_lo_6->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_6->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_lo_6->Fill(dstm);}//negative
       }
       //hi sideband
       //here we have
@@ -463,35 +463,35 @@ void DT_D0_mix_CPV::Loop()
       //1928.4 - 1934.2
       //1934.2 - 1940
       //give the closest bins to the blinded region a bit more statistics
-      else if((k_daughter+pi_daughter).M()*1e3>(pdg_d0_m+40) && (k_daughter+pi_daughter).M()*1e3<=1911.){
+      if((k_daughter+pi_daughter).M()*1e3>(pdg_d0_m+40) && (k_daughter+pi_daughter).M()*1e3<=1911.){
 	bs_plot->hmkpisb_cut_range_hi_1->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_1->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_1->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_1->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1911. && (k_daughter+pi_daughter).M()*1e3<=1916.8){
+      if((k_daughter+pi_daughter).M()*1e3>1911. && (k_daughter+pi_daughter).M()*1e3<=1916.8){
 	bs_plot->hmkpisb_cut_range_hi_2->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_2->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_2->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_2->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1916.8 && (k_daughter+pi_daughter).M()*1e3<=1922.6){
+      if((k_daughter+pi_daughter).M()*1e3>1916.8 && (k_daughter+pi_daughter).M()*1e3<=1922.6){
 	bs_plot->hmkpisb_cut_range_hi_3->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_3->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_3->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_3->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1922.6 && (k_daughter+pi_daughter).M()*1e3<=1928.4){
+      if((k_daughter+pi_daughter).M()*1e3>1922.6 && (k_daughter+pi_daughter).M()*1e3<=1928.4){
 	bs_plot->hmkpisb_cut_range_hi_4->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_4->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_4->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_4->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1928.4 && (k_daughter+pi_daughter).M()*1e3<=1934.2){
+      if((k_daughter+pi_daughter).M()*1e3>1928.4 && (k_daughter+pi_daughter).M()*1e3<=1934.2){
 	bs_plot->hmkpisb_cut_range_hi_5->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_5->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_5->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_5->Fill(dstm);}//negative
       }
-      else if((k_daughter+pi_daughter).M()*1e3>1934.2 && (k_daughter+pi_daughter).M()*1e3<=1940.){
+      if((k_daughter+pi_daughter).M()*1e3>1934.2 && (k_daughter+pi_daughter).M()*1e3<=1940.){
 	bs_plot->hmkpisb_cut_range_hi_6->Fill(dstm);
 	if(Pis_CHARGE>0){bs_plot->hmkpisb_pos_cut_range_hi_6->Fill(dstm);}//positive
-	else if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_6->Fill(dstm);}//negative
+	if(Pis_CHARGE<0){bs_plot->hmkpisb_neg_cut_range_hi_6->Fill(dstm);}//negative
       }
     }
     //END OF TIME BINS
@@ -506,7 +506,7 @@ void DT_D0_mix_CPV::Loop()
       if(fabs(dstm - 2010.26)<0.9){
 	bs_plot->hmD0_pik_sig->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
       }
-      else if((fabs(dstm - 2010.26)>3)){
+      if((fabs(dstm - 2010.26)>3)){
 	bs_plot->hmD0_pik_sb->Fill((pi_daughter_as_k+k_daughter_as_pi).M()*1e3);
       }
     }
@@ -544,11 +544,11 @@ void DT_D0_mix_CPV::Loop()
     mu_log_ip->Fill(log(Mu_IP_OWNPV));
     pis_ghost_prob->Fill(Ps_MC12TuneV2_ProbNNghost);
     if(Pis_CHARGE>0){pis_ghost_prob_pos->Fill(Ps_MC12TuneV2_ProbNNghost);}
-    else if(Pis_CHARGE<0){pis_ghost_prob_neg->Fill(Ps_MC12TuneV2_ProbNNghost);}
+    if(Pis_CHARGE<0){pis_ghost_prob_neg->Fill(Ps_MC12TuneV2_ProbNNghost);}
       
     pis_match_chi2->Fill(Ps_TRACK_MatchCHI2);
     if(Pis_CHARGE>0){pis_match_chi2_pos->Fill(Ps_TRACK_MatchCHI2);}
-    else if(Pis_CHARGE<0){pis_match_chi2_neg->Fill(Ps_TRACK_MatchCHI2);}
+    if(Pis_CHARGE<0){pis_match_chi2_neg->Fill(Ps_TRACK_MatchCHI2);}
     pis_match_chi2_vs_dstm->Fill(dstm,Ps_TRACK_MatchCHI2);
     pis_match_chi2_vs_td0->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),Ps_TRACK_MatchCHI2);
     //pid stuff
@@ -655,19 +655,19 @@ void DT_D0_mix_CPV::Loop()
     //decay time distr
     {
     if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.75){ td0_bin_neg10_to_neg075->Fill(dstm);}
-    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
-    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
+    if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=-0.75&& (B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.5){ td0_bin_neg075_to_neg05->Fill(dstm);}
+    if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){
       td0_bin1->Fill(dstm);
     }
-    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_bin2->Fill(dstm);
+    if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_bin2->Fill(dstm);
     }
-    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
+    if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){
       td0_bin3->Fill(dstm);
     }
-    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
+    if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){
       td0_bin4->Fill(dstm);
     }
-    else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_bin5->Fill(dstm);}
+    if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_bin5->Fill(dstm);}
     }
     //check with more bins
     /*if((B_VFit_D0_ctau[0]/ d0_pdg_ct)<-0.75){ td0_bin_neg10_to_neg075->Fill(dstm);}
@@ -688,10 +688,10 @@ void DT_D0_mix_CPV::Loop()
     if(Ps_ID/TMath::Abs(Ps_ID)>0){
       
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_pos_bin1->Fill(dstm);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_pos_bin2->Fill(dstm);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_pos_bin3->Fill(dstm);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_pos_bin4->Fill(dstm);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_pos_bin5->Fill(dstm);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_pos_bin2->Fill(dstm);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_pos_bin3->Fill(dstm);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_pos_bin4->Fill(dstm);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_pos_bin5->Fill(dstm);}
       
       /*
       
@@ -708,10 +708,10 @@ void DT_D0_mix_CPV::Loop()
     }else{
       
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary2){td0_neg_bin1->Fill(dstm);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_neg_bin2->Fill(dstm);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_neg_bin3->Fill(dstm);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_neg_bin4->Fill(dstm);}
-      else if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_neg_bin5->Fill(dstm);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary2 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary3){td0_neg_bin2->Fill(dstm);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary3 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary4){td0_neg_bin3->Fill(dstm);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){td0_neg_bin4->Fill(dstm);}
+      if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){td0_neg_bin5->Fill(dstm);}
       
       /*
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary1 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary1a){td0_neg_bin1->Fill(dstm);}

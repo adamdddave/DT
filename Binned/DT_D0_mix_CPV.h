@@ -1817,14 +1817,16 @@ private:
   const double pi_dau_pidk_cut = -5;
   //  const double pi_dau_pidk_cut = 2;
   const double pi_slow_pide_cut=1;
-  const double pi_slow_probnnghost_cut = 0.25;
+  //const double pi_slow_probnnghost_cut = 0.25;//BULLSHIT
+  //  const double pi_slow_probnnghost_cut = 0.5;//BULLSHIT
   const double dmass_cut = 24;// MeV, for |m - m_pdg|<dmass_cut
   const double dstar_mass_cut = 0.9;
   const double mu_probnnmu_cut = 0.4;
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
-  const double pis_ghost_prob_cut = 0.25;//no units
+  //const double pis_ghost_prob_cut = 0.25;//no units
+  const double pis_ghost_prob_cut = 0.5;//no units
   //const double mu_log_ip_chi2_cut = 5;
   const double mu_ip_chi2_cut = 100;
   const double b_fd_cut = 100;
@@ -3400,7 +3402,7 @@ Int_t DT_D0_mix_CPV::passCuts(){
      K_PIDK>kpidk_cut&&
      Pd_PIDK<pi_dau_pidk_cut &&
      Ps_PIDe<pi_slow_pide_cut &&
-     Ps_ProbNNghost<pi_slow_probnnghost_cut &&
+     Ps_MC12TuneV2_ProbNNghost< pis_ghost_prob_cut &&
      //         TMath::Abs(B_VFit_D0_M-pdg_d0_m)<dmass_cut &&//this also comes after Beta* plots
      Mu_L0MuonDecision_TOS==1&&
      Mu_Hlt1TrackMuonDecision_TOS==1&&
