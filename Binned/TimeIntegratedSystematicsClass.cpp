@@ -60,6 +60,14 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
 							       int nbins,
 							       array<double,4> initVals,
 							       bool reBin){
+  double the_scaling_factor;//possibly make time dependent.
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
+  sf_file.close();
+
+
   mName = name;
   nBins = nbins;
   //fin->ls();
@@ -82,7 +90,7 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
     varBkgHist->Sumw2();
   }
   //do the background subtractions
-  varSigHist->Add(varBkgHist,-1);
+  varSigHist->Add(varBkgHist,-the_scaling_factor);
   //now get the bin positions.
   //bin_ranges = binRanges;
   for(int i=0;i<6;++i){
@@ -103,7 +111,7 @@ TimeIntegratedSystematicsClass::TimeIntegratedSystematicsClass(TString name,TFil
     sigHistBins[i]->Sumw2();
     bkgHistBins[i] = (TH1D*)fin->Get(histoForBinsBkg+Form("%d",i+1));
     bkgHistBins[i]->Sumw2();
-    sigHistBins[i]->Add(bkgHistBins[i],-1);    
+    sigHistBins[i]->Add(bkgHistBins[i],-the_scaling_factor);    
     cout<<"Double check, "<<histoForBins+Form("%d",i+1)<<"->Integral()="<<sigHistBins[i]->Integral()<<endl;
     //massFit *theFit = new massFit(histoForBins+Form("%d",i+1),"j3g",wLocal,"TimeIntegratedSystematics");
     if(reBin){

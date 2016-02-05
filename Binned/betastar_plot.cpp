@@ -57,11 +57,11 @@ using namespace RooFit ;
 //=============================================================================
 betastar_plot::betastar_plot(TString name  ) {
   //first thing, get the scaling factor from the file  
-  std::ifstream sf_file("./theScalingFactor.txt");
-  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
-  cout<<"read scaling factor "<<the_scaling_factor<<endl;
-  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
-  sf_file.close();
+  // std::ifstream sf_file("./theScalingFactor.txt");
+  // while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  // cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  // if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
+  // sf_file.close();
 
   m_name =name.ReplaceAll("/DecayTree","");
   std::cout<<"constructin betastar_plot with name "<<m_name<<std::endl;
