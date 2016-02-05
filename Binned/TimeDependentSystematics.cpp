@@ -58,7 +58,18 @@ using namespace PlottingTools;
 
 
 int main(int argc, char* const argv[]){
-  //first thing, get the scaling factor from the file  
+  //first thing, get the scaling factor from the file
+  double the_scaling_factor_timeDep[5];
+  std::ifstream sftd_file("./theScalingFactorTimeDependence.txt");
+  int dum;
+  double dumerr;
+  if (sftd_file.is_open()){
+    for(int i=0; i<5;++i){
+      sftd_file>>dum>>the_scaling_factor_timeDep[i]>>dumerr;
+    }
+  }
+  cout<<"read in time dependent scaling factors"<<endl;
+  for(auto thing: the_scaling_factor_timeDep)  cout<<thing<<endl;
   double the_scaling_factor;
   std::ifstream sf_file("./theScalingFactor.txt");
   while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
@@ -72,11 +83,13 @@ int main(int argc, char* const argv[]){
     cout<<"++++++++++++++++++++++++++++++++++++++++++++"<<endl;
     cout<<"Need a rootfile with time dependent things!"<<endl;
     cout<<"and the fit model!!!"<<endl;
+    cout<<"Optional: Use time dependent SS background subtraction (bool)"<<endl;
     cout<<"++++++++++++++++++++++++++++++++++++++++++++"<<endl;
     return 0;
   }
   TFile *f1 =TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
+  bool useTimeDepSS = atoi(argv[3]);
   //f2->ls();
   TString channelFromFile = argv[2];
   channelFromFile.ToLower();
@@ -122,8 +135,9 @@ int main(int argc, char* const argv[]){
   }
 
   for(int i=0; i<nbins;++i){
-    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
-    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
+    double sf = useTimeDepSS? the_scaling_factor_timeDep[i]:the_scaling_factor;
+    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-sf);
+    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-sf);
   }//commented out to try raw asymmetry
   //now fit each one.
   massFit* theFitspos;

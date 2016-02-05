@@ -136,14 +136,25 @@ int main(int argc, char* const argv[]){
   if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
   sf_file.close();
 
+
+  double the_scaling_factor_timeDep[5];
+  std::ifstream sftd_file("./theScalingFactorTimeDependence.txt");
+  int dum;
+  double dumerr;
+  if (sftd_file.is_open()){
+    for(int i=0; i<5;++i){
+      sftd_file>>dum>>the_scaling_factor_timeDep[i]>>dumerr;
+    }
+  }
+  
   setLHCbcanvas();
   bool blind=true;
   // New 1-23-16. Use the blinding on the dataset instead of the fitter. Read Augusto's seed here.
   int _BlindingSeed;
-  system("chmod u+r /home/davis3a4/private/analysis/WSFitter-1.2/augusto_seed.txt");
-  std::ifstream file("/home/davis3a4/private/analysis/WSFitter-1.2/augusto_seed.txt");
-  while ( file>>_BlindingSeed ){std::cout<<"reading augusto's seed"<<std::endl;}
-  system("chmod u-r /home/davis3a4/private/analysis/WSFitter-1.2/augusto_seed.txt");
+  system("chmod u+r /home/davis3a4/private/analysis/SEEDFORBLINDING.txt");
+  std::ifstream file("/home/davis3a4/private/analysis/SEEDFORBLINDING.txt");
+  while ( file>>_BlindingSeed ){std::cout<<"reading Eduardo's seed"<<std::endl;}
+  system("chmod u-r /home/davis3a4/private/analysis/SEEDFORBLINDING.txt");
   TRandom3 donram(_BlindingSeed);
   /*  double xp2_plus_blind = donram.Gaus(0.,0.00038);
   double xp2_mins_blind = donram.Gaus(0.,0.00038);
@@ -171,6 +182,7 @@ int main(int argc, char* const argv[]){
     cout<<"[1] The rs file"<<endl;
     cout<<"[2] the fit model"<<endl;
     cout<<"[3] the WS file"<<endl;
+    cout<<"[4] option to use SS time dep scaling"<<endl;
     cout<<"********************************************"<<endl;
     return 0;
   }
@@ -180,6 +192,7 @@ int main(int argc, char* const argv[]){
   TFile *f1 =TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
   TFile *f3 = TFile::Open(argv[3]);
+  bool useTimeDepSS = atoi(argv[4]);
   f2->ls();
   TString channelFromFile = argv[2];
   cout<<"before, channelFromFile = "<<channelFromFile<<endl;
@@ -198,7 +211,7 @@ int main(int argc, char* const argv[]){
   TH1D* rs_ss_time_histo_pos = (TH1D*)f1->Get("RS_ss_dt_d0_decay_time_distr_pos");
   TH1D* rs_time_histo_neg = (TH1D*)f1->Get("RS_dt_d0_decay_time_distr_neg");
   TH1D* rs_ss_time_histo_neg = (TH1D*)f1->Get("RS_ss_dt_d0_decay_time_distr_neg");
-
+  
   rs_time_histo_pos->Sumw2();
   rs_ss_time_histo_pos->Sumw2();
   rs_time_histo_pos->Add(rs_ss_time_histo_pos,-the_scaling_factor);
@@ -252,11 +265,13 @@ int main(int argc, char* const argv[]){
   }
 
   for(int i=0; i<nbins;++i){
-    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
-    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
+    double sf = useTimeDepSS? the_scaling_factor_timeDep[i]:the_scaling_factor;
+    if(sf == the_scaling_factor_timeDep[i]){cout<<"using time dependent SS"<<endl;}
+    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-sf);
+    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-sf);
     //WS
-    pos_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
-    neg_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
+    pos_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_pos_bin%d",i+1)),-sf);
+    neg_binsWS[i]->Add((TH1D*)f3->Get(Form("WS_ss_dst_mass_td0_neg_bin%d",i+1)),-sf);
   }//commented out to try raw asymmetry
   massFit* theFitspos[nbins];
   massFit* theFitsneg[nbins];

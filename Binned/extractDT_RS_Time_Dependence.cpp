@@ -64,6 +64,7 @@ int main(int argc, char* const argv[]){
     cout<<"Extracts the file. needs inputs"<<endl;
     cout<<"[1] The rs file"<<endl;
     cout<<"[2] the fit model"<<endl;
+    cout<<"[3] Optional: boolean of whether to use time dep SS subtraction"<<endl;
     cout<<"********************************************"<<endl;
     return 0;
   }
@@ -71,6 +72,7 @@ int main(int argc, char* const argv[]){
   cout<<"using fit model "<<argv[2]<<endl;
   TFile *f1 =TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
+  bool useTimeDepSS = atoi(argv[3]);
   f2->ls();
   TString channelFromFile = argv[2];
   cout<<"before, channelFromFile = "<<channelFromFile<<endl;
@@ -89,9 +91,19 @@ int main(int argc, char* const argv[]){
   while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
   cout<<"read scaling factor "<<the_scaling_factor<<endl;
   if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;return 0;}
-  //add some code to possibly change this to be time dependent as well.
+  
   sf_file.close();
-
+  //add some code to possibly change this to be time dependent as well.
+  //DONE
+  double the_scaling_factor_timeDep[5];
+  std::ifstream sftd_file("./theScalingFactorTimeDependence.txt");
+  int dum;
+  double dumerr;
+  if (sftd_file.is_open()){
+    for(int i=0; i<5;++i){
+      sftd_file>>dum>>the_scaling_factor_timeDep[i]>>dumerr;
+    }
+  }
   std::vector<TH1D*>pos_bins,neg_bins;
   RooWorkspace * w = (RooWorkspace*)f2->Get(channelFromFile);
   w->Print("V");
@@ -111,8 +123,10 @@ int main(int argc, char* const argv[]){
   }
 
   for(int i=0; i<nbins;++i){
-    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-the_scaling_factor);
-    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-the_scaling_factor);
+    double sf = useTimeDepSS? the_scaling_factor_timeDep[i]:the_scaling_factor;
+    if(sf == the_scaling_factor_timeDep[i]){cout<<"using time dependent SS"<<endl;}
+    pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-sf);
+    neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-sf);
   }//commented out to try raw asymmetry
   massFit* theFitspos;
   massFit* theFitsneg;

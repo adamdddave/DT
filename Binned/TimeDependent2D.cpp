@@ -20,12 +20,13 @@ TimeDependent2D::TimeDependent2D(TString histName, TFile *f1, TString saveName, 
   mName = histName;
   //first thing, get the scaling factor from the file  
   double the_scaling_factor;//possibly make time dependent.
+
   std::ifstream sf_file("./theScalingFactor.txt");
   while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
   cout<<"read scaling factor "<<the_scaling_factor<<endl;
   if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
   sf_file.close();
-
+ 
   std::vector<int>slices_local = slices;
   mSaveName = "./SavedFits/TimeDependentSystematics/"+saveName;
   //hist name tells us the 2d histogram from the file, so get it.

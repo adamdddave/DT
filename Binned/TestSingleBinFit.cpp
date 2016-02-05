@@ -65,6 +65,12 @@ int main(int argc, char* const argv[]){
     cout<<"[4] the name of the corresponding ss histogram to subtract"<<endl;
     return 0;
   }
+  double the_scaling_factor;//possibly make time dependent.
+  std::ifstream sf_file("./theScalingFactor.txt");
+  while(sf_file>>the_scaling_factor){cout<<"reading scaling factor from file"<<endl;}
+  cout<<"read scaling factor "<<the_scaling_factor<<endl;
+  if(!the_scaling_factor){cout<<"something terribly wrong here"<<endl;}
+  sf_file.close();
 
   cout<<"Now processing "<<argv[1]<<endl;
   TFile * f1 = TFile::Open(argv[1]);
@@ -80,7 +86,7 @@ int main(int argc, char* const argv[]){
     cout<<"couldn't fine a plot corresponding to "<<argv[4]<<endl;
     return 0;
   }
-  the_plot->Add(the_plot_ss,-1);
+  the_plot->Add(the_plot_ss,-the_scaling_factor);
   //now do the fit.
   TFile *f2 = TFile::Open(argv[2]);
   f2->ls();

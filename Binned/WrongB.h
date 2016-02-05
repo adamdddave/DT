@@ -85,6 +85,21 @@ class WrongB {
   TH2D* bmass_vs_muIPchi2;
   TH2D* bmass_ss_vs_muIPChi2;
   double the_scaling_factor;
+
+  //make the same things for time dependent fits. This will just write the scaling factor for time bins
+  TH1D* rs_bmass_td0_bin1;
+  TH1D* rs_bmass_td0_bin2;
+  TH1D* rs_bmass_td0_bin3;
+  TH1D* rs_bmass_td0_bin4;
+  TH1D* rs_bmass_td0_bin5;
+
+  TH1D* rs_ss_bmass_td0_bin1;
+  TH1D* rs_ss_bmass_td0_bin2;
+  TH1D* rs_ss_bmass_td0_bin3;
+  TH1D* rs_ss_bmass_td0_bin4;
+  TH1D* rs_ss_bmass_td0_bin5;
+  double the_scaling_factor_timedep[5];
+  double the_scaling_factor_timedep_err[5];
 };
 
 #endif //COMPLETE_ANALYSIS_WRONGB_H
