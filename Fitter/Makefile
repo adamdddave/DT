@@ -1,8 +1,8 @@
 LIB        := libWSFitter.so
-VERSION    := 1.2
+VERSION    := 1.3
 DISTDIR    := WSFitter-$(VERSION)
 
-SRCS       := WSFitter.h WSFitter.cxx DataPoint.h DataPoint.cxx
+SRCS       := WSFitter.h WSFitter.cxx DataPoint.h DataPoint.cxx Plotter.h Plotter.cxx
 EXTRA      := mixing_fit_data.C rootlogon.C
 
 OBJS       := $(patsubst %.cxx, %.o, $(filter %.cxx, $(SRCS) $(DICS)))
