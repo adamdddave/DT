@@ -348,7 +348,9 @@ std::ostream &WSFitter::PrintResults(std::ostream &fout, bool verbose)
 	fout << "Fitted parameters:" << std::endl;
 	unsigned int npars = Fitter()->GetNumberTotalParameters();
 	for(unsigned int k=0; k<npars; k++){
-		fout << setw(8) << Fitter()->GetParName(k) << "\t" << setw(10) << fixed << setprecision(6) << Fitter()->GetParameter(k) << "\t";
+		fout << setw(8) << Fitter()->GetParName(k) << "\t" << setw(10) << fixed << setprecision(6) 
+		  << Fitter()->GetParameter(k) << "\t";
+		  //<<"XXXXXX"<<"\t";
 		if(Fitter()->IsFixed(k))
 			fout << setw(10) << "fixed" << std::endl;
 		else
@@ -545,7 +547,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	}//usePrompt
 	if(_useDT){
 	  // constraint on detector asymmetries
-	  /*
+	  
 	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
 	  
@@ -563,7 +565,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	  _ndf++;
 	  
 	  // compute chi2 on positive DT data
-	  */
+	  
 	  double eps_DT = (1.+p[60])/(1.-p[60]);
 	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)
 	    {
@@ -768,7 +770,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 	    }
 	}//use Prompt
 	if(_useDT){
-	  /*
+
 	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
 	  
@@ -784,7 +786,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 	  // constraint on peaking fraction
 	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
 	  _ndf++;
-	  */
+
 	  // compute chi2 on positive DT data
 	  double eps_DT = (1.+p[60])/(1.-p[60]);
 	  for (DataPoints::iterator it = _points_pos_DT.begin(); it!=_points_pos_DT.end(); ++it)

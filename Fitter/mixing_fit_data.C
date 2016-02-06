@@ -4,6 +4,11 @@
 #include <TString.h>
 #include "WSFitter.h"
 #include "TMarker.h"
+#include "Plotter.h"
+
+#include <unistd.h>
+#include <stdarg.h>
+#include <fcntl.h>
 
 const int nbins(13);
 
@@ -23,7 +28,7 @@ double Fp_err_ntos[] = {1.4416e-05, 6.79537e-06, 6.67624e-06, 7.52942e-06, 7.820
 //double Aeps_ntos(1.13e-2), Aeps_err_ntos(0.16e-2);
 double Aeps_ntos(0.83e-2), Aeps_err_ntos(0.22e-2);
 
-void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt",int cpvType=2)
+void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt",int cpvType=2,TString dtPath="./dtfitdata/")
 {
 	// init fitter
   WSFitter *fitter = new WSFitter(nbins,cpvType);
@@ -40,8 +45,16 @@ void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt
 	if (!fitter->ReadData("./fitdata/yield_vs_time_neg_2012_ntos.txt",-1,false)) return;
 
 	// read DT data
-	if (!fitter->Read_DT_Data("./dtfitdata/DT_unblinded_data_for_testing_pos.txt",+1)) return;
-	if (!fitter->Read_DT_Data("./dtfitdata/DT_unblinded_data_for_testing_neg.txt",-1)) return;
+	TString DTDataPos=dtPath+"final_blinded_yields_in_bins_pos.txt";
+	TString DTDataNeg=dtPath+"final_blinded_yields_in_bins_neg.txt";
+ 	// if (!fitter->Read_DT_Data("./dtfitdata/final_blinded_yields_in_bins_pos.txt",+1)) return;
+ 	// if (!fitter->Read_DT_Data("./dtfitdata/final_blinded_yields_in_bins_neg.txt",-1)) return;
+
+	if (!fitter->Read_DT_Data(DTDataPos.Data(),+1)) return;
+ 	if (!fitter->Read_DT_Data(DTDataNeg.Data(),-1)) return;
+	//toys
+ 	//if (!fitter->Read_DT_Data("./dtfitdata/DT_blinded_data_for_testing_pos.txt",+1)) return;
+ 	//if (!fitter->Read_DT_Data("./dtfitdata/DT_blinded_data_for_testing_neg.txt",-1)) return;
 
 	fitter->SetDetectorAsymmetries(Aeps_tos,Aeps_err_tos,true);
 	fitter->SetDetectorAsymmetries(Aeps_ntos,Aeps_err_ntos,false);
@@ -51,32 +64,38 @@ void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt
 
 	fitter->SetPeakingFractions(Fp_tos,Fp_err_tos,true);
 	fitter->SetPeakingFractions(Fp_ntos,Fp_err_ntos,false);
-	
+
 	//DT
 	double dtPrFrac[]={0.,0.,0.,0.,0.};
 	double dtPrFracErr[]={1.,1.,1.,1.,1.,};
-	//fitter->Set_DT_DetectorAsymmetries(0.96e-2,0.11e-2);
-	fitter->Set_DT_DetectorAsymmetries(0.,1.);
+	fitter->Set_DT_DetectorAsymmetries(0.96e-2,0.11e-2);
+	//fitter->Set_DT_DetectorAsymmetries(0.,1.);
 	fitter->Set_DT_PromptFractions(dtPrFrac,dtPrFracErr);
-	//fitter->Set_DT_PeakingFractions(3.611e-5,2.260e-5);
-	fitter->Set_DT_PeakingFractions(0.,1.);
+	fitter->Set_DT_PeakingFractions(3.60992e-05 , 2.25594e-05);
+	//fitter->Set_DT_PeakingFractions(0.,1.);
 	fitter->UsePromptData(false);
 	fitter->UseDTData(true);
 	// fitting
 	fitter->Reset();
 	fitter->Print();
-		for(int i=60;i<67;++i){fitter->FixParameter(i,0);}
-	if (fitter->Fit(minos) !=0) return;
+	//for(int i=60;i<67;++i){fitter->FixParameter(i,0);}//fix for DT only fit.
+	for(int i=61;i<66;++i){fitter->FixParameter(i,0);}//fix the prompt fraction in the DT to 0
+	//fitter->FixParameter(1,0.);
+	//fitter->FixParameter(2,0.);
+ 	if (fitter->Fit(minos) !=0) return;
+
 	fitter->WriteResults(name.Data());
 //	// plotting
-//	if (!plot) return;
-//
-//	Plotter *p = new Plotter(fitter);
+	if (!plot) return;
+	//
+	TString pname = name.ReplaceAll(".txt","");
+	Plotter *p = new Plotter(pname,fitter);
 //	p->PlotRatios();
 //	p->PlotDiffs();
 //	p->PlotPulls();
 //
-//	p->PlotXYContours();
+	p->PlotXYContours();
+	p->PlotCPVContours();
 //	TMarker *m = new TMarker(0.,0.,2);
 //	m->SetMarkerSize(3);
 //	m->Draw("same");
