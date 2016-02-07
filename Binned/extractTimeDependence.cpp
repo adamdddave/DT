@@ -192,7 +192,8 @@ int main(int argc, char* const argv[]){
   TFile *f1 =TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
   TFile *f3 = TFile::Open(argv[3]);
-  bool useTimeDepSS = atoi(argv[4]);
+  bool useTimeDepSS = false;
+  if(argc==5) useTimeDepSS = atoi(argv[4]);
   f2->ls();
   TString channelFromFile = argv[2];
   cout<<"before, channelFromFile = "<<channelFromFile<<endl;

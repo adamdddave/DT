@@ -401,6 +401,17 @@ int main(int argc, char* const argv[]){
     outfile<<i+1<<"\t"<<final_result_neg[i]<<"\t"<<final_result_neg_err[i]<<"\n";
   }
   outfile.close();
+  //try cleaning some stuff up to help. All the vectors, really
+  lo_hists.clear();
+  hi_hists.clear();
+  lo_hists_pos.clear();
+  hi_hists_pos.clear();
+  lo_hists_neg.clear();
+  hi_hists_neg.clear();
+  tot_result_of_sb_fit.clear();
+  tot_result_of_sb_fit_pos.clear();
+  tot_result_of_sb_fit_neg.clear();
+
   return 0;
 }
 

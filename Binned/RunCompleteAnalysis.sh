@@ -21,8 +21,10 @@ ROOTFILES="${DATADIR}/*.root"
 #read FITEXISTS
 FITEXISTS=0
 DOSYSTEMATICS=1
+SSTIMEDEP=0
+REGENHISTOS=0
 #add parsing options for input data and cuts.
-while getopts "hf:x:m:s:" arg; do
+while getopts "hf:x:m:s:tg" arg; do
     case "${arg}" in
 	h)
 	    echo "This script runs the entire analysis of the B->mu D* X WS mixing/CPV"
@@ -31,6 +33,8 @@ while getopts "hf:x:m:s:" arg; do
 	    echo "-x CUTS is a cutstring for using extra cuts"
 	    echo "-f ROOTFILES is the files to process in the very first step of the analysis."
 	    echo "-s DOSYSTS, where DOSYSTS is 1 or 0, a boolean to do systematics"
+	    echo "-t use SS time dependence"
+	    echo "-g regenerate histograms for analysis (takes a while)"
 	    exit 1
 	    ;;
 	f)
@@ -50,6 +54,14 @@ while getopts "hf:x:m:s:" arg; do
 	    DOSYSTEMATICS="${OPTARG}"
 	    echo "do systematics " ${DOSYSTEMATICS}
 	    ;;
+	t)
+	    SSTIMEDEP=1
+	    echo "same sign time dependence enabled"
+	    ;;
+	g)
+	    REGENHISTOS=1
+	    echo "regenerating histograms for analysis"
+	    ;;
     esac
     done
 
@@ -60,7 +72,7 @@ while getopts "hf:x:m:s:" arg; do
 echo "EXTRACUTS = ${EXTRACUTS}"
 echo "ROOTFILES = ${ROOTFILES}"
 echo "FITNAME   = ${FITNAME}"
-
+echo "SSTIMEDEP = ${SSTIMEDEP}"
 #####HERE
 
 # #-1. Make sure that directories for betastar exist
@@ -70,15 +82,18 @@ if [ ! -d "$CURRDIR/SavedFits/betastar" ]; then
     mkdir -p $CURRDIR/SavedFits/betastar
 fi
 
-if [ "$FITEXISTS" -ne "1" ]; then
-    #0. Run the ntuple maker for the jobs
-    echo 'starting from scratch'
+#0. Run the ntuple maker for the jobs
+if [ "$REGENHISTOS" -ne "0" ]; then
+    echo 'starting from scratch';
     if [[ -z "$EXTRACUTS" ]]; then #no extra cuts exist
+	
 	$SCRIPTDIR/DTAnalysis $ROOTFILES | tee $CURRDIR/ana.out;
     else
 	$SCRIPTDIR/DTAnalysis $ROOTFILES --extraCuts="${EXTRACUTS}"| tee $CURRDIR/ana.out;
     fi
-    #1. Run the mass fit for the RS sample to generate the fit model
+fi
+#1. Run the mass fit for the RS sample to generate the fit model
+if [ "$FITEXISTS" -ne "1" ]; then
     echo 'no fit model';
     $SCRIPTDIR/testMassFit $CURRDIR/SavedFits/rs_mass.root | tee $CURRDIR/rs_fit.out;
 fi
@@ -88,26 +103,35 @@ $SCRIPTDIR/testMassFit $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/r
 $SCRIPTDIR/testMassFit $CURRDIR/SavedFits/ws_mass.root $FITNAME | tee $CURRDIR/ws_validation_fit.out
 #3. Betastar
 #needs input from RS decay time
-$SCRIPTDIR/extractRSTimeDep $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/betastar_time_dep_fits.out
+#add SS time dep here. AD
+$SCRIPTDIR/extractRSTimeDep $CURRDIR/SavedFits/rs_mass.root $FITNAME $SSTIMEDEP | tee $CURRDIR/betastar_time_dep_fits.out
 
 $SCRIPTDIR/doBetastarFits $CURRDIR/SavedFits/betastar/RS_betastar_plots.root $CURRDIR/SavedFits/betastar/RS_ss_betastar_plots.root $FITNAME | tee $CURRDIR/betastar_rs.out
 $SCRIPTDIR/doBetastarFits $CURRDIR/SavedFits/betastar/WS_betastar_plots.root $CURRDIR/SavedFits/betastar/WS_ss_betastar_plots.root $FITNAME | tee $CURRDIR/betastar_ws.out
 #4. Time dependent fits
-$SCRIPTDIR/extractTotTimeDep $CURRDIR/SavedFits/rs_mass.root $FITNAME $CURRDIR/SavedFits/ws_mass.root | tee $CURRDIR/final_time_dep_extraction.out
+$SCRIPTDIR/extractTotTimeDep $CURRDIR/SavedFits/rs_mass.root $FITNAME $CURRDIR/SavedFits/ws_mass.root $SSTIMEDEP | tee $CURRDIR/final_time_dep_extraction.out
 #change the permissions
 chmod go-rwx $CURRDIR/SavedFits/final_yields_in_bins_pos.txt
 chmod go-rwx $CURRDIR/SavedFits/final_yields_in_bins_neg.txt
 chmod u-r $CURRDIR/SavedFits/final_yields_in_bins_pos.txt
 chmod u-r $CURRDIR/SavedFits/final_yields_in_bins_neg.txt
 #5. systematic uncertainties.
+$SCRIPTDIR/doTimeDepSysts $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/time_dependent_systematics.out
 if [ "$DOSYSTEMATICS" -ne "0" ]; then
-#time independent
-    $SCRIPTDIR/doTimeIntegratedSystematics $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/time_integrated_systematics.out
 #time dependent
-    $SCRIPTDIR/doTimeDepSysts $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/time_dependent_systematics.out
+    #time independent
+    $SCRIPTDIR/doTimeIntegratedSystematics $CURRDIR/SavedFits/rs_mass.root $FITNAME | tee $CURRDIR/time_integrated_systematics.out
 fi
 # #6. Compile all the results into the correct format
 
 unset EXTRACUTS
 unset ROOTFILES
 unset FITNAME
+unset SSTIMEDEP
+unset REGENHISTOS
+unset SCRIPTDIR
+unset CURRDIR
+unset ARGV
+unset ARGC
+unset DATADIR
+unset FITEXISTS

@@ -1825,8 +1825,9 @@ private:
   const double kk_pipi_cut = 40;// MeV
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
-  //const double pis_ghost_prob_cut = 0.25;//no units
-  const double pis_ghost_prob_cut = 0.5;//no units
+  const double pis_ghost_prob_cut = 0.25;//no units
+  //  const double pis_ghost_prob_cut = 0.35;//no units
+  //  const double pis_ghost_prob_cut = 0.5;//no units
   //const double mu_log_ip_chi2_cut = 5;
   const double mu_ip_chi2_cut = 100;
   const double b_fd_cut = 100;

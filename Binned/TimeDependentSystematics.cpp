@@ -89,7 +89,8 @@ int main(int argc, char* const argv[]){
   }
   TFile *f1 =TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
-  bool useTimeDepSS = atoi(argv[3]);
+  bool useTimeDepSS = false;
+  if(argc==4) useTimeDepSS = atoi(argv[3]);
   //f2->ls();
   TString channelFromFile = argv[2];
   channelFromFile.ToLower();
