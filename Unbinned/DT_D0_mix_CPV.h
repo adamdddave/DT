@@ -24,6 +24,13 @@
 //other classes
 #include "betastar_plot.h"
 // Header file for the classes stored in the TTree if any.
+//struct for removing the prompt/DT matched candidates
+struct matchelement_t{
+  UInt_t          runNumber;
+  ULong64_t       eventNumber;
+  Double_t kpx,kpy,kpz,pipx,pipy,pipz,pispx,pispy,pispz;
+  bool toBeRemoved;//ok to delete?
+};
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 const Int_t kMaxB_ENDVERTEX_COV = 1;
@@ -1785,17 +1792,82 @@ public :
   virtual void     Loop();
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
-
+  void setRejectionFile(TString path_to_file);
+  bool foundMatch(matchelement_t el);
 private:
 
   TBranch* brDstM;
   TBranch* brD0M;
   TBranch* brTD0;
   TBranch* brPisQ;
+  TBranch* brD0ipChi2;
+  //for liang
+  TBranch* brKpx;
+  TBranch* brPipx;
+  TBranch* brPiSpx;
+  
+  TBranch* brKpy;
+  TBranch* brPipy;
+  TBranch* brPiSpy;
+
+  TBranch* brKpz;
+  TBranch* brPipz;
+  TBranch* brPiSpz;
+  TBranch* brRunNum;
+  TBranch* brEvNum;
+  // end for liang
+  //for kpi asymmetry
+  TBranch* brDTFK_px;
+  TBranch* brDTFK_py;
+  TBranch* brDTFK_pz;
+  TBranch* brDTFPi_px;
+  TBranch* brDTFPi_py;
+  TBranch* brDTFPi_pz;
+  TBranch* brDTFPiS_px;
+  TBranch* brDTFPiS_py;
+  TBranch* brDTFPiS_pz;
+  TBranch* brMu_px;
+  TBranch* brMu_py;
+  TBranch* brMu_pz;
+  TBranch* brDTFMu_px;
+  TBranch* brDTFMu_py;
+  TBranch* brDTFMu_pz;
+  TBranch* brK_PIDK;
+  TBranch* brPi_PIDK;
+  //end kpi asymmetry
+  //extras for systematics
+  TBranch* brD0P;
+  TBranch* brD0Pt;
+  TBranch* brMuIPchi2;
+  TBranch* brBmass;
+  TBranch* brBFlightDist;
+  TBranch* brBFlightDistChisq;
+  TBranch* brDstarvtxX;
+  TBranch* brDstarvtxY;
+  TBranch* brDstarvtxZ;
+
+  TBranch* brPVX;
+  TBranch* brPVY;
+  TBranch* brPVZ;
+
+  TBranch* brnCandid;
+  //end extras for systematics
+  //begin for PID calib
+  TBranch* brnTrk;//number of tracks
+  TBranch* brnpvs;//number of PVs
+  TBranch* br_K_P;//just the total momentum
+  TBranch* br_K_eta;//K eta
+  TBranch* br_K_PT;//Pt
+  TBranch* br_K_PIDp;//
+  double newKeta;
+  //end PID calib
   double newDstM;
   double newD0M;
+  double newBmass;
   double newDecayTime;
   int newPiScharge;
+  double newD0ipChi2;
+  
   TLorentzVector k_daughter;
   TLorentzVector pi_daughter;
   TLorentzVector mu_vec;
@@ -1823,6 +1895,7 @@ private:
   const double bmass_cut_hi = 5100.;// MeV
   const double bmass_cut_low =3100.;//MeV
   const double pis_ghost_prob_cut = 0.25;//no units
+  const double dtf_chi2_ndf_cut = 100;
   //const double pis_pt_cut = 100;//MeV
   //const double pis_probnnp_cut =  0.4;//less than this, no unitso
   //  const double mu_ip_chi2_cut = 100;//no units
@@ -1911,7 +1984,11 @@ private:
 
   const double pis_gp_pf_vals[10] = {0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5};
   const double d0_pdg_ct = 0.1229;//mm
-  
+  //for matching
+  std::vector<matchelement_t> matchedToPrompt;
+  bool matchElement (matchelement_t i, matchelement_t j); 
+  inline static bool sorter(matchelement_t i, matchelement_t j){return i.eventNumber<j.eventNumber;}
+
 };
 
 #endif
@@ -1932,6 +2009,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
     dir->GetObject("DecayTree",tree);
     
   }
+  std::cout<<"tree name = "<<tree->GetName()<<std::endl;
   Init(tree);
   TString name = tree->GetName();
   name.ReplaceAll("/DecayTree","");
@@ -1942,6 +2020,65 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   brD0M = newTree->Branch("d0M",&newD0M,"d0M/D");
   brTD0 = newTree->Branch("tD0", &newDecayTime, "tD0/D");
   brPisQ = newTree->Branch("pisQ",&newPiScharge,"pisQ/I");
+  brD0ipChi2 = newTree->Branch("d0IPchi2",&newD0ipChi2,"d0IPchi2/D");
+  brBmass = newTree->Branch("bMass",&newBmass,"bMass/D");
+  brBFlightDist = newTree->Branch("bFlightDist",&B_FD_OWNPV,"bFlightDist/D");
+  brBFlightDistChisq=newTree->Branch("bFlightDistChisq",&B_FDCHI2_OWNPV,"bFlightDistChisq/D");
+  brDstarvtxX = newTree->Branch("DstarVtxX",&Dstar_OWNPV_X,"DstarVtxX/D");
+  brDstarvtxY = newTree->Branch("DstarVtxY",&Dstar_OWNPV_Y,"DstarVtxY/D");
+  brDstarvtxZ = newTree->Branch("DstarVtxZ",&Dstar_OWNPV_Z,"DstarVtxZ/D");
+
+  brPVX = newTree->Branch("PVX",&B_OWNPV_X,"PVX/D");
+  brPVY = newTree->Branch("PVY",&B_OWNPV_Y,"PVY/D");
+  brPVZ = newTree->Branch("PVZ",&B_OWNPV_Z,"PVZ/D");
+  brnCandid = newTree->Branch("nCandid",&nCandidate,"nCandid/i");
+  //
+  /*
+  brKpx=newTree->Branch("k_px",&K_PX,"k_px/D");
+  brPipx=newTree->Branch("k_py",&K_PY,"k_py/D");
+  brPiSpx=newTree->Branch("k_pz",&K_PZ,"k_pz/D");
+  
+  brKpy=newTree->Branch("pi_px",&Pd_PX,"pi_px/D");
+  brPipy=newTree->Branch("pi_py",&Pd_PY,"pi_py/D");
+  brPiSpy=newTree->Branch("pi_pz",&Pd_PZ,"pi_pz/D");
+  
+  brKpz=newTree->Branch("pis_px",&Ps_PX,"pis_px/D");
+  brPipz=newTree->Branch("pis_py",&Ps_PY,"pis_py/D");
+  brPiSpz=newTree->Branch("pis_pz",&Ps_PZ,"pis_pz/D");
+  
+  brRunNum = newTree->Branch("RunNumber",&runNumber,"RunNumber/i");
+  brEvNum = newTree->Branch("EventNumber",&eventNumber,"EventNumber/l");
+
+  brDTFK_px=newTree->Branch("DTFK_px",&B_VFit_Kplus_PX[0],"DTFK_px/F");
+  brDTFK_py=newTree->Branch("DTFK_py",&B_VFit_Kplus_PY[0],"DTFK_py/F");
+  brDTFK_pz=newTree->Branch("DTFK_pz",&B_VFit_Kplus_PZ[0],"DTFK_pz/F");
+  brDTFPi_px=newTree->Branch("DTFPi_px",&B_VFit_piplus_0_PX[0],"DTFPi_px/F");
+  brDTFPi_py=newTree->Branch("DTFPi_py",&B_VFit_piplus_0_PY[0],"DTFPi_py/F");
+  brDTFPi_pz=newTree->Branch("DTFPi_pz",&B_VFit_piplus_0_PZ[0],"DTFPi_pz/F");
+  brDTFPiS_px=newTree->Branch("DTFPiS_px",&B_VFit_piplus_PX[0],"DTFPiS_px/F");
+  brDTFPiS_py=newTree->Branch("DTFPiS_py",&B_VFit_piplus_PY[0],"DTFPiS_py/F");
+  brDTFPiS_pz=newTree->Branch("DTFPiS_pz",&B_VFit_piplus_PZ[0],"DTFPiS_pz/F");
+
+  brMu_px=newTree->Branch("Mu_PX",&Mu_PX,"Mu_PX/D");
+  brMu_py=newTree->Branch("Mu_PY",&Mu_PY,"Mu_PY/D");
+  brMu_pz=newTree->Branch("Mu_PZ",&Mu_PZ,"Mu_PZ/D");
+  brDTFMu_px=newTree->Branch("DTFMu_px",&B_VFit_muminus_PX[0],"DTFMu_px/F");
+  brDTFMu_py=newTree->Branch("DTFMu_py",&B_VFit_muminus_PY[0],"DTFMu_py/F");
+  brDTFMu_pz=newTree->Branch("DTFMu_pz",&B_VFit_muminus_PZ[0],"DTFMu_pz/F");
+  */
+  brD0P = newTree->Branch("D0P",&D_P,"D0P/D");
+  brD0Pt = newTree->Branch("D0Pt",&D_PT,"D0Pt/D");
+  brMuIPchi2 = newTree->Branch("MuIPchi2",&Mu_IPCHI2_OWNPV,"MuIPchi2/D");
+  brK_PIDK=newTree->Branch("K_PIDK",&K_PIDK,"K_PIDK/D");
+  
+  brPi_PIDK=newTree->Branch("Pi_PIDK",&Pd_PIDK,"Pi_PIDK/D");
+  brnTrk = newTree->Branch("nTracks",&nTracks,"nTracks/I");
+  brnpvs = newTree->Branch("nPVs",&nPVs,"nPVs/I");
+  br_K_P = newTree->Branch("K_P",&K_P,"K_P/D");
+  br_K_eta = newTree->Branch("K_ETA",&newKeta,"K_ETA/D");
+  br_K_PT = newTree->Branch("K_PT",&K_PT,"K_PT/D");
+  //
+
   dstar_mass_plot = new TH1D(name+"_dt_hist_dstar_m","", 500, 2000,2025);
   dstar_mass_plot->SetTitle(Form("m(D^{0}#pi_{S}); m(D^{0}#pi_{S})[MeV]; Entries / %.2f",dstar_mass_plot->GetBinWidth(1)));
 

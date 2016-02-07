@@ -1,6 +1,7 @@
 //c++
 #include <iostream>
 #include <cmath>
+#include <stdlib.h>//for validation files getenv.
 //root
 
 #include <TH1.h>
@@ -105,7 +106,19 @@ int main(int argc, char* const argv[]){
   }
   getLuminosity(lumi_tree);
   cout<<"rs tree"<<endl;
+  char* dt_prompt_match_path_char = getenv("DTPROMPTLISTS");
+  if(dt_prompt_match_path_char==NULL){
+    cout<<"couldn't get the path to the validation files for removing prompt events"<<endl;
+    return 0;
+  }
+  TString dt_prompt_match_path(dt_prompt_match_path_char);
+  cout<<"Using DT Prompt Matching Path "<<dt_prompt_match_path<<endl;
+
   DT_D0_mix_CPV rs_looper(rs_tree);
+  rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2012.txt");
+  rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2012.txt");
+  rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMD_2011.txt");
+  rs_looper.setRejectionFile(dt_prompt_match_path+"/cuts_forMU_2011.txt");
   rs_looper.Loop();
   rs_looper.bs_plot->SavePlots();
   cout<<"rs ss tree"<<endl;
@@ -122,11 +135,11 @@ int main(int argc, char* const argv[]){
   DT_D0_mix_CPV ws_ss_looper(ws_ss_tree);
   ws_ss_looper.Loop();
   ws_ss_looper.bs_plot->SavePlots();
-  
+
   
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");
   fout->cd();
-  rs_looper.newTree->Write();
+  //rs_looper.newTree->Write();
   rs_looper.dstar_mass_plot->Write();
   rs_looper.d0_mass_plot->Write();
   rs_looper.b_mass_plot->Write();

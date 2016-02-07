@@ -9,10 +9,100 @@
 #include <TLorentzVector.h>
 #include <iostream>
 #include <TLeaf.h>
+#include <algorithm>
+#include <fstream>
 using namespace std;
+bool DT_D0_mix_CPV::matchElement (matchelement_t i, matchelement_t j) {
+  double tol =0.1;
+  bool ret=
+    ((i.eventNumber==j.eventNumber)&&
+     (i.runNumber==j.runNumber)&&
+     (i.kpx==j.kpx)&&
+     (i.kpy==j.kpy)&&
+     (i.kpz==j.kpz)&&
+     (i.pipx==j.pipx)&&
+     (i.pipy==j.pipy)&&
+     fabs((i.pipz-j.pipz))<tol&&
+     fabs((i.pispx-j.pispx))<tol&&
+     fabs((i.pispy-j.pispy))<tol&&
+     fabs((i.pispz-j.pispz))<tol
+     );
+  
+  // if(ret==true){
+  //   cout<<"testing the remaining fields"<<endl;
+  //   cout<<"d pi pz = "<<i.pipz-j.pipz<<endl;
+  // }
+  return ret;
+}
+
+
+bool DT_D0_mix_CPV::foundMatch(matchelement_t el){
+  bool res = false;
+  //for(auto val : matchedToPrompt){
+  for( std::vector<matchelement_t>::iterator it = matchedToPrompt.begin(); it!= matchedToPrompt.end();++it){
+    matchelement_t val = (*it);//want the iterator to erase after.
+    if(res == true)continue;
+    res = matchElement(el,val);
+    if(res==true){
+      //cout<<"matched to"<<endl;
+      //cout<<"\t"<<val.eventNumber<<"\t"<<val.runNumber<<"\t"<<val.kpx<<"\t"<<val.kpy<<"\t"<<val.kpz<<"\t"<<val.pipx<<"\t"<<val.pipy<<"\t"<<val.pipz<<"\t"<<val.pispx<<"\t"<<val.pispy<<"\t"<<val.pispz<<endl;
+      //cout<<"before, val.toBeRemoved = "<<val.toBeRemoved<<endl;
+      val.toBeRemoved = 1;
+      //cout<<"set val.toBeRemoved to "<<val.toBeRemoved<<endl;
+      //erase the element
+      matchedToPrompt.erase(it);
+    }
+    
+  }
+  return res;
+}
+
+void DT_D0_mix_CPV::setRejectionFile(TString path_to_file){
+  //read a file from the path, then set the rejection vector accordingly.
+  matchelement_t elem;
+  ifstream infile(path_to_file.Data());
+  std::string line;
+  if(infile.is_open()){
+    std::cout<<"reading file "<<path_to_file<<std::endl;
+    getline(infile,line);//skip the header
+    double kpx,kpy,kpz,pipx,pipy,pipz,pispx,pispy,pispz;
+    UInt_t runNum;
+    ULong64_t evNum;
+    std::cout<<"Testing read"<<std::endl;
+    while(infile>>evNum>>runNum>>kpx>>kpy>>kpz>>pipx>>pipy>>pipz>>pispx>>pispy>>pispz){
+      elem.eventNumber = evNum;
+      elem.runNumber =runNum;
+      elem.kpx = kpx;
+      elem.kpy = kpy;
+      elem.kpz = kpz;
+      elem.pipx = pipx;
+      elem.pipy = pipy;
+      elem.pipz = pipz;
+      elem.pispx = pispx;
+      elem.pispy = pispy;
+      elem.pispz = pispz;
+      elem.toBeRemoved = false;
+      matchedToPrompt.push_back(elem);
+    }    
+    //now sort by event number    
+    cout<<"done reading file, length of matchedToPrompt = "<<matchedToPrompt.size()<<endl;
+    //sort by event number.
+    std::sort(matchedToPrompt.begin(),matchedToPrompt.end(),sorter);
+  }
+  else{
+    std::cout<<"Cannot read the input file! This will fail!"<<std::endl;
+    //assert(0);
+  }
+  return;
+}
 
 void DT_D0_mix_CPV::Loop()
 {
+  TString  tmpName = TString(fChain->GetName());
+  tmpName.ReplaceAll("/DecayTree","");
+  std::cout<<"tmpName = "<<tmpName<<std::endl;
+  TFile* treeFile = new TFile(tmpName+"_treeFile.root","RECREATE");
+  treeFile->cd();
   //   In a ROOT session, you can do:
   //      Root > .L DT_D0_mix_CPV.C
   //      Root > DT_D0_mix_CPV t
@@ -39,14 +129,34 @@ void DT_D0_mix_CPV::Loop()
   if (fChain == 0) return;
 
   Long64_t nentries = fChain->GetEntriesFast();
-
+  matchelement_t currElem;
   Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     if(jentry%100000==0)std::cout<<"processed "<<jentry<<" events"<<std::endl;
+        //make the match for prompt sample
+
+    currElem.eventNumber = eventNumber;
+    currElem.runNumber = runNumber;
+    currElem.kpx = K_PX;
+    currElem.kpy = K_PY;
+    currElem.kpz = K_PZ;
+    currElem.pipx =Pd_PX;
+    currElem.pipy =Pd_PY;
+    currElem.pipz =Pd_PZ;
+    currElem.pispx =Ps_PX;
+    currElem.pispy =Ps_PY;
+    currElem.pispz =Ps_PZ;
     
+    if(foundMatch(currElem)){
+      //cout<<"new vector length = "<<matchedToPrompt.size()<<endl;
+      cout<<"removing prompt event"<<endl;
+      continue;
+    }
+
+
     //cuts
     if(!(
          B_VFit_status[0]==0 &&
@@ -56,9 +166,9 @@ void DT_D0_mix_CPV::Loop()
 	 //  ||(K_PIDK>2.&&K_PIDK<=8.&&Pd_PIDK<pi_dau_pidk_cut)//loose tight
 	 //  )&&
 	 K_PIDK>kpidk_cut&&//tight K
-	 //K_PIDK>2.&&K_PIDK<=8.&&//loose K
+	 //K_PIDK>5.&&K_PIDK<=8.&&//loose K, changed from 2
 	 Pd_PIDK<pi_dau_pidk_cut &&//tight pi
-	 //Pd_PIDK<2 && Pd_PIDK>=-5 &&//loose pi
+	 //Pd_PIDK<-2 && Pd_PIDK>=-5 &&//loose pi, changed from +2
 	 
          Ps_PIDe<pi_slow_pide_cut &&
          Ps_ProbNNghost<pi_slow_probnnghost_cut &&
@@ -71,7 +181,8 @@ void DT_D0_mix_CPV::Loop()
          Mu_isMuon &&
          Mu_MC12TuneV2_ProbNNmu > mu_probnnmu_cut&&
          !Ps_isMuon &&
-	 Ps_MC12TuneV2_ProbNNghost< pis_ghost_prob_cut
+	 Ps_MC12TuneV2_ProbNNghost< pis_ghost_prob_cut&&
+	 B_VFit_chi2[0]/B_VFit_nDOF[0]<dtf_chi2_ndf_cut
 	 //&& Ps_PT > pis_pt_cut
 	 //&&Ps_MC12TuneV2_ProbNNp<pis_probnnp_cut
 	 //&& Mu_IPCHI2_OWNPV > mu_ip_chi2_cut
@@ -172,10 +283,17 @@ void DT_D0_mix_CPV::Loop()
     Double_t dstm = (d0_vector+slow_pion_vec).M()*1e3;
     Double_t Pis_CHARGE = Ps_ID/211.;
     Double_t Pi_CHARGE = Pd_ID/211.;
-    newPiScharge = (int)Pi_CHARGE;
+    newPiScharge = (int)Pis_CHARGE;
     newDstM = dstm;
+    newBmass = B_VFit_M[0];    
     newD0M = (k_daughter+pi_daughter).M()*1e3;
     newDecayTime = (B_VFit_D0_ctau[0]/ d0_pdg_ct);
+    newD0ipChi2 = D_IPCHI2_OWNPV;
+
+    //add another tlorentz vector for the original kaon
+    TLorentzVector origK;
+    origK.SetXYZM(K_PX,K_PY,K_PZ,pdg_kplus_m);
+    newKeta = origK.PseudoRapidity();
     Double_t beta = Pis_CHARGE*Pi_CHARGE*(pi_daughter.P()-k_daughter_as_pi.P())/(k_daughter_as_pi.P()+pi_daughter.P());
     //fill the d0 mass plot without any cuts on delta M to show the cut range
     d0_mass_plot->Fill((k_daughter+pi_daughter).M()*1e3);
@@ -189,7 +307,7 @@ void DT_D0_mix_CPV::Loop()
     }
 
     //fill bmass cuts now, so that we have everything ok.
-    if(!(B_VFit_M[0] < bmass_cut_hi &&B_VFit_M[0] > bmass_cut_low))continue;
+    //if(!(B_VFit_M[0] < bmass_cut_hi &&B_VFit_M[0] > bmass_cut_low))continue;
 
     bs_plot->h2tot->Fill(beta,(k_daughter_as_pi+pi_daughter).M());
     if(fabs((k_daughter + pi_daughter).M()*1e3-1864.84)<24 
@@ -959,8 +1077,11 @@ void DT_D0_mix_CPV::Loop()
       d_logIPchi2_vs_td0_neg->Fill((B_VFit_D0_ctau[0]/ d0_pdg_ct),log(D_IPCHI2_OWNPV));
     }
     //at the end of all the other crap, fill the tree
+    //cut on the signal region of dstar m
+    //if(fabs(newDstM-pdg_dstar_m)>1)continue;
     newTree->Fill();
     
   }//loop on events
-  
+  newTree->Write();
+  //  treeFile->Write();
 }
