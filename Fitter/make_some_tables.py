@@ -9,15 +9,276 @@ gROOT.ProcessLine(".X /home/davis3a4/private/stye_file/lhcbStyle.C");
 import numpy as np
 from numpy.linalg import *
 
+
+#function to read the result from a file
+def makeResultMixing(filename,result):
+    doneReading= False
+    file2read = open(filename)
+    while not doneReading:
+        line =file2read.readline()
+        if not line: doneReading=True
+        if 'Correlation matrix' in line:
+            print 'reading correlation matrix'
+            result['corrMatrix'] = np.eye(3)#for mixing only
+            for i in range(3):line = file2read.readline()
+            result['corrMatrix'][0,1] = float(line.split()[1])
+            result['corrMatrix'][1,0] = float(line.split()[1])
+            line = file2read.readline()
+            result['corrMatrix'][0,2] = float(line.split()[1])
+            result['corrMatrix'][1,2] = float(line.split()[2])
+            
+            result['corrMatrix'][2,0] = float(line.split()[1])
+            result['corrMatrix'][2,1] = float(line.split()[2])
+            #print line.split()
+            #print result['corrMatrix']
+            #covariance = err(x)*err(y)*corr(x,y)
+            result['covMatrix']=np.eye(3)
+            doneReading = True
+            break
+        if "R_D+" in line:
+            result['R_D']=[float(line.split()[1]),float(line.split()[2])]
+        if "x'2+" in line:
+            result['xprime2']=[float(line.split()[1]),float(line.split()[2])]
+        if "y'+" in line:
+            result['yprime']=[float(line.split()[1]),float(line.split()[2])]
+        if "chi2" in line:
+            result["chi2"]=line.split()[1]
+    file2read.close()
+    result['covMatrix'][0,0]=result['corrMatrix'][0,0]*result['R_D'][1]*result['R_D'][1]
+    result['covMatrix'][0,1]=result['corrMatrix'][0,1]*result['R_D'][1]*result['yprime'][1]
+    result['covMatrix'][0,2]=result['corrMatrix'][0,2]*result['R_D'][1]*result['xprime2'][1]
+    result['covMatrix'][1,1]=result['corrMatrix'][1,1]*result['yprime'][1]*result['yprime'][1]
+    result['covMatrix'][1,2]=result['corrMatrix'][1,2]*result['yprime'][1]*result['xprime2'][1]
+    result['covMatrix'][2,2]=result['corrMatrix'][2,2]*result['xprime2'][1]*result['xprime2'][1]
+    #make symmetric
+    result['covMatrix'][1,0]=result['covMatrix'][0,1]
+    result['covMatrix'][2,0]=result['covMatrix'][0,2]
+    result['covMatrix'][2,1]=result['covMatrix'][1,2]
+    #finally, add another thing for use with the chi2
+    result['final_result']=np.array([result['R_D'],result['yprime'],result['xprime2']])
+    
+def makeResultNoDCPV(filename,result):
+    #print 'opening ', filename
+    doneReading = False
+    file2read=open(filename)
+    while not doneReading:
+        line = file2read.readline()
+        #print line
+        #print line.split()
+        if 'Correlation matrix' in line:
+            result['corrMatrix']=np.eye(5)#for no dcpv
+            for i in range(3):line = file2read.readline()
+            result['corrMatrix'][0,1] =float(line.split()[1])
+            result['corrMatrix'][1,0] =float(line.split()[1])
+            line = file2read.readline()
+            result['corrMatrix'][0,2] = float(line.split()[1])
+            result['corrMatrix'][1,2] = float(line.split()[2])
+            result['corrMatrix'][2,0] = float(line.split()[1])
+            result['corrMatrix'][2,1] = float(line.split()[2])
+            line = file2read.readline()
+            result['corrMatrix'][0,3] = float(line.split()[1])
+            result['corrMatrix'][1,3] = float(line.split()[2])
+            result['corrMatrix'][2,3] = float(line.split()[3])
+            result['corrMatrix'][3,0] = float(line.split()[1])
+            result['corrMatrix'][3,1] = float(line.split()[2])
+            result['corrMatrix'][3,2] = float(line.split()[3])
+            line = file2read.readline()
+            result['corrMatrix'][0,4] = float(line.split()[1])
+            result['corrMatrix'][1,4] = float(line.split()[2])
+            result['corrMatrix'][2,4] = float(line.split()[3])
+            result['corrMatrix'][3,4] = float(line.split()[4])
+            
+            result['corrMatrix'][4,0] = float(line.split()[1])
+            result['corrMatrix'][4,1] = float(line.split()[2])
+            result['corrMatrix'][4,2] = float(line.split()[3])
+            result['corrMatrix'][4,3] = float(line.split()[4])
+            doneReading = True
+            break
+        if "R_D+" in line:
+            result['R_D']=[float(line.split()[1]),float(line.split()[2])]
+        if "x'2+" in line:
+            result['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
+        if "y'+" in line:
+            result['yprime+']=[float(line.split()[1]),float(line.split()[2])]
+        if "x'2-" in line:
+            result['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
+        if "y'-" in line:
+            result['yprime-']=[float(line.split()[1]),float(line.split()[2])]
+        if "chi2" in line:
+            result["chi2"]=line.split()[1]
+    file2read.close()
+    result['covMatrix']=np.eye(5)#for no dcpv
+    #covariance matrix. cov(x,y)=err(x)*err(y)*corr(x,y)
+    result['covMatrix'][0,0]=result['corrMatrix'][0,0]*result['R_D'][1]*result['R_D'][1]
+    result['covMatrix'][0,1]=result['corrMatrix'][0,1]*result['R_D'][1]*result['yprime+'][1]
+
+    result['covMatrix'][0,2]=result['corrMatrix'][0,2]*result['R_D'][1]*result['xprime2+'][1]
+    result['covMatrix'][0,3]=result['corrMatrix'][0,3]*result['R_D'][1]*result['yprime-'][1]
+    result['covMatrix'][0,4]=result['corrMatrix'][0,4]*result['R_D'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][1,1]=result['corrMatrix'][1,1]*result['yprime+'][1]*result['yprime+'][1]
+    result['covMatrix'][1,2]=result['corrMatrix'][1,2]*result['yprime+'][1]*result['xprime2+'][1]
+    result['covMatrix'][1,3]=result['corrMatrix'][1,3]*result['yprime+'][1]*result['yprime-'][1]
+    result['covMatrix'][1,4]=result['corrMatrix'][1,4]*result['yprime+'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][2,2]=result['corrMatrix'][2,2]*result['xprime2+'][1]*result['xprime2+'][1]
+    result['covMatrix'][2,3]=result['corrMatrix'][2,3]*result['xprime2+'][1]*result['yprime-'][1]
+    result['covMatrix'][2,4]=result['corrMatrix'][2,4]*result['xprime2+'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][3,3]=result['corrMatrix'][3,3]*result['yprime-'][1]*result['yprime-'][1]
+    result['covMatrix'][3,4]=result['corrMatrix'][3,4]*result['yprime-'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][4,4]=result['corrMatrix'][4,4]*result['xprime2-'][1]*result['xprime2-'][1]
+    #make symmetric
+    result['covMatrix'][1,0]=result['covMatrix'][0,1]
+    result['covMatrix'][2,0]=result['covMatrix'][0,2]
+    result['covMatrix'][3,0]=result['covMatrix'][0,3]
+    result['covMatrix'][4,0]=result['covMatrix'][0,4]
+    #
+    result['covMatrix'][2,1]=result['covMatrix'][1,2]
+    result['covMatrix'][3,1]=result['covMatrix'][1,3]
+    result['covMatrix'][4,1]=result['covMatrix'][1,4]
+    #
+    result['covMatrix'][3,2]=result['covMatrix'][2,3]
+    result['covMatrix'][4,2]=result['covMatrix'][2,4]
+    #
+    result['covMatrix'][4,3]=result['covMatrix'][3,4]
+    #
+    result['final_result']=np.array([result['R_D'],
+                                     result['yprime+'],
+                                     result['xprime2+'],
+                                     result['yprime-'],
+                                     result['xprime2-']])
+
+def makeResultAllCPV(filename,result):
+    doneReading = False
+    file2read=open(filename)
+    while not doneReading:
+        line = file2read.readline()
+        #print line
+        #print line.split()
+        if 'Correlation matrix' in line:
+            result['corrMatrix']=np.eye(6)#all cpv
+            for i in range(3):line = file2read.readline()
+            result['corrMatrix'][0,1] =float(line.split()[1])
+            result['corrMatrix'][1,0] =float(line.split()[1])
+            line = file2read.readline()
+            result['corrMatrix'][0,2] = float(line.split()[1])
+            result['corrMatrix'][1,2] = float(line.split()[2])
+            result['corrMatrix'][2,0] = float(line.split()[1])
+            result['corrMatrix'][2,1] = float(line.split()[2])
+            line = file2read.readline()
+            result['corrMatrix'][0,3] = float(line.split()[1])
+            result['corrMatrix'][1,3] = float(line.split()[2])
+            result['corrMatrix'][2,3] = float(line.split()[3])
+            result['corrMatrix'][3,0] = float(line.split()[1])
+            result['corrMatrix'][3,1] = float(line.split()[2])
+            result['corrMatrix'][3,2] = float(line.split()[3])
+            line = file2read.readline()
+            result['corrMatrix'][0,4] = float(line.split()[1])
+            result['corrMatrix'][1,4] = float(line.split()[2])
+            result['corrMatrix'][2,4] = float(line.split()[3])
+            result['corrMatrix'][3,4] = float(line.split()[4])
+            
+            result['corrMatrix'][4,0] = float(line.split()[1])
+            result['corrMatrix'][4,1] = float(line.split()[2])
+            result['corrMatrix'][4,2] = float(line.split()[3])
+            result['corrMatrix'][4,3] = float(line.split()[4])
+            line = file2read.readline()
+            result['corrMatrix'][0,5] = float(line.split()[1])
+            result['corrMatrix'][1,5] = float(line.split()[2])
+            result['corrMatrix'][2,5] = float(line.split()[3])
+            result['corrMatrix'][3,5] = float(line.split()[4])
+            result['corrMatrix'][4,5] = float(line.split()[5])
+            
+            result['corrMatrix'][5,0] = float(line.split()[1])
+            result['corrMatrix'][5,1] = float(line.split()[2])
+            result['corrMatrix'][5,2] = float(line.split()[3])
+            result['corrMatrix'][5,3] = float(line.split()[4])
+            result['corrMatrix'][5,4] = float(line.split()[5])
+            doneReading = True
+            break
+        if "R_D+" in line:
+            result['R_D+']=[float(line.split()[1]),float(line.split()[2])]
+        if "R_D-" in line:
+            result['R_D-']=[float(line.split()[1]),float(line.split()[2])]
+        if "x'2+" in line:
+            result['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
+        if "y'+" in line:
+            result['yprime+']=[float(line.split()[1]),float(line.split()[2])]
+        if "x'2-" in line:
+            result['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
+        if "y'-" in line:
+            result['yprime-']=[float(line.split()[1]),float(line.split()[2])]
+        if "chi2" in line:
+            result["chi2"]=line.split()[1]
+    file2read.close()
+    result['covMatrix']=np.eye(6)#for all cpv
+    #covariance matrix. cov(x,y)=err(x)*err(y)*corr(x,y)
+    result['covMatrix'][0,0]=result['corrMatrix'][0,0]*result['R_D+'][1]*result['R_D+'][1]
+    result['covMatrix'][0,1]=result['corrMatrix'][0,1]*result['R_D+'][1]*result['yprime+'][1]
+
+    result['covMatrix'][0,2]=result['corrMatrix'][0,2]*result['R_D+'][1]*result['xprime2+'][1]
+    result['covMatrix'][0,3]=result['corrMatrix'][0,3]*result['R_D+'][1]*result['R_D-'][1]
+    result['covMatrix'][0,4]=result['corrMatrix'][0,4]*result['R_D+'][1]*result['yprime-'][1]
+    result['covMatrix'][0,5]=result['corrMatrix'][0,5]*result['R_D+'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][1,1]=result['corrMatrix'][1,1]*result['yprime+'][1]*result['yprime+'][1]
+    result['covMatrix'][1,2]=result['corrMatrix'][1,2]*result['yprime+'][1]*result['xprime2+'][1]
+    result['covMatrix'][1,3]=result['corrMatrix'][1,3]*result['yprime+'][1]*result['R_D-'][1]
+    result['covMatrix'][1,4]=result['corrMatrix'][1,4]*result['yprime+'][1]*result['yprime-'][1]
+    result['covMatrix'][1,5]=result['corrMatrix'][1,5]*result['yprime+'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][2,2]=result['corrMatrix'][2,2]*result['xprime2+'][1]*result['xprime2+'][1]
+    result['covMatrix'][2,3]=result['corrMatrix'][2,3]*result['xprime2+'][1]*result['R_D-'][1]
+    result['covMatrix'][2,4]=result['corrMatrix'][2,4]*result['xprime2+'][1]*result['yprime-'][1]
+    result['covMatrix'][2,5]=result['corrMatrix'][2,5]*result['xprime2+'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][3,3]=result['corrMatrix'][3,3]*result['R_D-'][1]*result['R_D-'][1]
+    result['covMatrix'][3,4]=result['corrMatrix'][3,4]*result['R_D-'][1]*result['yprime-'][1]
+    result['covMatrix'][3,5]=result['corrMatrix'][3,5]*result['R_D-'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][4,4]=result['corrMatrix'][4,4]*result['yprime-'][1]*result['yprime-'][1]
+    result['covMatrix'][4,5]=result['corrMatrix'][4,5]*result['yprime-'][1]*result['xprime2-'][1]
+    #
+    result['covMatrix'][5,5]=result['corrMatrix'][5,5]*result['xprime2-'][1]*result['xprime2-'][1]
+    #make symmetric
+    result['covMatrix'][1,0]=result['covMatrix'][0,1]
+    result['covMatrix'][2,0]=result['covMatrix'][0,2]
+    result['covMatrix'][3,0]=result['covMatrix'][0,3]
+    result['covMatrix'][4,0]=result['covMatrix'][0,4]
+    result['covMatrix'][5,0]=result['covMatrix'][0,5]
+    #
+    result['covMatrix'][2,1]=result['covMatrix'][1,2]
+    result['covMatrix'][3,1]=result['covMatrix'][1,3]
+    result['covMatrix'][4,1]=result['covMatrix'][1,4]
+    result['covMatrix'][5,1]=result['covMatrix'][1,5]
+    #
+    result['covMatrix'][3,2]=result['covMatrix'][2,3]
+    result['covMatrix'][4,2]=result['covMatrix'][2,4]
+    result['covMatrix'][5,2]=result['covMatrix'][2,5]
+    #
+    result['covMatrix'][4,3]=result['covMatrix'][3,4]
+    result['covMatrix'][5,3]=result['covMatrix'][3,5]
+    result['covMatrix'][5,4]=result['covMatrix'][4,5]
+    result['final_result']=np.array([result['R_D+'],
+                                     result['yprime+'],
+                                     result['xprime2+'],
+                                     result['R_D-'],
+                                     result['yprime-'],
+                                     result['xprime2-']])
+
 def compare_results(res1,res2):
     #take the covariance matrices, and add them.
-    mat = numpy.inv(numpy.array(res1['covMatrix']+res2['covMatrix']))
-    r1=res1['result']
-    r2=res2['result']
+    mat2inv=res1['covMatrix']+res2['covMatrix']
+    mat = np.inv(mat2inv)
+    r1=res1['final_result']
+    r2=res2['final_result']
     chi2  = np.dot((r1-r2),np.dot(mat,(r1-r2)))#dot product
     return chi2
     
 def make_syst_table(name, description, nominal_res, res_tocompare):
+    print 'testing chi2 compatibility, chi2=%f , ndf=%f'%(compare_results(nominal_res,res_tocompare),nominal_res['final_result'].size)
     nominal_mixing = nominal_res[0]
     nominal_nodcpv = nominal_res[1]
     nominal_allcpv = nominal_res[2]
@@ -62,526 +323,86 @@ def make_syst_table(name, description, nominal_res, res_tocompare):
     ofile.write("\\end{table}%\n")
     ofile.close()
 
-
-    
+#
 mixing_res={}
 nodcpv_res={}
 allcpv_res={}
-file = open("Results/tt_nominal/mixing_only_fit.txt")
-#for line in file:
-doneReading= False
-while not doneReading:
-    line =file.readline()
-    if not line: doneReading=True
-    if 'Correlation matrix' in line:
-        print 'reading correlation matrix'
-        mixing_res['corrMatrix'] = np.eye(3)#for mixing only
-        for i in range(3):line = file.readline()
-        mixing_res['corrMatrix'][0,1] = float(line.split()[1])
-        mixing_res['corrMatrix'][1,0] = float(line.split()[1])
-        line = file.readline()
-        mixing_res['corrMatrix'][0,2] = float(line.split()[1])
-        mixing_res['corrMatrix'][1,2] = float(line.split()[2])
 
-        mixing_res['corrMatrix'][2,0] = float(line.split()[1])
-        mixing_res['corrMatrix'][2,1] = float(line.split()[2])
-        print line.split()
-        print mixing_res['corrMatrix']
-        doneReading = True
-        break
-    if "R_D+" in line:
-        mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print mixing_res
-file=open("Results/tt_nominal/noDCPV_fit.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        nodcpv_res["chi2"]=line.split()[1]
-file.close()
+makeResultMixing("Results/tt_nominal/mixing_only_fit.txt",mixing_res)
+makeResultNoDCPV("Results/tt_nominal/noDCPV_fit.txt",nodcpv_res)
+makeResultAllCPV("Results/tt_nominal/allCPV_fit.txt",allcpv_res)
 #print nodcpv_res
-file=open("Results/tt_nominal/allCPV_fit.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        allcpv_res["chi2"]=line.split()[1]
-file.close()
 
 #get the systematic stuff
 
-file=open("Results/tt_scale_to_sideband/mixing.txt")
+
 ssScale_mixing_res={}
 ssScale_nodcpv_res={}
 ssScale_allcpv_res={}
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        ssScale_mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        ssScale_mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        ssScale_mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        ssScale_mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print ssScale_mixing_res
-file=open("Results/tt_scale_to_sideband/noDCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        ssScale_nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        ssScale_nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        ssScale_nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        ssScale_nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        ssScale_nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        ssScale_nodcpv_res["chi2"]=line.split()[1]
-file.close()
-#print ssScale_nodcpv_res
-file=open("Results/tt_scale_to_sideband/allCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        ssScale_allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        ssScale_allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        ssScale_allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        ssScale_allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        ssScale_allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        ssScale_allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        ssScale_allcpv_res["chi2"]=line.split()[1]
-file.close()
+makeResultMixing("Results/tt_scale_to_sideband/mixing.txt",ssScale_mixing_res)
+makeResultNoDCPV("Results/tt_scale_to_sideband/noDCPV.txt",ssScale_nodcpv_res)
+makeResultAllCPV("Results/tt_scale_to_sideband/allCPV.txt",ssScale_allcpv_res)
+
 ## get MD2011
-file=open("Results/tt_scale_to_sideband/systematics/2011MD/mixing.txt")
+
 md2011_mixing_res={}
 md2011_nodcpv_res={}
 md2011_allcpv_res={}
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        md2011_mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        md2011_mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        md2011_mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        md2011_mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print md2011_mixing_res
-file=open("Results/tt_scale_to_sideband/systematics/2011MD/noDCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        md2011_nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        md2011_nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        md2011_nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        md2011_nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        md2011_nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        md2011_nodcpv_res["chi2"]=line.split()[1]
-file.close()
-#print md2011_nodcpv_res
-file=open("Results/tt_scale_to_sideband/systematics/2011MD/allCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        md2011_allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        md2011_allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        md2011_allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        md2011_allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        md2011_allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        md2011_allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        md2011_allcpv_res["chi2"]=line.split()[1]
-file.close()
+makeResultMixing("Results/tt_scale_to_sideband/systematics/2011MD/mixing.txt",md2011_mixing_res)
+makeResultNoDCPV("Results/tt_scale_to_sideband/systematics/2011MD/noDCPV.txt",md2011_nodcpv_res)
+makeResultAllCPV("Results/tt_scale_to_sideband/systematics/2011MD/allCPV.txt",md2011_allcpv_res)
+
 ## MU2011
-file=open("Results/tt_scale_to_sideband/systematics/2011MU/mixing.txt")
+
+
 mu2011_mixing_res={}
 mu2011_nodcpv_res={}
 mu2011_allcpv_res={}
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mu2011_mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mu2011_mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mu2011_mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mu2011_mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print mu2011_mixing_res
-file=open("Results/tt_scale_to_sideband/systematics/2011MU/noDCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mu2011_nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mu2011_nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mu2011_nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        mu2011_nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        mu2011_nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mu2011_nodcpv_res["chi2"]=line.split()[1]
-file.close()
-#print mu2011_nodcpv_res
-file=open("Results/tt_scale_to_sideband/systematics/2011MU/allCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mu2011_allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        mu2011_allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mu2011_allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mu2011_allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        mu2011_allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        mu2011_allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mu2011_allcpv_res["chi2"]=line.split()[1]
-file.close()
+makeResultMixing("Results/tt_scale_to_sideband/systematics/2011MU/mixing.txt",mu2011_mixing_res)
+makeResultNoDCPV("Results/tt_scale_to_sideband/systematics/2011MU/noDCPV.txt",mu2011_nodcpv_res)
+makeResultAllCPV("Results/tt_scale_to_sideband/systematics/2011MU/allCPV.txt",mu2011_allcpv_res)
 
 ###2012
-file=open("Results/tt_scale_to_sideband/systematics/2012MD/mixing.txt")
+
+
 md2012_mixing_res={}
 md2012_nodcpv_res={}
 md2012_allcpv_res={}
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        md2012_mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        md2012_mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        md2012_mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        md2012_mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print md2012_mixing_res
-file=open("Results/tt_scale_to_sideband/systematics/2012MD/noDCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        md2012_nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        md2012_nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        md2012_nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        md2012_nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        md2012_nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        md2012_nodcpv_res["chi2"]=line.split()[1]
-file.close()
-#print md2012_nodcpv_res
-file=open("Results/tt_scale_to_sideband/systematics/2012MD/allCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        md2012_allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        md2012_allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        md2012_allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        md2012_allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        md2012_allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        md2012_allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        md2012_allcpv_res["chi2"]=line.split()[1]
-file.close()
+makeResultMixing("Results/tt_scale_to_sideband/systematics/2012MD/mixing.txt",md2012_mixing_res)
+makeResultNoDCPV("Results/tt_scale_to_sideband/systematics/2012MD/noDCPV.txt",md2012_nodcpv_res)
+makeResultAllCPV("Results/tt_scale_to_sideband/systematics/2012MD/allCPV.txt",md2012_allcpv_res)
 ## MU2012
-file=open("Results/tt_scale_to_sideband/systematics/2012MU/mixing.txt")
 mu2012_mixing_res={}
 mu2012_nodcpv_res={}
 mu2012_allcpv_res={}
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mu2012_mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mu2012_mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mu2012_mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mu2012_mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print mu2012_mixing_res
-file=open("Results/tt_scale_to_sideband/systematics/2012MU/noDCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mu2012_nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mu2012_nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mu2012_nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        mu2012_nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        mu2012_nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mu2012_nodcpv_res["chi2"]=line.split()[1]
-file.close()
-#print mu2012_nodcpv_res
-file=open("Results/tt_scale_to_sideband/systematics/2012MU/allCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mu2012_allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        mu2012_allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mu2012_allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mu2012_allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        mu2012_allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        mu2012_allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mu2012_allcpv_res["chi2"]=line.split()[1]
-file.close()
+makeResultMixing("Results/tt_scale_to_sideband/systematics/2012MU/mixing.txt",mu2012_mixing_res)
+makeResultNoDCPV("Results/tt_scale_to_sideband/systematics/2012MU/noDCPV.txt",mu2012_nodcpv_res)
+makeResultAllCPV("Results/tt_scale_to_sideband/systematics/2012MU/allCPV.txt",mu2012_allcpv_res)
 
 #MU only
-file=open("Results/tt_scale_to_sideband/systematics/MUonly/mixing.txt")
 muOnly_mixing_res={}
 muOnly_nodcpv_res={}
 muOnly_allcpv_res={}
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        muOnly_mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        muOnly_mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        muOnly_mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        muOnly_mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print muOnly_mixing_res
-file=open("Results/tt_scale_to_sideband/systematics/MUonly/noDCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        muOnly_nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        muOnly_nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        muOnly_nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        muOnly_nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        muOnly_nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        muOnly_nodcpv_res["chi2"]=line.split()[1]
-file.close()
-#print muOnly_nodcpv_res
-file=open("Results/tt_scale_to_sideband/systematics/MUonly/allCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        muOnly_allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        muOnly_allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        muOnly_allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        muOnly_allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        muOnly_allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        muOnly_allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        muOnly_allcpv_res["chi2"]=line.split()[1]
-file.close()
+makeResultMixing("Results/tt_scale_to_sideband/systematics/MUonly/mixing.txt",muOnly_mixing_res)
+makeResultNoDCPV("Results/tt_scale_to_sideband/systematics/MUonly/noDCPV.txt",muOnly_nodcpv_res)
+makeResultAllCPV("Results/tt_scale_to_sideband/systematics/MUonly/allCPV.txt",muOnly_allcpv_res)
 
 #md only
-file=open("Results/tt_scale_to_sideband/systematics/MDonly/mixing.txt")
 mdOnly_mixing_res={}
 mdOnly_nodcpv_res={}
 mdOnly_allcpv_res={}
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mdOnly_mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mdOnly_mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mdOnly_mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mdOnly_mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print mdOnly_mixing_res
-file=open("Results/tt_scale_to_sideband/systematics/MDonly/noDCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mdOnly_nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mdOnly_nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mdOnly_nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        mdOnly_nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        mdOnly_nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mdOnly_nodcpv_res["chi2"]=line.split()[1]
-file.close()
-#print mdOnly_nodcpv_res
-file=open("Results/tt_scale_to_sideband/systematics/MDonly/allCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        mdOnly_allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        mdOnly_allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        mdOnly_allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        mdOnly_allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        mdOnly_allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        mdOnly_allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        mdOnly_allcpv_res["chi2"]=line.split()[1]
-file.close()
+makeResultMixing("Results/tt_scale_to_sideband/systematics/MDonly/mixing.txt",mdOnly_mixing_res)
+makeResultNoDCPV("Results/tt_scale_to_sideband/systematics/MDonly/noDCPV.txt",mdOnly_nodcpv_res)
+makeResultAllCPV("Results/tt_scale_to_sideband/systematics/MDonly/allCPV.txt",mdOnly_allcpv_res)
+
 #subtract SS time dependence
-file=open("Results/tt_scale_to_sideband/systematics/subtr_SS_time_dep/mixing.txt")
+
 subtrSS_timedep_mixing_res={}
 subtrSS_timedep_nodcpv_res={}
 subtrSS_timedep_allcpv_res={}
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        subtrSS_timedep_mixing_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        subtrSS_timedep_mixing_res['xprime2']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        subtrSS_timedep_mixing_res['yprime']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        subtrSS_timedep_mixing_res["chi2"]=line.split()[1]
-file.close()        
-#print subtrSS_timedep_mixing_res
-file=open("Results/tt_scale_to_sideband/systematics/subtr_SS_time_dep/noDCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        subtrSS_timedep_nodcpv_res['R_D']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        subtrSS_timedep_nodcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        subtrSS_timedep_nodcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        subtrSS_timedep_nodcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        subtrSS_timedep_nodcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        subtrSS_timedep_nodcpv_res["chi2"]=line.split()[1]
-file.close()
-#print subtrSS_timedep_nodcpv_res
-file=open("Results/tt_scale_to_sideband/systematics/subtr_SS_time_dep/allCPV.txt")
-for line in file:
-    #print line.split()
-    if 'Correlation matrix' in line: break
-    if "R_D+" in line:
-        subtrSS_timedep_allcpv_res['R_D+']=[float(line.split()[1]),float(line.split()[2])]
-    if "R_D-" in line:
-        subtrSS_timedep_allcpv_res['R_D-']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2+" in line:
-        subtrSS_timedep_allcpv_res['xprime2+']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'+" in line:
-        subtrSS_timedep_allcpv_res['yprime+']=[float(line.split()[1]),float(line.split()[2])]
-    if "x'2-" in line:
-        subtrSS_timedep_allcpv_res['xprime2-']=[float(line.split()[1]),float(line.split()[2])]
-    if "y'-" in line:
-        subtrSS_timedep_allcpv_res['yprime-']=[float(line.split()[1]),float(line.split()[2])]
-    if "chi2" in line:
-        subtrSS_timedep_allcpv_res["chi2"]=line.split()[1]
-file.close()
-
+makeResultMixing("Results/tt_scale_to_sideband/systematics/subtr_SS_time_dep/mixing.txt",subtrSS_timedep_mixing_res)
+makeResultNoDCPV("Results/tt_scale_to_sideband/systematics/subtr_SS_time_dep/noDCPV.txt",subtrSS_timedep_nodcpv_res)
+makeResultAllCPV("Results/tt_scale_to_sideband/systematics/subtr_SS_time_dep/allCPV.txt",subtrSS_timedep_allcpv_res)
 
 #########
 #now the tables
