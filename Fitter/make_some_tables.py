@@ -40,7 +40,7 @@ def compare_mult_results(results):
         print 'from new chi2 = %f'%fitres.chi2()
     return chi2
 
-def make_syst_table(name, description, nominal_res, results_to_compare):
+def make_syst_table(name, description, nominal_res, results_to_compare, labels):
     ###changed to analyze an arbitrary number of comparison res things
     #this includes how the table is organized.
     #print 'testing chi2 compatibility, chi2=%f , ndf=%f'%(compare_results(nominal_res[0],results_to_compare[0]),nominal_res[0]['final_result'].size)
@@ -56,6 +56,8 @@ def make_syst_table(name, description, nominal_res, results_to_compare):
     ofile.write("\\begin{tabular}{%s}\n"%('c'*(len(results_to_compare[0])+2)))#param, each result, largest deviation from nominal
     ofile.write("\\hline\\hline\n")
     ofile.write("Parameter [$10^{-3}$]& \multicolumn{%s}{c}{Central Value $\\pm$ Error} & Largest Difference From Nominal \\\\\\hline\n"%len(results_to_compare[0]))
+    for label in labels: ofile.write(" & %s "%label)
+    ofile.write("\\\\ \n")
     ofile.write("\\multicolumn{%s}{c}{No CPV}\\\\\\hline\n"%(len(results_to_compare[0])+2))
     
     ofile.write("$R_D$ &")
@@ -560,28 +562,28 @@ ofile.close()
 # #now that we have this, do the tables for the systematics.
 #for result2analyse in [magpols_result]:
 the_shiz=[theCentralValue_mixing_res,theCentralValue_nodcpv_res,theCentralValue_allcpv_res]
-make_syst_table('magnet_polarity_year_systematic.tex','Comparison of Magnet Polarities split by year',the_shiz,magpols_yr_result)
+make_syst_table('magnet_polarity_year_systematic.tex','Comparison of Magnet Polarities split by year',the_shiz,magpols_yr_result,["Mag Down 2011","Mag Up 2011","Mag Down 2012","Mag Up 2012"])
 
-make_syst_table("magnet_polarity_systematic.tex","Comparison of Magnet Polarities",the_shiz,magpol_result) 
+make_syst_table("magnet_polarity_systematic.tex","Comparison of Magnet Polarities",the_shiz,magpol_result,["Mag Up","Mag Down"]) 
 
 # #individual years
-make_syst_table("year_systematic.tex","Comparison of 2011 and 2012",the_shiz,yr_result)
+make_syst_table("year_systematic.tex","Comparison of 2011 and 2012",the_shiz,yr_result,["2011","2012"])
 
 #scaling
-make_syst_table("no_ss_scaling.tex","Result of not using the SS scaling",the_shiz,noscaling_result)
+make_syst_table("no_ss_scaling.tex","Result of not using the SS scaling",the_shiz,noscaling_result,["No SS Scaling"])
 
 #kaon momentum
-make_syst_table("kaon_p_systematic.tex","Result split into three bins of Kaon momentum",the_shiz,kaonP_result)
+make_syst_table("kaon_p_systematic.tex","Result split into three bins of Kaon momentum",the_shiz,kaonP_result,["$p(K ) < 16080$ MeV","$16080\\leq p(K) <28140$ MeV", "$p(K) \\geq 28140 MeV$"])
 
 #pt muon
-make_syst_table("muon_pt_systematic.tex","Result split into three bins of muon transverse momentum.",the_shiz,ptmu_result)
+make_syst_table("muon_pt_systematic.tex","Result split into three bins of muon transverse momentum.",the_shiz,ptmu_result,["$p_T(\\mu)< 2125$ MeV","$2125 \\leq p_T(\\mu) < 3400$ MeV", "$p_T\\geq 3400$ MeV"])
 
 #pt slow pion
 make_syst_table("slow_pion_pt_systematic.tex","Result split into three bins of slow pion transverse momentum.",
-                the_shiz, ptpis_result)
+                the_shiz, ptpis_result,["$p_T(\\pi_s)<178.5$ MeV", "$178.5\\leq p_T(\\pi_s)<306$ MeV", "$p_T(\\pi_s)\\geq 306$ MeV"])
 #kpi asymmetry with slope
 make_syst_table("kpi_asymmetry_slope.tex","Result allowing for the $K\\pi$ asymmetry to take on a time dependence.",
-                the_shiz,akpi_slope_result)
+                the_shiz,akpi_slope_result, ["$A(K\\pi)$ with slope"])
 #since we're here, let's draw the one sigma contours for the mixing fit only to assess sytematics which may not work.
 can = TCanvas("can","can",800,800)
 fnom = TFile.Open("Results/tt_GP035_scale_timedep/mixingnoCPV_xy_contours.root")
