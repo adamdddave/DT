@@ -550,7 +550,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	  
 	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
-	  
+	  /*
 	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
 	    // constraint on prompt fraction
@@ -559,7 +559,7 @@ void WSFitter::ComputeChi2(int & /*npars*/, double * /*gin*/, double &result, do
 	    _ndf++;
 	    	    
 	  }
-
+	  */
 	  // constraint on peaking fraction
 	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
 	  _ndf++;
@@ -773,7 +773,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 
 	  _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
-	  
+	  /*
 	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
 	    // constraint on prompt fraction
@@ -782,7 +782,7 @@ void WSFitter::ComputeMixingChi2(int & /*npars*/, double * /*gin*/, double &resu
 	    _ndf++;
 	    	    
 	  }
-
+	  */
 	  // constraint on peaking fraction
 	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
 	  _ndf++;
@@ -960,7 +960,7 @@ void WSFitter::ComputeNoDCPVChi2(int & /*npars*/, double * /*gin*/, double &resu
 	if(_useDT){
 _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	  _ndf++;
-	  
+	  /*
 	  for (int i=0; i<_n_time_bins_DT; ++i) {
 	    double res;
 	    // constraint on prompt fraction
@@ -969,7 +969,7 @@ _chi2 += (p[60]-_Aeps_DT)*(p[60]-_Aeps_DT)/(_Aeps_err_DT*_Aeps_err_DT);
 	    _ndf++;
 	    	    
 	  }
-
+	  */
 	  // constraint on peaking fraction
 	  _chi2 += (_Fp_DT-p[66])*(_Fp_DT-p[66])/(_Fp_err_DT*_Fp_err_DT);
 	  _ndf++;
@@ -1082,5 +1082,21 @@ void WSFitter::Set_DT_PeakingFractions(double f, double f_err)
   _Fp_err_DT = f_err;
 }
 
+
+DataPoint* WSFitter::Point(int bin, int charge, bool isDT){
+  if(isDT){
+    if(charge>0){
+      return &_points_pos_DT[bin];
+    }
+    else{
+      return &_points_neg_DT[bin];
+    }
+  }
+  else{
+    std::cout<<"wah wah"<<std::endl;
+    return NULL;
+  }
+  
+}
 
 #endif

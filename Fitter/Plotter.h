@@ -20,5 +20,6 @@ class Plotter {
   int     _cpvType;//type of CPV Fit
   WSFitter* _Fitter;
   TString _name;
+  TString _titleName;
 };
 #endif

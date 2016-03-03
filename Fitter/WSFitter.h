@@ -43,7 +43,8 @@ public:
 	void          Set_DT_PromptFractions(double *fb, double *fb_err);
 	void          Set_DT_PeakingFractions(double fp, double fp_err );
 	bool          Read_DT_Data(const char *filename, int charge, bool verbose=false);
-	
+
+	DataPoint*    Point(int bin,int charge,bool isDT);
 	//end AD
 
 	std::ostream &Print(std::ostream &out=std::cout, bool verbose=false);
