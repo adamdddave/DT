@@ -172,7 +172,7 @@ void WrongB::WriteScaleFactor(){
   outfile<<the_scaling_factor;
   outfile.close();
 
-  outfile.open("./theScalingFactorTimeDepedence.txt");
+  outfile.open("./theScalingFactorTimeDependence.txt");
   for(int i=0; i<5;++i){
     outfile<<i<<"\t"<<the_scaling_factor_timedep[i]<<"\t"<<the_scaling_factor_timedep_err[i]<<"\n";
   }

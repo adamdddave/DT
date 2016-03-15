@@ -211,9 +211,27 @@ int main(int argc, char* const argv[]){
   thePlot->SetLineColor(kBlack);
   thePlot->SetTitle(";D^{0}t/#tau;N(D*^{-})/N(D*^{+})");
   thePlot->SetName("rs_over_rs_ratio");
+
+
+  //add asymmetry plot
+  double asymm [5];
+  double asymmErr[5];
+  for(int i=0; i<5;++i){
+    asymm[i] = (the_sig_neg[i]-the_sig_pos[i])/(the_sig_neg[i]+the_sig_pos[i]);
+    asymmErr[i] =TMath::Power((1-asymm[i])*the_sig_neg_err[i],2.)+TMath::Power((1+asymm[i])*the_sig_pos_err[i],2.);
+    asymmErr[i] = asymmErr[i]/TMath::Power(the_sig_pos[i]+the_sig_neg[i],2.);
+    asymmErr[i] = TMath::Sqrt(asymmErr[i]);
+  }
+  TGraphAsymmErrors *theAsymm = new TGraphAsymmErrors(nbins,mean_td_pos,asymm,xLow,xHi,asymmErr,asymmErr);
+  theAsymm->SetMarkerSize(1.5);
+  theAsymm->SetMarkerColor(kBlack);
+  theAsymm->SetLineColor(kBlack);
+  theAsymm->SetTitle(";D^{0}t/#tau;A_{D^{*}} = #frac{N(D^{*-})-N(D^{*+})}{N(D^{*-})+N(D^{*+})}");
+  theAsymm->SetName("rs_asymm");
   TFile *fout = new TFile("SavedFits/TimeDependentSystematics/rs_over_rs_ratio.root","RECREATE");
   fout->cd();
   thePlot->Write();
+  theAsymm->Write();
   fout->Close();
   f1->Close();
   f2->Close();
@@ -221,11 +239,13 @@ int main(int argc, char* const argv[]){
   TCanvas* cc=new TCanvas();
   thePlot->Draw("ap");
   cc->SaveAs("SavedFits/TimeDependentSystematics/rs_d0_over_d0bar_graph.pdf");
-  TFile fout_timedep("rs_d0_over_d0_bar_graph.root","RECREATE");
-  fout_timedep.cd();
-  thePlot->Write();
-  fout_timedep.Close();
-
+  // TFile fout_timedep("rs_d0_over_d0_bar_graph.root","RECREATE");
+  // fout_timedep.cd();
+  // thePlot->Write();
+  // fout_timedep.Close();
+  cc->Clear();
+  theAsymm->Draw("ap");
+  cc->SaveAs("SavedFits/TimeDependentSystematics/rs_d0_asymm_graph.pdf");
   //print out a table of the dmeans and rsigmas
   cout<<"dmeans"<<endl;
   cout<<"positive"<<endl;

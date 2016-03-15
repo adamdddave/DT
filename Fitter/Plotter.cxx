@@ -51,6 +51,7 @@ void Plotter::PlotXYContours(){
   cont1sig->Write();
   cont2sig->Write();
   cont3sig->Write();
+  m->Write();
   fout.Close();
   return;
 }
@@ -85,6 +86,8 @@ void Plotter::PlotCPVContours(){
   fout.cd();
   contPlus->Write();
   contMins->Write();
+  mplus->Write();
+  mmins->Write();
   fout.Close();
   return;
 }

@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <fcntl.h>
-
+#include <TROOT.h>
 const int nbins(13);
 
 //*** tos nuisance pars
@@ -71,13 +71,16 @@ void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt
 	fitter->Set_DT_DetectorAsymmetries(0.96e-2,0.11e-2);
 	//fitter->Set_DT_DetectorAsymmetries(0.,1.);
 	fitter->Set_DT_PromptFractions(dtPrFrac,dtPrFracErr);
-	fitter->Set_DT_PeakingFractions(3.60992e-05 , 2.25594e-05);
+	//fitter->Set_DT_PeakingFractions(3.60992e-05 , 2.25594e-05);//not scaled
+	///fitter->Set_DT_PeakingFractions(3.61529e-05 , 2.2593e-05);//scaled to sideband
+	fitter->Set_DT_PeakingFractions(4.06979e-05, 9.34435e-06);//gp035
 	//fitter->Set_DT_PeakingFractions(0.,1.);
 	fitter->UsePromptData(false);
 	fitter->UseDTData(true);
 	// fitting
 	fitter->Reset();
 	fitter->Print();
+	//fitter->SetPrintLevel(2);
 	//for(int i=60;i<67;++i){fitter->FixParameter(i,0);}//fix for DT only fit.
 	for(int i=61;i<66;++i){fitter->FixParameter(i,0);}//fix the prompt fraction in the DT to 0
 	//fitter->FixParameter(1,0.);
@@ -88,9 +91,10 @@ void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt
 //	// plotting
 	if (!plot) return;
 	//
-	TString pname = name.ReplaceAll(".txt","");
-	Plotter *p = new Plotter(pname,fitter);
-//	p->PlotRatios();
+	TString pname = name;
+	pname.ReplaceAll(".txt","");
+	Plotter *p = new Plotter(pname,fitter,cpvType);
+	p->PlotRatios();
 //	p->PlotDiffs();
 //	p->PlotPulls();
 //
@@ -104,4 +108,5 @@ void mixing_fit_data(bool plot=false, bool minos=false, TString name="output.txt
 //
 //	p->PlotCPVContours();
 //	m->Draw("same");
+	//gROOT->ProcessLine(".q");
 }

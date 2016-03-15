@@ -239,6 +239,13 @@ int main(int argc, char* const argv[]){
   cout<<"++++++++++++++++++++++++++++++++++++++++"<<endl;
   cout<<"fitting positive sample"<<endl;
   cout<<"++++++++++++++++++++++++++++++++++++++++"<<endl;
+    //try rebinning the histograms
+  for(auto hist: lo_hists_pos){hist->Rebin(4);}
+  for(auto hist: hi_hists_pos){hist->Rebin(4);}
+  //
+  for(auto hist: lo_hists_neg){hist->Rebin(4);}
+  for(auto hist: hi_hists_neg){hist->Rebin(4);}
+
   std::vector<double> tot_result_of_sb_fit_pos = PeakingBkgFromSidebands(lo_hists_pos,hi_hists_pos,w_tmp,nameForFit+"_pos",&b,thePars);
   //negative
   cout<<"----------------------------------------"<<endl;
@@ -296,10 +303,12 @@ int main(int argc, char* const argv[]){
   double tot_RS_sig_neg =0;
   for(auto val:RS_vals_pos){
     tot_RS_sig+=val;
+    cout<<"check: adding tot RS sig "<<val<<endl;
     tot_RS_sig_pos+=val;
   }
   for(auto val:RS_vals_neg){
     tot_RS_sig+=val;
+    cout<<"check: adding tot RS sig "<<val<<endl;
     tot_RS_sig_neg +=val;
   }
   double tot_rs_err = 0;
@@ -452,6 +461,7 @@ std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists, std::vect
 
 
   for(int i=0; i<6;++i){
+    /*
     x_errs_lo_down_RS[i]= meansRS_lo[i]-D0_bin_edges_lo[i];
     x_errs_lo_up_RS[i]=D0_bin_edges_lo[i+1]-meansRS_lo[i];
 
@@ -473,6 +483,28 @@ std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists, std::vect
     x_errs_RS_up[i+6]=x_errs_hi_up_RS[i];
     x_errs_WS_up[i]=x_errs_lo_up_WS[i];
     x_errs_WS_up[i+6]=x_errs_hi_up_WS[i];
+     */
+    x_errs_lo_down_RS[i]=0;
+    x_errs_lo_up_RS[i]=0;
+
+    x_errs_hi_down_RS[i]=0;
+    x_errs_hi_up_RS[i]=0;
+
+    x_errs_lo_down_WS[i]=0;
+    x_errs_lo_up_WS[i]=0;
+
+    x_errs_hi_down_WS[i]=0;
+    x_errs_hi_up_WS[i]=0;
+    //the big array.
+    x_errs_RS_down[i]=0;
+    x_errs_RS_down[i+6]=0;
+    x_errs_WS_down[i]=0;
+    x_errs_WS_down[i+6]=0;
+    //up
+    x_errs_RS_up[i]=0;
+    x_errs_RS_up[i+6]=0;
+    x_errs_WS_up[i]=0;
+    x_errs_WS_up[i+6]=0;
   }
   
   for(int i=0; i<6;++i){

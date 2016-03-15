@@ -1,6 +1,6 @@
 //c++
 #include <iostream>
-
+#include <sys/stat.h>//mkdir
 #include <cmath>
 //root
 
@@ -65,6 +65,8 @@ int main(int argc, char* const argv[]){
     cout<<"[1] The rs file"<<endl;
     cout<<"[2] the fit model"<<endl;
     cout<<"[3] Optional: boolean of whether to use time dep SS subtraction"<<endl;
+    cout<<"[4] Optional: boolean of whether to produce RS templates"<<endl;
+    cout<<"       as a function of decay time of the D0"<<endl;
     cout<<"********************************************"<<endl;
     return 0;
   }
@@ -73,7 +75,12 @@ int main(int argc, char* const argv[]){
   TFile *f1 =TFile::Open(argv[1]);
   TFile *f2 = TFile::Open(argv[2]);
   bool useTimeDepSS = false;
-  if(argc==4) useTimeDepSS = atoi(argv[3]);
+  if(argc>=4){ useTimeDepSS = atoi(argv[3]);
+    cout<<"Using Time dependent subtraction!"<<endl;}
+  bool genNewModels = false;
+  if(argc==5){ genNewModels = atoi(argv[4]);
+    cout<<"generating fit models for each bin seperately"<<endl;}
+  cout<<"genNewModels = "<<genNewModels<<endl;
   f2->ls();
   TString channelFromFile = argv[2];
   cout<<"before, channelFromFile = "<<channelFromFile<<endl;
@@ -103,6 +110,7 @@ int main(int argc, char* const argv[]){
   if (sftd_file.is_open()){
     for(int i=0; i<5;++i){
       sftd_file>>dum>>the_scaling_factor_timeDep[i]>>dumerr;
+      cout<<"read in "<<the_scaling_factor_timeDep[i]<<endl;
     }
   }
   std::vector<TH1D*>pos_bins,neg_bins;
@@ -125,25 +133,30 @@ int main(int argc, char* const argv[]){
 
   for(int i=0; i<nbins;++i){
     double sf = useTimeDepSS? the_scaling_factor_timeDep[i]:the_scaling_factor;
+    cout<<"using scaling factor sf = "<<sf<<endl;
     if(sf == the_scaling_factor_timeDep[i]){cout<<"using time dependent SS"<<endl;}
     pos_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_pos_bin%d",i+1)),-sf);
     neg_bins[i]->Add((TH1D*)f1->Get(Form("RS_ss_dst_mass_td0_neg_bin%d",i+1)),-sf);
   }//commented out to try raw asymmetry
-  massFit* theFitspos;
-  massFit* theFitsneg;
   double the_sig_pos[nbins],the_sig_pos_err[nbins];
   double the_sig_neg[nbins],the_sig_neg_err[nbins];
 
   for(int i=0;i<nbins;++i){
-    theFitspos = new massFit(Form("RS_dst_mass_pos_bin%d",i+1),"j3g",w,"RS_Extraction");
+    massFit* theFitspos = new massFit(Form("RS_dst_mass_pos_bin%d",i+1),"j3g",w,Form("RS_Extraction_bin%dpos",i));
+    //make sure the directory exists if making new models
     theFitspos->setData(pos_bins[i]);
-    // if(i==0){
-    //   theFitspos->FloatMeanWidth();
-    // }
+    cout<<"we are now in bin "<<i<<endl;
+    cout<<"the data has been set to "<<pos_bins[i]->GetName()<<endl;
+    bool cont = true;
+    //cout<<"continue??"<<endl;
+    //cin>>cont;
+    
     theFitspos->initValsByHand(thePars);
+    if(genNewModels){theFitspos->FloatMeanWidth();}
     //theFitspos->FloatMeanWidth();
     theFitspos->fit();
     theFitspos->savePlots(true,Form("RS_dst_mass_pos_bin%d",i+1));
+    if(genNewModels){theFitspos->saveUpdatedFinalFit();}
     the_sig_pos[i]=theFitspos->getNsig()*2;//prescale
     the_sig_pos_err[i]=theFitspos->getNsigErr()*2;//prescale
     theFitspos->Reset();
@@ -151,16 +164,13 @@ int main(int argc, char* const argv[]){
 
   
   for(int i=0;i<nbins;++i){
-    theFitsneg = new massFit(Form("RS_dst_mass_neg_bin%d",i+1),"j3g",w,"RS_Extraction");
+    massFit* theFitsneg = new massFit(Form("RS_dst_mass_neg_bin%d",i+1),"j3g",w,Form("RS_Extraction_bin%dneg",i));
     theFitsneg->setData(neg_bins[i]);
-    // if(i==0){
-    //   theFitsneg->FloatMeanWidth();
-    // }
-
     theFitsneg->initValsByHand(thePars);
-    //    theFitsneg->FloatMeanWidth();
+    if(genNewModels){theFitsneg->FloatMeanWidth();}
     theFitsneg->fit();
     theFitsneg->savePlots(true,Form("RS_dst_mass_neg_bin%d",i+1));
+    if(genNewModels){theFitsneg->saveUpdatedFinalFit();}
     the_sig_neg[i]=theFitsneg->getNsig()*2;//prescale
     the_sig_neg_err[i]=theFitsneg->getNsigErr()*2;//prescale
 
@@ -182,10 +192,6 @@ int main(int argc, char* const argv[]){
   }
   outfile.close();
 
-
-
-  delete theFitspos;
-  delete theFitsneg;
   return 0;
 
 }
