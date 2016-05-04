@@ -1954,7 +1954,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0) ,m_rng(100)
   std::cout<<"ExtraCut initialized to "<<ExtraCut<<std::endl;
   
   Init(tree);
-  do_multiple_candidates_counting = true;//don't count the multiple candidates by default
+  do_multiple_candidates_counting = false;//don't count the multiple candidates by default
   TString name = tree->GetName();
   name.ReplaceAll("/DecayTree","");
   dstar_mass_plot = new TH1D(name+"_dt_hist_dstar_m","", 500, 2000,2025);
