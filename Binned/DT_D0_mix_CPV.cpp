@@ -12,12 +12,13 @@
 #include <TLeaf.h>
 #include <algorithm>
 #include <TTreeFormula.h>
+
 using namespace std;
 bool DT_D0_mix_CPV::matchElement (matchelement_t i, matchelement_t j) {
   double tol =0.1;
   bool ret=
-    ((i.eventNumber==j.eventNumber)&&
-     (i.runNumber==j.runNumber)&&
+    ((i.eventNumber==j.eventNumber)&&//change to match only event and run number.
+     (i.runNumber==j.runNumber)/*&&
      (i.kpx==j.kpx)&&
      (i.kpy==j.kpy)&&
      (i.kpz==j.kpz)&&
@@ -26,7 +27,7 @@ bool DT_D0_mix_CPV::matchElement (matchelement_t i, matchelement_t j) {
      fabs((i.pipz-j.pipz))<tol&&
      fabs((i.pispx-j.pispx))<tol&&
      fabs((i.pispy-j.pispy))<tol&&
-     fabs((i.pispz-j.pispz))<tol
+     fabs((i.pispz-j.pispz))<tol*/
      );
   
   // if(ret==true){
@@ -54,7 +55,8 @@ bool DT_D0_mix_CPV::foundMatch(matchelement_t el){
       val.toBeRemoved = 1;
       //cout<<"set val.toBeRemoved to "<<val.toBeRemoved<<endl;
       //erase the element
-      matchedToPrompt.erase(it);
+      //slow, but we will try not removing the matched element. to see the change
+      //matchedToPrompt.erase(it);/=
       //cout<<"matchedToPrompt.size() = "<<matchedToPrompt.size()<<endl;
     }
    
@@ -103,6 +105,7 @@ void DT_D0_mix_CPV::setRejectionFile(TString path_to_file){
 
 void DT_D0_mix_CPV::Loop()
 {
+  ULong64_t previousEventInSequence = -999;
   cout<<"using extra cut "<<ExtraCut<<endl;
   //   In a ROOT session, you can do:
   //      Root > .L DT_D0_mix_CPV.C
@@ -155,12 +158,13 @@ void DT_D0_mix_CPV::Loop()
     currElem.pispy =Ps_PY;
     currElem.pispz =Ps_PZ;
     //cout<<"testing "<<currElem.eventNumber<<endl;
+
     if(foundMatch(currElem)){
       //cout<<"new vector length = "<<matchedToPrompt.size()<<endl;
       cout<<"removing prompt event"<<endl;
       continue;
     }
-    
+
     //cuts
     if(!(
          B_VFit_status[0]==0 &&
@@ -267,6 +271,8 @@ void DT_D0_mix_CPV::Loop()
       bool totalTruthMatch = truth_match_ids&&truth_match_keys;//+&&+d0Econs+&&+d0PxCons+&&+d0PyCons+&&+d0PzCons; 
       if(! totalTruthMatch)continue;
     }
+
+
     //there's only 1 pv per event.
     //for(int j_npv = 0; j_npv<B_VFit_nPV;++j_npv)    {
       
@@ -329,7 +335,7 @@ void DT_D0_mix_CPV::Loop()
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary4 && (B_VFit_D0_ctau[0]/ d0_pdg_ct) < d0_td0_bin_boundary5){b_mass_plot_time_bin4->Fill(B_VFit_M[0]);}
       if((B_VFit_D0_ctau[0]/ d0_pdg_ct)>=d0_td0_bin_boundary5){b_mass_plot_time_bin5->Fill(B_VFit_M[0]);}
     }
-
+    
     //fill bmass cuts now, so that we have everything ok.
     if(!(B_VFit_M[0] < bmass_cut_hi &&B_VFit_M[0] > bmass_cut_low))continue;
 
@@ -521,6 +527,117 @@ void DT_D0_mix_CPV::Loop()
          TMath::Abs((pi_daughter_as_k+k_daughter).M()*1e3-pdg_d0_m)>40 &&
          TMath::Abs((k_daughter_as_pi+pi_daughter).M()*1e3-pdg_d0_m)>40
          ))continue;
+    //that's all the stuff but the peaking background, which is fine to overestimate.
+    //Do the multiple candidates now.
+    if(do_multiple_candidates_counting){
+      //multiple candidates
+      Long64_t selected_entry = jentry;
+      bool has_extra_candid = true;
+      Long64_t eEntry = 0;
+      Long64_t mike_counter = 0;
+      previousEventInSequence = EventInSequence;
+      //double old_d0m = D_M;
+      //cout<<"==========================================="<<endl;
+      //cout<<"starting search for multiple candidates at "<<jentry<<endl;
+      //cout<<"expecting tot candidates = "<<totCandidates<<endl;
+      Double_t old_mup = Mu_P;
+      Double_t old_kp = K_P;
+      Double_t old_pip = Pd_P;
+      Double_t old_pisp = Ps_P;    
+      Double_t old_dp = D_P;
+      Double_t old_dsp = Dstar_P;
+      Double_t old_b_endvtx_x = B_ENDVERTEX_X;
+      Double_t old_b_endvtx_y = B_ENDVERTEX_Y;
+      Double_t old_b_endvtx_z = B_ENDVERTEX_Z;
+      while(has_extra_candid){
+	eEntry++;
+	fChain->GetEntry(eEntry+jentry);//get the next entry
+	if(EventInSequence==previousEventInSequence /*&&(K_P!=old_kp)&&(Pd_P!=old_pip)*//*&& TMath::Abs(D_M - old_d0m)<1e-3*/){
+	  //cout<<"found event in sequence at "<<jentry+eEntry<<endl;
+	  mike_counter++;
+	  //cout<<"counter now at "<<mike_counter<<endl;
+	  //classify.
+	  if(Mu_P == old_mup && K_P == old_kp && Pd_P == old_pip &&(Ps_P!=old_pisp)){
+	    //found the same event with only the random slow pion.
+	    mult_candid_classifier->Fill(0);
+	  }
+	  else if(Mu_P!= old_mup && K_P == old_kp && Pd_P == old_pip &&(Ps_P==old_pisp)){
+	    //multiple muons
+	    mult_candid_classifier->Fill(1);
+	  }
+	  else if(Mu_P == old_mup && K_P != old_kp && Pd_P == old_pip &&(Ps_P==old_pisp)){
+	    //different K
+	    mult_candid_classifier->Fill(2);
+	  }
+	  else if(Mu_P == old_mup && K_P == old_kp && Pd_P != old_pip &&(Ps_P==old_pisp)){
+	    //different pi
+	    mult_candid_classifier->Fill(3);
+	  }
+	  else if(Mu_P == old_mup && K_P != old_kp && Pd_P != old_pip &&(Ps_P==old_pisp)){
+	    //different K and different pi
+	    mult_candid_classifier->Fill(4);
+	  }
+	  else if(Mu_P != old_mup && K_P == old_kp && Pd_P == old_pip &&(Ps_P!=old_pisp)){
+	    //different muon and different slow pion
+	    mult_candid_classifier->Fill(5);
+	  }
+	  else{
+	    //split into whether or not the B candidates have the same endvertex or not.
+	    if(old_b_endvtx_x==B_ENDVERTEX_X && old_b_endvtx_y==B_ENDVERTEX_Y && old_b_endvtx_z==B_ENDVERTEX_Z){
+	      mult_candid_classifier->Fill(6);
+	    }
+	    else{
+	      mult_candid_classifier->Fill(7);
+	    }
+	  }
+	  //Cout<<"Muon p = "<<Mu_P<<endl;;
+	  //mu_from_b.Print();
+	  //cout<<"Kaon p = "<<K_P<<endl;;
+	  //k_daughter.Print();
+	  //cout<<"Pion p = "<<Pd_P<<endl;;
+	  //pi_daughter.Print();
+	  //cout<<"Slow Pion p = "<<Ps_P<<endl;;
+	  //slow_pion_vec.Print();
+	  //cout<<"D0 p = "<<D_P<<endl;;
+	  //d0_vector.Print();
+	  //cout<<"dstar p = "<<Dstar_P<<endl;;
+	  //(d0_vector+slow_pion_vec).Print();
+	  ////cout<<"B p = ";
+	  //(d0_vector+slow_pion_vec+mu_from_b).Print();
+
+	}
+	else{
+	  //cout<<"original vectors"<<endl;
+	  //cout<<"Muon p = "<<old_mup<<endl;;
+	  //cout<<"Kaon p = "<<old_kp<<endl;;
+	  //cout<<"Pion p = "<<old_pip<<endl;;
+	  //cout<<"Slow Pion p = "<<old_pisp<<endl;;
+	  //cout<<"D0 p = "<<old_dp<<endl;;
+	  //cout<<"dstar p = "<<old_dsp<<endl;;
+
+	  has_extra_candid = false;
+	  if(mike_counter!=0){
+	    //cout<<"orig event "<<jentry<<endl;
+	    //cout<<"number of candidates "<<mike_counter<<endl;
+	    //cout<<"will consider events"<<endl;
+	    //	  for(Long64_t lob = 0; lob<=mike_counter;++lob){	 
+	    //cout<<"\t"<<lob+jentry<<endl;
+	    //	  }
+	    //choose one at random.
+	    selected_entry+=m_rng.Integer(mike_counter+1);//we indexed at zero, so we need to add one.
+	    //cout<<"chose event "<<selected_entry<<endl;
+	    //fChain->GetEntry(selected_entry);
+	    jentry+=mike_counter;
+	    //cout<<"moving jentry to "<<jentry<<endl;
+	    //cout<<"========================="<<endl;
+	  }
+	  break;
+	}
+      }
+      continue;
+    }
+
+    
     //fill the mass histogram
     //cout<<"filling with dstm = "<<dstm<<endl;
     decay_time_distr->Fill(B_VFit_D0_ctau[0]/ d0_pdg_ct);

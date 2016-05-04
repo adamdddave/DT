@@ -19,6 +19,7 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TRandom3.h>//for random number for picking the multiple candidate
 //other classes
 #include "betastar_plot.h"
 //struct for removing the prompt/DT matched candidates
@@ -1495,7 +1496,7 @@ public :
   //mc?
   bool isMC;// = false;
   bool isPromptMC;
-  
+  bool do_multiple_candidates_counting;
   TH1D* dstar_mass_plot;
   TH1D* d0_mass_plot;
   TH1D* d0_mass_plot_sig_rej;
@@ -1796,7 +1797,8 @@ public :
   virtual void     Show(Long64_t entry = -1);
   void setRejectionFile(TString path_to_file);
   bool foundMatch(matchelement_t el);
-  
+  //plot to understand fractions of multiple candidates
+  TH1D* mult_candid_classifier;
 private:
   TLorentzVector k_daughter;
   TLorentzVector pi_daughter;
@@ -1923,7 +1925,8 @@ private:
   //for matching
   std::vector<matchelement_t> matchedToPrompt;
   bool matchElement (matchelement_t i, matchelement_t j); 
-
+  //random number generator for multiple candidates
+  TRandom3 m_rng;//Fix the seed so that the results don't change over time
 
   inline static bool sorter(matchelement_t i, matchelement_t j){return i.eventNumber<j.eventNumber;}
 
@@ -1932,7 +1935,7 @@ private:
 #endif
 
 #ifdef DT_D0_mix_CPV_cxx
-DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0) 
+DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0) ,m_rng(100)
 {
   // if parameter tree is not specified (or zero), connect the file
   // used to generate this class and read the Tree.
@@ -1951,6 +1954,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
   std::cout<<"ExtraCut initialized to "<<ExtraCut<<std::endl;
   
   Init(tree);
+  do_multiple_candidates_counting = true;//don't count the multiple candidates by default
   TString name = tree->GetName();
   name.ReplaceAll("/DecayTree","");
   dstar_mass_plot = new TH1D(name+"_dt_hist_dstar_m","", 500, 2000,2025);
@@ -2565,6 +2569,8 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0)
    cos_muon_d0_angle = new TH1D(name+"_cos_muon_d0_angle","cos(#theta_{D^{0}#mu});cos(#theta_{D^{0}#mu});Entries / 0.05",40,-1,1);
    
    b_fd_chi2 = new TH1D(name+"_b_fd_chi2", ";B #chi^{2}_{FD}; Entries / 0.5",1000,0,500);
+   mult_candid_classifier = new TH1D(name+"_mult_candid_classifier",";Candidate Classifier;",8,-0.5,7.5);
+
    //HERE
    //read in the file of matched events
    //b_fd = new TH1D(name+"_b_fd","; B Flight Distance[mm]; Entries / ")

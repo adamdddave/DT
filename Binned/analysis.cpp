@@ -206,6 +206,7 @@ int main(int argc, char* const argv[]){
   
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");
   fout->cd();
+  rs_looper.mult_candid_classifier->Write();
   rs_looper.dstar_mass_plot->Write();
   rs_looper.d0_mass_plot->Write();
   rs_looper.d0_mass_plot_sig_rej->Write();
