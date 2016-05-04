@@ -611,7 +611,7 @@ std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists, std::vect
   cnv->Clear();
   //now integrate the curve in the signal region
   double sb_integral = mf->Integral(D0_bin_edges_lo[0],D0_bin_edges_lo[6])+ mf->Integral(D0_bin_edges_hi[0],D0_bin_edges_hi[6]);
-  double sig_reg_integral = mf->Integral(1864.84-24,1864.84,+24);
+  double sig_reg_integral = mf->Integral(1864.84-24,1864.84+24);
   double tot_sb_sig =0;
   double tot_sb_sig_err = 0;
   //find error in the integral
@@ -647,7 +647,7 @@ std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists, std::vect
   cnv->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit_fitted_linear.pdf");
   cnv->Clear();
   double sb_integral_lin = mf_lin->Integral(D0_bin_edges_lo[0],D0_bin_edges_lo[6])+ mf_lin->Integral(D0_bin_edges_hi[0],D0_bin_edges_hi[6]);
-  double sig_reg_integral_lin = mf_lin->Integral(1864.84-24,1864.84,+24);
+  double sig_reg_integral_lin = mf_lin->Integral(1864.84-24,1864.84+24);
   TMatrixDSym mat2 = rl->GetCorrelationMatrix();
   TF1* mf_lintest =mf_lin;//copy constructor
   Int_t npars2 = mf_lin->GetNpar();
@@ -666,6 +666,35 @@ std::vector<double> PeakingBkgFromSidebands(std::vector<TH1*>lo_hists, std::vect
   ret.push_back(errNsig_sigreg2);//error on linear
   ret.push_back(tot_sb_sig*sig_reg_integral/sb_integral);//parabolic central value
   ret.push_back(errNsig_sigreg);//error on parab.
+  //as check for review committee, add a gaussian fit to the same dataset as well.AD 5/4/16
+  TF1* mf_gaus = new TF1("mf_gaus","gaus(0)",the_graph->GetXaxis()->GetXmin(), the_graph->GetXaxis()->GetXmax());
+  the_graph->GetFunction("mf_lin")->Delete();//remove linear fit
+  the_graph->Draw("ap");
+  TFitResultPtr rg = the_graph->Fit("mf_gaus","S");
+  TPaveStats* psGaus = (TPaveStats*)the_graph->GetListOfFunctions()->FindObject("stats");
+  psGaus->SetX1NDC(0.15);
+  psGaus->SetX2NDC(0.55);
+  cnv->Modified();
+  cnv->Update();
+  cnv->SaveAs("./SavedFits/betastar/"+nameForFit+"peaking_bkg_sidebands_from_fit_fitted_gaussian.pdf");
+  cnv->Clear();
+  double sb_integral_gaus = mf_gaus->Integral(D0_bin_edges_lo[0],D0_bin_edges_lo[6])+ mf_gaus->Integral(D0_bin_edges_hi[0],D0_bin_edges_hi[6]);
+  double sig_reg_integral_gaus = mf_gaus->Integral(1864.84-24,1864+24);//there was a bug here, +24 was ,+24, which is bad. Fixed!
+  TMatrixDSym matGaus = rg->GetCorrelationMatrix();
+  TF1* mf_gaustest = mf_gaus;//copy constructor
+  Int_t nparsGaus = mf_gaus->GetNpar();
+  double* parsGaus = mf_gaus->GetParameters();
+  const double * eparsGaus = mf_gaus->GetParErrors();
+  double err_RatGaus = b->ErrorFromTF1(mf_gaustest,nparsGaus,parsGaus,eparsGaus,matGaus,D0_bin_edges_lo[0],D0_bin_edges_lo[6],D0_bin_edges_hi[0],D0_bin_edges_hi[6],1864.84-24,1864.84+24);
+  double errNsig_sigregGaus = (tot_sb_sig*sig_reg_integral_gaus/sb_integral_gaus)*TMath::Sqrt(tot_sb_sig_err/(tot_sb_sig*tot_sb_sig)+err_RatGaus*err_RatGaus/(sig_reg_integral_gaus*sig_reg_integral_gaus/(sb_integral_gaus/sb_integral_gaus)));
+  ret.push_back(tot_sb_sig*sig_reg_integral_gaus/sb_integral_gaus);//gaus central value
+  ret.push_back(errNsig_sigregGaus);//gaus error.
+  cout<<"Number of events in sideband times ratio of signal to sideband = "<< tot_sb_sig * sig_reg_integral/sb_integral<<" +/- "
+      <<errNsig_sigreg<<endl;
+  cout<<"Same for linear fit = "<< tot_sb_sig * sig_reg_integral_lin/sb_integral_lin<<" +/- "
+      <<errNsig_sigreg2<<endl;
+  cout<<"And for gaus fit    = "<<tot_sb_sig * sig_reg_integral_gaus/sb_integral_gaus<<" +/- "
+      <<errNsig_sigregGaus<<endl;
   return ret;
 }
 
