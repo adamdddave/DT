@@ -251,7 +251,7 @@ massFit::massFit(TString Channel,TString modelname,RooWorkspace* w, TString loca
     //johnson parameters
     //m0= new RooRealVar("m0","m0",2010.,2009.,2011.);
     double m0_liang = 2.00935381450188277*1e3;
-    m0= new RooRealVar("m0","m0",m0_liang,m0_liang*(0.40),m0_liang*(1.80));//constant from liang's fit
+    m0= new RooRealVar("m0","m0",m0_liang,m0_liang*(0.95),m0_liang*(1.05));//constant from liang's fit
     fm0= new RooFormulaVar("fm0", "@0+@1", RooArgList(*m0, *dmean));
 
     //delta= new RooRealVar("delta","delta",9.57168e-01,0.2,2);

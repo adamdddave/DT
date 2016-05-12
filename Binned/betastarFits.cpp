@@ -329,14 +329,35 @@ int main(int argc, char* const argv[]){
   std::vector<double>peaking_frac(tot_result_of_sb_fit);
   std::vector<double>peaking_frac_pos(tot_result_of_sb_fit_pos);
   std::vector<double>peaking_frac_neg(tot_result_of_sb_fit_neg);
+
+  cout<<"printing peaking fractions before division"<<endl;
+  cout<<"fit type \t peaking frac \t peaking frac pos \t peaking frac neg"<<endl;
+  cout<<"linear   \t"
+      <<tot_result_of_sb_fit[0]<<" +/- "<<tot_result_of_sb_fit[1]<<"\t"
+      <<tot_result_of_sb_fit_pos[0]<<" +/- "<<tot_result_of_sb_fit_pos[1]<<"\t"
+      <<tot_result_of_sb_fit_neg[0]<<" +/- "<<tot_result_of_sb_fit_neg[1]<<endl;
+
+  cout<<"parabola \t"
+      <<tot_result_of_sb_fit[2]<<" +/- "<<tot_result_of_sb_fit[3]<<"\t"
+      <<tot_result_of_sb_fit_pos[2]<<" +/- "<<tot_result_of_sb_fit_pos[3]<<"\t"
+      <<tot_result_of_sb_fit_neg[2]<<" +/- "<<tot_result_of_sb_fit_neg[3]<<endl;
+
+  cout<<"gaussian \t"
+      <<tot_result_of_sb_fit[4]<<" +/- "<<tot_result_of_sb_fit[5]<<"\t"
+      <<tot_result_of_sb_fit_pos[4]<<" +/- "<<tot_result_of_sb_fit_pos[5]<<"\t"
+      <<tot_result_of_sb_fit_neg[4]<<" +/- "<<tot_result_of_sb_fit_neg[5]<<endl;
+
   peaking_frac[0]/=tot_RS_sig;
   peaking_frac[2]/=tot_RS_sig;
-
+  peaking_frac[4]/=tot_RS_sig;//add gaussian
+  
   peaking_frac_pos[0]/=tot_RS_sig_pos;
   peaking_frac_pos[2]/=tot_RS_sig_pos;
+  peaking_frac_pos[4]/=tot_RS_sig_pos;//add gaussian
 
   peaking_frac_neg[0]/=tot_RS_sig_neg;
   peaking_frac_neg[2]/=tot_RS_sig_neg;
+  peaking_frac_neg[4]/=tot_RS_sig_neg;//add gaussian
   
   //now write the new file with the points.
 
@@ -346,25 +367,32 @@ int main(int argc, char* const argv[]){
   cout<<"peaking background error associated to this is "<<peaking_frac[1]<<endl;
 
   peaking_frac[3] = err_div(tot_result_of_sb_fit[2],tot_result_of_sb_fit[3],tot_RS_sig,tot_rs_err);
+
+  peaking_frac[5] = err_div(tot_result_of_sb_fit[4],tot_result_of_sb_fit[5],tot_RS_sig,tot_rs_err);//gaussian.
   //pos
   peaking_frac_pos[1] = err_div(tot_result_of_sb_fit_pos[0],tot_result_of_sb_fit_pos[1],tot_RS_sig_pos,tot_rs_err_pos);
   peaking_frac_pos[3] = err_div(tot_result_of_sb_fit_pos[2],tot_result_of_sb_fit_pos[3],tot_RS_sig_pos,tot_rs_err_pos);
+  peaking_frac_pos[5] = err_div(tot_result_of_sb_fit_pos[4],tot_result_of_sb_fit_pos[5],tot_RS_sig_pos,tot_rs_err_pos);//gaussian
   //neg
   peaking_frac_neg[1] = err_div(tot_result_of_sb_fit_neg[0],tot_result_of_sb_fit_neg[1],tot_RS_sig_neg,tot_rs_err_neg);
   peaking_frac_neg[3] = err_div(tot_result_of_sb_fit_neg[2],tot_result_of_sb_fit_neg[3],tot_RS_sig_neg,tot_rs_err_neg);
+  peaking_frac_neg[5] = err_div(tot_result_of_sb_fit_neg[4],tot_result_of_sb_fit_neg[5],tot_RS_sig_neg,tot_rs_err_neg);
   
   cout<<"Checking the peaking background fraction:"<<endl;
   cout<<" integrated linear = "<<peaking_frac[0]<<" +/- "<<peaking_frac[1]<<endl;
   cout<<" integrated parabolic = "<<peaking_frac[2]<<" +/- "<<peaking_frac[3]<<endl;
+  cout<<" integrated gaussian  = "<<peaking_frac[4]<<" +/- "<<peaking_frac[5]<<endl;
   //positive
   cout<<"split into positive:"<<endl;
   cout<<" integrated linear = "<<peaking_frac_pos[0]<<" +/- "<<peaking_frac_pos[1]<<endl;
   cout<<" integrated parabolic = "<<peaking_frac_pos[2]<<" +/- "<<peaking_frac_pos[3]<<endl;
+  cout<<" integrated gaussian  = "<<peaking_frac_pos[4]<<" +/- "<<peaking_frac_pos[5]<<endl;
 
   //negative
   cout<<"and negative:"<<endl;
   cout<<" integrated linear = "<<peaking_frac_neg[0]<<" +/- "<<peaking_frac_neg[1]<<endl;
   cout<<" integrated parabolic = "<<peaking_frac_neg[2]<<" +/- "<<peaking_frac_neg[3]<<endl;
+  cout<<" integrated parabolic = "<<peaking_frac_neg[4]<<" +/- "<<peaking_frac_neg[5]<<endl;
 
 
   
