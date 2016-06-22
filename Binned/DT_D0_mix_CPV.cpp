@@ -144,7 +144,10 @@ void DT_D0_mix_CPV::Loop()
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     if(jentry%100000==0)std::cout<<"processed "<<jentry<<" events"<<std::endl;
-
+    if ( std::find(ignoreList.begin(), ignoreList.end(), jentry ) != ignoreList.end() ){
+      //cout<<"ignoring entry "<<jentry<<endl;
+      continue;
+    }
     //make the match for prompt sample
     currElem.eventNumber = eventNumber;
     currElem.runNumber = runNumber;
@@ -161,7 +164,7 @@ void DT_D0_mix_CPV::Loop()
 
     if(foundMatch(currElem)){
       //cout<<"new vector length = "<<matchedToPrompt.size()<<endl;
-      cout<<"removing prompt event"<<endl;
+      //cout<<"removing prompt event"<<endl;
       continue;
     }
 
@@ -546,32 +549,136 @@ void DT_D0_mix_CPV::Loop()
       Double_t old_pisp = Ps_P;    
       Double_t old_dp = D_P;
       Double_t old_dsp = Dstar_P;
+      Double_t old_dstm = dstm;
       Double_t old_b_endvtx_x = B_ENDVERTEX_X;
       Double_t old_b_endvtx_y = B_ENDVERTEX_Y;
       Double_t old_b_endvtx_z = B_ENDVERTEX_Z;
+      TVector3 oldKVec(K_PX,K_PY,K_PZ);
+      TVector3 oldPiVec(Pd_PX,Pd_PY,Pd_PZ);
+      TVector3 oldMuVec(Mu_PX,Mu_PY,Mu_PZ);
+      TVector3 oldPisVec(Ps_PX,Ps_PY,Ps_PZ);
+      int pis_counter=0;//1sigma counter
+      int pis_counter2=0;//2sigma counter
+
+      int pis_counter_cut=0;//1sigma counter
+      int pis_counter2_cut=0;//2sigma counter
+      int pis_diff = 0;
+      int mu_diff = 0;
+      int k_diff = 0;
+      int pi_diff=0;
+      bool hasPisClone = false;
+      bool hasMuClone = false;
+      bool hasKClone = false;
+      bool hasPdClone = false;
+      int clone_count = 0;
+      std::vector<Long64_t> clone_events;
+      clone_events.push_back(jentry);
+      std::vector<double> pis_clone_angle;
+      //iterate to count this event too
       while(has_extra_candid){
 	eEntry++;
+	if ( std::find(ignoreList.begin(), ignoreList.end(), eEntry+jentry ) != ignoreList.end() ){continue;}
 	fChain->GetEntry(eEntry+jentry);//get the next entry
 	if(EventInSequence==previousEventInSequence /*&&(K_P!=old_kp)&&(Pd_P!=old_pip)*//*&& TMath::Abs(D_M - old_d0m)<1e-3*/){
+	  if(fabs(old_dstm - pdg_dstar_m)<0.7){pis_counter++; pis_counter_cut++;}
+	  if(fabs(old_dstm - pdg_dstar_m)<1.4){pis_counter2++; pis_counter2_cut++;}
 	  //cout<<"found event in sequence at "<<jentry+eEntry<<endl;
 	  mike_counter++;
+	  TVector3 currKVec(K_PX,K_PY,K_PZ);
+	  TVector3 currPiVec(Pd_PX,Pd_PY,Pd_PZ);
+	  TVector3 currMuVec(Mu_PX,Mu_PY,Mu_PZ);
+	  TVector3 currPisVec(Ps_PX,Ps_PY,Ps_PZ);
+	  //have to reset the dstar mass
+	  pi_daughter_as_k.SetXYZM(B_VFit_piplus_0_PX[0]/1e3,
+				   B_VFit_piplus_0_PY[0]/1e3,
+				   B_VFit_piplus_0_PZ[0]/1e3,
+				   pdg_kplus_m/1e3);//GeV
+	  
+	  k_daughter_as_pi.SetXYZM(B_VFit_Kplus_PX[0]/1e3,
+				   B_VFit_Kplus_PY[0]/1e3,
+				   B_VFit_Kplus_PZ[0]/1e3,
+				   pdg_piplus_m/1e3);//GeV
+	  pi_daughter.SetXYZM(B_VFit_piplus_0_PX[0]/1e3,
+			      B_VFit_piplus_0_PY[0]/1e3,
+			      B_VFit_piplus_0_PZ[0]/1e3,
+			      pdg_piplus_m/1e3);//GeV
+	  k_daughter.SetXYZM(B_VFit_Kplus_PX[0]/1e3,
+			     B_VFit_Kplus_PY[0]/1e3,
+			     B_VFit_Kplus_PZ[0]/1e3,
+			     pdg_kplus_m/1e3);//GeV
+	  slow_pion_vec.SetXYZM(B_VFit_piplus_PX[0]/1e3,
+				B_VFit_piplus_PY[0]/1e3,
+				B_VFit_piplus_PZ[0]/1e3,
+				139.57018/1e3);
+	  d0_vector.SetXYZM((k_daughter+pi_daughter).Px(),
+			    (k_daughter+pi_daughter).Py(),
+			    (k_daughter+pi_daughter).Pz(),
+			    1864.84/1e3);//GeV
+	  mu_from_b.SetXYZM(B_VFit_muminus_PX[0]/1e3,
+			    B_VFit_muminus_PY[0]/1e3,
+			    B_VFit_muminus_PZ[0]/1e3,
+			    105.6583715/1e3);
+	  dstm = (d0_vector+slow_pion_vec).M()*1e3;
 	  //cout<<"counter now at "<<mike_counter<<endl;
 	  //classify.
 	  if(Mu_P == old_mup && K_P == old_kp && Pd_P == old_pip &&(Ps_P!=old_pisp)){
 	    //found the same event with only the random slow pion.
+	    pis_diff++;
 	    mult_candid_classifier->Fill(0);
+	    dstarm_mult_candid_pis->Fill(dstm);
+	    double angle_pis = oldPisVec.Angle(currPisVec)*1000.;
+	    if(angle_pis<0.6){
+	      clone_count++;
+	      clone_events.push_back(jentry+mike_counter);
+	    }
+	    if(angle_pis<0.6 && !hasPisClone){hasPisClone=true;}
+	    if(fabs(dstm-pdg_dstar_m)<0.7){++pis_counter;}
+	    if(fabs(dstm-pdg_dstar_m)<1.4){++pis_counter2;}
+	    //choose only the first one if there are clones.
+	    if(fabs(dstm-pdg_dstar_m)<0.7 && !hasPisClone){++pis_counter_cut;}
+	    if(fabs(dstm-pdg_dstar_m)<1.4 && !hasPisClone){++pis_counter2_cut;}
+	    
+	    //cout<<"filling pis clone angle with "<<oldPisVec.Angle(currPisVec)<<endl;
+	    mult_candid_pis_clone_opening_angle->Fill(angle_pis);
 	  }
 	  else if(Mu_P!= old_mup && K_P == old_kp && Pd_P == old_pip &&(Ps_P==old_pisp)){
 	    //multiple muons
+	    double angle_mu =oldMuVec.Angle(currMuVec)*1000.;
+	    if(angle_mu<0.6){
+	      clone_count++;
+	      clone_events.push_back(jentry+mike_counter);
+	    }
+	    if(angle_mu<0.6 && !hasMuClone){hasMuClone=true;}
+	    mu_diff++;
 	    mult_candid_classifier->Fill(1);
+	    dstarm_mult_candid_mu->Fill(dstm);
+	    mult_candid_mu_clone_opening_angle->Fill(angle_mu);
 	  }
 	  else if(Mu_P == old_mup && K_P != old_kp && Pd_P == old_pip &&(Ps_P==old_pisp)){
 	    //different K
+	    double angle_k = currKVec.Angle(oldKVec)*1000.;
+	    if(angle_k<0.6){
+	      clone_count++;
+	      clone_events.push_back(jentry+mike_counter);
+	    }
+	    if(angle_k<0.6 && !hasKClone){hasKClone=true;}
+	    k_diff++;
 	    mult_candid_classifier->Fill(2);
+	    dstarm_mult_candid_k->Fill(dstm);
+	    mult_candid_k_clone_opening_angle->Fill(angle_k);
 	  }
 	  else if(Mu_P == old_mup && K_P == old_kp && Pd_P != old_pip &&(Ps_P==old_pisp)){
 	    //different pi
+	    double angle_pi = oldPiVec.Angle(currPiVec)*1000.;
+	    if(angle_pi<0.6){
+	      clone_count++;
+	      clone_events.push_back(jentry+mike_counter);
+	    }
+	    if(angle_pi<0.6 && !hasPdClone){hasPdClone=true;}
+	    pi_diff++;
 	    mult_candid_classifier->Fill(3);
+	    dstarm_mult_candid_pi->Fill(dstm);
+	    mult_candid_pi_clone_opening_angle->Fill(angle_pi);
 	  }
 	  else if(Mu_P == old_mup && K_P != old_kp && Pd_P != old_pip &&(Ps_P==old_pisp)){
 	    //different K and different pi
@@ -588,6 +695,7 @@ void DT_D0_mix_CPV::Loop()
 	    }
 	    else{
 	      mult_candid_classifier->Fill(7);
+	      dstarm_mult_candid_different_b->Fill(dstm);
 	    }
 	  }
 	  //Cout<<"Muon p = "<<Mu_P<<endl;;
@@ -616,26 +724,84 @@ void DT_D0_mix_CPV::Loop()
 	  //cout<<"dstar p = "<<old_dsp<<endl;;
 
 	  has_extra_candid = false;
-	  if(mike_counter!=0){
+	  bool hasAClone =(hasPisClone || hasMuClone || hasKClone || hasPdClone);
+	  if(mike_counter!=0 && !hasAClone){
+	    mult_candid_pis_num_ev_in_sig_window->Fill(pis_counter_cut);
+	    mult_candid_pis_num_ev_in_sig_window2->Fill(pis_counter2_cut);
+	  }
+	  if(mike_counter!=0 && hasAClone){
 	    //cout<<"orig event "<<jentry<<endl;
 	    //cout<<"number of candidates "<<mike_counter<<endl;
 	    //cout<<"will consider events"<<endl;
-	    //	  for(Long64_t lob = 0; lob<=mike_counter;++lob){	 
-	    //cout<<"\t"<<lob+jentry<<endl;
-	    //	  }
+	    // for(Long64_t lob = 0; lob<=mike_counter;++lob){	 
+	    //   //cout<<"\t"<<lob+jentry<<endl;
+	    // }
+	    // //cout<<"out of these, the clone_count = "<<clone_count<<endl;
+	    // //cout<<"those events are "<<endl;
+	    // for(auto thing : clone_events){
+	    //   //cout<<"\t"<<thing<<endl;
+	    // }
+	    int theEntry = m_rng.Integer(clone_events.size());
+	    //cout<<"chose clone "<<theEntry<<endl;
+	    //cout<<"putting all other entries in the ignore list"<<endl;
+	    for(int lob=0; lob<clone_events.size();++lob){
+	      if(lob == theEntry){continue;}
+	      ignoreList.push_back(clone_events.at(lob));
+	    }
+	    //cout<<"ignore list now is"<<endl;
+	    //for(auto thing: ignoreList){cout<<"\t"<<thing<<endl;}
 	    //choose one at random.
-	    selected_entry+=m_rng.Integer(mike_counter+1);//we indexed at zero, so we need to add one.
+	    //selected_entry+=m_rng.Integer(mike_counter+1);//we indexed at zero, so we need to add one.
 	    //cout<<"chose event "<<selected_entry<<endl;
 	    //fChain->GetEntry(selected_entry);
-	    jentry+=mike_counter;
+	    //jentry+=mike_counter;
+	    mult_candid_pis_num_ev_in_sig_window->Fill(pis_counter);
+	    mult_candid_pis_num_ev_in_sig_window2->Fill(pis_counter2);
 	    //cout<<"moving jentry to "<<jentry<<endl;
 	    //cout<<"========================="<<endl;
 	  }
 	  break;
 	}
+      }//end while
+      //clean up our mess
+      fChain->GetEntry(jentry);//get orig entry
+      pi_daughter_as_k.SetXYZM(B_VFit_piplus_0_PX[0]/1e3,
+			       B_VFit_piplus_0_PY[0]/1e3,
+			       B_VFit_piplus_0_PZ[0]/1e3,
+			       pdg_kplus_m/1e3);//GeV
+	  
+      k_daughter_as_pi.SetXYZM(B_VFit_Kplus_PX[0]/1e3,
+			       B_VFit_Kplus_PY[0]/1e3,
+			       B_VFit_Kplus_PZ[0]/1e3,
+			       pdg_piplus_m/1e3);//GeV
+      pi_daughter.SetXYZM(B_VFit_piplus_0_PX[0]/1e3,
+			  B_VFit_piplus_0_PY[0]/1e3,
+			  B_VFit_piplus_0_PZ[0]/1e3,
+			  pdg_piplus_m/1e3);//GeV
+      k_daughter.SetXYZM(B_VFit_Kplus_PX[0]/1e3,
+			 B_VFit_Kplus_PY[0]/1e3,
+			 B_VFit_Kplus_PZ[0]/1e3,
+			 pdg_kplus_m/1e3);//GeV
+      slow_pion_vec.SetXYZM(B_VFit_piplus_PX[0]/1e3,
+			    B_VFit_piplus_PY[0]/1e3,
+			    B_VFit_piplus_PZ[0]/1e3,
+			    139.57018/1e3);
+      d0_vector.SetXYZM((k_daughter+pi_daughter).Px(),
+			(k_daughter+pi_daughter).Py(),
+			(k_daughter+pi_daughter).Pz(),
+			1864.84/1e3);//GeV
+      mu_from_b.SetXYZM(B_VFit_muminus_PX[0]/1e3,
+			B_VFit_muminus_PY[0]/1e3,
+			B_VFit_muminus_PZ[0]/1e3,
+			105.6583715/1e3);
+      dstm = (d0_vector+slow_pion_vec).M()*1e3;
+      //now iterate if we have to.
+      //cout<<"mult candid review: N(pi_s) "<< pis_diff  <<", N(mu) "<<mu_diff<<", n(K) "<<k_diff<<", n(pi) "<<pi_diff<<endl;
+      if(ignoreList.back()==jentry){
+	//cout<<"moving past current event"<<endl;
+	continue;
       }
-      continue;
-    }
+    }//end multiple candidate
 
     
     //fill the mass histogram

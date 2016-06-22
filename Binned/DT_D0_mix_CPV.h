@@ -1785,6 +1785,26 @@ public :
   TH1D* decay_time_distr_neg;
   betastar_plot *bs_plot;
 
+  //add some more for multiple candidate counting
+  TH1D* dstarm_mult_candid_pis;//wrong slow pion
+  TH1D* mult_candid_pis_num_ev_in_sig_window;//per event, how many times is the D* in the signal window, (0.7 MeV)
+  TH1D* mult_candid_pis_num_ev_in_sig_window2;//same, but now 2 sigma(1.4 MeV)
+
+  TH1D* mult_candid_pis_num_ev_in_sig_window_cut;//per event, how many times is the D* in the signal window, (0.7 MeV)
+  TH1D* mult_candid_pis_num_ev_in_sig_window2_cut;//same, but now 2 sigma(1.4 MeV)
+  
+  TH1D* mult_candid_pis_clone_opening_angle;//mike's opening angle
+  TH1D* dstarm_mult_candid_mu;//wrong muon
+  TH1D* mult_candid_mu_clone_opening_angle;//mike's opening angle
+  TH1D* dstarm_mult_candid_k;//wrong kaon
+  TH1D* mult_candid_k_clone_opening_angle;//mike's opening angle
+  //TH1D* mult_candid_k_clone_dist;//clone distribution for multple kaons
+  TH1D* dstarm_mult_candid_pi;//wrong pion
+  TH1D* mult_candid_pi_clone_opening_angle;//mike's opening angle
+  //TH1D* mult_candid_pi_clone_dist;//clone distribution for mult pions
+  TH1D* dstarm_mult_candid_different_b;//dstar mass for different B candidates
+
+  
   virtual Int_t passCuts();
   DT_D0_mix_CPV(TTree *tree=0);
   virtual ~DT_D0_mix_CPV();
@@ -1929,7 +1949,7 @@ private:
   TRandom3 m_rng;//Fix the seed so that the results don't change over time
 
   inline static bool sorter(matchelement_t i, matchelement_t j){return i.eventNumber<j.eventNumber;}
-
+  std::vector<Long64_t> ignoreList;//list of jentry events to ignore.
 };
 
 #endif
@@ -1954,7 +1974,7 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0) ,m_rng(100)
   std::cout<<"ExtraCut initialized to "<<ExtraCut<<std::endl;
   
   Init(tree);
-  do_multiple_candidates_counting = false;//don't count the multiple candidates by default
+  do_multiple_candidates_counting = true;//don't count the multiple candidates by default
   TString name = tree->GetName();
   name.ReplaceAll("/DecayTree","");
   dstar_mass_plot = new TH1D(name+"_dt_hist_dstar_m","", 500, 2000,2025);
@@ -2571,6 +2591,24 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0) ,m_rng(100)
    b_fd_chi2 = new TH1D(name+"_b_fd_chi2", ";B #chi^{2}_{FD}; Entries / 0.5",1000,0,500);
    mult_candid_classifier = new TH1D(name+"_mult_candid_classifier",";Candidate Classifier;",8,-0.5,7.5);
 
+
+   dstarm_mult_candid_pis = new TH1D(name+"_dstarm_mult_candid_pis",";m(D^{0}#pi_{S})[MeV];Entries / 0.05 MeV",500,2000.,2025.);
+   mult_candid_pis_num_ev_in_sig_window= new TH1D(name+"_mult_candid_pis_num_ev_in_sig_window",";Number of Candidates within 0.7 MeV of m(D*);Entries",5,-0.5,4.5);
+   mult_candid_pis_num_ev_in_sig_window2= new TH1D(name+"_mult_candid_pis_num_ev_in_sig_window2",";Number of Candidates within 1.4 MeV of m(D*);Entries",5,-0.5,4.5);
+   mult_candid_pis_num_ev_in_sig_window_cut= new TH1D(name+"_mult_candid_pis_num_ev_in_sig_window_cut",";Number of Candidates within 0.7 MeV of m(D*);Entries",5,-0.5,4.5);
+   mult_candid_pis_num_ev_in_sig_window2_cut= new TH1D(name+"_mult_candid_pis_num_ev_in_sig_window2_cut",";Number of Candidates within 1.4 MeV of m(D*);Entries",5,-0.5,4.5);
+   
+   mult_candid_pis_clone_opening_angle = new TH1D(name+"_mult_candid_pis_clone_opening_angle",";Angle Between Multiple Candidates[mrad];Entries / 0.2 mrad",500,0,100);
+   dstarm_mult_candid_mu = new TH1D(name+"_dstarm_mult_candid_mu",";m(D^{0}#pi_{S})[MeV];Entries / 0.05 MeV",500,2000.,2025.);
+   mult_candid_mu_clone_opening_angle = new TH1D(name+"_mult_candid_mu_clone_opening_angle",";Angle Between Multiple Candidates[mrad];Entries / 0.2 mrad",500,0,100);
+   dstarm_mult_candid_k = new TH1D(name+"_dstarm_mult_candid_k",";m(D^{0}#pi_{S})[MeV];Entries / 0.05 MeV",500,2000.,2025.);
+   mult_candid_k_clone_opening_angle = new TH1D(name+"_mult_candid_k_clone_opening_angle",";Angle Between Multiple Candidates[mrad];Entries / 0.2 mrad",500,0,100);
+   
+   dstarm_mult_candid_pi = new TH1D(name+"_dstarm_mult_candid_pi",";m(D^{0}#pi_{S})[MeV];Entries / 0.05 MeV",500,2000.,2025.);
+   mult_candid_pi_clone_opening_angle = new TH1D(name+"_mult_candid_pi_clone_opening_angle",";Angle Between Multiple Candidates[mrad];Entries / 0.2 mrad",500,0,100);
+   dstarm_mult_candid_different_b = new TH1D(name+"_dstarm_mult_candid_different_b","m(D^{0}#pi_{S})[MeV];Entries / 0.05 MeV",500,2000.,2025.);
+
+   ignoreList.reserve(80000);//reserve 80K entries for multiple candidates to ignore
    //HERE
    //read in the file of matched events
    //b_fd = new TH1D(name+"_b_fd","; B Flight Distance[mm]; Entries / ")

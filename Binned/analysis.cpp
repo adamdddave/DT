@@ -207,6 +207,22 @@ int main(int argc, char* const argv[]){
   TFile *fout = new TFile("./SavedFits/rs_mass.root","RECREATE");
   fout->cd();
   rs_looper.mult_candid_classifier->Write();
+
+    rs_looper.dstarm_mult_candid_pis->Write();
+    rs_looper.mult_candid_pis_num_ev_in_sig_window->Write();
+    rs_looper.mult_candid_pis_num_ev_in_sig_window2->Write();
+    rs_looper.mult_candid_pis_num_ev_in_sig_window_cut->Write();
+    rs_looper.mult_candid_pis_num_ev_in_sig_window2_cut->Write();
+    rs_looper.mult_candid_pis_clone_opening_angle->Write();
+    rs_looper.dstarm_mult_candid_mu->Write();
+    rs_looper.mult_candid_mu_clone_opening_angle->Write();
+rs_looper.dstarm_mult_candid_k->Write();;//wrong kaon
+    rs_looper.mult_candid_k_clone_opening_angle->Write();;//mike's opening angle
+    rs_looper.dstarm_mult_candid_pi->Write();;//wrong pion
+    rs_looper.mult_candid_pi_clone_opening_angle->Write();;//mike's opening angle
+    rs_looper.dstarm_mult_candid_different_b->Write();;//dstar mass for different B candidates
+
+    //
   rs_looper.dstar_mass_plot->Write();
   rs_looper.d0_mass_plot->Write();
   rs_looper.d0_mass_plot_sig_rej->Write();
