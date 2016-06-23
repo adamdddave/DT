@@ -573,6 +573,8 @@ void DT_D0_mix_CPV::Loop()
       int clone_count = 0;
       std::vector<Long64_t> clone_events;
       clone_events.push_back(jentry);
+      std::vector<double> endvtxchi2;
+      endvtxchi2.push_back(B_ENDVERTEX_CHI2);
       std::vector<double> pis_clone_angle;
       //iterate to count this event too
       while(has_extra_candid){
@@ -630,6 +632,7 @@ void DT_D0_mix_CPV::Loop()
 	    if(angle_pis<0.6){
 	      clone_count++;
 	      clone_events.push_back(jentry+mike_counter);
+	      endvtxchi2.push_back(B_ENDVERTEX_CHI2);
 	    }
 	    if(angle_pis<0.6 && !hasPisClone){hasPisClone=true;}
 	    if(fabs(dstm-pdg_dstar_m)<0.7){++pis_counter;}
@@ -647,6 +650,7 @@ void DT_D0_mix_CPV::Loop()
 	    if(angle_mu<0.6){
 	      clone_count++;
 	      clone_events.push_back(jentry+mike_counter);
+	      endvtxchi2.push_back(B_ENDVERTEX_CHI2);
 	    }
 	    if(angle_mu<0.6 && !hasMuClone){hasMuClone=true;}
 	    mu_diff++;
@@ -660,6 +664,7 @@ void DT_D0_mix_CPV::Loop()
 	    if(angle_k<0.6){
 	      clone_count++;
 	      clone_events.push_back(jentry+mike_counter);
+	      endvtxchi2.push_back(B_ENDVERTEX_CHI2);
 	    }
 	    if(angle_k<0.6 && !hasKClone){hasKClone=true;}
 	    k_diff++;
@@ -673,6 +678,7 @@ void DT_D0_mix_CPV::Loop()
 	    if(angle_pi<0.6){
 	      clone_count++;
 	      clone_events.push_back(jentry+mike_counter);
+	      endvtxchi2.push_back(B_ENDVERTEX_CHI2);
 	    }
 	    if(angle_pi<0.6 && !hasPdClone){hasPdClone=true;}
 	    pi_diff++;
@@ -730,19 +736,33 @@ void DT_D0_mix_CPV::Loop()
 	    mult_candid_pis_num_ev_in_sig_window2->Fill(pis_counter2_cut);
 	  }
 	  if(mike_counter!=0 && hasAClone){
-	    //cout<<"orig event "<<jentry<<endl;
-	    //cout<<"number of candidates "<<mike_counter<<endl;
-	    //cout<<"will consider events"<<endl;
+	    // cout<<"orig event "<<jentry<<endl;
+	    // cout<<"number of candidates "<<mike_counter<<endl;
+	    // cout<<"will consider events"<<endl;
 	    // for(Long64_t lob = 0; lob<=mike_counter;++lob){	 
-	    //   //cout<<"\t"<<lob+jentry<<endl;
+	    //   cout<<"\t"<<lob+jentry<<endl;
 	    // }
-	    // //cout<<"out of these, the clone_count = "<<clone_count<<endl;
-	    // //cout<<"those events are "<<endl;
+	    // cout<<"out of these, the clone_count = "<<clone_count<<endl;
+	    // cout<<"those events are "<<endl;
 	    // for(auto thing : clone_events){
-	    //   //cout<<"\t"<<thing<<endl;
+	    //   cout<<"\t"<<thing<<endl;
+	    // }
+	    // cout<<"endvertexchi2 of these events"<<endl;
+	    // for(auto thing : endvtxchi2){
+	    //   cout<<"\t"<<thing<<endl;
 	    // }
 	    int theEntry = m_rng.Integer(clone_events.size());
-	    //cout<<"chose clone "<<theEntry<<endl;
+	    //do it by hand
+	    // int theEntry =-1;
+	    // double curMin = 1000;
+	    // for(int doob = 0; doob<endvtxchi2.size();++doob){
+	    //   if (endvtxchi2.at(doob)<curMin){
+	    // 	curMin = endvtxchi2.at(doob);
+	    // 	theEntry  = doob;
+	    //   }
+	    // }
+	    // cout<<"chose clone "<<theEntry<<endl;
+	    endvtxchi2.clear();
 	    //cout<<"putting all other entries in the ignore list"<<endl;
 	    for(int lob=0; lob<clone_events.size();++lob){
 	      if(lob == theEntry){continue;}
@@ -750,15 +770,9 @@ void DT_D0_mix_CPV::Loop()
 	    }
 	    //cout<<"ignore list now is"<<endl;
 	    //for(auto thing: ignoreList){cout<<"\t"<<thing<<endl;}
-	    //choose one at random.
-	    //selected_entry+=m_rng.Integer(mike_counter+1);//we indexed at zero, so we need to add one.
-	    //cout<<"chose event "<<selected_entry<<endl;
-	    //fChain->GetEntry(selected_entry);
-	    //jentry+=mike_counter;
 	    mult_candid_pis_num_ev_in_sig_window->Fill(pis_counter);
 	    mult_candid_pis_num_ev_in_sig_window2->Fill(pis_counter2);
-	    //cout<<"moving jentry to "<<jentry<<endl;
-	    //cout<<"========================="<<endl;
+	    //out<<"========================="<<endl;
 	  }
 	  break;
 	}
