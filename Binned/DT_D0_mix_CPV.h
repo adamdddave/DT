@@ -2608,7 +2608,9 @@ DT_D0_mix_CPV::DT_D0_mix_CPV(TTree *tree) : fChain(0) ,m_rng(100)
    mult_candid_pi_clone_opening_angle = new TH1D(name+"_mult_candid_pi_clone_opening_angle",";Angle Between Multiple Candidates[mrad];Entries / 0.2 mrad",500,0,100);
    dstarm_mult_candid_different_b = new TH1D(name+"_dstarm_mult_candid_different_b","m(D^{0}#pi_{S})[MeV];Entries / 0.05 MeV",500,2000.,2025.);
 
-   ignoreList.reserve(80000);//reserve 80K entries for multiple candidates to ignore
+   ignoreList.reserve(80);//reserve 80 candidates, jsut in case
+   //new strategy, every time we ignore an event, and that event at the top of the loop, clear this list.
+   // no need to loop over things we already had
    //HERE
    //read in the file of matched events
    //b_fd = new TH1D(name+"_b_fd","; B Flight Distance[mm]; Entries / ")

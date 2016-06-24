@@ -146,6 +146,10 @@ void DT_D0_mix_CPV::Loop()
     if(jentry%100000==0)std::cout<<"processed "<<jentry<<" events"<<std::endl;
     if ( std::find(ignoreList.begin(), ignoreList.end(), jentry ) != ignoreList.end() ){
       //cout<<"ignoring entry "<<jentry<<endl;
+      if(ignoreList.back()==jentry){
+	//cout<<"clearing list"<<endl;
+	ignoreList.clear();
+      }//only clear the list if you have the final one
       continue;
     }
     //make the match for prompt sample
@@ -761,7 +765,7 @@ void DT_D0_mix_CPV::Loop()
 	    // 	theEntry  = doob;
 	    //   }
 	    // }
-	    // cout<<"chose clone "<<theEntry<<endl;
+	    //cout<<"chose clone "<<theEntry<<endl;
 	    endvtxchi2.clear();
 	    //cout<<"putting all other entries in the ignore list"<<endl;
 	    for(int lob=0; lob<clone_events.size();++lob){
@@ -772,7 +776,7 @@ void DT_D0_mix_CPV::Loop()
 	    //for(auto thing: ignoreList){cout<<"\t"<<thing<<endl;}
 	    mult_candid_pis_num_ev_in_sig_window->Fill(pis_counter);
 	    mult_candid_pis_num_ev_in_sig_window2->Fill(pis_counter2);
-	    //out<<"========================="<<endl;
+	    //cout<<"========================="<<endl;
 	  }
 	  break;
 	}
