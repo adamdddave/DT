@@ -136,7 +136,8 @@ void DT_D0_mix_CPV::Loop()
   extraCutFormula.GetNdata();
   fChain->SetNotify(&extraCutFormula);//let the chain know about the formula.
 
-  Long64_t nentries = fChain->GetEntriesFast();
+  Long64_t nentries = fChain->GetEntries();
+  cout<<"nentries = "<<nentries<<endl;
   matchelement_t currElem;
   Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -144,7 +145,7 @@ void DT_D0_mix_CPV::Loop()
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
     if(jentry%100000==0)std::cout<<"processed "<<jentry<<" events"<<std::endl;
-    if ( std::find(ignoreList.begin(), ignoreList.end(), jentry ) != ignoreList.end() ){
+    if ( !ignoreList.empty() && std::find(ignoreList.begin(), ignoreList.end(), jentry ) != ignoreList.end() ){
       //cout<<"ignoring entry "<<jentry<<endl;
       if(ignoreList.back()==jentry){
 	//cout<<"clearing list"<<endl;
@@ -583,6 +584,8 @@ void DT_D0_mix_CPV::Loop()
       //iterate to count this event too
       while(has_extra_candid){
 	eEntry++;
+	if( jentry+eEntry >=nentries){cout<<"past the end! break!";break;}
+	//protect against end of file
 	if ( std::find(ignoreList.begin(), ignoreList.end(), eEntry+jentry ) != ignoreList.end() ){continue;}
 	fChain->GetEntry(eEntry+jentry);//get the next entry
 	if(EventInSequence==previousEventInSequence /*&&(K_P!=old_kp)&&(Pd_P!=old_pip)*//*&& TMath::Abs(D_M - old_d0m)<1e-3*/){
